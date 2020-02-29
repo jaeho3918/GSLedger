@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import com.firebase.ui.auth.AuthUI
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -19,11 +20,15 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import com.gsgana.gsledger.databinding.ActivityIntroBinding
+import org.bouncycastle.jce.provider.BouncyCastleProvider
+import java.security.Security
 import java.util.*
 import javax.crypto.Cipher
 import javax.crypto.KeyGenerator
 import javax.crypto.SecretKey
 import javax.crypto.spec.SecretKeySpec
+import org.bouncycastle.util.encoders.Base64
+
 
 class IntroActivity : AppCompatActivity() {
     private val RC_SIGN_IN = 9001
@@ -46,57 +51,48 @@ class IntroActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_intro);
 
         sf = this.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+
         if (sf.getString(ENCRYPT_NAME, null).isNullOrEmpty()) {
             //First Signup
             binding.introProgressBar.visibility = View.GONE
             googleSignInOption(SIGN_UP, binding)
 
         } else {
-            //login
-
-        }
-        // select signup or login by getSharedPreferences
-
-        val stat = 6
-
-        if (stat == LOG_IN) {
-            val intent = Intent(applicationContext, MainActivity::class.java)
-//            intent.putExtra(
-//                "key",
-//                document.data?.get("Rgl").toString().toCharArray()
-//            )
-
-            mAuth = FirebaseAuth.getInstance()
-            val currentUser = FirebaseAuth.getInstance().currentUser
-            if (currentUser == null) {
+            if (mAuth.currentUser == null) {
+                //LOGIN
                 binding.introProgressBar.visibility = View.GONE
-
+                googleSignInOption(LOG_IN, binding)
             } else {
-                binding.signupBtn.visibility = View.GONE
-                val user = mAuth.currentUser?.uid.toString()
-                val db = FirebaseFirestore.getInstance()
-                val docRef = db.collection(DATABASE_PATH).document(user)
-                docRef.get()
-                    .addOnSuccessListener { document ->
+                val doc = FirebaseFirestore.getInstance()
+                    .collection(DATABASE_PATH)
+                    .document(mAuth.currentUser?.uid!!)
+                    .get().addOnSuccessListener { document ->
                         if (document.exists()) {
-                            val intent = Intent(applicationContext, MainActivity::class.java)
-                            intent.putExtra(
-                                "key",
-                                document.data?.get("Rgl").toString().toCharArray()
-                            )
-                            startActivity(intent)
-                            finish()
-                        } else {
-                            Log.d("GSNOTE", "No such document")
+                            //if
+                            if (decrypt(sf.getString(UID_NAME, null)) ==
+                                document.data?.get("Col5")
+                            ) {
+                                val intent =
+                                    Intent(applicationContext, MainActivity::class.java)
+                                intent.putExtra(
+                                    "key",
+                                    document.data?.get("Rgl").toString().toCharArray()
+                                )
+                                startActivity(intent)
+                                finish()
+                            } else {
+                                AuthUI.getInstance().signOut(this)
+                                FirebaseAuth.getInstance().signOut()
+                                Toast.makeText(this, "다시 로그인해주시기바랍니다.", Toast.LENGTH_LONG)
+                                    .show()
+                                //First Signup
+                                binding.introProgressBar.visibility = View.GONE
+                                googleSignInOption(LOG_IN, binding)
+                            }
                         }
-                    }
-                    .addOnFailureListener { exception ->
-                        Log.d("GSNOTE", "get failed with ", exception)
                     }
             }
         }
-
-
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -122,45 +118,54 @@ class IntroActivity : AppCompatActivity() {
 //                    // Write a message to the firestore
                     if (sf.getString(ENCRYPT_NAME, null).isNullOrBlank()) {
                         // signup and generate key
-                        val test1 = generateRgl()
-                        sf.edit().putString(ENCRYPT_NAME, test1)
+                        sf.edit().putString(ENCRYPT_NAME, generateRgl(32))
                             .commit()
-                        val test2 = sf.getString(ENCRYPT_NAME, null)
-
-                        sf.edit().putString(UID_NAME, encrypt(this, mAuth.currentUser?.uid!!))
+                        sf.edit().putString(UID_NAME, encrypt(mAuth.currentUser?.uid!!))
                             .commit()
-
-                        val test3 = encrypt(this, mAuth.currentUser?.uid!!)
-
-                        val test = decrypt(sf.getString(UID_NAME, null))
 
                         val docRef = FirebaseFirestore.getInstance()
                             .collection(DATABASE_PATH)
                             .document(mAuth.currentUser?.uid!!)
-                            .set(
-                                hashMapOf(
-                                    "Rgl" to generateRgl(),
-                                    "Col0" to 0,
-                                    "Col1" to 0,
-                                    "Col2" to 0,
-                                    "Col3" to 0,
-                                    "Col4" to 0,
-                                    "Col5" to getBytes(this).toString()
-                                )
-                            )
+                        docRef.get().addOnSuccessListener { document ->
+                            if (document.data?.get("Col5") == null) {
+                                docRef
+                                    .set(
+                                        hashMapOf(
+                                            "Rgl" to generateRgl(),
+                                            "Col0" to 0,
+                                            "Col1" to 0,
+                                            "Col2" to 0,
+                                            "Col3" to 0,
+                                            "Col4" to 0,
+                                            "Col5" to mAuth.currentUser?.uid
+                                        )
+                                    )
+                            }
+                        }
 
-                        startActivity(intent)
-                        finish()
+                        docRef
+                            .get().addOnSuccessListener { document ->
+                                if (document.exists()) {
+                                    if (decrypt(sf.getString(UID_NAME, null)) ==
+                                        document.data?.get("Col5")
+                                    ) {
+                                        val intent =
+                                            Intent(applicationContext, MainActivity::class.java)
+                                        intent.putExtra(
+                                            "key",
+                                            document.data?.get("Rgl").toString().toCharArray()
+                                        )
+                                        startActivity(intent)
+                                        finish()
+                                    } else {
+                                        AuthUI.getInstance().signOut(this)
+                                        FirebaseAuth.getInstance().signOut()
+                                        Toast.makeText(this, "다시 로그인해주시기바랍니다.", Toast.LENGTH_LONG)
+                                            .show()
 
-
-                        Toast.makeText(this, sf.getString(ENCRYPT_NAME, null), Toast.LENGTH_LONG)
-                            .show()
-                    } else {
-                        Toast.makeText(
-                            this,
-                            "already" + sf.getString(ENCRYPT_NAME, null),
-                            Toast.LENGTH_LONG
-                        ).show()
+                                    }
+                                }
+                            }
                     }
 
                     mAuth = FirebaseAuth.getInstance()
@@ -201,7 +206,6 @@ class IntroActivity : AppCompatActivity() {
                         .addOnFailureListener { exception ->
                             Log.d("GSNOTE", "get failed with ", exception)
                         }
-
                 } else {
                     Toast.makeText(this, "로그인실패", Toast.LENGTH_LONG).show()
                 }
@@ -232,11 +236,11 @@ class IntroActivity : AppCompatActivity() {
     }
 
 
-    private fun generateRgl(): String {
+    private fun generateRgl(length: Int = 18): String {
         val ALLOWED_CHARACTERS = "013567890123456789ABCDEFGHIJKLMNOPQRSTUWXYZ"
         val random = Random()
-        val sb = StringBuilder(18)
-        for (i in 0 until 18)
+        val sb = StringBuilder(length)
+        for (i in 0 until length)
             sb.append(ALLOWED_CHARACTERS[random.nextInt(ALLOWED_CHARACTERS.length)])
         return sb.toString()
     }
@@ -256,32 +260,59 @@ class IntroActivity : AppCompatActivity() {
             .commit()
     }
 
-    private fun encrypt(context: Context, plainText: String): String? = try {
-        // 각각 알고리즘/Block Cipher Mode/Padding 메카니즘이다.
-        sf = this.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-        val cipher = Cipher.getInstance("AES/ECB/PKCS5PADDING")
-        cipher.init(
-            Cipher.ENCRYPT_MODE,
-            SecretKeySpec(sf.getString(ENCRYPT_NAME, null)?.toByteArray(), "AES")
-        )
-        cipher.doFinal(plainText.toByteArray()).toString()
 
+    private fun encrypt(strToEncrypt: String): String? {
+        Security.addProvider(BouncyCastleProvider())
+        var keyBytes: ByteArray
+        try {
+            keyBytes = sf.getString(ENCRYPT_NAME, null)!!.toByteArray(charset("UTF8"))
+            val skey = SecretKeySpec(keyBytes, "AES")
+            val input = strToEncrypt.toByteArray(charset("UTF8"))
 
-    } catch (e: Exception) {
-        println("Error while encrypting: $e")
-        null
+            synchronized(Cipher::class.java) {
+                val cipher = Cipher.getInstance("AES/ECB/PKCS7Padding")
+                cipher.init(Cipher.ENCRYPT_MODE, skey)
+
+                val cipherText = ByteArray(cipher.getOutputSize(input.size))
+                var ctLength = cipher.update(
+                    input, 0, input.size,
+                    cipherText, 0
+                )
+                ctLength += cipher.doFinal(cipherText, ctLength)
+                return String(
+                    Base64.encode(cipherText)
+                )
+            }
+
+        } catch (e: Exception) {
+            println("Error while encrypting: $e")
+            return null
+        }
     }
 
-    private fun decrypt(cipherText: String?): String? = try {
-        // 각각 알고리즘/Block Cipher Mode/Padding 메카니즘이다.
-        val cipher = Cipher.getInstance("AES/ECB/PKC55PADDING")
-        cipher.init(
-            Cipher.DECRYPT_MODE,
-            SecretKeySpec(sf.getString(ENCRYPT_NAME, null)?.toByteArray(), "AES")
-        )
-        String(cipher.doFinal(cipherText?.toByteArray()))
-    } catch (e: Exception) {
-        println("Error while decrypting: $e")
-        null
+    private fun decrypt(strToDecrypt: String?): String? {
+        Security.addProvider(BouncyCastleProvider())
+        var keyBytes: ByteArray
+
+        try {
+            keyBytes = sf.getString(ENCRYPT_NAME, null)!!.toByteArray(charset("UTF8"))
+            val skey = SecretKeySpec(keyBytes, "AES")
+            val input = org.bouncycastle.util.encoders.Base64
+                .decode(strToDecrypt?.trim { it <= ' ' }?.toByteArray(charset("UTF8")))
+
+            synchronized(Cipher::class.java) {
+                val cipher = Cipher.getInstance("AES/ECB/PKCS7Padding")
+                cipher.init(Cipher.DECRYPT_MODE, skey)
+
+                val plainText = ByteArray(cipher.getOutputSize(input.size))
+                var ptLength = cipher.update(input, 0, input.size, plainText, 0)
+                ptLength += cipher.doFinal(plainText, ptLength)
+                val decryptedString = String(plainText)
+                return decryptedString.trim { it <= ' ' }
+            }
+        } catch (e: Exception) {
+            println("Error while decrypting: $e")
+            return null
+        }
     }
 }

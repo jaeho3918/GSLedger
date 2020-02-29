@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/introImageView"
+                android:layout_width="333dp"
+                android:layout_height="333dp"
+                android:src="@drawable/gs_icon_size" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/app_name"
+                android:textSize="@dimen/text_xmlarge"
+
+                />
+
+            <ProgressBar
+                android:id="@+id/introProgressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/intro_marginTop" />
+
+            <Button
+                android:id="@+id/loginBtn"
+                android:layout_width="240dp"
+                android:layout_height="@dimen/buttom_lagre_height"
+                android:layout_margin="@dimen/intro_marginTop"
+                android:background="@drawable/login_btn"
+                android:text="@string/loginwithgmail"
+                android:textAllCaps="false"
+                android:textColor="@color/red"
+                android:textStyle="bold"
+                android:paddingStart="@dimen/button_image_padding_size"
+                android:drawableLeft="@drawable/googleg_standard_color_18"
+                android:visibility="gone"
+                />
+
+            <Button
+                android:id="@+id/signupBtn"
+                android:layout_width="240dp"
+                android:layout_height="@dimen/buttom_lagre_height"
+                android:layout_margin="@dimen/intro_marginTop"
+                android:background="@drawable/signup_btn"
+                android:text="@string/signupwithgmail"
+                android:textAllCaps="false"
+                android:textColor="@color/green"
+                android:textStyle="bold"
+                android:paddingStart="@dimen/button_image_padding_size"
+                android:drawableLeft="@drawable/googleg_standard_color_18"
+                android:visibility="gone"
+                />
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+</layout>

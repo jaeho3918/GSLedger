@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">GSLedger</string>
+    <string name="loginwithgmail">Login with Gmail</string>
+    <string name="signupwithgmail">Sign up with Gmail</string>
+</resources>

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "314143799930",
+    "firebase_url": "https://gsledger-29cad.firebaseio.com",
+    "project_id": "gsledger-29cad",
+    "storage_bucket": "gsledger-29cad.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:314143799930:android:8edd1b28035aa8817a59c3",
+        "android_client_info": {
+          "package_name": "com.gsgana.gsledger"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "314143799930-sd82c1780ss379coekbnalsqkvp2lo1h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gsgana.gsledger",
+            "certificate_hash": "fb204f65d335eaf7da46a581d8ac1209d726ff2a"
+          }
+        },
+        {
+          "client_id": "314143799930-gpv1lolvq69qv7ee0i31j487vpdtrjvp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBs9W-x6fB_FGDyIE_cFYcDz7i4VXvFPt0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "314143799930-gpv1lolvq69qv7ee0i31j487vpdtrjvp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

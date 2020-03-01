@@ -107,15 +107,15 @@ class HomeViewPagerFragment : Fragment() {
                 it[CURRENCY[(it["currency"]?.toInt() ?: 0)]]
 
             }
-            binding.realTimeGold.text =
+            binding.realGoldPrice.text =
                 String.format("%,.2f", (currency?.times((it["AU"])!!.toDouble())))
-            binding.realTimeSilver.text =
+            binding.realSilverPrice.text =
                 String.format(
                     "%,.2f", (currency?.times((it["AG"])!!.toDouble()))
                 )
 
-            binding.realCurrency1.text = CURRENCYSYMBOL[(it["currency"]?.toInt() ?: 0)]
-            binding.realCurrency2.text = CURRENCYSYMBOL[(it["currency"]?.toInt() ?: 0)]
+            binding.realGoldCurrency.text = CURRENCYSYMBOL[(it["currency"]?.toInt() ?: 0)]
+            binding.realSilverCurrency.text = CURRENCYSYMBOL[(it["currency"]?.toInt() ?: 0)]
 
         }
 

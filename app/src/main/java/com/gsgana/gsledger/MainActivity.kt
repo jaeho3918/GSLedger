@@ -3,9 +3,11 @@ package com.gsgana.gsledger
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.databinding.DataBindingUtil
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.gsgana.gsledger.data.AppDatabase
+import com.gsgana.gsledger.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
@@ -14,23 +16,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-//        val key = intent.getCharArrayExtra("key")
-//
-        mAuth = FirebaseAuth.getInstance()
-        val db = FirebaseFirestore.getInstance()
-        val docRef = db.collection(DATABASE_PATH).document(mAuth.currentUser?.uid!!)
-        docRef.get()
-            .addOnSuccessListener { document ->
-                val tes1 = mutableListOf<Char>()
-                val test = document.data?.get("Rgl") as ArrayList<String>
-                for (s in test) {
-                    tes1.add(s.toCharArray()[0])
-                }
-                test.clear()
-                val reg =
-                    AppDatabase.getInstance(this, tes1.toCharArray())
-                tes1.clear()
-            }
+        DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
     }
 }

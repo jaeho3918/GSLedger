@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/tools">
 
     <data>
 
@@ -13,156 +14,28 @@
             type="com.gsgana.gsledger.StatFragment.Callback" />
     </data>
 
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <LinearLayout
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/tab1_cardview_1"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
-            <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="0.3"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tab1_title_1_layout"
 
-                <com.github.mikephil.charting.charts.PieChart
-                    android:id="@+id/statChart"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="48dp"
-                    android:visibility="gone"/>
-
-
-            </LinearLayout>
-
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/rounded_border">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="70dp"
-                    android:layout_height="wrap_content"
-                    android:text="금 총값"
-                    android:textSize="21dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent" />
-
-                <TextView
-                    android:id="@+id/goldCurrency"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="8dp"
-                    android:visibility="gone"
-                    android:text="$"
-                    android:textSize="21dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent" />
-
-                <TextView
-                    android:id="@+id/goldlabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:text=""
-                    android:textSize="21dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent" />
-
-                <TextView
-                    android:id="@+id/goldPl"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:layout_marginLeft="24dp"
-                    android:text=""
-                    android:textSize="18dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent" />
-
-                <ProgressBar
-                    android:id="@+id/goldprogress"
-                    style="?android:attr/progressBarStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="70dp"
-                    android:layout_height="wrap_content"
-                    android:text="은 총값"
-                    android:textSize="21dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent" />
-
-                <TextView
-                    android:id="@+id/silverCurrency"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="8dp"
-                    android:visibility="gone"
-                    android:text="$"
-                    android:textSize="21dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent" />
-
-                <TextView
-                    android:id="@+id/silverlabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:text=""
-                    android:textSize="21dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent" />
-
-                <TextView
-                    android:id="@+id/silverPl"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="24dp"
-                    android:visibility="gone"
-                    android:text=""
-                    android:textSize="18dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent" />
-
-                <ProgressBar
-                    android:id="@+id/silverprogress"
-                    style="?android:attr/progressBarStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <TextView
@@ -217,36 +90,153 @@
                     android:layout_weight="1" />
             </LinearLayout>
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <Button
-                android:id="@+id/functionBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="@{() -> Callback.click()}"
-                android:text="SEND POST REQUEST TO SERVER "
-                android:textSize="30dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent" />
-
-            <Button
-                android:id="@+id/moveBtn"
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/statChart"
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:text="Move to Write page"
-                android:textSize="30dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintVertical_bias="0.887" />
-        </LinearLayout>
-    </LinearLayout>
+                android:layout_height="500dp"
+                android:layout_marginTop="48dp"
+                android:visibility="gone"/>
 
+        </androidx.cardview.widget.CardView>
+
+
+
+    </androidx.core.widget.NestedScrollView>
 </layout>
+
+    <!--                    <LinearLayout-->
+    <!--                        android:layout_width="match_parent"-->
+    <!--                        android:layout_height="match_parent"-->
+    <!--                        android:orientation="vertical">-->
+
+    <!--                        <LinearLayout-->
+    <!--                            android:layout_width="match_parent"-->
+    <!--                            android:layout_height="310dp"-->
+    <!--                            android:layout_weight="0.3"-->
+    <!--                            android:orientation="horizontal">-->
+
+
+
+
+    <!--                        </LinearLayout>-->
+
+
+    <!--                        <LinearLayout-->
+    <!--                            android:layout_width="match_parent"-->
+    <!--                            android:layout_height="match_parent"-->
+    <!--                            android:layout_weight="1"-->
+    <!--                            android:orientation="horizontal">-->
+
+    <!--                            <TextView-->
+    <!--                                android:layout_width="70dp"-->
+    <!--                                android:layout_height="wrap_content"-->
+    <!--                                android:text="금 총값"-->
+    <!--                                android:textSize="21dp"-->
+    <!--                                app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--                                app:layout_constraintLeft_toLeftOf="parent"-->
+    <!--                                app:layout_constraintRight_toRightOf="parent" />-->
+
+    <!--                            <TextView-->
+    <!--                                android:id="@+id/goldCurrency"-->
+    <!--                                android:layout_width="wrap_content"-->
+    <!--                                android:layout_height="wrap_content"-->
+    <!--                                android:layout_marginHorizontal="8dp"-->
+    <!--                                android:visibility="gone"-->
+    <!--                                android:text="$"-->
+    <!--                                android:textSize="21dp"-->
+    <!--                                app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--                                app:layout_constraintLeft_toLeftOf="parent"-->
+    <!--                                app:layout_constraintRight_toRightOf="parent" />-->
+
+    <!--                            <TextView-->
+    <!--                                android:id="@+id/goldlabel"-->
+    <!--                                android:layout_width="wrap_content"-->
+    <!--                                android:layout_height="wrap_content"-->
+    <!--                                android:visibility="gone"-->
+    <!--                                android:text=""-->
+    <!--                                android:textSize="21dp"-->
+    <!--                                app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--                                app:layout_constraintLeft_toLeftOf="parent"-->
+    <!--                                app:layout_constraintRight_toRightOf="parent" />-->
+
+    <!--                            <TextView-->
+    <!--                                android:id="@+id/goldPl"-->
+    <!--                                android:layout_width="wrap_content"-->
+    <!--                                android:layout_height="wrap_content"-->
+    <!--                                android:visibility="gone"-->
+    <!--                                android:layout_marginLeft="24dp"-->
+    <!--                                android:text=""-->
+    <!--                                android:textSize="18dp"-->
+    <!--                                app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--                                app:layout_constraintLeft_toLeftOf="parent"-->
+    <!--                                app:layout_constraintRight_toRightOf="parent" />-->
+
+    <!--                            <ProgressBar-->
+    <!--                                android:id="@+id/goldprogress"-->
+    <!--                                style="?android:attr/progressBarStyle"-->
+    <!--                                android:layout_width="wrap_content"-->
+    <!--                                android:layout_height="wrap_content"-->
+    <!--                                android:layout_weight="1" />-->
+
+    <!--                        </LinearLayout>-->
+
+    <!--                        <LinearLayout-->
+    <!--                            android:layout_width="match_parent"-->
+    <!--                            android:layout_height="match_parent"-->
+    <!--                            android:layout_weight="1"-->
+    <!--                            android:orientation="horizontal">-->
+
+    <!--                            <TextView-->
+    <!--                                android:layout_width="70dp"-->
+    <!--                                android:layout_height="wrap_content"-->
+    <!--                                android:text="은 총값"-->
+    <!--                                android:textSize="21dp"-->
+    <!--                                app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--                                app:layout_constraintLeft_toLeftOf="parent"-->
+    <!--                                app:layout_constraintRight_toRightOf="parent" />-->
+
+    <!--                            <TextView-->
+    <!--                                android:id="@+id/silverCurrency"-->
+    <!--                                android:layout_width="wrap_content"-->
+    <!--                                android:layout_height="wrap_content"-->
+    <!--                                android:layout_marginHorizontal="8dp"-->
+    <!--                                android:visibility="gone"-->
+    <!--                                android:text="$"-->
+    <!--                                android:textSize="21dp"-->
+    <!--                                app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--                                app:layout_constraintLeft_toLeftOf="parent"-->
+    <!--                                app:layout_constraintRight_toRightOf="parent" />-->
+
+    <!--                            <TextView-->
+    <!--                                android:id="@+id/silverlabel"-->
+    <!--                                android:layout_width="wrap_content"-->
+    <!--                                android:layout_height="wrap_content"-->
+    <!--                                android:visibility="gone"-->
+    <!--                                android:text=""-->
+    <!--                                android:textSize="21dp"-->
+    <!--                                app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--                                app:layout_constraintLeft_toLeftOf="parent"-->
+    <!--                                app:layout_constraintRight_toRightOf="parent" />-->
+
+    <!--                            <TextView-->
+    <!--                                android:id="@+id/silverPl"-->
+    <!--                                android:layout_width="wrap_content"-->
+    <!--                                android:layout_height="wrap_content"-->
+    <!--                                android:layout_marginLeft="24dp"-->
+    <!--                                android:visibility="gone"-->
+    <!--                                android:text=""-->
+    <!--                                android:textSize="18dp"-->
+    <!--                                app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--                                app:layout_constraintLeft_toLeftOf="parent"-->
+    <!--                                app:layout_constraintRight_toRightOf="parent" />-->
+
+    <!--                            <ProgressBar-->
+    <!--                                android:id="@+id/silverprogress"-->
+    <!--                                style="?android:attr/progressBarStyle"-->
+    <!--                                android:layout_width="wrap_content"-->
+    <!--                                android:layout_height="wrap_content"-->
+    <!--                                android:layout_weight="1" />-->
+
+    <!--                        </LinearLayout>-->
+    <!--                        -->
+    <!--                    </LinearLayout>-->

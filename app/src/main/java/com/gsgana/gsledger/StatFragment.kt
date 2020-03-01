@@ -1,11 +1,13 @@
 package com.gsgana.gsledger
 
 
+import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -44,10 +46,10 @@ class StatFragment : Fragment() {
         binding = StatFragmentBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
 
-        binding.moveBtn.setOnClickListener {
-            findNavController()
-                .navigate(R.id.action_homeViewPagerFragment_to_write1Fragment)
-        }
+//        binding.moveBtn.setOnClickListener {
+//            findNavController()
+//                .navigate(R.id.action_homeViewPagerFragment_to_write1Fragment)
+//        }
 
 
 
@@ -95,7 +97,8 @@ class StatFragment : Fragment() {
                         reg1 += ((1 + product.reg) * product.weightr * product.weight * product.quantity * PACKAGENUM[product.packageType])
                         price1 += product.price / (realData[CURRENCY[product.currency]] ?: 1.0)
 //                        goldPladd += (1 + product.reg) * product.weightr * product.weight * metalPrice1
-                        goldPladd += (reg1 * metalPrice1 * (realData[CURRENCY[product.currency]] ?: 1.0))
+                        goldPladd += (reg1 * metalPrice1 * (realData[CURRENCY[product.currency]]
+                            ?: 1.0))
                         metalPre1 += product.prePrice
 
                         if (product.type == 0) {
@@ -108,7 +111,8 @@ class StatFragment : Fragment() {
                         reg2 += ((1 + product.reg) * product.weightr * product.weight * product.quantity * PACKAGENUM[product.packageType])
                         price2 += product.price / (realData[CURRENCY[product.currency]] ?: 1.0)
 //                        silverPladd += (1 + product.reg) * product.weightr * product.weight * metalPrice2
-                        silverPladd += reg2 * metalPrice2 * (realData[CURRENCY[product.currency]] ?: 1.0)
+                        silverPladd += reg2 * metalPrice2 * (realData[CURRENCY[product.currency]]
+                            ?: 1.0)
                         metalPre2 += product.prePrice
 
                         if (product.type == 0) {
@@ -143,12 +147,19 @@ class StatFragment : Fragment() {
                     binding.totalPl.text = String.format("(%,.2f)", totalPladd1)
 
                     binding.goldCurrency.text = CURRENCYSYMBOL[(realData["currency"]?.toInt() ?: 0)]
-                    binding.silverCurrency.text = CURRENCYSYMBOL[(realData["currency"]?.toInt() ?: 0)]
-                    binding.totalCurrency.text = CURRENCYSYMBOL[(realData["currency"]?.toInt() ?: 0)]
+                    binding.silverCurrency.text =
+                        CURRENCYSYMBOL[(realData["currency"]?.toInt() ?: 0)]
+                    binding.totalCurrency.text =
+                        CURRENCYSYMBOL[(realData["currency"]?.toInt() ?: 0)]
 
-                    binding.goldlabel.text = String.format("%,.0f", (reg1 * metalPrice1 * (currency ?: 1.0)))
-                    binding.silverlabel.text = String.format("%,.0f", (reg2 * metalPrice2 * (currency ?: 1.0)))
-                    binding.totallabel.text = String.format( "%,.0f", (reg1 * metalPrice1 * (currency ?: 1.0) + reg2 * metalPrice2 * (currency ?: 1.0))
+                    binding.goldlabel.text =
+                        String.format("%,.0f", (reg1 * metalPrice1 * (currency ?: 1.0)))
+                    binding.silverlabel.text =
+                        String.format("%,.0f", (reg2 * metalPrice2 * (currency ?: 1.0)))
+                    binding.totallabel.text = String.format(
+                        "%,.0f",
+                        (reg1 * metalPrice1 * (currency ?: 1.0) + reg2 * metalPrice2 * (currency
+                            ?: 1.0))
                     )
 
                 } else {
@@ -208,7 +219,8 @@ class StatFragment : Fragment() {
                         reg1 += ((1 + product.reg) * product.weightr * product.weight * product.quantity * PACKAGENUM[product.packageType])
                         price1 += product.price / (realData[CURRENCY[product.currency]] ?: 1.0)
 //                        goldPladd += (1 + product.reg) * product.weightr * product.weight * metalPrice1
-                        goldPladd += (reg1 * metalPrice1 * (realData[CURRENCY[product.currency]] ?: 1.0))
+                        goldPladd += (reg1 * metalPrice1 * (realData[CURRENCY[product.currency]]
+                            ?: 1.0))
                         metalPre1 += product.prePrice
 
                         if (product.type == 0) {
@@ -221,7 +233,8 @@ class StatFragment : Fragment() {
                         reg2 += ((1 + product.reg) * product.weightr * product.weight * product.quantity * PACKAGENUM[product.packageType])
                         price2 += product.price / (realData[CURRENCY[product.currency]] ?: 1.0)
 //                        silverPladd += (1 + product.reg) * product.weightr * product.weight * metalPrice2
-                        silverPladd += reg2 * metalPrice2 * (realData[CURRENCY[product.currency]] ?: 1.0)
+                        silverPladd += reg2 * metalPrice2 * (realData[CURRENCY[product.currency]]
+                            ?: 1.0)
                         metalPre2 += product.prePrice
 
                         if (product.type == 0) {
@@ -294,12 +307,12 @@ class StatFragment : Fragment() {
         if (!viewModel?.products?.value.isNullOrEmpty()) {
             Handler().postDelayed({
                 setData(viewModel, binding)
-                setChart(viewModel, binding)
+                setChart(context, viewModel, binding)
             }, 1800)
         } else {
             setData(viewModel, binding)
             Handler().postDelayed({
-                setChart(viewModel, binding)
+                setChart(context, viewModel, binding)
             }, 1800)
         }
 
@@ -311,15 +324,19 @@ class StatFragment : Fragment() {
 
     }
 
-    private fun setChart(viewModel: HomeViewPagerViewModel?, binding: StatFragmentBinding) {
-        val white = -0x50506
-        val gray = -0x111112
-        val red = -0x4d4a
-        val green = -0x813356
-        val chart_goldC = 0xCCffd752
-        val chart_goldB = 0xffffd752
-        val chart_silverC = 0xCCa8a8a8
-        val chart_silverB = 0xffa8a8a8
+    private fun setChart(
+        context: Context?,
+        viewModel: HomeViewPagerViewModel?,
+        binding: StatFragmentBinding
+    ) {
+        val white = ContextCompat.getColor(context!!, R.color.white)
+        val gray = ContextCompat.getColor(context!!, R.color.colorAccent)
+        val red = ContextCompat.getColor(context!!, R.color.red)
+        val green = ContextCompat.getColor(context!!, R.color.green)
+        val chart_goldC = ContextCompat.getColor(context!!, R.color.chart_goldC)
+        val chart_goldB = ContextCompat.getColor(context!!, R.color.chart_goldB)
+        val chart_silverC = ContextCompat.getColor(context!!, R.color.chart_silverC)
+        val chart_silverB = ContextCompat.getColor(context!!, R.color.chart_silverB)
         val duration = 530
 
         val chartData = viewModel?.ratioMetal?.value
@@ -369,10 +386,10 @@ class StatFragment : Fragment() {
 
         // add a lot of colors
         val colors = mutableListOf<Int>()
-        if (chartData?.get(0) != 0f) colors.add(chart_goldC.toInt())
-        if (chartData?.get(1) != 0f) colors.add(chart_goldB.toInt())
-        if (chartData?.get(2) != 0f) colors.add(chart_silverC.toInt())
-        if (chartData?.get(3) != 0f) colors.add(chart_silverB.toInt())
+        if (chartData?.get(0) != 0f) colors.add(chart_goldC)
+        if (chartData?.get(1) != 0f) colors.add(chart_goldB)
+        if (chartData?.get(2) != 0f) colors.add(chart_silverC)
+        if (chartData?.get(3) != 0f) colors.add(chart_silverB)
 
 //        val yvalues = ArrayList<PieEntry>()
 //
@@ -457,7 +474,8 @@ class StatFragment : Fragment() {
                     reg1 += ((1 + product.reg) * product.weightr * product.weight * product.quantity * PACKAGENUM[product.packageType])
                     price1 += product.price / (realData[CURRENCY[product.currency]] ?: 1.0)
 //                        goldPladd += (1 + product.reg) * product.weightr * product.weight * metalPrice1
-                    goldPladd += (reg1 * metalPrice1 * (realData[CURRENCY[product.currency]] ?: 1.0))
+                    goldPladd += (reg1 * metalPrice1 * (realData[CURRENCY[product.currency]]
+                        ?: 1.0))
                     metalPre1 += product.prePrice
 
                     if (product.type == 0) {
@@ -470,7 +488,8 @@ class StatFragment : Fragment() {
                     reg2 += ((1 + product.reg) * product.weightr * product.weight * product.quantity * PACKAGENUM[product.packageType])
                     price2 += product.price / (realData[CURRENCY[product.currency]] ?: 1.0)
 //                        silverPladd += (1 + product.reg) * product.weightr * product.weight * metalPrice2
-                    silverPladd += reg2 * metalPrice2 * (realData[CURRENCY[product.currency]] ?: 1.0)
+                    silverPladd += reg2 * metalPrice2 * (realData[CURRENCY[product.currency]]
+                        ?: 1.0)
                     metalPre2 += product.prePrice
 
                     if (product.type == 0) {

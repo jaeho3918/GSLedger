@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#707070</color>
+    <color name="colorPrimary">#929292</color>
     <color name="colorPrimaryDark">#707070</color>
-    <color name="colorAccent">#707070</color>
+    <color name="colorAccent">#929292</color>
 
     <color name="font_silver">#707070</color>
-    <color name="font_gold">#ffca17</color>
+    <color name="font_gold">#ffc00d</color>
 
-    <color name="border_background">#eeeeee</color>
+    <color name="border_background">#e3e3e3</color>
     <color name="border_stroke">#eeeeee</color>
 
     <color name="white">#fffafafa</color>
@@ -25,9 +25,9 @@
 
     <color name="chart_white">#ffEEEEEE</color>
 
-    <color name="chart_silverC">#CCa8a8a8</color>
-    <color name="chart_goldC">#CCffd752</color>
+    <color name="chart_silverC">#aaa8a8a8</color>
+    <color name="chart_goldC">#CCffcb38</color>
 
-    <color name="chart_silverB">#ffa8a8a8</color>
-    <color name="chart_goldB">#ffffd752</color>
+    <color name="chart_silverB">#ffd6d6d6</color>
+    <color name="chart_goldB">#ffffe696</color>
 </resources>

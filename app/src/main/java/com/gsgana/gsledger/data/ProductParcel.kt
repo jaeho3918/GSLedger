@@ -1,4 +1,4 @@
-package com.gsna.gsnote.data
+package com.gsgana.gsledger.data
 
 import android.os.Parcel
 import android.os.Parcelable

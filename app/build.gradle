@@ -77,8 +77,9 @@ android {
         implementation 'com.squareup.retrofit2:converter-gson:2.7.1'
         implementation 'net.zetetic:android-database-sqlcipher:4.3.0@aar'
         implementation 'androidx.sqlite:sqlite:2.1.0'
-        implementation 'org.bouncycastle:bcpkix-jdk15on:1.56'
+        implementation 'org.bouncycastle:bcpkix-jdk15on:1.56'//
         implementation "com.commonsware.cwac:saferoom:1.2.1"
+        implementation 'com.github.zagum:Android-SwitchIcon:1.4.0'
 
         //firebase
         implementation 'com.google.firebase:firebase-functions:19.0.1'

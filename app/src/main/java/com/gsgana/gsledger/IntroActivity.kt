@@ -70,16 +70,13 @@ class IntroActivity : AppCompatActivity() {
                         if (document.exists()) {
                             //if
                             if (decrypt(sf.getString(UID_NAME, null)) ==
-                                document.data?.get("Col5")
+                                document.data?.get("Col3")
                             ) {
                                 val intent =
                                     Intent(applicationContext, MainActivity::class.java)
-                                intent.putExtra(
-                                    "key",
-                                    document.data?.get("Rgl").toString().toCharArray()
-                                )
                                 startActivity(intent)
                                 finish()
+
                             } else {
                                 AuthUI.getInstance().signOut(this)
                                 FirebaseAuth.getInstance().signOut()
@@ -122,93 +119,53 @@ class IntroActivity : AppCompatActivity() {
                             .commit()
                         sf.edit().putString(UID_NAME, encrypt(mAuth.currentUser?.uid!!))
                             .commit()
-
                         val docRef = FirebaseFirestore.getInstance()
                             .collection(DATABASE_PATH)
                             .document(mAuth.currentUser?.uid!!)
                         docRef.get().addOnSuccessListener { document ->
-                            if (document.data?.get("Col5") == null) {
+                            if (document.data?.get("Col3") == null) {
                                 docRef
                                     .set(
                                         hashMapOf(
-                                            "Rgl" to generateRgl(),
-                                            "Col0" to 0,
-                                            "Col1" to 0,
-                                            "Col2" to 0,
-                                            "Col3" to 0,
-                                            "Col4" to 0,
-                                            "Col5" to mAuth.currentUser?.uid
+                                            "Rgl" to generateRgl6(),
+                                            "Col3" to mAuth.currentUser?.uid!!
                                         )
                                     )
                             }
                         }
+                        val intent =  Intent(applicationContext, MainActivity::class.java)
+                        startActivity(intent)
+                        finish()
 
-                        docRef
-                            .get().addOnSuccessListener { document ->
-                                if (document.exists()) {
-                                    if (decrypt(sf.getString(UID_NAME, null)) ==
-                                        document.data?.get("Col5")
-                                    ) {
-                                        val intent =
-                                            Intent(applicationContext, MainActivity::class.java)
-                                        intent.putExtra(
-                                            "key",
-                                            document.data?.get("Rgl").toString().toCharArray()
-                                        )
-                                        startActivity(intent)
-                                        finish()
-                                    } else {
-                                        AuthUI.getInstance().signOut(this)
-                                        FirebaseAuth.getInstance().signOut()
-                                        Toast.makeText(this, "다시 로그인해주시기바랍니다.", Toast.LENGTH_LONG)
-                                            .show()
+                    } else {
 
-                                    }
+                        mAuth = FirebaseAuth.getInstance()
+                        val db = FirebaseFirestore.getInstance()
+                        val docRef = db.collection(DATABASE_PATH).document(mAuth.currentUser?.uid!!)
+                        docRef.get()
+                            .addOnSuccessListener { document ->
+                                if (decrypt(sf.getString(UID_NAME, null)) ==
+                                    document.data?.get("Col3")
+                                ) {
+                                    val intent =
+                                        Intent(applicationContext, MainActivity::class.java)
+                                    startActivity(intent)
+                                    finish()
+                                } else {
+                                    AuthUI.getInstance().signOut(this)
+                                    FirebaseAuth.getInstance().signOut()
+                                    Toast.makeText(this, "다시 로그인해주시기바랍니다.", Toast.LENGTH_LONG)
+                                        .show()
                                 }
                             }
-                    }
-
-                    mAuth = FirebaseAuth.getInstance()
-                    val db = FirebaseFirestore.getInstance()
-                    val docRef = db.collection(DATABASE_PATH).document(mAuth.currentUser?.uid!!)
-                    docRef.get()
-                        .addOnSuccessListener { document ->
-                            if (document.exists()) {
-                                val intent = Intent(applicationContext, MainActivity::class.java)
-                                intent.putExtra(
-                                    "key",
-                                    document.data?.get("Rgl").toString().toCharArray()
-                                )
-                                startActivity(intent)
-                                finish()
-                            } else {
-                                db.collection("users")
-                                    .document(mAuth.currentUser?.uid!!)
-                                    .set(
-                                        hashMapOf(
-                                            "Rgl" to generateRgl(),
-                                            "Col1" to 0,
-                                            "Col2" to 0,
-                                            "Col3" to 0,
-                                            "Col4" to 0,
-                                            "Col5" to 0
-                                        )
-                                    )
-                                val intent = Intent(applicationContext, MainActivity::class.java)
-                                intent.putExtra(
-                                    "key",
-                                    document.data?.get("Rgl").toString().toCharArray()
-                                )
-                                startActivity(intent)
-                                finish()
+                            .addOnFailureListener { exception ->
+                                Log.d("GSNOTE", "get failed with ", exception)
                             }
-                        }
-                        .addOnFailureListener { exception ->
-                            Log.d("GSNOTE", "get failed with ", exception)
-                        }
-                } else {
-                    Toast.makeText(this, "로그인실패", Toast.LENGTH_LONG).show()
+
+                    }
                 }
+
+
             }
     }
 
@@ -244,6 +201,16 @@ class IntroActivity : AppCompatActivity() {
             sb.append(ALLOWED_CHARACTERS[random.nextInt(ALLOWED_CHARACTERS.length)])
         return sb.toString()
     }
+
+    private fun generateRgl6(length: Int = 36): List<String> {
+        val ALLOWED_CHARACTERS = "013567890123456789ABCDEFGHIJKLMNOPQRSTUWXYZ"
+        val random = Random()
+        val sb = mutableListOf<String>()
+        for (i in 0 until length)
+            sb.add(ALLOWED_CHARACTERS[random.nextInt(ALLOWED_CHARACTERS.length)].toString())
+        return sb
+    }
+
 
     private fun getBytes(context: Context): ByteArray? {
         val prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)

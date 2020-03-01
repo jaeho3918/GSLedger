@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="com.gsgana.gsledger.data.Product" />
+
+        <import type="com.gsgana.gsledger.utilities.ConstantsKt" />
+
+        <variable
+            name="viewModel"
+            type="com.gsgana.gsledger.viewmodels.DetailViewModel" />
+
+        <variable
+            name="Callback"
+            type="com.gsgana.gsledger.Write5Fragment.Callback" />
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.18"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/layout5"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@color/colorPrimary"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:id="@+id/layout5r"
+                            android:layout_width="80dp"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/ic_arrow_back_black_24dp"
+                            android:clickable="true"
+                            android:orientation="horizontal" />
+
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.6"
+                        android:text="Write Page 5/6"
+                        android:textAlignment="center"
+                        android:textSize="29sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="29dp"
+                    android:orientation="horizontal">
+
+                    <Spinner
+                        android:id="@+id/currency_spinner1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1" />
+
+                    <EditText
+                        android:id="@+id/priceEditText1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="00"
+                        android:inputType="number"
+                        android:maxLength="8"
+                        android:nextFocusForward="@+id/price_editText2"
+                        android:textAlignment="center"
+                        android:textSize="29sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="18dp"
+                        android:layout_weight="1.3"
+                        android:text="."
+                        android:textAlignment="center"
+                        android:textSize="29sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/priceEditText2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="00"
+                        android:inputType="number"
+                        android:maxLength="8"
+                        android:textAlignment="center"
+                        android:textSize="29sp" />
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/total_currency"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="36dp"
+                        android:text=""
+                        android:textAlignment="center"
+                        android:textSize="36dp" />
+
+                    <TextView
+                        android:id="@+id/total_price"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="36dp"
+                        android:text=""
+                        android:textAlignment="center"
+                        android:textSize="36dp" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/result_price"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="36dp"
+                    android:text="111111111"
+                    android:textAlignment="center"
+                    android:textSize="36dp" />
+
+                <Button
+                    android:id="@+id/result_submit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="36dp"
+                    android:onClick="@{() -> Callback.click()}"
+                    android:text="submit"
+                    android:textAlignment="center"
+                    android:textSize="36dp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/moveTo5r"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="PRE"
+                android:textSize="50dp" />
+
+            <Button
+                android:id="@+id/moveTo5"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="NEXT"
+                android:textSize="50dp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</layout>

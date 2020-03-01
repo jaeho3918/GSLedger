@@ -1,0 +1,96 @@
+package com.gsgana.gsledger
+
+import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.observe
+import com.google.firebase.database.FirebaseDatabase
+
+import com.gsgana.gsledger.adapters.ProductAdapter
+import com.gsgana.gsledger.data.Product
+import com.gsgana.gsledger.databinding.ListFragmentBinding
+import com.gsgana.gsledger.utilities.InjectorUtils
+import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModel
+import com.gsgana.gsledger.viewmodels.WriteViewModel
+
+
+class ListFragment : Fragment() {
+
+    private lateinit var product: Product
+
+    private lateinit var binding: ListFragmentBinding
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = ListFragmentBinding.inflate(inflater, container, false)
+
+        val viewModel =
+            ViewModelProviders.of(activity!!, InjectorUtils.provideHomeViewPagerViewModelFactory(activity!!,null))
+                .get(HomeViewPagerViewModel::class.java)
+
+        val adapter = ProductAdapter(requireContext())
+        binding.productList.adapter = adapter
+        binding.callback = object : Callback {
+            override fun add() {
+                val randomStringInt = creatRandomStringInt()
+                product = Product(null)
+//                product.brand = randomStringInt[1] as String
+                product.metal = randomStringInt[0] as Int
+                product.type = randomStringInt[0] as Int
+                product.packageType = randomStringInt[0] as Int
+                product.quantity = randomStringInt[0] as Int
+                product.weight = (randomStringInt[1] as Int).toFloat()
+                product.weightUnit = randomStringInt[0] as Int
+                product.currency = randomStringInt[0] as Int
+                product.price = (randomStringInt[1] as Int).toFloat()
+                product.buyDate = randomStringInt[2] as String
+                product.editDate = randomStringInt[3] as String
+                product.memo = randomStringInt[2] as String
+
+                viewModel.addProduct(product)
+            }
+            override fun del() {
+                viewModel.deleteProduct()
+            }
+        }
+
+        viewModel.products.observe(viewLifecycleOwner) { result ->
+            adapter.submitList(result)
+        }
+
+        return binding.root
+    }
+
+    interface Callback {
+        fun add()
+        fun del()
+    }
+
+}
+
+
+fun creatRandomStringInt(): List<Any> {
+    val charPool: List<Char> = ('a'..'z') + ('A'..'Z') + ('0'..'9')
+    val STRING_LENGTH = 10
+    val randomInt = kotlin.random.Random.nextInt(0, 3)
+    val randomInt2 = kotlin.random.Random.nextInt(0, 10)
+
+    val randomString = (1..STRING_LENGTH)
+        .map { kotlin.random.Random.nextInt(0, charPool.size) }
+        .map(charPool::get)
+        .joinToString("")
+
+    val randomString2 = (1..STRING_LENGTH)
+        .map { kotlin.random.Random.nextInt(0, charPool.size) }
+        .map(charPool::get)
+        .joinToString("")
+
+    return listOf(randomInt,randomInt2, randomString, randomString2)
+}

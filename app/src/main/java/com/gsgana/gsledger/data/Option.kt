@@ -1,4 +1,4 @@
-package com.gsna.gsnote.data
+package com.gsgana.gsledger.data
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

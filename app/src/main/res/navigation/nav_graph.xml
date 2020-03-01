@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeViewPagerFragment">
+
+    <fragment
+        android:id="@+id/homeViewPagerFragment"
+        android:name="com.gsgana.gsledger.HomeViewPagerFragment"
+        android:label="HomeViewPagerFragment" >
+        <action
+            android:id="@+id/action_homeViewPagerFragment_to_detailFragment"
+            app:destination="@id/detailFragment" />
+        <action
+            android:id="@+id/action_homeViewPagerFragment_to_write1Fragment"
+            app:destination="@id/write1Fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/detailFragment"
+        android:name="com.gsgana.gsledger.DetailFragment"
+        android:label="DetailFragment" >
+        <argument
+            android:name="id"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_detailFragment_to_homeViewPagerFragment2"
+            app:destination="@+id/homeViewPagerFragment"
+            app:launchSingleTop="false"
+            app:popUpToInclusive="false" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/write1Fragment"
+        android:name="com.gsgana.gsledger.Write1Fragment"
+        android:label="write1_fragment"
+        tools:layout="@layout/fragment_write1" >
+        <action
+            android:id="@+id/action_write1Fragment_to_write2Fragment"
+            app:destination="@id/write2Fragment" />
+        <action
+            android:id="@+id/action_write1Fragment_to_homeViewPagerFragment"
+            app:destination="@id/homeViewPagerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/write2Fragment"
+        android:name="com.gsgana.gsledger.Write2Fragment"
+        android:label="fragment_write2"
+        tools:layout="@layout/fragment_write2" >
+        <action
+            android:id="@+id/action_write2Fragment_to_write3Fragment"
+            app:destination="@id/write3Fragment" />
+        <action
+            android:id="@+id/action_write2Fragment_to_write1Fragment"
+            app:destination="@id/write1Fragment" />
+        <action
+            android:id="@+id/action_write2Fragment_to_homeViewPagerFragment"
+            app:destination="@id/homeViewPagerFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/write3Fragment"
+        android:name="com.gsgana.gsledger.Write3Fragment"
+        android:label="fragment_write3"
+        tools:layout="@layout/fragment_write3" >
+        <action
+            android:id="@+id/action_write3Fragment_to_write4Fragment"
+            app:destination="@id/write4Fragment" />
+        <action
+            android:id="@+id/action_write3Fragment_to_write2Fragment"
+            app:destination="@id/write2Fragment" />
+        <action
+            android:id="@+id/action_write3Fragment_to_homeViewPagerFragment"
+            app:destination="@id/homeViewPagerFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/write4Fragment"
+        android:name="com.gsgana.gsledger.Write4Fragment"
+        android:label="fragment_write4"
+        tools:layout="@layout/fragment_write4" >
+        <action
+            android:id="@+id/action_write4Fragment_to_write5Fragment"
+            app:destination="@id/write5Fragment" />
+        <action
+            android:id="@+id/action_write4Fragment_to_write3Fragment"
+            app:destination="@id/write3Fragment" />
+        <action
+            android:id="@+id/action_write4Fragment_to_homeViewPagerFragment"
+            app:destination="@id/homeViewPagerFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/write5Fragment"
+        android:name="com.gsgana.gsledger.Write5Fragment"
+        android:label="fragment_write5"
+        tools:layout="@layout/fragment_write5" >
+        <action
+            android:id="@+id/action_write5Fragment_to_write6Fragment"
+            app:destination="@id/write6Fragment" />
+        <action
+            android:id="@+id/action_write5Fragment_to_write4Fragment"
+            app:destination="@id/write4Fragment" />
+        <action
+            android:id="@+id/action_write5Fragment_to_homeViewPagerFragment"
+            app:destination="@id/homeViewPagerFragment" />
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/write6Fragment"
+        android:name="com.gsgana.gsledger.Write6Fragment"
+        android:label="fragment_write6"
+        tools:layout="@layout/fragment_write6" >
+        <action
+            android:id="@+id/action_write6Fragment_to_homeViewPagerFragment"
+            app:destination="@id/homeViewPagerFragment" />
+        <action
+            android:id="@+id/action_write6Fragment_to_write5Fragment"
+            app:destination="@id/write5Fragment" />
+        <action
+            android:id="@+id/action_write6Fragment_to_homeViewPagerFragment2"
+            app:destination="@id/homeViewPagerFragment" />
+    </fragment>
+
+</navigation>

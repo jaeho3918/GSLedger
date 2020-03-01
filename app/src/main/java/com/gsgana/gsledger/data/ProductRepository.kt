@@ -1,4 +1,4 @@
-package com.gsna.gsnote.data
+package com.gsgana.gsledger.data
 
 class ProductRepository private constructor(
     private val productDao: ProductDao,

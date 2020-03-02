@@ -164,8 +164,13 @@ val CURRENCY = arrayOf(
 )
 
 val CURRENCYSYMBOL = arrayOf(
-    "$", "￡", "€", "¥", "Ұ", "₩", "C$", "A$", "₹"
+    "$", "￡", "€", "¥", "¥", "₩", "$", "$", "₹"
 )
+
+//val CURRENCYSYMBOL = arrayOf(
+//    "$", "￡", "€", "¥", "Ұ", "₩", "C$", "A$", "₹"
+//)
+
 
 //val CURRENCY_ARRAY = BRAND.values.toTypedArray()
 

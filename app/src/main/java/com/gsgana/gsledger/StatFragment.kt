@@ -52,7 +52,6 @@ class StatFragment : Fragment() {
 //        }
 
 
-
         viewModel?.realData?.observe(viewLifecycleOwner, Observer { realData ->
             var reg1 = 0f
             var reg2 = 0f
@@ -142,9 +141,22 @@ class StatFragment : Fragment() {
                     totalPlper =
                         (goldPladd + silverPladd - (price1 + price2)) / (goldPladd + silverPladd)
 
-                    binding.goldPl.text = String.format("(%,.2f)", goldPladd1)
-                    binding.silverPl.text = String.format("(%,.2f)", silverPladd1)
-                    binding.totalPl.text = String.format("(%,.2f)", totalPladd1)
+                    binding.goldPl.text = if (goldPladd1 < 0) {
+                        String.format("(%,.2f)", goldPladd1)
+                    } else {
+                        String.format("(+%,.2f)", goldPladd1)
+                    }
+
+                    binding.silverPl.text = if (silverPladd1 < 0) {
+                        String.format("(%,.2f)", silverPladd1)
+                    } else {
+                        String.format("(+%,.2f)", silverPladd1)
+                    }
+                    binding.totalPl.text = if (totalPladd1 < 0) {
+                        String.format("(%,.2f)", totalPladd1)
+                    } else {
+                        String.format("(+%,.2f)", totalPladd1)
+                    }
 
                     binding.goldCurrency.text = CURRENCYSYMBOL[(realData["currency"]?.toInt() ?: 0)]
                     binding.silverCurrency.text =
@@ -391,23 +403,6 @@ class StatFragment : Fragment() {
         if (chartData?.get(2) != 0f) colors.add(chart_silverC)
         if (chartData?.get(3) != 0f) colors.add(chart_silverB)
 
-//        val yvalues = ArrayList<PieEntry>()
-//
-//        yvalues.add(PieEntry(chartData?.get(0) ?: 0f, "Gold Coin"))
-//        yvalues.add(PieEntry(chartData?.get(1) ?: 0f, "Gold Bar"))
-//        yvalues.add(PieEntry(chartData?.get(2) ?: 0f, "Silver Coin"))
-//        yvalues.add(PieEntry(chartData?.get(3) ?: 0f, "Silver Bar"))
-//
-//        val dataSet = PieDataSet(yvalues, "")
-//
-//        // add a lot of colors
-//        val colors = mutableListOf<Int>()
-//        colors.add(chart_goldC.toInt())
-//        colors.add(chart_goldB.toInt())
-//        colors.add(chart_silverC.toInt())
-//        colors.add(chart_silverB.toInt())
-
-
         dataSet.colors = colors
 
         val data = PieData(dataSet)
@@ -424,6 +419,7 @@ class StatFragment : Fragment() {
 
         if (chartData?.sum()!! > 0f) {
             pieChart.visibility = View.VISIBLE
+            binding.graphprogress.visibility = View.GONE
             pieChart.invalidate()
         } else {
             pieChart.visibility = View.GONE

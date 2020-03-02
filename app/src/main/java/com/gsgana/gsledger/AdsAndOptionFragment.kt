@@ -29,6 +29,7 @@ import com.gsgana.gsledger.viewmodels.WriteViewModel
 
 class AdsAndOptionFragment : Fragment() {
 
+    private val CURR_NAME = "1w3d4f7w9d2qG2eT36"
     private val PREF_NAME = "01504f779d6c77df04"
     private lateinit var binding: AdsAndOptionFragmentBinding
 
@@ -93,13 +94,13 @@ class AdsAndOptionFragment : Fragment() {
                     position: Int,
                     id: Long
                 ) {
-                    sf?.edit()?.putInt("currency", position)?.commit()
+                    sf?.edit()?.putInt(CURR_NAME, position)?.commit()
                     val getData = viewModel?.realData?.value?.toMutableMap()
-                    getData?.set("currency", position.toDouble())
+                    getData?.set(CURR_NAME, position.toDouble())
                     viewModel?.realData?.value = getData
                 }
             }
-        binding.currencyOption.setSelection( sf?.getInt("currency", 0) ?:0)
+        binding.currencyOption.setSelection( sf?.getInt(CURR_NAME, 0) ?:0)
     }
 
     interface Callback {

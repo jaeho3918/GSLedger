@@ -89,9 +89,9 @@ class HomeViewPagerFragment : Fragment() {
 
                 if (currencyOption != null) {
                     if (!viewModel?.realData?.value.isNullOrEmpty()) {
-                        data["currency"] = viewModel?.realData?.value!!.getValue("currency")
+                        data[CURR_NAME] = viewModel?.realData?.value!!.getValue(CURR_NAME)
                     } else {
-                        data["currency"] = currencyOption.toDouble()
+                        data[CURR_NAME] = currencyOption.toDouble()
                     }
                 }
                 viewModel?.realData?.value = data
@@ -101,10 +101,10 @@ class HomeViewPagerFragment : Fragment() {
 
         viewModel?.realData?.observe(viewLifecycleOwner) {
 
-            var currency = if (it["currency"] == 0.0) {
+            var currency = if (it[CURR_NAME] == 0.0) {
                 1.0
             } else {
-                it[CURRENCY[(it["currency"]?.toInt() ?: 0)]]
+                it[CURRENCY[(it[CURR_NAME]?.toInt() ?: 0)]]
 
             }
             binding.realGoldPrice.text =
@@ -114,8 +114,8 @@ class HomeViewPagerFragment : Fragment() {
                     "%,.2f", (currency?.times((it["AG"])!!.toDouble()))
                 )
 
-            binding.realGoldCurrency.text = CURRENCYSYMBOL[(it["currency"]?.toInt() ?: 0)]
-            binding.realSilverCurrency.text = CURRENCYSYMBOL[(it["currency"]?.toInt() ?: 0)]
+            binding.realGoldCurrency.text = CURRENCYSYMBOL[(it[CURR_NAME]?.toInt() ?: 0)]
+            binding.realSilverCurrency.text = CURRENCYSYMBOL[(it[CURR_NAME]?.toInt() ?: 0)]
 
         }
 

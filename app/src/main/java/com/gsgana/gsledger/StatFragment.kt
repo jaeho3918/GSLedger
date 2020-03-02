@@ -25,7 +25,7 @@ import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModel
 import java.util.*
 
 class StatFragment : Fragment() {
-
+    private val CURR_NAME = "1w3d4f7w9d2qG2eT36"
     private lateinit var binding: StatFragmentBinding
 
     private val key = null
@@ -84,10 +84,10 @@ class StatFragment : Fragment() {
             val metalPrice1 = realData["AU"] ?: 1.0
             val metalPrice2 = realData["AG"] ?: 1.0
 
-            var currency = if (realData["currency"] == 0.0) {
+            var currency = if (realData[CURR_NAME] == 0.0) {
                 1.0
             } else {
-                realData[CURRENCY[(realData["currency"]?.toInt() ?: 0)]]
+                realData[CURRENCY[(realData[CURR_NAME]?.toInt() ?: 0)]]
             }
 
             viewModel.products.value.also { products ->
@@ -146,7 +146,7 @@ class StatFragment : Fragment() {
                     } else {
                         String.format("(+%,.2f)", goldPladd1)
                     }
-
+                    
                     binding.silverPl.text = if (silverPladd1 < 0) {
                         String.format("(%,.2f)", silverPladd1)
                     } else {
@@ -158,11 +158,11 @@ class StatFragment : Fragment() {
                         String.format("(+%,.2f)", totalPladd1)
                     }
 
-                    binding.goldCurrency.text = CURRENCYSYMBOL[(realData["currency"]?.toInt() ?: 0)]
+                    binding.goldCurrency.text = CURRENCYSYMBOL[(realData[CURR_NAME]?.toInt() ?: 0)]
                     binding.silverCurrency.text =
-                        CURRENCYSYMBOL[(realData["currency"]?.toInt() ?: 0)]
+                        CURRENCYSYMBOL[(realData[CURR_NAME]?.toInt() ?: 0)]
                     binding.totalCurrency.text =
-                        CURRENCYSYMBOL[(realData["currency"]?.toInt() ?: 0)]
+                        CURRENCYSYMBOL[(realData[CURR_NAME]?.toInt() ?: 0)]
 
                     binding.goldlabel.text =
                         String.format("%,.0f", (reg1 * metalPrice1 * (currency ?: 1.0)))
@@ -219,10 +219,10 @@ class StatFragment : Fragment() {
             var gc = 0f
             var gb = 0f
 
-            var currency = if (realData["currency"] == 0.0) {
+            var currency = if (realData[CURR_NAME] == 0.0) {
                 1.0
             } else {
-                realData[CURRENCY[(realData["currency"]?.toInt() ?: 0)]]
+                realData[CURRENCY[(realData[CURR_NAME]?.toInt() ?: 0)]]
             }
 
             viewModel.products.value.also { products ->
@@ -284,11 +284,11 @@ class StatFragment : Fragment() {
                     binding.silverPl.text = String.format("(%,.2f)", silverPladd)
                     binding.totalPl.text = String.format("(%,.2f)", totalPladd)
 
-                    binding.goldCurrency.text = CURRENCYSYMBOL[(realData["currency"]?.toInt() ?: 0)]
+                    binding.goldCurrency.text = CURRENCYSYMBOL[(realData[CURR_NAME]?.toInt() ?: 0)]
                     binding.silverCurrency.text =
-                        CURRENCYSYMBOL[(realData["currency"]?.toInt() ?: 0)]
+                        CURRENCYSYMBOL[(realData[CURR_NAME]?.toInt() ?: 0)]
                     binding.totalCurrency.text =
-                        CURRENCYSYMBOL[(realData["currency"]?.toInt() ?: 0)]
+                        CURRENCYSYMBOL[(realData[CURR_NAME]?.toInt() ?: 0)]
 
                     binding.goldlabel.text =
                         String.format("%,.0f", (reg1 * metalPrice1 * (currency ?: 1.0)))
@@ -458,10 +458,10 @@ class StatFragment : Fragment() {
         var gc = 0f
         var gb = 0f
 
-        var currency = if (realData["currency"] == 0.0) {
+        var currency = if (realData[CURR_NAME] == 0.0) {
             1.0
         } else {
-            realData[CURRENCY[(realData["currency"]?.toInt() ?: 0)]]
+            realData[CURRENCY[(realData[CURR_NAME]?.toInt() ?: 0)]]
         }
 
         viewModel?.products?.value.also { products ->
@@ -523,11 +523,11 @@ class StatFragment : Fragment() {
                 binding.silverPl.text = String.format("(%,.2f)", silverPladd)
                 binding.totalPl.text = String.format("(%,.2f)", totalPladd)
 
-                binding.goldCurrency.text = CURRENCYSYMBOL[(realData["currency"]?.toInt() ?: 0)]
+                binding.goldCurrency.text = CURRENCYSYMBOL[(realData[CURR_NAME]?.toInt() ?: 0)]
                 binding.silverCurrency.text =
-                    CURRENCYSYMBOL[(realData["currency"]?.toInt() ?: 0)]
+                    CURRENCYSYMBOL[(realData[CURR_NAME]?.toInt() ?: 0)]
                 binding.totalCurrency.text =
-                    CURRENCYSYMBOL[(realData["currency"]?.toInt() ?: 0)]
+                    CURRENCYSYMBOL[(realData[CURR_NAME]?.toInt() ?: 0)]
 
                 binding.goldlabel.text =
                     String.format("%,.0f", (reg1 * metalPrice1 * (currency ?: 1.0)))

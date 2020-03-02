@@ -23,24 +23,24 @@ class HomeViewPagerViewModel internal constructor(
 
     val realData = MutableLiveData<Map<String,Double>>()
 
-    val test = MediatorLiveData<List<Float>>().apply {
-        var list = mutableListOf(1f, 1f, 1f)
-        addSource(realGold) { realGold ->
-            list[0] = realGold * (realCurrency.value ?: 1f)
-        }
-        addSource(realSilver) { realSilver ->
-            list[1] = realSilver * (realCurrency.value ?: 1f)
-        }
-        addSource(realCurrency) { realCurrency ->
-            list[0] = realGold.value ?: 1f * (realCurrency ?: 1f)
-            list[1] = realSilver.value ?: 1f * (realCurrency ?: 1f)
-        }
-        addSource(currencyOption) { _ ->
-            list[0] = realGold.value ?: 1f * (realCurrency.value ?: 1f)
-            list[1] = realSilver.value ?: 1f * (realCurrency.value ?: 1f)
-        }
-
-    }
+//    val test = MediatorLiveData<List<Float>>().apply {
+//        var list = mutableListOf(1f, 1f, 1f)
+//        addSource(realGold) { realGold ->
+//            list[0] = realGold * (realCurrency.value ?: 1f)
+//        }
+//        addSource(realSilver) { realSilver ->
+//            list[1] = realSilver * (realCurrency.value ?: 1f)
+//        }
+//        addSource(realCurrency) { realCurrency ->
+//            list[0] = realGold.value ?: 1f * (realCurrency ?: 1f)
+//            list[1] = realSilver.value ?: 1f * (realCurrency ?: 1f)
+//        }
+//        addSource(currencyOption) { _ ->
+//            list[0] = realGold.value ?: 1f * (realCurrency.value ?: 1f)
+//            list[1] = realSilver.value ?: 1f * (realCurrency.value ?: 1f)
+//        }
+//
+//    }
 
 //    val productfilter: LiveData<List<Product>> = Transformations.switchMap(products) {
 //        MutableLiveData(it)

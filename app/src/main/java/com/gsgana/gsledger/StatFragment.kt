@@ -33,10 +33,11 @@ class StatFragment : Fragment() {
     private val CURR_NAME = "1w3d4f7w9d2qG2eT36"
     private lateinit var binding: StatFragmentBinding
 
+    private lateinit var viewModel: HomeViewPagerViewModel
+
     private lateinit var mAuth: FirebaseAuth
     private val USERS_DB_PATH = "qnI4vK2zSUq6GdeT6b"
     private lateinit var viewModelFactory: HomeViewPagerViewModelFactory
-    private lateinit var viewModel: HomeViewPagerViewModel
     private lateinit var rgl: MutableList<Char>
 
 //    private val viewModel: HomeViewPagerViewModel by viewModels {
@@ -53,6 +54,14 @@ class StatFragment : Fragment() {
         rgl = mutableListOf()
         mAuth = FirebaseAuth.getInstance()
 
+        viewModel =
+            activity?.run {
+                ViewModelProviders.of(
+                    activity!!
+                )
+                    .get(HomeViewPagerViewModel::class.java)
+            }
+
         val db = FirebaseFirestore.getInstance()
         val docRef = db.collection(USERS_DB_PATH).document(mAuth.currentUser?.uid!!)
         docRef.get()
@@ -63,10 +72,6 @@ class StatFragment : Fragment() {
                 }
                 test.clear()
 
-                viewModelFactory =
-                    InjectorUtils.provideHomeViewPagerViewModelFactory(context!!, rgl.toCharArray())
-                viewModel = ViewModelProviders.of(activity!!, viewModelFactory)
-                    .get(HomeViewPagerViewModel::class.java)
 
                 viewModel?.realData?.observe(viewLifecycleOwner, Observer { realData ->
                     var reg1 = 0f

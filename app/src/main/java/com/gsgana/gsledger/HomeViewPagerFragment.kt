@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.observe
 import com.gsgana.gsledger.adapters.PagerAdapter
 import com.google.android.material.tabs.TabLayoutMediator
@@ -59,7 +60,6 @@ class HomeViewPagerFragment : Fragment() {
     ): View? {
 
 
-
         rgl = mutableListOf()
         mAuth = FirebaseAuth.getInstance()
 
@@ -68,6 +68,18 @@ class HomeViewPagerFragment : Fragment() {
         red = ContextCompat.getColor(context!!, R.color.mu1_data_down)
         green = ContextCompat.getColor(context!!, R.color.mu1_data_up)
         blue = ContextCompat.getColor(context!!, R.color.mu2_data_down)
+
+        viewModel = activity.run {
+            ViewModelProviders.of(
+                activity!!,
+                InjectorUtils.provideHomeViewPagerViewModelFactory(
+                    activity!!,
+                    rgl.toCharArray()
+                )
+            ).get(HomeViewPagerViewModel::class.java)
+        }
+
+
 
         val db = FirebaseFirestore.getInstance()
         val docRef = db.collection(USERS_DB_PATH).document(mAuth.currentUser?.uid!!)
@@ -79,8 +91,14 @@ class HomeViewPagerFragment : Fragment() {
                 }
                 test.clear()
 
-                viewModelFactory = InjectorUtils.provideHomeViewPagerViewModelFactory(context!!,rgl.toCharArray())
-                viewModel = viewModelFactory.getViewModel
+//                viewModel =
+//                    ViewModelProviders.of(
+//                        this,
+//                        InjectorUtils.provideHomeViewPagerViewModelFactory(
+//                            context!!,
+//                            rgl.toCharArray()
+//                        )
+//                    ).get(HomeViewPagerViewModel::class.java)
 
 //                val viewModel = activity.run {
 //                    ViewModelProviders.of(
@@ -92,7 +110,8 @@ class HomeViewPagerFragment : Fragment() {
 //                    ).get(HomeViewPagerViewModel::class.java)
 //                }
                 val currencyOption =
-                    activity?.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)?.getInt(CURR_NAME, 0)
+                    activity?.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+                        ?.getInt(CURR_NAME, 0)
                 val databaseRef = FirebaseDatabase.getInstance().getReference(REAL_DB_PATH)
                 databaseRef.addValueEventListener(object : ValueEventListener {
                     override fun onCancelled(p0: DatabaseError) {}
@@ -100,7 +119,8 @@ class HomeViewPagerFragment : Fragment() {
                         val data = p0?.value as HashMap<String, Double>
                         if (currencyOption != null) {
                             if (!viewModel.realData.value.isNullOrEmpty()) {
-                                data["currency"] = viewModel.realData.value?.getValue("currency") ?: 0.0
+                                data["currency"] =
+                                    viewModel.realData.value?.getValue("currency") ?: 0.0
                             } else {
                                 data["currency"] = currencyOption.toDouble()
                             }
@@ -108,7 +128,8 @@ class HomeViewPagerFragment : Fragment() {
                         data["DATE"] = 0.0
 
                         if (viewModel.realData != null) viewModel.realData.postValue(data.toMutableMap())
-                        binding.realUpdatedDate.text = (p0?.value as HashMap<String, String>)["DATE"]
+                        binding.realUpdatedDate.text =
+                            (p0?.value as HashMap<String, String>)["DATE"]
                     }
                 }
                 )

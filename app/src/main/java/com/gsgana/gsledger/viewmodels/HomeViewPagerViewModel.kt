@@ -11,6 +11,14 @@ class HomeViewPagerViewModel internal constructor(
 ) :
     ViewModel() {
 
+    companion object {
+        private var instance : HomeViewPagerViewModel? = null
+        fun getInstance(productRepository: ProductRepository) =
+            instance ?: synchronized(HomeViewPagerViewModel::class.java){
+                instance ?: HomeViewPagerViewModel(productRepository).also { instance = it }
+            }
+    }
+
     val realGold = MutableLiveData<Float>(1f)
     val realSilver = MutableLiveData<Float>(1f)
     var ratioMetal = MutableLiveData<List<Float>>(mutableListOf(0f, 0f, 0f, 0f))

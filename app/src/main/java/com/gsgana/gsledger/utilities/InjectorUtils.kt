@@ -16,7 +16,7 @@ object InjectorUtils {
     ): HomeViewPagerViewModelFactory {
 
         return if (key == null) {
-            val repository = getProductRepository(context, null)
+            val repository = getProductRepository(context, "null".toCharArray())
             HomeViewPagerViewModelFactory.getInstance(repository)
 
         } else {

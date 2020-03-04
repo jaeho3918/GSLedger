@@ -37,7 +37,9 @@ class IntroActivity : AppCompatActivity() {
     private val PREF_NAME = "01504f779d6c77df04"
     private val ENCRYPT_NAME = "a345f2f713ie8bd261"
     private val UID_NAME = "7e19f667a8a1c7075f"
-    private val DATABASE_PATH = "qnI4vK2zSUq6GdeT6b"
+    private val USERS_DB_PATH = "qnI4vK2zSUq6GdeT6b"
+    private val REAL_DB_PATH = "sYTVBn6F18VT6Ykw6L"
+    private val LAST_DB_PATH = "OGn6sgTK6umHojW6QV"
     private lateinit var sf: SharedPreferences
 
     private lateinit var mAuth: FirebaseAuth
@@ -64,7 +66,7 @@ class IntroActivity : AppCompatActivity() {
                 googleSignInOption(LOG_IN, binding)
             } else {
                 val doc = FirebaseFirestore.getInstance()
-                    .collection(DATABASE_PATH)
+                    .collection(USERS_DB_PATH)
                     .document(mAuth.currentUser?.uid!!)
                     .get().addOnSuccessListener { document ->
                         if (document.exists()) {
@@ -120,7 +122,7 @@ class IntroActivity : AppCompatActivity() {
                         sf.edit().putString(UID_NAME, encrypt(mAuth.currentUser?.uid!!))
                             .commit()
                         val docRef = FirebaseFirestore.getInstance()
-                            .collection(DATABASE_PATH)
+                            .collection(USERS_DB_PATH)
                             .document(mAuth.currentUser?.uid!!)
                         docRef.get().addOnSuccessListener { document ->
                             if (document.data?.get("Col3") == null) {
@@ -141,7 +143,7 @@ class IntroActivity : AppCompatActivity() {
 
                         mAuth = FirebaseAuth.getInstance()
                         val db = FirebaseFirestore.getInstance()
-                        val docRef = db.collection(DATABASE_PATH).document(mAuth.currentUser?.uid!!)
+                        val docRef = db.collection(USERS_DB_PATH).document(mAuth.currentUser?.uid!!)
                         docRef.get()
                             .addOnSuccessListener { document ->
                                 if (decrypt(sf.getString(UID_NAME, null)) ==

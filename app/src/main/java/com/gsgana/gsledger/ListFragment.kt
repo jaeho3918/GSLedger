@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.observe
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 
 import com.gsgana.gsledger.adapters.ProductAdapter
@@ -16,14 +17,22 @@ import com.gsgana.gsledger.data.Product
 import com.gsgana.gsledger.databinding.ListFragmentBinding
 import com.gsgana.gsledger.utilities.InjectorUtils
 import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModel
+import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModelFactory
 import com.gsgana.gsledger.viewmodels.WriteViewModel
 
 
 class ListFragment : Fragment() {
 
     private lateinit var product: Product
-
     private lateinit var binding: ListFragmentBinding
+
+    private lateinit var mAuth: FirebaseAuth
+    private val USERS_DB_PATH = "qnI4vK2zSUq6GdeT6b"
+    private lateinit var viewModelFactory: HomeViewPagerViewModelFactory
+    private lateinit var viewModel: HomeViewPagerViewModel
+    private lateinit var rgl: MutableList<Char>
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

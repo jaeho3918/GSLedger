@@ -14,9 +14,16 @@ object InjectorUtils {
         context: Context,
         key: CharArray?
     ): HomeViewPagerViewModelFactory {
-        val repository =
-            getProductRepository(context, key)
-        return HomeViewPagerViewModelFactory(repository)
+
+        return if (key == null) {
+            val repository = getProductRepository(context, null)
+            HomeViewPagerViewModelFactory.getInstance(repository)
+
+        } else {
+            val repository = getProductRepository(context, key)
+            HomeViewPagerViewModelFactory(repository)
+        }
+
     }
 
 
@@ -34,10 +41,10 @@ object InjectorUtils {
         key: CharArray?
     ): ProductRepository {
 
-        val reg =AppDatabase.getInstance(context.applicationContext, key)
+        val reg = AppDatabase.getInstance(context.applicationContext, key)
 
         return ProductRepository.getInstance(
-            reg.productDao(), reg.productImageDao(),reg.optionDao()
+            reg.productDao(), reg.productImageDao(), reg.optionDao()
         )
     }
 

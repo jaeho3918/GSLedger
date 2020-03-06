@@ -40,8 +40,12 @@ class IntroActivity : AppCompatActivity() {
     private val USERS_DB_PATH = "qnI4vK2zSUq6GdeT6b"
     private val REAL_DB_PATH = "sYTVBn6F18VT6Ykw6L"
     private val LAST_DB_PATH = "OGn6sgTK6umHojW6QV"
+    private val KEY = "Kd6c26TK65YSmkw6oU"
     private lateinit var sf: SharedPreferences
+    private lateinit var rgl: CharArray
+    private lateinit var rgl_b: MutableList<Char>
 
+    private lateinit var rgl_save: CharArray
     private lateinit var mAuth: FirebaseAuth
     private lateinit var googleSigninClient: GoogleSignInClient
     private lateinit var binding: ActivityIntroBinding
@@ -74,9 +78,19 @@ class IntroActivity : AppCompatActivity() {
                             if (decrypt(sf.getString(UID_NAME, null)) ==
                                 document.data?.get("Col3")
                             ) {
+                                rgl_b = arrayListOf()
+                                val test = document.data?.get("Rgl") as ArrayList<String>
+                                for (s in test) {
+                                    this.rgl_b.add(s.toCharArray()[0])
+                                }
+                                test.clear()
+                                rgl = rgl_b.toCharArray()
+                                rgl_b.clear()
                                 val intent =
                                     Intent(applicationContext, MainActivity::class.java)
                                 startActivity(intent)
+                                intent.putExtra(KEY, rgl)
+                                rgl = charArrayOf()
                                 finish()
 
                             } else {
@@ -135,7 +149,17 @@ class IntroActivity : AppCompatActivity() {
                                     )
                             }
                         }
-                        val intent =  Intent(applicationContext, MainActivity::class.java)
+                        rgl_b = arrayListOf()
+                        var test1 = generateRgl6()
+                        for (s in test1) {
+                            this.rgl_b.add(s.toCharArray()[0])
+                        }
+                        test1 = mutableListOf()
+                        rgl = rgl_b.toCharArray()
+                        rgl_b.clear()
+                        val intent = Intent(applicationContext, MainActivity::class.java)
+                        intent.putExtra(KEY, rgl)
+                        rgl = charArrayOf()
                         startActivity(intent)
                         finish()
 
@@ -149,10 +173,20 @@ class IntroActivity : AppCompatActivity() {
                                 if (decrypt(sf.getString(UID_NAME, null)) ==
                                     document.data?.get("Col3")
                                 ) {
-                                    val intent =
-                                        Intent(applicationContext, MainActivity::class.java)
+                                    rgl_b = arrayListOf()
+                                    var test1 = generateRgl6()
+                                    for (s in test1) {
+                                        this.rgl_b.add(s.toCharArray()[0])
+                                    }
+                                    test1 = mutableListOf()
+                                    rgl = rgl_b.toCharArray()
+                                    rgl_b.clear()
+                                    val intent = Intent(applicationContext, MainActivity::class.java)
+                                    intent.putExtra(KEY, rgl)
+                                    rgl = charArrayOf()
                                     startActivity(intent)
                                     finish()
+
                                 } else {
                                     AuthUI.getInstance().signOut(this)
                                     FirebaseAuth.getInstance().signOut()

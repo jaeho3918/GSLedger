@@ -11,54 +11,9 @@ class HomeViewPagerViewModel internal constructor(
 ) :
     ViewModel() {
 
-    companion object {
-        private var instance : HomeViewPagerViewModel? = null
-        fun getInstance(productRepository: ProductRepository) =
-            instance ?: synchronized(HomeViewPagerViewModel::class.java){
-                instance ?: HomeViewPagerViewModel(productRepository).also { instance = it }
-            }
-    }
-
-    val realGold = MutableLiveData<Float>(1f)
-    val realSilver = MutableLiveData<Float>(1f)
     var ratioMetal = MutableLiveData<List<Float>>(mutableListOf(0f, 0f, 0f, 0f))
     val products: LiveData<List<Product>> = productRepository.getProducts()
-    val realData = MutableLiveData<Map<String,Double>>()
-
-
-
-    val totalGold: LiveData<Float> = Transformations.switchMap(realGold) { goldPrice ->
-        var reg = 0f
-        products.value.also {
-            products.value?.forEach { product ->
-                reg += 1 + product.reg
-            }
-        }
-        MutableLiveData(reg * goldPrice)
-    }
-
-    val totalSilver = MediatorLiveData<Float>()
-        .apply {
-            addSource(realSilver) {
-                var reg = 0f
-
-                products.value.also {
-                    products.value?.forEach {
-                        reg += 1 + it.reg
-                    }
-                }
-                this.value = reg * it
-            }
-            addSource(products) {
-                var reg = 0f
-                products.value.also {
-                    products.value?.forEach {
-                        reg += 1 + it.reg
-                    }
-                }
-                this.value = reg * realSilver.value!!
-            }
-        }
+    val realData = MutableLiveData<Map<String, Double>>()
 
 
     fun addProduct(product: Product) {
@@ -78,4 +33,17 @@ class HomeViewPagerViewModel internal constructor(
             productRepository.deleteProduct()
         }
     }
+}
+
+private class RealData() : LiveData<Map<String, Double>>() {
+
+    companion object{
+        private lateinit var sInstant:RealData
+
+        fun get(): RealData{
+            sInstant = if (::sInstant.isInitialized) sInstant else RealData()
+            return sInstant
+        }
+    }
+
 }

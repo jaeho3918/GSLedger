@@ -7,7 +7,7 @@ import retrofit2.http.Body
 import retrofit2.http.Header
 
 
-const val URL = "https://us-central1-gsledger-29cad.cloudfunctions.net/testpost/"
+const val URL = "https://us-central1-gsledger-29cad.cloudfunctions.net/"
 
 interface ServerNetwork {
     @POST("/testpost")

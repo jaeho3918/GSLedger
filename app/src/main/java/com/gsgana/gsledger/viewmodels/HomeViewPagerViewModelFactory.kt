@@ -14,13 +14,10 @@ class HomeViewPagerViewModelFactory(
         return HomeViewPagerViewModel(repository) as T
     }
 
-    val getViewModel = HomeViewPagerViewModel(repository)
-
     companion object {
         private var instance: HomeViewPagerViewModelFactory? = null
-        fun getInstance(repository: ProductRepository) =
-            instance ?: synchronized(HomeViewPagerViewModelFactory(repository)::class.java) {
-                instance ?: HomeViewPagerViewModelFactory(repository).also { instance = it }
-            }
+        fun getInstance() = instance ?: synchronized(HomeViewPagerViewModelFactory::class.java) {
+            instance ?: HomeViewPagerViewModelFactory.also { instance }
+        }
     }
 }

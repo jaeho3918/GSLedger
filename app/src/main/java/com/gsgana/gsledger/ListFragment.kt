@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.observe
+import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 
@@ -69,6 +70,15 @@ class ListFragment : Fragment() {
                 viewModel.deleteProduct()
             }
         }
+
+
+        binding.writeBtn.setOnClickListener{
+            findNavController()
+                .navigate(R.id.action_homeViewPagerFragment_to_write1Fragment)
+        }
+
+
+
 
         viewModel.products.observe(viewLifecycleOwner) { result ->
             adapter.submitList(result)

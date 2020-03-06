@@ -4,11 +4,13 @@ import android.animation.ArgbEvaluator
 import android.animation.ObjectAnimator
 import android.content.Context
 import android.os.Bundle
+import android.os.Handler
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.observe
 import com.gsgana.gsledger.adapters.PagerAdapter
@@ -40,9 +42,14 @@ class HomeViewPagerFragment : Fragment() {
 
     private lateinit var mAuth: FirebaseAuth
     private val USERS_DB_PATH = "qnI4vK2zSUq6GdeT6b"
-    private lateinit var viewModelFactory: HomeViewPagerViewModelFactory
+
     private lateinit var viewModel: HomeViewPagerViewModel
-    private lateinit var rgl: MutableList<Char>
+    private lateinit var rgl: CharArray
+    private lateinit var rgl_b: MutableList<Char>
+
+    private lateinit var database: FirebaseDatabase
+
+    private var currencyOption: Int? = null
 
     private var white: Int? = null
     private var gray: Int? = null
@@ -58,10 +65,195 @@ class HomeViewPagerFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        viewModel = ViewModelProviders.of(
+            this,
+            InjectorUtils.provideHomeViewPagerViewModelFactory(context!!, null)
+        )
+            .get(HomeViewPagerViewModel::class.java)
+        val currencyOption =
+            activity?.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)?.getInt(CURR_NAME, 0)
+        val databaseRef = FirebaseDatabase.getInstance().getReference(REAL_DB_PATH)
+        databaseRef.addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {}
+            override fun onDataChange(p0: DataSnapshot) {
+                val data = p0?.value as HashMap<String, Double>
+                if (currencyOption != null) {
+                    if (!viewModel.realData.value.isNullOrEmpty()) {
+                        data["currency"] = viewModel.realData.value?.getValue("currency") ?: 0.0
+                    } else {
+                        data["currency"] = currencyOption.toDouble()
+                    }
+                }
+                data["DATE"] = 0.0
+                binding.realGoldCurrency.text = CURRENCYSYMBOL[(data["currency"] ?: 0.0).toInt()]
+                binding.realSilverCurrency.text = CURRENCYSYMBOL[(data["currency"] ?: 0.0).toInt()]
+                binding.realGoldPrice.text = data["AU"].toString()
+                binding.realSilverPrice.text = data["AG"].toString()
+
+                if (viewModel.realData != null) viewModel.realData.postValue(data.toMutableMap())
+                binding.realUpdatedDate.text = (p0?.value as HashMap<String, String>)["DATE"]
 
 
-        rgl = mutableListOf()
-        mAuth = FirebaseAuth.getInstance()
+                /////////////////////////////////////////////////////////////////////////////////////////////
+                val divAuValue =
+                    ((data["AU"] ?: 0.0) - (data["YESAU"] ?: 0.0)) / (data["AU"] ?: 0.0) * 100
+                val divAgValue =
+                    ((data["AG"] ?: 0.0) - (data["YESAG"] ?: 0.0)) / (data["AG"] ?: 0.0) * 100
+                when {
+                    divAuValue > 0 -> {
+                        binding.realGoldPL.setText(
+                            "(" + "+" + String.format(
+                                " %.2f",
+                                divAuValue
+                            ) + "%)"
+                        )
+                    }
+                    divAuValue < 0 -> {
+                        binding.realGoldPL.setText(
+                            "(" + "-" + String.format(
+                                " %.2f",
+                                -1 * divAuValue
+                            ) + "%)"
+                        )
+                    }
+                    else -> {
+                        binding.realGoldPL.setText("( 0.00%)");
+                    }
+                }
+                when {
+                    divAgValue > 0 -> {
+                        binding.realSilverPL.setText(
+                            "(" + "+" + String.format(
+                                " %.2f",
+                                divAgValue
+                            ) + "%)"
+                        )
+                    }
+                    divAgValue < 0 -> {
+                        binding.realSilverPL.setText(
+                            "(" + "-" + String.format(
+                                " %.2f",
+                                -1 * divAgValue
+                            ) + "%)"
+                        )
+                    }
+                    else -> {
+                        binding.realSilverPL.setText("( 0.00%)")
+                    }
+                }
+                if (preAu ?: 999999 > (data["AU"]?.toInt()!!)) {
+                    ObjectAnimator.ofObject(
+                        binding.realGoldPrice,
+                        "backgroundColor",
+                        ArgbEvaluator(),
+                        white,
+                        red
+                    )
+                        .setDuration(duration)
+                        .start();
+                    ObjectAnimator.ofObject(
+                        binding.realGoldPrice,
+                        "backgroundColor",
+                        ArgbEvaluator(),
+                        red,
+                        white
+                    )
+                        .setDuration(duration)
+                        .start();
+                } else if (preAu == (data["AU"]?.toInt()!!)) {
+                    preAu = (data["AU"]?.toInt()!!)
+                } else {
+                    ObjectAnimator.ofObject(
+                        binding.realGoldPrice,
+                        "backgroundColor",
+                        ArgbEvaluator(),
+                        white,
+                        green
+                    )
+                        .setDuration(duration)
+                        .start();
+                    ObjectAnimator.ofObject(
+                        binding.realGoldPrice,
+                        "backgroundColor",
+                        ArgbEvaluator(),
+                        green,
+                        white
+                    )
+                        .setDuration(duration)
+                        .start();
+                }
+                if (preAg ?: 999999 > (data["AG"]?.toInt()!!)) {
+                    ObjectAnimator.ofObject(
+                        binding.realSilverPrice,
+                        "backgroundColor",
+                        ArgbEvaluator(),
+                        white,
+                        red
+                    )
+                        .setDuration(duration)
+                        .start();
+                    ObjectAnimator.ofObject(
+                        binding.realSilverPrice,
+                        "backgroundColor",
+                        ArgbEvaluator(),
+                        red,
+                        white
+                    )
+                        .setDuration(duration)
+                        .start();
+                } else if (preAg == data["AG"]?.toInt()!!) {
+                    preAg = (data["AG"]?.toInt()!!);
+                } else {
+                    ObjectAnimator.ofObject(
+                        binding.realSilverPrice,
+                        "backgroundColor",
+                        ArgbEvaluator(),
+                        white,
+                        green
+                    )
+                        .setDuration(duration)
+                        .start();
+                    ObjectAnimator.ofObject(
+                        binding.realSilverPrice,
+                        "backgroundColor",
+                        ArgbEvaluator(),
+                        green,
+                        white
+                    )
+                        .setDuration(duration)
+                        .start();
+                }
+
+                /////////////////////////////////////////////////////////////////////////////////////////////
+
+
+            }
+        }
+        )
+
+
+//        currencyOption = activity?.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)?.getInt(CURR_NAME, 0)
+
+        database = FirebaseDatabase.getInstance()
+        database.getReference(REAL_DB_PATH).addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {}
+            override fun onDataChange(p0: DataSnapshot) {
+                val data = p0?.value as HashMap<String, Double>
+                if (currencyOption != null) {
+                    if (!viewModel.realData.value.isNullOrEmpty()) {
+                        data["currency"] = viewModel.realData.value?.getValue("currency") ?: 0.0
+                    } else {
+                        data["currency"] = ((currencyOption) ?: 0).toDouble()
+                    }
+                }
+                data["DATE"] = 0.0
+
+                if (viewModel.realData != null) viewModel.realData.postValue(data.toMutableMap())
+                binding.realUpdatedDate.text = (p0?.value as HashMap<String, String>)["DATE"]
+            }
+        }
+        )
+
 
         white = ContextCompat.getColor(context!!, R.color.white)
         gray = ContextCompat.getColor(context!!, R.color.colorAccent)
@@ -69,223 +261,6 @@ class HomeViewPagerFragment : Fragment() {
         green = ContextCompat.getColor(context!!, R.color.mu1_data_up)
         blue = ContextCompat.getColor(context!!, R.color.mu2_data_down)
 
-        viewModel = activity.run {
-            ViewModelProviders.of(
-                activity!!,
-                InjectorUtils.provideHomeViewPagerViewModelFactory(
-                    activity!!,
-                    rgl.toCharArray()
-                )
-            ).get(HomeViewPagerViewModel::class.java)
-        }
-
-
-
-        val db = FirebaseFirestore.getInstance()
-        val docRef = db.collection(USERS_DB_PATH).document(mAuth.currentUser?.uid!!)
-        docRef.get()
-            .addOnSuccessListener { document ->
-                val test = document.data?.get("Rgl") as ArrayList<String>
-                for (s in test) {
-                    this.rgl.add(s.toCharArray()[0])
-                }
-                test.clear()
-
-//                viewModel =
-//                    ViewModelProviders.of(
-//                        this,
-//                        InjectorUtils.provideHomeViewPagerViewModelFactory(
-//                            context!!,
-//                            rgl.toCharArray()
-//                        )
-//                    ).get(HomeViewPagerViewModel::class.java)
-
-//                val viewModel = activity.run {
-//                    ViewModelProviders.of(
-//                        activity!!,
-//                        InjectorUtils.provideHomeViewPagerViewModelFactory(
-//                            activity!!,
-//                            rgl.toCharArray()
-//                        )
-//                    ).get(HomeViewPagerViewModel::class.java)
-//                }
-                val currencyOption =
-                    activity?.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-                        ?.getInt(CURR_NAME, 0)
-                val databaseRef = FirebaseDatabase.getInstance().getReference(REAL_DB_PATH)
-                databaseRef.addValueEventListener(object : ValueEventListener {
-                    override fun onCancelled(p0: DatabaseError) {}
-                    override fun onDataChange(p0: DataSnapshot) {
-                        val data = p0?.value as HashMap<String, Double>
-                        if (currencyOption != null) {
-                            if (!viewModel.realData.value.isNullOrEmpty()) {
-                                data["currency"] =
-                                    viewModel.realData.value?.getValue("currency") ?: 0.0
-                            } else {
-                                data["currency"] = currencyOption.toDouble()
-                            }
-                        }
-                        data["DATE"] = 0.0
-
-                        if (viewModel.realData != null) viewModel.realData.postValue(data.toMutableMap())
-                        binding.realUpdatedDate.text =
-                            (p0?.value as HashMap<String, String>)["DATE"]
-                    }
-                }
-                )
-
-                viewModel.realData.observe(viewLifecycleOwner) {
-
-                    var currency = if (it[CURR_NAME] == 0.0) {
-                        1.0
-                    } else {
-                        it[CURRENCY[(it[CURR_NAME]?.toInt() ?: 0)]]
-
-                    }
-                    binding.realGoldPrice.text =
-                        String.format("%,.2f", (currency?.times((it["AU"])!!.toDouble())))
-                    binding.realSilverPrice.text =
-                        String.format(
-                            "%,.2f", (currency?.times((it["AG"])!!.toDouble()))
-                        )
-
-                    binding.realGoldCurrency.text = CURRENCYSYMBOL[(it[CURR_NAME]?.toInt() ?: 0)]
-                    binding.realSilverCurrency.text = CURRENCYSYMBOL[(it[CURR_NAME]?.toInt() ?: 0)]
-                    /////////////////////////////////////////////////////////////////////////////////////////////
-//                    val divAuValue = ((it["AU"] ?: 0.0) - (it["YESAU"] ?: 0.0)) / (it["AU"] ?: 0.0)
-//                    val divAgValue = ((it["AG"] ?: 0.0) - (it["YESAG"] ?: 0.0)) / (it["AG"] ?: 0.0)
-//                    when {
-//                        divAuValue > 0 -> {
-//                            binding.realGoldPrice.setText(
-//                                "(" + "+" + String.format(
-//                                    " %.2f",
-//                                    divAuValue
-//                                ) + "%)"
-//                            )
-//                        }
-//                        divAuValue < 0 -> {
-//                            binding.realGoldPrice.setText(
-//                                "(" + "-" + String.format(
-//                                    " %.2f",
-//                                    -1 * divAuValue
-//                                ) + "%)"
-//                            )
-//                        }
-//                        else -> {
-//                            binding.realGoldPrice.setText("( 0.00%)");
-//                        }
-//                    }
-//                    when {
-//                        divAgValue > 0 -> {
-//                            binding.realSilverPrice.setText(
-//                                "(" + "+" + String.format(
-//                                    " %.2f",
-//                                    divAgValue
-//                                ) + "%)"
-//                            )
-//                        }
-//                        divAgValue < 0 -> {
-//                            binding.realSilverPrice.setText(
-//                                "(" + "-" + String.format(
-//                                    " %.2f",
-//                                    -1 * divAgValue
-//                                ) + "%)"
-//                            )
-//                        }
-//                        else -> {
-//                            binding.realSilverPrice.setText("( 0.00%)")
-//                        }
-//                    }
-//                    if (preAu!! > (it["AU"]?.toInt()!!)) {
-//                        ObjectAnimator.ofObject(
-//                            binding.realGoldPrice,
-//                            "backgroundColor",
-//                            ArgbEvaluator(),
-//                            white,
-//                            red
-//                        )
-//                            .setDuration(duration)
-//                            .start();
-//                        ObjectAnimator.ofObject(
-//                            binding.realGoldPrice,
-//                            "backgroundColor",
-//                            ArgbEvaluator(),
-//                            red,
-//                            white
-//                        )
-//                            .setDuration(duration)
-//                            .start();
-//                    } else if (preAu == null) {
-//                        preAu = (it["AU"]?.toInt()!!)
-//                    } else {
-//                        ObjectAnimator.ofObject(
-//                            binding.realGoldPrice,
-//                            "backgroundColor",
-//                            ArgbEvaluator(),
-//                            white,
-//                            green
-//                        )
-//                            .setDuration(duration)
-//                            .start();
-//                        ObjectAnimator.ofObject(
-//                            binding.realGoldPrice,
-//                            "backgroundColor",
-//                            ArgbEvaluator(),
-//                            green,
-//                            white
-//                        )
-//                            .setDuration(duration)
-//                            .start();
-//                    }
-//                    if (preAg!! > (it["AG"]?.toInt()!!)) {
-//                        ObjectAnimator.ofObject(
-//                            binding.realSilverPrice,
-//                            "backgroundColor",
-//                            ArgbEvaluator(),
-//                            white,
-//                            red
-//                        )
-//                            .setDuration(duration)
-//                            .start();
-//                        ObjectAnimator.ofObject(
-//                            binding.realSilverPrice,
-//                            "backgroundColor",
-//                            ArgbEvaluator(),
-//                            red,
-//                            white
-//                        )
-//                            .setDuration(duration)
-//                            .start();
-//                    } else if (preAg == null) {
-//                        preAg = (it["AG"]?.toInt()!!);
-//                    } else {
-//                        ObjectAnimator.ofObject(
-//                            binding.realSilverPrice,
-//                            "backgroundColor",
-//                            ArgbEvaluator(),
-//                            white,
-//                            green
-//                        )
-//                            .setDuration(duration)
-//                            .start();
-//                        ObjectAnimator.ofObject(
-//                            binding.realSilverPrice,
-//                            "backgroundColor",
-//                            ArgbEvaluator(),
-//                            green,
-//                            white
-//                        )
-//                            .setDuration(duration)
-//                            .start();
-//                    }
-
-                    /////////////////////////////////////////////////////////////////////////////////////////////
-                }
-
-
-            }
-
-        rgl.clear()
 
         binding = HomeViewPagerFragmentBinding.inflate(inflater, container, false)
         val tabLayout = binding.tabLayout
@@ -297,7 +272,18 @@ class HomeViewPagerFragment : Fragment() {
             tab.text = getTabTitle(position)
         }.attach()
 
+        viewModel.realData.observe(viewLifecycleOwner) {
 
+            var currency = if (it[CURR_NAME] == 0.0) {
+                1.0
+            } else {
+                it[CURRENCY[(it[CURR_NAME]?.toInt() ?: 0)]]
+
+            }
+
+            binding.realGoldCurrency.text = CURRENCYSYMBOL[(it[CURR_NAME]?.toInt() ?: 0)]
+            binding.realSilverCurrency.text = CURRENCYSYMBOL[(it[CURR_NAME]?.toInt() ?: 0)]
+        }
 
         return binding.root
     }

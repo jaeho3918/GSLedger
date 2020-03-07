@@ -133,9 +133,7 @@
                                 android:text="$"
                                 android:textSize="@dimen/text_large"
                                 android:visibility="visible"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintLeft_toLeftOf="parent"
-                                app:layout_constraintRight_toRightOf="parent" />
+                                 />
 
                             <TextView
                                 android:id="@+id/pllabel"
@@ -144,9 +142,7 @@
                                 android:text=""
                                 android:textSize="@dimen/text_large"
                                 android:visibility="visible"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintLeft_toLeftOf="parent"
-                                app:layout_constraintRight_toRightOf="parent" />
+                                 />
 
                             <TextView
                                 android:id="@+id/plPl"
@@ -155,10 +151,7 @@
                                 android:layout_marginLeft="24dp"
                                 android:text=""
                                 android:textSize="18dp"
-                                android:visibility="visible"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintLeft_toLeftOf="parent"
-                                app:layout_constraintRight_toRightOf="parent" />
+                                android:visibility="visible"/>
                         </LinearLayout>
 
                         <ProgressBar
@@ -205,10 +198,7 @@
                         android:layout_height="wrap_content"
                         android:text="Gold"
                         android:textColor="@color/font_gold"
-                        android:textSize="@dimen/text_large"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent" />
+                        android:textSize="@dimen/text_large" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -228,10 +218,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="Coin"
                                 android:textColor="@color/font_gold"
-                                android:textSize="@dimen/text_large"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintLeft_toLeftOf="parent"
-                                app:layout_constraintRight_toRightOf="parent" />
+                                android:textSize="@dimen/text_large"/>
 
                             <TextView
                                 android:id="@+id/goldCoinCurrency"
@@ -241,10 +228,7 @@
                                 android:text="$"
                                 android:textColor="@color/font_gold"
                                 android:textSize="@dimen/text_large"
-                                android:visibility="visible"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintLeft_toLeftOf="parent"
-                                app:layout_constraintRight_toRightOf="parent" />
+                                android:visibility="visible" />
 
                             <TextView
                                 android:id="@+id/goldCoinlabel"
@@ -253,10 +237,7 @@
                                 android:text=""
                                 android:textColor="@color/font_gold"
                                 android:textSize="@dimen/text_large"
-                                android:visibility="visible"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintLeft_toLeftOf="parent"
-                                app:layout_constraintRight_toRightOf="parent" />
+                                android:visibility="visible" />
 
                             <TextView
                                 android:id="@+id/goldCoinPl"
@@ -266,10 +247,7 @@
                                 android:text=""
                                 android:textColor="@color/font_gold"
                                 android:textSize="18dp"
-                                android:visibility="visible"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintLeft_toLeftOf="parent"
-                                app:layout_constraintRight_toRightOf="parent" />
+                                android:visibility="visible" />
 
                         </LinearLayout>
                         <LinearLayout
@@ -285,10 +263,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="Bar"
                                 android:textColor="@color/font_gold"
-                                android:textSize="@dimen/text_large"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintLeft_toLeftOf="parent"
-                                app:layout_constraintRight_toRightOf="parent" />
+                                android:textSize="@dimen/text_large" />
 
                             <TextView
                                 android:id="@+id/goldBarCurrency"
@@ -298,10 +273,7 @@
                                 android:text="$"
                                 android:textColor="@color/font_gold"
                                 android:textSize="@dimen/text_large"
-                                android:visibility="visible"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintLeft_toLeftOf="parent"
-                                app:layout_constraintRight_toRightOf="parent" />
+                                android:visibility="visible" />
 
                             <TextView
                                 android:id="@+id/goldBarlabel"
@@ -310,10 +282,7 @@
                                 android:text=""
                                 android:textColor="@color/font_gold"
                                 android:textSize="@dimen/text_large"
-                                android:visibility="visible"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintLeft_toLeftOf="parent"
-                                app:layout_constraintRight_toRightOf="parent" />
+                                android:visibility="visible"/>
 
                             <TextView
                                 android:id="@+id/goldBarPl"
@@ -323,10 +292,7 @@
                                 android:text=""
                                 android:textColor="@color/font_gold"
                                 android:textSize="18dp"
-                                android:visibility="visible"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintLeft_toLeftOf="parent"
-                                app:layout_constraintRight_toRightOf="parent" />
+                                android:visibility="visible" />
 
                         </LinearLayout>
                         <ProgressBar
@@ -348,10 +314,7 @@
                         android:layout_width="50dp"
                         android:layout_height="wrap_content"
                         android:text="Silver"
-                        android:textSize="@dimen/text_large"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent" />
+                        android:textSize="@dimen/text_large" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -372,9 +335,7 @@
                                 android:text="Coin"
                                 android:textColor="@color/font_silver"
                                 android:textSize="@dimen/text_large"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintLeft_toLeftOf="parent"
-                                app:layout_constraintRight_toRightOf="parent" />
+                                 />
 
                             <TextView
                                 android:id="@+id/silverCoinCurrency"
@@ -385,9 +346,7 @@
                                 android:textColor="@color/font_silver"
                                 android:textSize="@dimen/text_large"
                                 android:visibility="visible"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintLeft_toLeftOf="parent"
-                                app:layout_constraintRight_toRightOf="parent" />
+                                 />
 
                             <TextView
                                 android:id="@+id/silverCoinlabel"
@@ -397,9 +356,7 @@
                                 android:textColor="@color/font_silver"
                                 android:textSize="@dimen/text_large"
                                 android:visibility="visible"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintLeft_toLeftOf="parent"
-                                app:layout_constraintRight_toRightOf="parent" />
+                                 />
 
                             <TextView
                                 android:id="@+id/silverCoinPl"
@@ -410,9 +367,7 @@
                                 android:textColor="@color/font_silver"
                                 android:textSize="18dp"
                                 android:visibility="visible"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintLeft_toLeftOf="parent"
-                                app:layout_constraintRight_toRightOf="parent" />
+                                 />
 
                         </LinearLayout>
                         <LinearLayout
@@ -429,9 +384,7 @@
                                 android:text="Bar"
                                 android:textColor="@color/font_silver"
                                 android:textSize="@dimen/text_large"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintLeft_toLeftOf="parent"
-                                app:layout_constraintRight_toRightOf="parent" />
+                                 />
 
                             <TextView
                                 android:id="@+id/silverBarCurrency"
@@ -442,9 +395,7 @@
                                 android:textColor="@color/font_silver"
                                 android:textSize="@dimen/text_large"
                                 android:visibility="visible"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintLeft_toLeftOf="parent"
-                                app:layout_constraintRight_toRightOf="parent" />
+                                 />
 
                             <TextView
                                 android:id="@+id/silverBarlabel"
@@ -454,9 +405,7 @@
                                 android:textColor="@color/font_silver"
                                 android:textSize="@dimen/text_large"
                                 android:visibility="visible"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintLeft_toLeftOf="parent"
-                                app:layout_constraintRight_toRightOf="parent" />
+                                 />
 
                             <TextView
                                 android:id="@+id/silverBarPl"
@@ -467,9 +416,7 @@
                                 android:textColor="@color/font_silver"
                                 android:textSize="18dp"
                                 android:visibility="visible"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintLeft_toLeftOf="parent"
-                                app:layout_constraintRight_toRightOf="parent" />
+                                 />
 
 
                         </LinearLayout>

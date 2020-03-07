@@ -168,7 +168,7 @@ class StatFragment : Fragment() {
                     } else {
                         String.format("(+%,.2f)", silverPladd1)
                     }
-                    binding.totalPl.text = if (totalPladd1 < 0) {
+                    binding.totalPlper.text = if (totalPladd1 < 0) {
                         String.format("(%,.2f)", totalPladd1)
                     } else {
                         String.format("(+%,.2f)", totalPladd1)
@@ -196,7 +196,7 @@ class StatFragment : Fragment() {
                     binding.totallabel.text = ""
                     binding.goldCoinPl.text = ""
                     binding.silverCoinPl.text = ""
-                    binding.totalPl.text = ""
+                    binding.totalPlper.text = ""
                     binding.goldCoinCurrency.text = ""
                     binding.silverCoinCurrency.text = ""
                     binding.totalCurrency.text = ""
@@ -298,7 +298,7 @@ class StatFragment : Fragment() {
                     totalPladd = goldPladd + silverPladd
                     binding.goldCoinPl.text = String.format("(%,.2f)", goldPladd)
                     binding.silverCoinPl.text = String.format("(%,.2f)", silverPladd)
-                    binding.totalPl.text = String.format("(%,.2f)", totalPladd)
+                    binding.totalPlper.text = String.format("(%,.2f)", totalPladd)
 
                     binding.goldCoinCurrency.text = CURRENCYSYMBOL[(realData[CURR_NAME]?.toInt() ?: 0)]
                     binding.silverCoinCurrency.text =
@@ -322,7 +322,7 @@ class StatFragment : Fragment() {
                     binding.totallabel.text = ""
                     binding.goldCoinPl.text = ""
                     binding.silverCoinPl.text = ""
-                    binding.totalPl.text = ""
+                    binding.totalPlper.text = ""
                     binding.goldCoinCurrency.text = ""
                     binding.silverCoinCurrency.text = ""
                     binding.totalCurrency.text = ""
@@ -540,7 +540,7 @@ class StatFragment : Fragment() {
                 totalPladd = goldPladd + silverPladd
                 binding.goldCoinPl.text = String.format("(%,.2f)", goldPladd)
                 binding.silverCoinPl.text = String.format("(%,.2f)", silverPladd)
-                binding.totalPl.text = String.format("(%,.2f)", totalPladd)
+                binding.totalPlper.text = String.format("(%,.2f)", totalPladd)
 
                 binding.goldCoinCurrency.text = CURRENCYSYMBOL[(realData[CURR_NAME]?.toInt() ?: 0)]
                 binding.silverCoinCurrency.text =
@@ -569,7 +569,7 @@ class StatFragment : Fragment() {
 
             binding.goldCoinPl.visibility = View.VISIBLE
             binding.silverCoinPl.visibility = View.VISIBLE
-            binding.totalPl.visibility = View.VISIBLE
+            binding.totalPlper.visibility = View.VISIBLE
 
             binding.goldprogress.visibility = View.GONE
             binding.silverprogress.visibility = View.GONE

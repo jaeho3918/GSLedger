@@ -11,6 +11,6 @@ class HomeViewPagerViewModelFactory(
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return HomeViewPagerViewModel(repository) as T
+        return HomeViewPagerViewModel.get(repository) as T
     }
 }

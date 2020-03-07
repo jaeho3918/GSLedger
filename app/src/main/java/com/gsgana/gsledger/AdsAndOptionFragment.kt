@@ -13,6 +13,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.activity.viewModels
+import androidx.fragment.app.viewModels
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
 import com.gsgana.gsledger.data.Option
@@ -32,39 +34,17 @@ class AdsAndOptionFragment : Fragment() {
     private val PREF_NAME = "01504f779d6c77df04"
     private lateinit var binding: AdsAndOptionFragmentBinding
 
+    private val viewModel: HomeViewPagerViewModel by viewModels {
+        InjectorUtils.provideHomeViewPagerViewModelFactory(requireActivity(), null)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
-//        val viewModel =
-//            activity?.run {
-//                ViewModelProviders.of(
-//                    activity!!
-//                )
-//                    .get(HomeViewPagerViewModel::class.java)
-//            }
-
-        val viewModel =
-            activity?.run {
-                ViewModelProviders.of(
-                    activity!!,
-                    InjectorUtils.provideHomeViewPagerViewModelFactory(activity!!, null)
-                )
-                    .get(HomeViewPagerViewModel::class.java)
-            }
 
         binding = AdsAndOptionFragmentBinding.inflate(inflater, container, false)
-
-//        binding.callback = object : Callback {
-//            override fun click() {
-//                AuthUI.getInstance()
-//                    .signOut(context!!)
-//                FirebaseAuth.getInstance().signOut()
-//                val intent = Intent(context!!, IntroActivity::class.java)
-//                startActivity(intent)
-//            }
-//        }
 
         setSpinner(binding, viewModel)
 
@@ -76,6 +56,7 @@ class AdsAndOptionFragment : Fragment() {
         viewModel: HomeViewPagerViewModel?
     ) {
         val sf = activity?.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+        binding.currencyOption.setSelection( sf?.getInt(CURR_NAME, 0) ?:0)
 
         var adapter =
             ArrayAdapter(
@@ -94,11 +75,12 @@ class AdsAndOptionFragment : Fragment() {
                 ) {
                     sf?.edit()?.putInt(CURR_NAME, position)?.commit()
                     val getData = viewModel?.realData?.value?.toMutableMap()
-                    getData?.set(CURR_NAME, position.toDouble())
-                    viewModel?.realData?.value = getData
+                    getData?.set("currency", position.toDouble())
+
+                    viewModel?.realData?.value = getData?.toMap()
+                    getData?.clear()
                 }
             }
-        binding.currencyOption.setSelection( sf?.getInt(CURR_NAME, 0) ?:0)
     }
 
     interface Callback {

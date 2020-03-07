@@ -47,14 +47,6 @@ class ListFragment : Fragment() {
     ): View? {
         binding = ListFragmentBinding.inflate(inflater, container, false)
 
-//        viewModel = ViewModelProviders.of( activity!!,
-//            InjectorUtils.provideHomeViewPagerViewModelFactory(activity!!, null)
-//        ).get(HomeViewPagerViewModel::class.java)
-//
-//        viewModel = ViewModelProviders.of( activity!!,
-//            InjectorUtils.provideHomeViewPagerViewModelFactory(activity!!, null)
-//        ).get(HomeViewPagerViewModel::class.java)
-
         val adapter = ProductAdapter(requireContext())
         binding.productList.adapter = adapter
         binding.callback = object : Callback {
@@ -81,19 +73,15 @@ class ListFragment : Fragment() {
             }
         }
 
-
         binding.writeBtn.setOnClickListener{
             findNavController()
                 .navigate(R.id.action_homeViewPagerFragment_to_write1Fragment)
         }
 
 
-
-
         viewModel.products.observe(viewLifecycleOwner) { result ->
             adapter.submitList(result)
         }
-
         return binding.root
     }
 
@@ -101,9 +89,7 @@ class ListFragment : Fragment() {
         fun add()
         fun del()
     }
-
 }
-
 
 fun creatRandomStringInt(): List<Any> {
     val charPool: List<Char> = ('a'..'z') + ('A'..'Z') + ('0'..'9')

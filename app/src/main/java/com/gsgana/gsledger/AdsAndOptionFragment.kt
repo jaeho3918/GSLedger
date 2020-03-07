@@ -28,7 +28,6 @@ import com.gsgana.gsledger.viewmodels.WriteViewModel
 
 
 class AdsAndOptionFragment : Fragment() {
-
     private val CURR_NAME = "1w3d4f7w9d2qG2eT36"
     private val PREF_NAME = "01504f779d6c77df04"
     private lateinit var binding: AdsAndOptionFragmentBinding

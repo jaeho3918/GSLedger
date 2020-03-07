@@ -2,11 +2,9 @@ package com.gsgana.gsledger.adapters
 
 import android.content.Context
 import android.content.res.Resources
-import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.DrawableRes
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
@@ -15,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.gsgana.gsledger.HomeViewPagerFragmentDirections
 import com.gsgana.gsledger.R
 import com.gsgana.gsledger.data.Product
-import com.gsgana.gsledger.data.Products
 import com.gsgana.gsledger.databinding.ListItemProductBinding
 import com.gsgana.gsledger.viewmodels.ProductsViewModel
 

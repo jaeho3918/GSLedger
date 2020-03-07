@@ -55,7 +55,6 @@ class AdsAndOptionFragment : Fragment() {
                     .get(HomeViewPagerViewModel::class.java)
             }
 
-
         binding = AdsAndOptionFragmentBinding.inflate(inflater, container, false)
 
 //        binding.callback = object : Callback {

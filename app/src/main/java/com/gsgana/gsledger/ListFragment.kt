@@ -1,6 +1,7 @@
 package com.gsgana.gsledger
 
 import android.os.Bundle
+import android.provider.Contacts.SettingsColumns.KEY
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -26,13 +27,18 @@ class ListFragment : Fragment() {
 
     private lateinit var product: Product
     private lateinit var binding: ListFragmentBinding
+    private val KEY = "Kd6c26TK65YSmkw6oU"
 
     private lateinit var mAuth: FirebaseAuth
     private val USERS_DB_PATH = "qnI4vK2zSUq6GdeT6b"
     private lateinit var viewModelFactory: HomeViewPagerViewModelFactory
-    private lateinit var viewModel: HomeViewPagerViewModel
     private lateinit var rgl: MutableList<Char>
 
+    //    private lateinit var viewModel: HomeViewPagerViewModel
+
+    private val viewModel: HomeViewPagerViewModel by viewModels {
+        InjectorUtils.provideHomeViewPagerViewModelFactory(requireActivity(), null)
+    }
 
 
     override fun onCreateView(
@@ -41,9 +47,13 @@ class ListFragment : Fragment() {
     ): View? {
         binding = ListFragmentBinding.inflate(inflater, container, false)
 
-        val viewModel =
-            ViewModelProviders.of(activity!!, InjectorUtils.provideHomeViewPagerViewModelFactory(activity!!,null))
-                .get(HomeViewPagerViewModel::class.java)
+//        viewModel = ViewModelProviders.of( activity!!,
+//            InjectorUtils.provideHomeViewPagerViewModelFactory(activity!!, null)
+//        ).get(HomeViewPagerViewModel::class.java)
+//
+//        viewModel = ViewModelProviders.of( activity!!,
+//            InjectorUtils.provideHomeViewPagerViewModelFactory(activity!!, null)
+//        ).get(HomeViewPagerViewModel::class.java)
 
         val adapter = ProductAdapter(requireContext())
         binding.productList.adapter = adapter

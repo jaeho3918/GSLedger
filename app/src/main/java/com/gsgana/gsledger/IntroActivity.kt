@@ -88,8 +88,8 @@ class IntroActivity : AppCompatActivity() {
                                 rgl_b.clear()
                                 val intent =
                                     Intent(applicationContext, MainActivity::class.java)
-                                startActivity(intent)
                                 intent.putExtra(KEY, rgl)
+                                startActivity(intent)
                                 rgl = charArrayOf()
                                 finish()
 

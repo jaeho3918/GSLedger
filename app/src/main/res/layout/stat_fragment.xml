@@ -29,36 +29,45 @@
             android:layout_marginTop="15dp"
             android:layout_marginRight="5dp"
             android:layout_marginBottom="15dp"
-            android:background="@drawable/rounded_border"
-            app:contentPadding="5dp">
+            card_view:cardBackgroundColor="@color/border_background">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
-
+                android:background="@drawable/rounded_border"
+                android:orientation="vertical"
+                android:padding="5dp">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
                     <TextView
-                        android:layout_width="70dp"
+                        android:layout_width="50dp"
                         android:layout_height="wrap_content"
                         android:text="Total"
-                        android:textSize="21dp"
+                        android:textSize="@dimen/text_large"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent" />
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="horizontal">
                     <TextView
                         android:id="@+id/totalCurrency"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="8dp"
                         android:text="$"
-                        android:textSize="21dp"
-                        android:visibility="gone"
+                        android:textSize="@dimen/text_large"
+                        android:visibility="visible"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent" />
@@ -68,8 +77,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text=""
-                        android:textSize="21dp"
-                        android:visibility="gone"
+                        android:textSize="@dimen/text_large"
+                        android:visibility="visible"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent" />
@@ -81,40 +90,104 @@
                         android:layout_marginLeft="24dp"
                         android:text=""
                         android:textSize="18dp"
-                        android:visibility="gone"
+                        android:visibility="visible"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent" />
-
+                </LinearLayout>
                     <ProgressBar
                         android:id="@+id/totalprogress"
                         style="?android:attr/progressBarStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1" />
+                        android:layout_weight="1"
+                        android:visibility="gone" />
 
                 </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
 
+                        <TextView
+                            android:layout_width="50dp"
+                            android:layout_height="wrap_content"
+                            android:text="P/L"
+                            android:textSize="@dimen/text_large"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
+                            <TextView
+                                android:id="@+id/totalCurrency"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="$"
+                                android:textSize="@dimen/text_large"
+                                android:visibility="visible"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintRight_toRightOf="parent" />
+
+                            <TextView
+                                android:id="@+id/totallabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=""
+                                android:textSize="@dimen/text_large"
+                                android:visibility="visible"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintRight_toRightOf="parent" />
+
+                            <TextView
+                                android:id="@+id/totalPl"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="24dp"
+                                android:text=""
+                                android:textSize="18dp"
+                                android:visibility="visible"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintRight_toRightOf="parent" />
+                        </LinearLayout>
+                        <ProgressBar
+                            android:id="@+id/totalprogress"
+                            style="?android:attr/progressBarStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:visibility="gone" />
+
+                    </LinearLayout>
+            </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="390dp"
+                    android:layout_height="330dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
                     <com.github.mikephil.charting.charts.PieChart
                         android:id="@+id/statChart"
                         android:layout_width="match_parent"
-                        android:layout_height="390dp"
+                        android:layout_height="330dp"
                         android:layout_marginVertical="8dp"
-                        android:visibility="gone" />
+                        android:visibility="visible" />
 
                     <ProgressBar
                         android:id="@+id/chartprogress"
                         style="?android:attr/progressBarStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:visibility="gone"
-                        android:layout_weight="1" />
+                        android:layout_weight="1"
+                        android:visibility="gone" />
 
                 </LinearLayout>
 
@@ -125,59 +198,142 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="70dp"
+                        android:layout_width="50dp"
                         android:layout_height="wrap_content"
                         android:text="Gold"
                         android:textColor="@color/font_gold"
-                        android:textSize="21dp"
+                        android:textSize="@dimen/text_large"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent" />
 
-                    <TextView
-                        android:id="@+id/goldCurrency"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="8dp"
-                        android:text="$"
-                        android:textColor="@color/font_gold"
-                        android:textSize="21dp"
-                        android:visibility="gone"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent" />
+                        android:layout_marginBottom="8dp"
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/goldlabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text=""
-                        android:textColor="@color/font_gold"
-                        android:textSize="21dp"
-                        android:visibility="gone"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent" />
+                        <LinearLayout
+                            android:id="@+id/goldCoinLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/goldPl"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="24dp"
-                        android:text=""
-                        android:textColor="@color/font_gold"
-                        android:textSize="18dp"
-                        android:visibility="gone"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent" />
+                            <TextView
+                                android:layout_width="50dp"
+                                android:layout_height="wrap_content"
+                                android:text="Coin"
+                                android:textColor="@color/font_gold"
+                                android:textSize="@dimen/text_large"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintRight_toRightOf="parent" />
 
-                    <ProgressBar
-                        android:id="@+id/goldprogress"
-                        style="?android:attr/progressBarStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1" />
+                            <TextView
+                                android:id="@+id/goldCoinCurrency"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="8dp"
+                                android:text="$"
+                                android:textColor="@color/font_gold"
+                                android:textSize="@dimen/text_large"
+                                android:visibility="visible"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintRight_toRightOf="parent" />
+
+                            <TextView
+                                android:id="@+id/goldCoinlabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=""
+                                android:textColor="@color/font_gold"
+                                android:textSize="@dimen/text_large"
+                                android:visibility="visible"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintRight_toRightOf="parent" />
+
+                            <TextView
+                                android:id="@+id/goldCoinPl"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="24dp"
+                                android:text=""
+                                android:textColor="@color/font_gold"
+                                android:textSize="18dp"
+                                android:visibility="visible"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintRight_toRightOf="parent" />
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:id="@+id/goldBarLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:orientation="horizontal">
+
+
+                            <TextView
+                                android:layout_width="50dp"
+                                android:layout_height="wrap_content"
+                                android:text="Bar"
+                                android:textColor="@color/font_gold"
+                                android:textSize="@dimen/text_large"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintRight_toRightOf="parent" />
+
+                            <TextView
+                                android:id="@+id/goldBarCurrency"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="8dp"
+                                android:text="$"
+                                android:textColor="@color/font_gold"
+                                android:textSize="@dimen/text_large"
+                                android:visibility="visible"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintRight_toRightOf="parent" />
+
+                            <TextView
+                                android:id="@+id/goldBarlabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=""
+                                android:textColor="@color/font_gold"
+                                android:textSize="@dimen/text_large"
+                                android:visibility="visible"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintRight_toRightOf="parent" />
+
+                            <TextView
+                                android:id="@+id/goldBarPl"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="24dp"
+                                android:text=""
+                                android:textColor="@color/font_gold"
+                                android:textSize="18dp"
+                                android:visibility="visible"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintRight_toRightOf="parent" />
+
+                        </LinearLayout>
+                        <ProgressBar
+                            android:id="@+id/goldprogress"
+                            style="?android:attr/progressBarStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+
+                    </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout
@@ -186,56 +342,145 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="70dp"
+                        android:layout_width="50dp"
                         android:layout_height="wrap_content"
                         android:text="Silver"
-                        android:textSize="21dp"
+                        android:textSize="@dimen/text_large"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent" />
 
-                    <TextView
-                        android:id="@+id/silverCurrency"
-                        android:layout_width="wrap_content"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginHorizontal="8dp"
-                        android:text="$"
-                        android:textSize="21dp"
-                        android:visibility="gone"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent" />
+                        android:layout_marginBottom="8dp"
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/silverlabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text=""
-                        android:textSize="21dp"
-                        android:visibility="gone"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent" />
+                        <LinearLayout
+                            android:id="@+id/silverCoinLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:orientation="horizontal">
 
-                    <TextView
-                        android:id="@+id/silverPl"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="24dp"
-                        android:text=""
-                        android:textSize="18dp"
-                        android:visibility="gone"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent" />
+                            <TextView
+                                android:layout_width="50dp"
+                                android:layout_height="wrap_content"
+                                android:text="Coin"
+                                android:textColor="@color/font_silver"
+                                android:textSize="@dimen/text_large"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintRight_toRightOf="parent" />
 
-                    <ProgressBar
-                        android:id="@+id/silverprogress"
-                        style="?android:attr/progressBarStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1" />
+                            <TextView
+                                android:id="@+id/silverCoinCurrency"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="8dp"
+                                android:text="$"
+                                android:textColor="@color/font_silver"
+                                android:textSize="@dimen/text_large"
+                                android:visibility="visible"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintRight_toRightOf="parent" />
+
+                            <TextView
+                                android:id="@+id/silverCoinlabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=""
+                                android:textColor="@color/font_silver"
+                                android:textSize="@dimen/text_large"
+                                android:visibility="visible"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintRight_toRightOf="parent" />
+
+                            <TextView
+                                android:id="@+id/silverCoinPl"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="24dp"
+                                android:text=""
+                                android:textColor="@color/font_silver"
+                                android:textSize="18dp"
+                                android:visibility="visible"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintRight_toRightOf="parent" />
+
+                        </LinearLayout>
+                        <LinearLayout
+                            android:id="@+id/silverBarLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="8dp"
+                            android:orientation="horizontal">
+
+
+                            <TextView
+                                android:layout_width="50dp"
+                                android:layout_height="wrap_content"
+                                android:text="Bar"
+                                android:textColor="@color/font_silver"
+                                android:textSize="@dimen/text_large"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintRight_toRightOf="parent" />
+
+                            <TextView
+                                android:id="@+id/silverBarCurrency"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginHorizontal="8dp"
+                                android:text="$"
+                                android:textColor="@color/font_silver"
+                                android:textSize="@dimen/text_large"
+                                android:visibility="visible"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintRight_toRightOf="parent" />
+
+                            <TextView
+                                android:id="@+id/silverBarlabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=""
+                                android:textColor="@color/font_silver"
+                                android:textSize="@dimen/text_large"
+                                android:visibility="visible"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintRight_toRightOf="parent" />
+
+                            <TextView
+                                android:id="@+id/silverBarPl"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="24dp"
+                                android:text=""
+                                android:textColor="@color/font_silver"
+                                android:textSize="18dp"
+                                android:visibility="visible"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintRight_toRightOf="parent" />
+
+
+                        </LinearLayout>
+                        <ProgressBar
+                            android:id="@+id/silverprogress"
+                            style="?android:attr/progressBarStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1" />
+                    </LinearLayout>
                 </LinearLayout>
+
+
+
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
@@ -243,137 +488,3 @@
     </androidx.core.widget.NestedScrollView>
 </layout>
 
-    <!--                    <LinearLayout-->
-    <!--                        android:layout_width="match_parent"-->
-    <!--                        android:layout_height="match_parent"-->
-    <!--                        android:orientation="vertical">-->
-
-    <!--                        <LinearLayout-->
-    <!--                            android:layout_width="match_parent"-->
-    <!--                            android:layout_height="310dp"-->
-    <!--                            android:layout_weight="0.3"-->
-    <!--                            android:orientation="horizontal">-->
-
-
-    <!--                        </LinearLayout>-->
-
-
-    <!--                        <LinearLayout-->
-    <!--                            android:layout_width="match_parent"-->
-    <!--                            android:layout_height="match_parent"-->
-    <!--                            android:layout_weight="1"-->
-    <!--                            android:orientation="horizontal">-->
-
-    <!--                            <TextView-->
-    <!--                                android:layout_width="70dp"-->
-    <!--                                android:layout_height="wrap_content"-->
-    <!--                                android:text="금 총값"-->
-    <!--                                android:textSize="21dp"-->
-    <!--                                app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--                                app:layout_constraintLeft_toLeftOf="parent"-->
-    <!--                                app:layout_constraintRight_toRightOf="parent" />-->
-
-    <!--                            <TextView-->
-    <!--                                android:id="@+id/goldCurrency"-->
-    <!--                                android:layout_width="wrap_content"-->
-    <!--                                android:layout_height="wrap_content"-->
-    <!--                                android:layout_marginHorizontal="8dp"-->
-    <!--                                android:visibility="gone"-->
-    <!--                                android:text="$"-->
-    <!--                                android:textSize="21dp"-->
-    <!--                                app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--                                app:layout_constraintLeft_toLeftOf="parent"-->
-    <!--                                app:layout_constraintRight_toRightOf="parent" />-->
-
-    <!--                            <TextView-->
-    <!--                                android:id="@+id/goldlabel"-->
-    <!--                                android:layout_width="wrap_content"-->
-    <!--                                android:layout_height="wrap_content"-->
-    <!--                                android:visibility="gone"-->
-    <!--                                android:text=""-->
-    <!--                                android:textSize="21dp"-->
-    <!--                                app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--                                app:layout_constraintLeft_toLeftOf="parent"-->
-    <!--                                app:layout_constraintRight_toRightOf="parent" />-->
-
-    <!--                            <TextView-->
-    <!--                                android:id="@+id/goldPl"-->
-    <!--                                android:layout_width="wrap_content"-->
-    <!--                                android:layout_height="wrap_content"-->
-    <!--                                android:visibility="gone"-->
-    <!--                                android:layout_marginLeft="24dp"-->
-    <!--                                android:text=""-->
-    <!--                                android:textSize="18dp"-->
-    <!--                                app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--                                app:layout_constraintLeft_toLeftOf="parent"-->
-    <!--                                app:layout_constraintRight_toRightOf="parent" />-->
-
-    <!--                            <ProgressBar-->
-    <!--                                android:id="@+id/goldprogress"-->
-    <!--                                style="?android:attr/progressBarStyle"-->
-    <!--                                android:layout_width="wrap_content"-->
-    <!--                                android:layout_height="wrap_content"-->
-    <!--                                android:layout_weight="1" />-->
-
-    <!--                        </LinearLayout>-->
-
-    <!--                        <LinearLayout-->
-    <!--                            android:layout_width="match_parent"-->
-    <!--                            android:layout_height="match_parent"-->
-    <!--                            android:layout_weight="1"-->
-    <!--                            android:orientation="horizontal">-->
-
-    <!--                            <TextView-->
-    <!--                                android:layout_width="70dp"-->
-    <!--                                android:layout_height="wrap_content"-->
-    <!--                                android:text="은 총값"-->
-    <!--                                android:textSize="21dp"-->
-    <!--                                app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--                                app:layout_constraintLeft_toLeftOf="parent"-->
-    <!--                                app:layout_constraintRight_toRightOf="parent" />-->
-
-    <!--                            <TextView-->
-    <!--                                android:id="@+id/silverCurrency"-->
-    <!--                                android:layout_width="wrap_content"-->
-    <!--                                android:layout_height="wrap_content"-->
-    <!--                                android:layout_marginHorizontal="8dp"-->
-    <!--                                android:visibility="gone"-->
-    <!--                                android:text="$"-->
-    <!--                                android:textSize="21dp"-->
-    <!--                                app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--                                app:layout_constraintLeft_toLeftOf="parent"-->
-    <!--                                app:layout_constraintRight_toRightOf="parent" />-->
-
-    <!--                            <TextView-->
-    <!--                                android:id="@+id/silverlabel"-->
-    <!--                                android:layout_width="wrap_content"-->
-    <!--                                android:layout_height="wrap_content"-->
-    <!--                                android:visibility="gone"-->
-    <!--                                android:text=""-->
-    <!--                                android:textSize="21dp"-->
-    <!--                                app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--                                app:layout_constraintLeft_toLeftOf="parent"-->
-    <!--                                app:layout_constraintRight_toRightOf="parent" />-->
-
-    <!--                            <TextView-->
-    <!--                                android:id="@+id/silverPl"-->
-    <!--                                android:layout_width="wrap_content"-->
-    <!--                                android:layout_height="wrap_content"-->
-    <!--                                android:layout_marginLeft="24dp"-->
-    <!--                                android:visibility="gone"-->
-    <!--                                android:text=""-->
-    <!--                                android:textSize="18dp"-->
-    <!--                                app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--                                app:layout_constraintLeft_toLeftOf="parent"-->
-    <!--                                app:layout_constraintRight_toRightOf="parent" />-->
-
-    <!--                            <ProgressBar-->
-    <!--                                android:id="@+id/silverprogress"-->
-    <!--                                style="?android:attr/progressBarStyle"-->
-    <!--                                android:layout_width="wrap_content"-->
-    <!--                                android:layout_height="wrap_content"-->
-    <!--                                android:layout_weight="1" />-->
-
-    <!--                        </LinearLayout>-->
-    <!--                        -->
-    <!--                    </LinearLayout>-->

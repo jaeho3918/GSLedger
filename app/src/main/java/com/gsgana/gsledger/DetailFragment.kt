@@ -29,6 +29,7 @@ import com.gsgana.gsledger.viewmodels.DetailViewModel
 class DetailFragment : Fragment() {
 
     private val args: DetailFragmentArgs by navArgs()
+
     private lateinit var product: Product
     private val detailViewModel: DetailViewModel by viewModels {
         InjectorUtils.provideDetailViewModelFactory(requireActivity(), args.id)

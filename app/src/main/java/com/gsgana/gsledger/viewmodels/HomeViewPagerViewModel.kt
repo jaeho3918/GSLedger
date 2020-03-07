@@ -33,6 +33,8 @@ class HomeViewPagerViewModel internal constructor(
             productRepository.deleteProduct()
         }
     }
+
+
 }
 
 private class RealData() : LiveData<Map<String, Double>>() {

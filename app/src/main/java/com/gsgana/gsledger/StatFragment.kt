@@ -35,12 +35,16 @@ class StatFragment : Fragment() {
 
     private lateinit var mAuth: FirebaseAuth
     private val USERS_DB_PATH = "qnI4vK2zSUq6GdeT6b"
-    private lateinit var viewModel: HomeViewPagerViewModel
     private lateinit var rgl: MutableList<Char>
 
 //    private val viewModel: HomeViewPagerViewModel by viewModels {
 //        InjectorUtils.provideHomeViewPagerViewModelFactory(context!!,null)
 //    }
+
+//    private lateinit var viewModel: HomeViewPagerViewModel
+    private val viewModel: HomeViewPagerViewModel by viewModels {
+        InjectorUtils.provideHomeViewPagerViewModelFactory(requireActivity(), null)
+    }
 
     private val key = null
 
@@ -51,9 +55,15 @@ class StatFragment : Fragment() {
 
         rgl = mutableListOf()
         mAuth = FirebaseAuth.getInstance()
-        viewModel = ViewModelProviders.of(this,
-            InjectorUtils.provideHomeViewPagerViewModelFactory(context!!, null))
-            .get(HomeViewPagerViewModel::class.java)
+//        viewModel = ViewModelProviders.of(
+//            activity!!,
+//            InjectorUtils.provideHomeViewPagerViewModelFactory(activity!!, null)
+//        )
+//            .get(HomeViewPagerViewModel::class.java)
+
+//        viewModel = ViewModelProviders.of( activity!!,
+//            InjectorUtils.provideHomeViewPagerViewModelFactory(activity!!, null)
+//        ).get(HomeViewPagerViewModel::class.java)
 
         binding = StatFragmentBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
@@ -147,13 +157,13 @@ class StatFragment : Fragment() {
                     totalPlper =
                         (goldPladd + silverPladd - (price1 + price2)) / (goldPladd + silverPladd)
 
-                    binding.goldPl.text = if (goldPladd1 < 0) {
+                    binding.goldCoinPl.text = if (goldPladd1 < 0) {
                         String.format("(%,.2f)", goldPladd1)
                     } else {
                         String.format("(+%,.2f)", goldPladd1)
                     }
 
-                    binding.silverPl.text = if (silverPladd1 < 0) {
+                    binding.silverCoinPl.text = if (silverPladd1 < 0) {
                         String.format("(%,.2f)", silverPladd1)
                     } else {
                         String.format("(+%,.2f)", silverPladd1)
@@ -164,15 +174,15 @@ class StatFragment : Fragment() {
                         String.format("(+%,.2f)", totalPladd1)
                     }
 
-                    binding.goldCurrency.text = CURRENCYSYMBOL[(realData[CURR_NAME]?.toInt() ?: 0)]
-                    binding.silverCurrency.text =
+                    binding.goldCoinCurrency.text = CURRENCYSYMBOL[(realData[CURR_NAME]?.toInt() ?: 0)]
+                    binding.silverCoinCurrency.text =
                         CURRENCYSYMBOL[(realData[CURR_NAME]?.toInt() ?: 0)]
                     binding.totalCurrency.text =
                         CURRENCYSYMBOL[(realData[CURR_NAME]?.toInt() ?: 0)]
 
-                    binding.goldlabel.text =
+                    binding.goldCoinlabel.text =
                         String.format("%,.0f", (reg1 * metalPrice1 * (currency ?: 1.0)))
-                    binding.silverlabel.text =
+                    binding.silverCoinlabel.text =
                         String.format("%,.0f", (reg2 * metalPrice2 * (currency ?: 1.0)))
                     binding.totallabel.text = String.format(
                         "%,.0f",
@@ -181,14 +191,14 @@ class StatFragment : Fragment() {
                     )
 
                 } else {
-                    binding.goldlabel.text = ""
-                    binding.silverlabel.text = ""
+                    binding.goldCoinlabel.text = ""
+                    binding.silverCoinlabel.text = ""
                     binding.totallabel.text = ""
-                    binding.goldPl.text = ""
-                    binding.silverPl.text = ""
+                    binding.goldCoinPl.text = ""
+                    binding.silverCoinPl.text = ""
                     binding.totalPl.text = ""
-                    binding.goldCurrency.text = ""
-                    binding.silverCurrency.text = ""
+                    binding.goldCoinCurrency.text = ""
+                    binding.silverCoinCurrency.text = ""
                     binding.totalCurrency.text = ""
                 }
             }
@@ -286,19 +296,19 @@ class StatFragment : Fragment() {
                     silverPl = (silverPladd * silverPlper * (currency ?: 1.0))
                     totalPl = ((goldPladd + silverPladd) * totalPlper * (currency ?: 1.0))
                     totalPladd = goldPladd + silverPladd
-                    binding.goldPl.text = String.format("(%,.2f)", goldPladd)
-                    binding.silverPl.text = String.format("(%,.2f)", silverPladd)
+                    binding.goldCoinPl.text = String.format("(%,.2f)", goldPladd)
+                    binding.silverCoinPl.text = String.format("(%,.2f)", silverPladd)
                     binding.totalPl.text = String.format("(%,.2f)", totalPladd)
 
-                    binding.goldCurrency.text = CURRENCYSYMBOL[(realData[CURR_NAME]?.toInt() ?: 0)]
-                    binding.silverCurrency.text =
+                    binding.goldCoinCurrency.text = CURRENCYSYMBOL[(realData[CURR_NAME]?.toInt() ?: 0)]
+                    binding.silverCoinCurrency.text =
                         CURRENCYSYMBOL[(realData[CURR_NAME]?.toInt() ?: 0)]
                     binding.totalCurrency.text =
                         CURRENCYSYMBOL[(realData[CURR_NAME]?.toInt() ?: 0)]
 
-                    binding.goldlabel.text =
+                    binding.goldCoinlabel.text =
                         String.format("%,.0f", (reg1 * metalPrice1 * (currency ?: 1.0)))
-                    binding.silverlabel.text =
+                    binding.silverCoinlabel.text =
                         String.format("%,.0f", (reg2 * metalPrice2 * (currency ?: 1.0)))
                     binding.totallabel.text = String.format(
                         "%,.0f",
@@ -307,14 +317,14 @@ class StatFragment : Fragment() {
                     )
 
                 } else {
-                    binding.goldlabel.text = ""
-                    binding.silverlabel.text = ""
+                    binding.goldCoinlabel.text = ""
+                    binding.silverCoinlabel.text = ""
                     binding.totallabel.text = ""
-                    binding.goldPl.text = ""
-                    binding.silverPl.text = ""
+                    binding.goldCoinPl.text = ""
+                    binding.silverCoinPl.text = ""
                     binding.totalPl.text = ""
-                    binding.goldCurrency.text = ""
-                    binding.silverCurrency.text = ""
+                    binding.goldCoinCurrency.text = ""
+                    binding.silverCoinCurrency.text = ""
                     binding.totalCurrency.text = ""
 
                 }
@@ -355,6 +365,7 @@ class StatFragment : Fragment() {
         val chart_goldB = ContextCompat.getColor(context!!, R.color.chart_goldB)
         val chart_silverC = ContextCompat.getColor(context!!, R.color.chart_silverC)
         val chart_silverB = ContextCompat.getColor(context!!, R.color.chart_silverB)
+        val backGround = ContextCompat.getColor(context!!,R.color.border_background)
         val duration = 530
 
         val chartData = viewModel?.ratioMetal?.value
@@ -366,10 +377,11 @@ class StatFragment : Fragment() {
         pieChart.dragDecelerationFrictionCoef = 0.95f
 
         pieChart.isDrawHoleEnabled = true
-//        pieChart.setHoleColor(com.gsgana.gsledger.fragment.FirstFragment.gray)
+        pieChart.setHoleColor(backGround)
 //
 //        pieChart.setTransparentCircleColor(com.gsgana.gsledger.fragment.FirstFragment.gray)
         pieChart.setTransparentCircleAlpha(110)
+        pieChart.setCenterTextSize(18f)
 
         pieChart.holeRadius = 35f
         pieChart.transparentCircleRadius = 41f
@@ -526,19 +538,19 @@ class StatFragment : Fragment() {
                 silverPl = (silverPladd * silverPlper * (currency ?: 1.0))
                 totalPl = ((goldPladd + silverPladd) * totalPlper * (currency ?: 1.0))
                 totalPladd = goldPladd + silverPladd
-                binding.goldPl.text = String.format("(%,.2f)", goldPladd)
-                binding.silverPl.text = String.format("(%,.2f)", silverPladd)
+                binding.goldCoinPl.text = String.format("(%,.2f)", goldPladd)
+                binding.silverCoinPl.text = String.format("(%,.2f)", silverPladd)
                 binding.totalPl.text = String.format("(%,.2f)", totalPladd)
 
-                binding.goldCurrency.text = CURRENCYSYMBOL[(realData[CURR_NAME]?.toInt() ?: 0)]
-                binding.silverCurrency.text =
+                binding.goldCoinCurrency.text = CURRENCYSYMBOL[(realData[CURR_NAME]?.toInt() ?: 0)]
+                binding.silverCoinCurrency.text =
                     CURRENCYSYMBOL[(realData[CURR_NAME]?.toInt() ?: 0)]
                 binding.totalCurrency.text =
                     CURRENCYSYMBOL[(realData[CURR_NAME]?.toInt() ?: 0)]
 
-                binding.goldlabel.text =
+                binding.goldCoinlabel.text =
                     String.format("%,.0f", (reg1 * metalPrice1 * (currency ?: 1.0)))
-                binding.silverlabel.text =
+                binding.silverCoinlabel.text =
                     String.format("%,.0f", (reg2 * metalPrice2 * (currency ?: 1.0)))
                 binding.totallabel.text = String.format(
                     "%,.0f",
@@ -547,16 +559,16 @@ class StatFragment : Fragment() {
                 )
             }
 
-            binding.goldlabel.visibility = View.VISIBLE
-            binding.silverlabel.visibility = View.VISIBLE
+            binding.goldCoinlabel.visibility = View.VISIBLE
+            binding.silverCoinlabel.visibility = View.VISIBLE
             binding.totallabel.visibility = View.VISIBLE
 
-            binding.goldCurrency.visibility = View.VISIBLE
-            binding.silverCurrency.visibility = View.VISIBLE
+            binding.goldCoinCurrency.visibility = View.VISIBLE
+            binding.silverCoinCurrency.visibility = View.VISIBLE
             binding.totalCurrency.visibility = View.VISIBLE
 
-            binding.goldPl.visibility = View.VISIBLE
-            binding.silverPl.visibility = View.VISIBLE
+            binding.goldCoinPl.visibility = View.VISIBLE
+            binding.silverCoinPl.visibility = View.VISIBLE
             binding.totalPl.visibility = View.VISIBLE
 
             binding.goldprogress.visibility = View.GONE

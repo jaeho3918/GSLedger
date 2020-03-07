@@ -26,6 +26,7 @@ import com.gsgana.gsledger.adapters.PagerAdapter.Companion.LIST_PAGE_INDEX
 import com.gsgana.gsledger.adapters.PagerAdapter.Companion.STAT_PAGE_INDEX
 import com.gsgana.gsledger.databinding.HomeViewPagerFragmentBinding
 import com.gsgana.gsledger.utilities.*
+import com.gsgana.gsledger.viewmodels.DetailViewModel
 import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModel
 import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModelFactory
 import kotlin.collections.HashMap
@@ -43,7 +44,12 @@ class HomeViewPagerFragment : Fragment() {
     private lateinit var mAuth: FirebaseAuth
     private val USERS_DB_PATH = "qnI4vK2zSUq6GdeT6b"
 
-    private lateinit var viewModel: HomeViewPagerViewModel
+//    private lateinit var viewModel: HomeViewPagerViewModel
+    private val viewModel: HomeViewPagerViewModel by viewModels {
+        InjectorUtils.provideHomeViewPagerViewModelFactory(requireActivity(), null)
+    }
+
+
     private lateinit var rgl: CharArray
     private lateinit var rgl_b: MutableList<Char>
 
@@ -65,11 +71,16 @@ class HomeViewPagerFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel = ViewModelProviders.of(
-            this,
-            InjectorUtils.provideHomeViewPagerViewModelFactory(context!!, null)
-        )
-            .get(HomeViewPagerViewModel::class.java)
+//        viewModel = ViewModelProviders.of(
+//            activity!!,
+//            InjectorUtils.provideHomeViewPagerViewModelFactory(activity!!, null)
+//        )
+//            .get(HomeViewPagerViewModel::class.java)
+//        viewModel = ViewModelProviders.of( activity!!,
+//            InjectorUtils.provideHomeViewPagerViewModelFactory(activity!!, null)
+//        ).get(HomeViewPagerViewModel::class.java)
+
+
         val currencyOption =
             activity?.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)?.getInt(CURR_NAME, 0)
         val databaseRef = FirebaseDatabase.getInstance().getReference(REAL_DB_PATH)

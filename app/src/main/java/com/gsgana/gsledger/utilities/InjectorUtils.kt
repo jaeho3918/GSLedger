@@ -17,7 +17,7 @@ object InjectorUtils {
 
         return if (key == null) {
             val repository = getProductRepository(context, "null".toCharArray())
-            HomeViewPagerViewModelFactory.getInstance(repository)
+            HomeViewPagerViewModelFactory(repository)
 
         } else {
             val repository = getProductRepository(context, key)
@@ -36,13 +36,12 @@ object InjectorUtils {
         return WriteViewModelFactory(repository)
     }
 
-    private fun getProductRepository(
+    internal fun getProductRepository(
         context: Context,
         key: CharArray?
     ): ProductRepository {
 
         val reg = AppDatabase.getInstance(context.applicationContext, key)
-
         return ProductRepository.getInstance(
             reg.productDao(), reg.productImageDao(), reg.optionDao()
         )

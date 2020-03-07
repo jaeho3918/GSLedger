@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gsgana.gsledger.data.Product
 import com.gsgana.gsledger.data.ProductRepository
-import com.gsgana.gsledger.data.Products
 import kotlinx.coroutines.launch
 
 class ListViewModel internal constructor(

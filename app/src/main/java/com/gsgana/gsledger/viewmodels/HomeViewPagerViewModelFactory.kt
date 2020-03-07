@@ -13,11 +13,4 @@ class HomeViewPagerViewModelFactory(
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return HomeViewPagerViewModel(repository) as T
     }
-
-    companion object {
-        private var instance: HomeViewPagerViewModelFactory? = null
-        fun getInstance() = instance ?: synchronized(HomeViewPagerViewModelFactory::class.java) {
-            instance ?: HomeViewPagerViewModelFactory.also { instance }
-        }
-    }
 }

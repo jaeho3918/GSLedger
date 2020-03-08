@@ -13,6 +13,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.fragment.app.viewModels
 import com.firebase.ui.auth.AuthUI
 import com.google.firebase.auth.FirebaseAuth
 import com.gsgana.gsledger.data.Option
@@ -31,6 +32,10 @@ class AdsAndOptionFragment : Fragment() {
     private val CURR_NAME = "1w3d4f7w9d2qG2eT36"
     private val PREF_NAME = "01504f779d6c77df04"
     private lateinit var binding: AdsAndOptionFragmentBinding
+
+    private val viewModel: HomeViewPagerViewModel by viewModels {
+        InjectorUtils.provideHomeViewPagerViewModelFactory(requireActivity(), null)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

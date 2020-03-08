@@ -74,7 +74,7 @@
                         app:layout_constraintRight_toRightOf="parent" />
 
                     <TextView
-                        android:id="@+id/totallabel"
+                        android:id="@+id/totalPrice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text=""
@@ -136,7 +136,7 @@
                                  />
 
                             <TextView
-                                android:id="@+id/pllabel"
+                                android:id="@+id/plPrice"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text=""
@@ -231,7 +231,7 @@
                                 android:visibility="visible" />
 
                             <TextView
-                                android:id="@+id/goldCoinlabel"
+                                android:id="@+id/goldCoinPrice"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text=""
@@ -276,7 +276,7 @@
                                 android:visibility="visible" />
 
                             <TextView
-                                android:id="@+id/goldBarlabel"
+                                android:id="@+id/goldBarPrice"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text=""
@@ -349,7 +349,7 @@
                                  />
 
                             <TextView
-                                android:id="@+id/silverCoinlabel"
+                                android:id="@+id/silverCoinPrice"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text=""
@@ -398,7 +398,7 @@
                                  />
 
                             <TextView
-                                android:id="@+id/silverBarlabel"
+                                android:id="@+id/silverBarPrice"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text=""

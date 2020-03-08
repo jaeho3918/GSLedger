@@ -11,22 +11,19 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.fragment.findNavController
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.PercentFormatter
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
+import com.gsgana.gsledger.data.Product
 import com.gsgana.gsledger.databinding.StatFragmentBinding
 import com.gsgana.gsledger.utilities.CURRENCY
 import com.gsgana.gsledger.utilities.CURRENCYSYMBOL
 import com.gsgana.gsledger.utilities.InjectorUtils
 import com.gsgana.gsledger.utilities.PACKAGENUM
 import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModel
-import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModelFactory
 import java.util.*
 
 class StatFragment : Fragment() {
@@ -38,7 +35,8 @@ class StatFragment : Fragment() {
     private lateinit var rgl: MutableList<Char>
     private val PREF_NAME = "01504f779d6c77df04"
 
-    private var currencyOption =  activity?.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)?.getInt(CURR_NAME, 0)
+    private var currencyOption =
+        activity?.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)?.getInt(CURR_NAME, 0)
 
     private val viewModel: HomeViewPagerViewModel by viewModels {
         InjectorUtils.provideHomeViewPagerViewModelFactory(requireActivity(), null)
@@ -56,277 +54,20 @@ class StatFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
 
         viewModel?.realData?.observe(viewLifecycleOwner, Observer { realData ->
-            var reg1 = 0f
-            var reg2 = 0f
-            var weight = 1f
-            var quantity = 1
-            var _package = 1
-            var price1 = 0.0
-            var price2 = 0.0
-            var goldPlper = 0.0
-            var silverPlper = 0.0
-            var totalPlper = 0.0
-            var goldPl = 0.0
-            var silverPl = 0.0
-            var totalPl = 0.0
-            var goldPladd = 0.0
-            var silverPladd = 0.0
-            var totalPladd = 0.0
-            var metalPre1 = 0.0
-            var metalPre2 = 0.0
-
-            var goldPladd1 = 0.0
-            var silverPladd1 = 0.0
-            var totalPladd1 = 0.0
-
-            var uc = 0f
-            var ub = 0f
-            var gc = 0f
-            var gb = 0f
-
-            val metalPrice1 = realData["AU"] ?: 1.0
-            val metalPrice2 = realData["AG"] ?: 1.0
-
-            var currency = if (realData["currency"] == 0.0) {
-                1.0
-            } else {
-                realData[CURRENCY[(realData["currency"]?.toInt() ?: 0)]]
-            }
-            currencyOption = realData["currency"]?.toInt()
-
-            viewModel.products.value.also { products ->
-                products?.forEach { product ->
-                    if (product.metal == 0) {
-                        reg1 += ((1 + product.reg) * product.weightr * product.weight * product.quantity * PACKAGENUM[product.packageType])
-                        price1 += product.price / (realData[CURRENCY[product.currency]] ?: 1.0)
-//                        goldPladd += (1 + product.reg) * product.weightr * product.weight * metalPrice1
-                        goldPladd += (reg1 * metalPrice1 * (realData[CURRENCY[product.currency]]
-                            ?: 1.0))
-                        metalPre1 += product.prePrice
-
-                        if (product.type == 0) {
-                            uc += product.prePrice
-                        } else if (product.type == 1) {
-                            ub += product.prePrice
-                        }
-
-                    } else if (product.metal == 1) {
-                        reg2 += ((1 + product.reg) * product.weightr * product.weight * product.quantity * PACKAGENUM[product.packageType])
-                        price2 += product.price / (realData[CURRENCY[product.currency]] ?: 1.0)
-//                        silverPladd += (1 + product.reg) * product.weightr * product.weight * metalPrice2
-                        silverPladd += reg2 * metalPrice2 * (realData[CURRENCY[product.currency]]
-                            ?: 1.0)
-                        metalPre2 += product.prePrice
-
-                        if (product.type == 0) {
-                            gc += product.prePrice
-                        } else if (product.type == 1) {
-                            gb += product.prePrice
-                        }
-                    }
-                    goldPladd1 = (reg1 * metalPrice1 * (currency ?: 1.0)) - metalPre1
-                    silverPladd1 = (reg2 * metalPrice2 * (currency ?: 1.0)) - metalPre2
-                    totalPladd1 = goldPladd1 + silverPladd1
-
-
-                    viewModel?.ratioMetal?.value = mutableListOf(
-                        uc,
-                        ub,
-                        gc,
-                        gb
-                    )
-
-                    _package = product.packageType
-
-                }
-                if (!products.isNullOrEmpty()) {
-                    goldPlper = (goldPladd - price1) / (goldPladd)
-                    silverPlper = (silverPladd - price2) / (silverPladd)
-                    totalPlper =
-                        (goldPladd + silverPladd - (price1 + price2)) / (goldPladd + silverPladd)
-
-                    binding.goldCoinPl.text = if (goldPladd1 < 0) {
-                        String.format("(%,.2f)", goldPladd1)
-                    } else {
-                        String.format("(+%,.2f)", goldPladd1)
-                    }
-
-                    binding.silverCoinPl.text = if (silverPladd1 < 0) {
-                        String.format("(%,.2f)", silverPladd1)
-                    } else {
-                        String.format("(+%,.2f)", silverPladd1)
-                    }
-                    binding.totalPlper.text = if (totalPladd1 < 0) {
-                        String.format("(%,.2f)", totalPladd1)
-                    } else {
-                        String.format("(+%,.2f)", totalPladd1)
-                    }
-
-
-                    binding.goldCoinCurrency.text = CURRENCYSYMBOL[currencyOption?:0]
-                    binding.silverCoinCurrency.text = CURRENCYSYMBOL[currencyOption?:0]
-                    binding.totalCurrency.text = CURRENCYSYMBOL[currencyOption?:0]
-                    binding.goldBarCurrency.text = CURRENCYSYMBOL[currencyOption?:0]
-                    binding.silverBarCurrency.text = CURRENCYSYMBOL[currencyOption?:0]
-                    binding.totalCurrency.text = CURRENCYSYMBOL[currencyOption?:0]
-
-                    binding.goldCoinlabel.text =
-                        String.format("%,.0f", (reg1 * metalPrice1 * (currency ?: 1.0)))
-                    binding.silverCoinlabel.text =
-                        String.format("%,.0f", (reg2 * metalPrice2 * (currency ?: 1.0)))
-                    binding.totallabel.text = String.format(
-                        "%,.0f",
-                        (reg1 * metalPrice1 * (currency ?: 1.0) + reg2 * metalPrice2 * (currency
-                            ?: 1.0))
-                    )
-
-                } else {
-                    binding.goldCoinlabel.text = ""
-                    binding.silverCoinlabel.text = ""
-                    binding.totallabel.text = ""
-                    binding.goldCoinPl.text = ""
-                    binding.silverCoinPl.text = ""
-                    binding.totalPlper.text = ""
-                    binding.goldCoinCurrency.text = ""
-                    binding.silverCoinCurrency.text = ""
-                    binding.totalCurrency.text = ""
-                }
+            if (!viewModel?.products.value.isNullOrEmpty()) {
+                val products = viewModel?.products.value!!
+                val currencyOption = realData["currency"]!!.toInt()
+                calculateProduct(binding, realData, products, currencyOption)
             }
         })
 
-        viewModel?.products?.observe(viewLifecycleOwner, Observer {
-            var reg1 = 0f
-            var reg2 = 0f
-            var weight = 1f
-            var quantity = 1
-            var _package = 1
-            val realData = viewModel.realData.value ?: mapOf()
-            val metalPrice1 = realData.get("AU") ?: 1.0
-            val metalPrice2 = realData.get("AG") ?: 1.0
-            var price1 = 0.0
-            var price2 = 0.0
-            var goldPlper = 0.0
-            var silverPlper = 0.0
-            var totalPlper = 0.0
-            var goldPl = 0.0
-            var silverPl = 0.0
-            var totalPl = 0.0
-            var goldPladd = 0.0
-            var silverPladd = 0.0
-            var totalPladd = 0.0
-            var metalPre1 = 0.0
-            var metalPre2 = 0.0
-            var goldPladd1 = 0.0
-            var silverPladd1 = 0.0
-            var totalPladd1 = 0.0
-
-            var uc = 0f
-            var ub = 0f
-            var gc = 0f
-            var gb = 0f
-
-            var currency = if (realData["currency"] == 0.0) {
-                1.0
-            } else {
-                realData[CURRENCY[(realData["currency"]?.toInt() ?: 0)]]
+        viewModel?.products?.observe(viewLifecycleOwner, Observer { products ->
+            if (!viewModel?.realData.value.isNullOrEmpty()) {
+                val realData = viewModel?.realData?.value!!
+                val currencyOption = realData["currency"]!!.toInt()
+                calculateProduct(binding, realData, products, currencyOption)
             }
-
-            currencyOption = realData["currency"]?.toInt()
-
-            viewModel.products.value.also { products ->
-                products?.forEach { product ->
-                    if (product.metal == 0) {
-                        reg1 += ((1 + product.reg) * product.weightr * product.weight * product.quantity * PACKAGENUM[product.packageType])
-                        price1 += product.price / (realData[CURRENCY[product.currency]] ?: 1.0)
-//                        goldPladd += (1 + product.reg) * product.weightr * product.weight * metalPrice1
-                        goldPladd += (reg1 * metalPrice1 * (realData[CURRENCY[product.currency]]
-                            ?: 1.0))
-                        metalPre1 += product.prePrice
-
-                        if (product.type == 0) {
-                            uc += product.prePrice
-                        } else if (product.type == 1) {
-                            ub += product.prePrice
-                        }
-
-                    } else if (product.metal == 1) {
-                        reg2 += ((1 + product.reg) * product.weightr * product.weight * product.quantity * PACKAGENUM[product.packageType])
-                        price2 += product.price / (realData[CURRENCY[product.currency]] ?: 1.0)
-//                        silverPladd += (1 + product.reg) * product.weightr * product.weight * metalPrice2
-                        silverPladd += reg2 * metalPrice2 * (realData[CURRENCY[product.currency]]
-                            ?: 1.0)
-                        metalPre2 += product.prePrice
-
-                        if (product.type == 0) {
-                            gc += product.prePrice
-                        } else if (product.type == 1) {
-                            gb += product.prePrice
-                        }
-                    }
-                    goldPladd1 = (reg1 * metalPrice1 * (currency ?: 1.0)) - metalPre1
-                    silverPladd1 = (reg2 * metalPrice2 * (currency ?: 1.0)) - metalPre2
-                    totalPladd1 = goldPladd1 + silverPladd1
-
-
-                    viewModel?.ratioMetal?.value = mutableListOf(
-                        uc,
-                        ub,
-                        gc,
-                        gb
-                    )
-
-                    _package = product.packageType
-
-                }
-                if (!products.isNullOrEmpty()) {
-                    goldPlper = (goldPladd - price1) / (goldPladd)
-                    silverPlper = (silverPladd - price2) / (silverPladd)
-                    totalPlper =
-                        (goldPladd + silverPladd - (price1 + price2)) / (goldPladd + silverPladd)
-
-                    goldPl = (goldPladd * goldPlper * (currency ?: 1.0))
-                    silverPl = (silverPladd * silverPlper * (currency ?: 1.0))
-                    totalPl = ((goldPladd + silverPladd) * totalPlper * (currency ?: 1.0))
-                    totalPladd = goldPladd + silverPladd
-                    binding.goldCoinPl.text = String.format("(%,.2f)", goldPladd)
-                    binding.silverCoinPl.text = String.format("(%,.2f)", silverPladd)
-                    binding.totalPlper.text = String.format("(%,.2f)", totalPladd)
-
-
-                    binding.goldCoinCurrency.text = CURRENCYSYMBOL[currencyOption?:0]
-                    binding.silverCoinCurrency.text = CURRENCYSYMBOL[currencyOption?:0]
-                    binding.totalCurrency.text = CURRENCYSYMBOL[currencyOption?:0]
-                    binding.goldBarCurrency.text = CURRENCYSYMBOL[currencyOption?:0]
-                    binding.silverBarCurrency.text = CURRENCYSYMBOL[currencyOption?:0]
-                    binding.totalCurrency.text = CURRENCYSYMBOL[currencyOption?:0]
-
-                    binding.goldCoinlabel.text =
-                        String.format("%,.0f", (reg1 * metalPrice1 * (currency ?: 1.0)))
-                    binding.silverCoinlabel.text =
-                        String.format("%,.0f", (reg2 * metalPrice2 * (currency ?: 1.0)))
-                    binding.totallabel.text = String.format(
-                        "%,.0f",
-                        (reg1 * metalPrice1 * (currency ?: 1.0) + reg2 * metalPrice2 * (currency
-                            ?: 1.0))
-                    )
-
-                } else {
-                    binding.goldCoinlabel.text = ""
-                    binding.silverCoinlabel.text = ""
-                    binding.totallabel.text = ""
-                    binding.goldCoinPl.text = ""
-                    binding.silverCoinPl.text = ""
-                    binding.totalPlper.text = ""
-                    binding.goldCoinCurrency.text = ""
-                    binding.silverCoinCurrency.text = ""
-                    binding.totalCurrency.text = ""
-
-                }
-            }
-
-
         })
-
 
         if (!viewModel?.products?.value.isNullOrEmpty()) {
             Handler().postDelayed({
@@ -443,140 +184,158 @@ class StatFragment : Fragment() {
     }
 
     private fun setData(viewModel: HomeViewPagerViewModel?, binding: StatFragmentBinding) {
-        var reg1 = 0f
-        var reg2 = 0f
-        var weight = 1f
-        var quantity = 1
-        var _package = 1
-        val realData = viewModel?.realData?.value ?: mapOf()
-        val metalPrice1 = realData.get("AU") ?: 1.0
-        val metalPrice2 = realData.get("AG") ?: 1.0
-        var price1 = 0.0
-        var price2 = 0.0
-        var goldPlper = 0.0
-        var silverPlper = 0.0
-        var totalPlper = 0.0
-        var goldPl = 0.0
-        var silverPl = 0.0
-        var totalPl = 0.0
-        var goldPladd = 0.0
-        var silverPladd = 0.0
-        var totalPladd = 0.0
-        var metalPre1 = 0.0
-        var metalPre2 = 0.0
-        var goldPladd1 = 0.0
-        var silverPladd1 = 0.0
-        var totalPladd1 = 0.0
+        val realData = viewModel?.realData?.value!!
+        val products = viewModel?.products.value!!
+        val currencyOption = realData["currency"]!!.toInt()
+        calculateProduct(binding, realData, products, currencyOption)
+    }
 
-        var uc = 0f
-        var ub = 0f
-        var gc = 0f
-        var gb = 0f
 
-        currencyOption = realData["currency"]?.toInt()
+    private fun calculateProduct(
+        binding: StatFragmentBinding,
+        realData: Map<String, Double>,
+        products: List<Product>,
+        currencyOption: Int
+    ) {
 
-        var currency = if (realData["currency"] == 0.0) {
-            1.0
-        } else {
-            realData[CURRENCY[(realData["currency"]?.toInt() ?: 0)]]
-        }
+        val currency = realData[CURRENCY[currencyOption]]!!
 
-        viewModel?.products?.value.also { products ->
-            val currencyOption = (realData["currency"]?.toInt() ?: 0)
+        var goldCoin_Total = 0.0
+        var goldBar_Total = 0.0
+        var silverCoin_Total = 0.0
+        var silverBar_Total = 0.0
 
-            products?.forEach { product ->
+        var goldCoin_BuyPrice = 0.0
+        var goldBar_BuyPrice = 0.0
+        var silverCoin_BuyPrice = 0.0
+        var silverBar_BuyPrice = 0.0
+
+        var goldCoin_Pl = 0.0
+        var goldBar_Pl = 0.0
+        var silverCoin_Pl = 0.0
+        var silverBar_Pl = 0.0
+
+        var goldCoin_Ratio = 0.0
+        var goldBar_Ratio = 0.0
+        var silverCoin_Ratio = 0.0
+        var silverBar_Ratio = 0.0
+
+        products?.forEach { product ->
+            /* sum each metal and type  */
+            if (!realData.isNullOrEmpty()) {
                 if (product.metal == 0) {
-                    reg1 += ((1 + product.reg) * product.weightr * product.weight * product.quantity * PACKAGENUM[product.packageType])
-                    price1 += product.price / (realData[CURRENCY[product.currency]] ?: 1.0)
-//                        goldPladd += (1 + product.reg) * product.weightr * product.weight * metalPrice1
-                    goldPladd += (reg1 * metalPrice1 * (realData[CURRENCY[product.currency]]
-                        ?: 1.0))
-                    metalPre1 += product.prePrice
-
                     if (product.type == 0) {
-                        uc += product.prePrice
+                        goldCoin_Total += realData["AU"]!! * product.reg * PACKAGENUM[product.packageType] * product.quantity * product.weightr * product.weight
+                        goldCoin_BuyPrice += product.price / realData[CURRENCY[product.currency]]!!
                     } else if (product.type == 1) {
-                        ub += product.prePrice
+                        goldBar_Total += product.reg * PACKAGENUM[product.packageType] * product.quantity * product.weightr * product.weight
+                        goldBar_BuyPrice += product.price / realData[CURRENCY[product.currency]]!!
                     }
-
                 } else if (product.metal == 1) {
-                    reg2 += ((1 + product.reg) * product.weightr * product.weight * product.quantity * PACKAGENUM[product.packageType])
-                    price2 += product.price / (realData[CURRENCY[product.currency]] ?: 1.0)
-//                        silverPladd += (1 + product.reg) * product.weightr * product.weight * metalPrice2
-                    silverPladd += reg2 * metalPrice2 * (realData[CURRENCY[product.currency]]
-                        ?: 1.0)
-                    metalPre2 += product.prePrice
-
                     if (product.type == 0) {
-                        gc += product.prePrice
+                        silverCoin_Total += product.reg * PACKAGENUM[product.packageType] * product.quantity * product.weightr * product.weight
+                        silverCoin_BuyPrice += product.price / realData[CURRENCY[product.currency]]!!
                     } else if (product.type == 1) {
-                        gb += product.prePrice
+                        silverBar_Total += product.reg * PACKAGENUM[product.packageType] * product.quantity * product.weightr * product.weight
+                        silverBar_BuyPrice += product.price / realData[CURRENCY[product.currency]]!!
                     }
                 }
-                goldPladd1 = (reg1 * metalPrice1 * (currency ?: 1.0)) - metalPre1
-                silverPladd1 = (reg2 * metalPrice2 * (currency ?: 1.0)) - metalPre2
-                totalPladd1 = goldPladd1 + silverPladd1
+
+                /*calculate Total*/
+                val total = goldCoin_Total + goldBar_Total + silverCoin_Total + silverBar_Total
+                val total_Pl =
+                    total - goldCoin_BuyPrice + goldBar_BuyPrice + silverCoin_BuyPrice + silverBar_BuyPrice
+                val total_plper = total_Pl / total
+
+                /*calculate Pl*/
+                goldCoin_Pl = goldCoin_Total - goldCoin_BuyPrice
+                goldBar_Pl = goldBar_Total - goldBar_BuyPrice
+                silverCoin_Pl = silverCoin_Total - silverCoin_BuyPrice
+                silverBar_Pl = silverBar_Total - silverBar_BuyPrice
+
+                /*calculate Ratio*/
+                goldCoin_Ratio = goldCoin_Total / total
+                goldBar_Ratio = goldBar_Total / total
+                silverCoin_Ratio = silverCoin_Total / total
+                silverBar_Ratio = silverBar_Total / total
+
+                /*calculate Price USD -> CURRENCY*/
+                val result_total = total * currency
+                val result_goldCoin = goldCoin_Total * currency
+                val result_goldBar = goldBar_Total * currency
+                val result_silverCoin = silverCoin_Total * currency
+                val result_silverBar = silverBar_Total * currency
 
 
-                viewModel?.ratioMetal?.value = mutableListOf(
-                    uc,
-                    ub,
-                    gc,
-                    gb
-                )
+                /* set Visible Layout */
+                if (result_total > 0) {
+                    binding.totalCurrency.text = CURRENCYSYMBOL[currencyOption]
+                    binding.totalPrice.text = priceToString(result_total, "priceInt")
+                    binding.totalPlper.text = priceToString(total_Pl, "Pl")
 
-                _package = product.packageType
+                    binding.totalLayout.visibility = View.VISIBLE
+                    binding.statChart.visibility = View.GONE
+                }
+                if (result_goldCoin > 0) {
+                    binding.goldCoinCurrency.text = CURRENCYSYMBOL[currencyOption]
+                    binding.goldCoinPrice.text = priceToString(result_goldCoin, "priceInt")
+                    binding.goldCoinPl.text = priceToString(goldCoin_Pl, "priceInt")
+
+                    binding.goldCoinLayout.visibility = View.VISIBLE
+                }
+                if (result_goldBar > 0) {
+                    binding.goldBarCurrency.text = CURRENCYSYMBOL[currencyOption]
+                    binding.goldBarPrice.text = priceToString(result_goldBar, "priceInt")
+                    binding.goldBarPl.text = priceToString(goldCoin_Pl, "priceInt")
+
+                    binding.goldBarLayout.visibility = View.VISIBLE
+                }
+                if (result_silverCoin > 0) {
+                    binding.silverCoinCurrency.text = CURRENCYSYMBOL[currencyOption]
+                    binding.silverCoinPrice.text = priceToString(result_silverCoin, "priceInt")
+                    binding.silverCoinPl.text = priceToString(silverCoin_Pl, "priceInt")
+
+                    binding.silverCoinLayout.visibility = View.VISIBLE
+                }
+                if (result_silverBar > 0) {
+                    binding.silverBarCurrency.text = CURRENCYSYMBOL[currencyOption]
+                    binding.silverBarPrice.text = priceToString(result_silverBar, "priceInt")
+                    binding.silverBarPl.text = priceToString(goldCoin_Pl, "priceInt")
+
+                    binding.silverBarLayout.visibility = View.VISIBLE
+                }
 
             }
-            if (!products.isNullOrEmpty()) {
-                goldPlper = (goldPladd - price1) / (goldPladd)
-                silverPlper = (silverPladd - price2) / (silverPladd)
-                totalPlper =
-                    (goldPladd + silverPladd - (price1 + price2)) / (goldPladd + silverPladd)
 
-                goldPl = (goldPladd * goldPlper * (currency ?: 1.0))
-                silverPl = (silverPladd * silverPlper * (currency ?: 1.0))
-                totalPl = ((goldPladd + silverPladd) * totalPlper * (currency ?: 1.0))
-                totalPladd = goldPladd + silverPladd
+        }
+    }
 
-                binding.goldCoinPl.text = String.format("(%,.2f)", goldPladd)
-                binding.silverCoinPl.text = String.format("(%,.2f)", silverPladd)
-                binding.totalPlper.text = String.format("(%,.2f)", totalPladd)
+    private fun priceToString(price: Double, type: String): String {
 
-                binding.goldCoinCurrency.text = CURRENCYSYMBOL[currencyOption]
-                binding.silverCoinCurrency.text = CURRENCYSYMBOL[currencyOption]
-                binding.totalCurrency.text = CURRENCYSYMBOL[currencyOption]
-                binding.goldBarCurrency.text = CURRENCYSYMBOL[currencyOption]
-                binding.silverBarCurrency.text = CURRENCYSYMBOL[currencyOption]
-                binding.totalCurrency.text = CURRENCYSYMBOL[currencyOption]
-
-                binding.goldCoinlabel.text =
-                    String.format("%,.0f", (reg1 * metalPrice1 * (currency ?: 1.0)))
-                binding.silverCoinlabel.text =
-                    String.format("%,.0f", (reg2 * metalPrice2 * (currency ?: 1.0)))
-                binding.totallabel.text = String.format(
-                    "%,.0f",
-                    (reg1 * metalPrice1 * (currency ?: 1.0) + reg2 * metalPrice2 * (currency
-                        ?: 1.0))
-                )
+        return when (type) {
+            "PriceInt" -> {
+                String.format("%,.0f", price)
             }
 
-            binding.goldCoinlabel.visibility = View.VISIBLE
-            binding.silverCoinlabel.visibility = View.VISIBLE
-            binding.totallabel.visibility = View.VISIBLE
+            "PriceFloat" -> {
+                String.format("%,.2f", price)
+            }
 
-            binding.goldCoinCurrency.visibility = View.VISIBLE
-            binding.silverCoinCurrency.visibility = View.VISIBLE
-            binding.totalCurrency.visibility = View.VISIBLE
+            "Pl" -> {
+                when {
+                    price < 0 -> {
+                        "(+" + String.format("%,.2f", price) + "%)"
+                    }
+                    price > 0 -> {
+                        "(" + String.format("%,.2f", price) + "%)"
+                    }
+                    else -> "( 0.00%)"
+                }
+            }
+            else -> {
 
-            binding.goldCoinPl.visibility = View.VISIBLE
-            binding.silverCoinPl.visibility = View.VISIBLE
-            binding.totalPlper.visibility = View.VISIBLE
-
-            binding.goldprogress.visibility = View.GONE
-            binding.silverprogress.visibility = View.GONE
-            binding.totalprogress.visibility = View.GONE
-            binding.chartprogress.visibility = View.GONE
+                ""
+            }
         }
     }
 }

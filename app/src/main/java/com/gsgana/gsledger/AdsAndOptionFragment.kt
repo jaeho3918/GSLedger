@@ -1,7 +1,5 @@
 package com.gsgana.gsledger
 
-
-
 import android.content.Context
 import android.content.Intent
 import androidx.lifecycle.ViewModelProviders

@@ -54,7 +54,6 @@ class AdsAndOptionFragment : Fragment() {
         viewModel: HomeViewPagerViewModel?
     ) {
         val sf = activity?.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-        binding.currencyOption.setSelection( sf?.getInt(CURR_NAME, 0) ?:0)
 
         var adapter =
             ArrayAdapter(
@@ -79,6 +78,10 @@ class AdsAndOptionFragment : Fragment() {
                     getData?.clear()
                 }
             }
+
+        if (!viewModel?.realData?.value.isNullOrEmpty()) {
+            binding.currencyOption.setSelection(viewModel?.realData?.value?.get("currency")!!.toInt())
+        }
     }
 
     interface Callback {

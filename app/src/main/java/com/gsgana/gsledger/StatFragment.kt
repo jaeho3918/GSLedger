@@ -56,10 +56,10 @@ class StatFragment : Fragment() {
         viewModel?.realData?.observe(viewLifecycleOwner, Observer { realData ->
             if (!viewModel?.products.value.isNullOrEmpty()) {
                 val products = viewModel?.products.value!!
-                val currencyOption = realData["currency"]!!.toInt()
                 calculateProduct(binding, realData, products)
             }
-        })
+        }
+        )
 
         viewModel?.products?.observe(viewLifecycleOwner, Observer { products ->
             if (!viewModel?.realData.value.isNullOrEmpty()) {
@@ -67,19 +67,23 @@ class StatFragment : Fragment() {
                 val currencyOption = realData["currency"]!!.toInt()
                 calculateProduct(binding, realData, products)
             }
-        })
-
-        if (!viewModel?.products?.value.isNullOrEmpty()) {
-            Handler().postDelayed({
-                setData(viewModel, binding)
-                setChart(context, viewModel, binding)
-            }, 1800)
-        } else {
-            Handler().postDelayed({
-                setData(viewModel, binding)
-                setChart(context, viewModel, binding)
-            }, 1800)
+            setChart(context, viewModel, binding)
         }
+        )
+
+//        if (!viewModel?.products?.value.isNullOrEmpty()) {
+//            Handler().postDelayed({
+//                setChart(context, viewModel, binding)
+//            }, 1300)
+//        } else {
+//            Handler().postDelayed({
+//                setChart(context, viewModel, binding)
+//            }, 1300)
+//        }
+
+        Handler().postDelayed({
+            setChart(context, viewModel, binding)
+            }, 1800)
 
         return binding.root
     }
@@ -105,7 +109,11 @@ class StatFragment : Fragment() {
         val backGround = ContextCompat.getColor(context!!, R.color.border_background)
         val duration = 530
 
-        val chartData = viewModel?.ratioMetal?.value
+        var chartData = mutableListOf(0f,0f,0f,0f)
+        var chartData1 = viewModel?.ratioMetal?.value?.forEachIndexed() { idx, value ->
+            chartData[idx] = value.toFloat()
+        }
+
 
         val pieChart = binding.statChart
         pieChart.setUsePercentValues(true)
@@ -172,15 +180,20 @@ class StatFragment : Fragment() {
 
         val sumData = chartData?.sum()
 
-        if (chartData?.sum()!! > 0f) {
-            pieChart.visibility = View.VISIBLE
-            binding.chartprogress.visibility = View.GONE
-            pieChart.invalidate()
-        } else {
-            binding.chartprogress.visibility = View.VISIBLE
-            pieChart.visibility = View.GONE
-        }
-        pieChart.animateY(1400, Easing.EaseInOutQuad)
+//        if (sumData > 0f) {
+//            pieChart.visibility = View.VISIBLE
+//            binding.chartprogress.visibility = View.GONE
+//            pieChart.invalidate()
+//        } else {
+//            binding.chartprogress.visibility = View.VISIBLE
+//            pieChart.visibility = View.GONE
+//        }
+
+        pieChart.visibility = View.VISIBLE
+        binding.chartprogress.visibility = View.GONE
+        pieChart.invalidate()
+
+        pieChart.animateY(1100, Easing.EaseInOutQuad)
     }
 
     private fun setData(viewModel: HomeViewPagerViewModel?, binding: StatFragmentBinding) {
@@ -240,77 +253,81 @@ class StatFragment : Fragment() {
                         silverBar_BuyPrice += product.price / realData[CURRENCY[product.currency]]!!
                     }
                 }
-
-                /*calculate Total*/
-                val total = goldCoin_Total + goldBar_Total + silverCoin_Total + silverBar_Total
-                val total_Pl =
-                    total - (goldCoin_BuyPrice + goldBar_BuyPrice + silverCoin_BuyPrice + silverBar_BuyPrice)
-                val total_Plper = total_Pl / total
-
-                /*calculate Pl*/
-                goldCoin_Pl = goldCoin_Total - goldCoin_BuyPrice
-                goldBar_Pl = goldBar_Total - goldBar_BuyPrice
-                silverCoin_Pl = silverCoin_Total - silverCoin_BuyPrice
-                silverBar_Pl = silverBar_Total - silverBar_BuyPrice
-
-                /*calculate Ratio*/
-                goldCoin_Ratio = goldCoin_Total / total
-                goldBar_Ratio = goldBar_Total / total
-                silverCoin_Ratio = silverCoin_Total / total
-                silverBar_Ratio = silverBar_Total / total
-
-                /*calculate Price USD -> CURRENCY*/
-                val result_total = total * currency
-                val result_totalPl = total_Pl * currency
-                val result_goldCoin = goldCoin_Total * currency
-                val result_goldBar = goldBar_Total * currency
-                val result_silverCoin = silverCoin_Total * currency
-                val result_silverBar = silverBar_Total * currency
-
-
-                /* set Visible Layout */
-                if (result_total > 0) {
-                    binding.totalCurrency.text = CURRENCYSYMBOL[currencyOption]
-                    binding.totalPrice.text = priceToString(result_total, "PriceInt")
-                    binding.totalPlper.text = priceToString(total_Plper, "Pl")
-
-                    binding.plPrice.text = priceToString(result_totalPl, "PriceInt")
-                    binding.plCurrency.text = CURRENCYSYMBOL[currencyOption]
-
-                    binding.totalLayout.visibility = View.VISIBLE
-                    binding.statChart.visibility = View.GONE
-                }
-                if (result_goldCoin > 0) {
-                    binding.goldCoinCurrency.text = CURRENCYSYMBOL[currencyOption]
-                    binding.goldCoinPrice.text = priceToString(result_goldCoin, "PriceInt")
-                    binding.goldCoinPl.text = priceToString(goldCoin_Pl, "PriceInt")
-
-                    binding.goldCoinLayout.visibility = View.VISIBLE
-                }
-                if (result_goldBar > 0) {
-                    binding.goldBarCurrency.text = CURRENCYSYMBOL[currencyOption]
-                    binding.goldBarPrice.text = priceToString(result_goldBar, "PriceInt")
-                    binding.goldBarPl.text = priceToString(goldCoin_Pl, "PriceInt")
-
-                    binding.goldBarLayout.visibility = View.VISIBLE
-                }
-                if (result_silverCoin > 0) {
-                    binding.silverCoinCurrency.text = CURRENCYSYMBOL[currencyOption]
-                    binding.silverCoinPrice.text = priceToString(result_silverCoin, "PriceInt")
-                    binding.silverCoinPl.text = priceToString(silverCoin_Pl, "PriceInt")
-
-                    binding.silverCoinLayout.visibility = View.VISIBLE
-                }
-                if (result_silverBar > 0) {
-                    binding.silverBarCurrency.text = CURRENCYSYMBOL[currencyOption]
-                    binding.silverBarPrice.text = priceToString(result_silverBar, "PriceInt")
-                    binding.silverBarPl.text = priceToString(silverBar_Pl, "PriceInt")
-
-                    binding.silverBarLayout.visibility = View.VISIBLE
-                }
-
             }
+        }
 
+        /*calculate Total*/
+        val total = goldCoin_Total + goldBar_Total + silverCoin_Total + silverBar_Total
+        val total_Pl =
+            total - (goldCoin_BuyPrice + goldBar_BuyPrice + silverCoin_BuyPrice + silverBar_BuyPrice)
+        val total_Plper = total_Pl / total
+
+        /*calculate Ratio*/
+        goldCoin_Ratio = (goldCoin_Total / total)
+        goldBar_Ratio = (goldBar_Total / total)
+        silverCoin_Ratio = (silverCoin_Total / total)
+        silverBar_Ratio = (silverBar_Total / total)
+
+        /*calculate Price USD -> CURRENCY*/
+        val result_total = total * currency
+        val result_totalPl = total_Pl * currency
+        val result_goldCoin = goldCoin_Total * currency
+        val result_goldBar = goldBar_Total * currency
+        val result_silverCoin = silverCoin_Total * currency
+        val result_silverBar = silverBar_Total * currency
+
+        val result_goldCoin_BuyPrice = goldCoin_BuyPrice * currency
+        val result_goldBar_BuyPrice = goldBar_BuyPrice * currency
+        val result_silverCoin_BuyPrice = silverCoin_BuyPrice * currency
+        val result_silverBar_BuyPrice = silverBar_BuyPrice * currency
+
+        /*calculate Pl*/
+        goldCoin_Pl = result_goldCoin - result_goldCoin_BuyPrice
+        goldBar_Pl = result_goldBar - result_goldBar_BuyPrice
+        silverCoin_Pl = result_silverCoin - result_silverCoin_BuyPrice
+        silverBar_Pl = result_silverBar - result_silverBar_BuyPrice
+
+        /* set Visible Layout */
+        viewModel.ratioMetal.value = listOf(goldCoin_Ratio,goldBar_Ratio,silverCoin_Ratio,silverBar_Ratio)
+
+        /* set Visible Layout */
+        if (result_total > 0) {
+            binding.totalCurrency.text = CURRENCYSYMBOL[currencyOption]
+            binding.totalPrice.text = priceToString(result_total, "PriceInt")
+            binding.totalPlper.text = priceToString(total_Plper, "Pl")
+
+            binding.plPrice.text = priceToString(result_totalPl, "PriceInt")
+            binding.plCurrency.text = CURRENCYSYMBOL[currencyOption]
+
+            binding.totalLayout.visibility = View.VISIBLE
+        }
+        if (result_goldCoin > 0) {
+            binding.goldCoinCurrency.text = CURRENCYSYMBOL[currencyOption]
+            binding.goldCoinPrice.text = priceToString(result_goldCoin, "PriceInt")
+            binding.goldCoinPl.text = priceToString(goldCoin_Pl, "PricePl")
+
+            binding.goldCoinLayout.visibility = View.VISIBLE
+        }
+        if (result_goldBar > 0) {
+            binding.goldBarCurrency.text = CURRENCYSYMBOL[currencyOption]
+            binding.goldBarPrice.text = priceToString(result_goldBar, "PriceInt")
+            binding.goldBarPl.text = priceToString(goldBar_Pl, "PricePl")
+
+            binding.goldBarLayout.visibility = View.VISIBLE
+        }
+        if (result_silverCoin > 0) {
+            binding.silverCoinCurrency.text = CURRENCYSYMBOL[currencyOption]
+            binding.silverCoinPrice.text = priceToString(result_silverCoin, "PriceInt")
+            binding.silverCoinPl.text = priceToString(silverCoin_Pl, "PricePl")
+
+            binding.silverCoinLayout.visibility = View.VISIBLE
+        }
+        if (result_silverBar > 0) {
+            binding.silverBarCurrency.text = CURRENCYSYMBOL[currencyOption]
+            binding.silverBarPrice.text = priceToString(result_silverBar, "PriceInt")
+            binding.silverBarPl.text = priceToString(silverBar_Pl, "PricePl")
+
+            binding.silverBarLayout.visibility = View.VISIBLE
         }
     }
 
@@ -327,15 +344,27 @@ class StatFragment : Fragment() {
 
             "Pl" -> {
                 when {
-                    price < 0 -> {
+                    price > 0 -> {
                         "(+" + String.format("%,.2f", price) + "%)"
                     }
-                    price > 0 -> {
-                        "(-" + String.format("%,.2f", price) + "%)"
+                    price < 0 -> {
+                        "(" + String.format("%,.2f", price) + "%)"
                     }
                     else -> "( 0.00%)"
                 }
             }
+            "PricePl" -> {
+                when {
+                    price > 0 -> {
+                        "(+" + String.format("%,.0f", price) + ")"
+                    }
+                    price < 0 -> {
+                        "(" + String.format("%,.0f", price) + ")"
+                    }
+                    else -> "( 0.00%)"
+                }
+            }
+
             else -> {
 
                 ""

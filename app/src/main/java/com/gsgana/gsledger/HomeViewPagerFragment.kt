@@ -57,6 +57,8 @@ class HomeViewPagerFragment : Fragment() {
     private var preAu: Int? = null
     private var preAg: Int? = null
     private var duration: Long = 530
+    private var color_up :Int? = null
+    private var color_down :Int? = null
 
     private val viewModel: HomeViewPagerViewModel by viewModels {
         InjectorUtils.provideHomeViewPagerViewModelFactory(requireActivity(), null)
@@ -95,15 +97,12 @@ class HomeViewPagerFragment : Fragment() {
         }
         )
 
-
-//        currencyOption = activity?.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)?.getInt(CURR_NAME, 0)
-
-
         white = ContextCompat.getColor(context!!, R.color.white)
         gray = ContextCompat.getColor(context!!, R.color.colorAccent)
         red = ContextCompat.getColor(context!!, R.color.mu1_data_down)
         green = ContextCompat.getColor(context!!, R.color.mu1_data_up)
         blue = ContextCompat.getColor(context!!, R.color.mu2_data_down)
+
 
 
         binding = HomeViewPagerFragmentBinding.inflate(inflater, container, false)
@@ -125,11 +124,11 @@ class HomeViewPagerFragment : Fragment() {
             binding.realSilverCurrency.text = CURRENCYSYMBOL[currencyOption!!]
 
             binding.realGoldPrice.text = String.format(
-                " %.2f",
+                " %,.2f",
                 (it["AU"]!! * (it[CURRENCY[currencyOption!!]] ?: error("")))
             )
             binding.realSilverPrice.text = String.format(
-                " %.2f",
+                " %,.2f",
                 (it["AG"]!! * it[CURRENCY[currencyOption!!]]!!)
             )
 
@@ -143,7 +142,7 @@ class HomeViewPagerFragment : Fragment() {
                 divAuValue > 0 -> {
                     binding.realGoldPL.setText(
                         "(" + "+" + String.format(
-                            " %.2f",
+                            " %,.2f",
                             divAuValue
                         ) + "%)"
                     )
@@ -151,7 +150,7 @@ class HomeViewPagerFragment : Fragment() {
                 divAuValue < 0 -> {
                     binding.realGoldPL.setText(
                         "(" + "-" + String.format(
-                            " %.2f",
+                            " %,.2f",
                             -1 * divAuValue
                         ) + "%)"
                     )
@@ -164,7 +163,7 @@ class HomeViewPagerFragment : Fragment() {
                 divAgValue > 0 -> {
                     binding.realSilverPL.setText(
                         "(" + "+" + String.format(
-                            " %.2f",
+                            " %,.2f",
                             divAgValue
                         ) + "%)"
                     )
@@ -172,7 +171,7 @@ class HomeViewPagerFragment : Fragment() {
                 divAgValue < 0 -> {
                     binding.realSilverPL.setText(
                         "(" + "-" + String.format(
-                            " %.2f",
+                            " %,.2f",
                             -1 * divAgValue
                         ) + "%)"
                     )
@@ -187,7 +186,7 @@ class HomeViewPagerFragment : Fragment() {
                     "backgroundColor",
                     ArgbEvaluator(),
                     white,
-                    red
+                    color_down
                 )
                     .setDuration(duration)
                     .start();
@@ -195,7 +194,7 @@ class HomeViewPagerFragment : Fragment() {
                     binding.realGoldPrice,
                     "backgroundColor",
                     ArgbEvaluator(),
-                    red,
+                    color_down,
                     white
                 )
                     .setDuration(duration)
@@ -208,7 +207,7 @@ class HomeViewPagerFragment : Fragment() {
                     "backgroundColor",
                     ArgbEvaluator(),
                     white,
-                    green
+                    color_up
                 )
                     .setDuration(duration)
                     .start();
@@ -216,7 +215,7 @@ class HomeViewPagerFragment : Fragment() {
                     binding.realGoldPrice,
                     "backgroundColor",
                     ArgbEvaluator(),
-                    green,
+                    color_up,
                     white
                 )
                     .setDuration(duration)
@@ -228,7 +227,7 @@ class HomeViewPagerFragment : Fragment() {
                     "backgroundColor",
                     ArgbEvaluator(),
                     white,
-                    red
+                    color_down
                 )
                     .setDuration(duration)
                     .start();
@@ -236,7 +235,7 @@ class HomeViewPagerFragment : Fragment() {
                     binding.realSilverPrice,
                     "backgroundColor",
                     ArgbEvaluator(),
-                    red,
+                    color_down,
                     white
                 )
                     .setDuration(duration)
@@ -249,7 +248,7 @@ class HomeViewPagerFragment : Fragment() {
                     "backgroundColor",
                     ArgbEvaluator(),
                     white,
-                    green
+                    color_up
                 )
                     .setDuration(duration)
                     .start();
@@ -257,13 +256,12 @@ class HomeViewPagerFragment : Fragment() {
                     binding.realSilverPrice,
                     "backgroundColor",
                     ArgbEvaluator(),
-                    green,
+                    color_up,
                     white
                 )
                     .setDuration(duration)
                     .start();
             }
-
 
 
         }

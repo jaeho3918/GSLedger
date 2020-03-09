@@ -11,7 +11,7 @@ class HomeViewPagerViewModel internal constructor(
 ) :
     ViewModel() {
 
-    var ratioMetal = MutableLiveData<List<Float>>(mutableListOf(0f, 0f, 0f, 0f))
+    var ratioMetal = MutableLiveData<List<Double>>(mutableListOf(0.0, 0.0, 0.0, 0.0))
     val products: LiveData<List<Product>> = productRepository.getProducts()
 
     val realData = MutableLiveData<Map<String, Double>>()

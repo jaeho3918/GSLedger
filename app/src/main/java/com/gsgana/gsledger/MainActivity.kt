@@ -45,33 +45,33 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
+        intent.removeExtra(KEY)
 
-        val currencyOption =
-            getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)?.getInt(CURR_NAME, 0)
-
-        val databaseRef = FirebaseDatabase.getInstance().getReference(REAL_DB_PATH)
-        databaseRef.addValueEventListener(object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError) {}
-            override fun onDataChange(p0: DataSnapshot) {
-                val data = p0?.value as HashMap<String, Double>
-
-                if (currencyOption != null) {
-                    if (!viewModel.realData.value.isNullOrEmpty()) {
-                        data["currency"] = viewModel.realData.value?.getValue("currency") ?: 0.0
-                    } else {
-                        data["currency"] = currencyOption.toDouble()
-                    }
-                }
-                data["USD"] = 1.0
-                data["DATE"] = 0.0
-
-                viewModel.realData.value = data
-                viewModel.realTime.value = (p0.value as HashMap<String, String>)["DATE"]
-            }
-
-
-        }
-        )
+//        val currencyOption =
+//            getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)?.getInt(CURR_NAME, 0)
+//
+//        val databaseRef = FirebaseDatabase.getInstance().getReference(REAL_DB_PATH)
+//        databaseRef.addValueEventListener(object : ValueEventListener {
+//            override fun onCancelled(p0: DatabaseError) {}
+//            override fun onDataChange(p0: DataSnapshot) {
+//                val data = p0?.value as HashMap<String, Double>
+//
+//                if (currencyOption != null) {
+//                    if (!viewModel.realData.value.isNullOrEmpty()) {
+//                        data["currency"] = viewModel.realData.value?.getValue("currency") ?: 0.0
+//                    } else {
+//                        data["currency"] = currencyOption.toDouble()
+//                    }
+//                }
+//                data["USD"] = 1.0
+//
+//                viewModel.realData.value = data
+//                viewModel.realTime.value = (p0.value as HashMap<String, String>)["DATE"]
+//            }
+//
+//
+//        }
+//        )
 
     }
 

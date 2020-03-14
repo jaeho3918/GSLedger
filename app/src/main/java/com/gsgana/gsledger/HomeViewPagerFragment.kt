@@ -28,6 +28,8 @@ import com.gsgana.gsledger.databinding.HomeViewPagerFragmentBinding
 import com.gsgana.gsledger.utilities.*
 import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModel
 import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModelFactory
+import java.text.SimpleDateFormat
+import java.util.*
 import kotlin.collections.HashMap
 
 
@@ -57,8 +59,8 @@ class HomeViewPagerFragment : Fragment() {
     private var preAu: Int? = null
     private var preAg: Int? = null
     private var duration: Long = 530
-    private var color_up :Int? = null
-    private var color_down :Int? = null
+    private var color_up: Int? = null
+    private var color_down: Int? = null
 
     private val viewModel: HomeViewPagerViewModel by viewModels {
         InjectorUtils.provideHomeViewPagerViewModelFactory(requireActivity(), null)
@@ -86,12 +88,10 @@ class HomeViewPagerFragment : Fragment() {
                     }
                 }
                 data["USD"] = 1.0
-                data["DATE"] = 0.0
 
                 viewModel.realData.value = data
 
                 /////////////////////////////////////////////////////////////////////////////////////////////
-
 
             }
         }
@@ -103,8 +103,6 @@ class HomeViewPagerFragment : Fragment() {
         green = ContextCompat.getColor(context!!, R.color.mu1_data_up)
         blue = ContextCompat.getColor(context!!, R.color.mu2_data_down)
 
-
-
         binding = HomeViewPagerFragmentBinding.inflate(inflater, container, false)
         val tabLayout = binding.tabLayout
         val viewPager = binding.viewPager
@@ -115,29 +113,38 @@ class HomeViewPagerFragment : Fragment() {
             tab.text = getTabTitle(position)
         }.attach()
 
-        viewModel.realData.observe(viewLifecycleOwner) {
-            val currencyOption = activity?.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)?.getInt(CURR_NAME, 0)
+        viewModel.realData.observe(viewLifecycleOwner) { realData ->
+            val currencyOption = activity?.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+                ?.getInt(CURR_NAME, 0)
 
-            binding.realGoldCurrency.text = CURRENCYSYMBOL[currencyOption?:0]
-            binding.realSilverCurrency.text = CURRENCYSYMBOL[currencyOption?:0]
+            val test = realData["DATE"]!!.toLong()
+
+            binding.realUpdatedDate.text = SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(
+                Date(realData["DATE"]!!.toLong()*1000)
+            )
+
+            binding.realGoldCurrency.text = CURRENCYSYMBOL[currencyOption ?: 0]
+            binding.realSilverCurrency.text = CURRENCYSYMBOL[currencyOption ?: 0]
             binding.realGoldCurrency.text = CURRENCYSYMBOL[currencyOption!!]
             binding.realSilverCurrency.text = CURRENCYSYMBOL[currencyOption!!]
 
             binding.realGoldPrice.text = String.format(
                 " %,.2f",
-                (it["AU"]!! * (it[CURRENCY[currencyOption!!]] ?: error("")))
+                (realData["AU"]!! * (realData[CURRENCY[currencyOption!!]] ?: error("")))
             )
             binding.realSilverPrice.text = String.format(
                 " %,.2f",
-                (it["AG"]!! * it[CURRENCY[currencyOption!!]]!!)
+                (realData["AG"]!! * realData[CURRENCY[currencyOption!!]]!!)
             )
 
 
             /////////////////////////////////////////////////////////////////////////////////////////////
             val divAuValue =
-                ((it["AU"] ?: 0.0) - (it["YESAU"] ?: 0.0)) / (it["AU"] ?: 0.0) * 100
+                ((realData["AU"] ?: 0.0) - (realData["YESAU"] ?: 0.0)) / (realData["AU"]
+                    ?: 0.0) * 100
             val divAgValue =
-                ((it["AG"] ?: 0.0) - (it["YESAG"] ?: 0.0)) / (it["AG"] ?: 0.0) * 100
+                ((realData["AG"] ?: 0.0) - (realData["YESAG"] ?: 0.0)) / (realData["AG"]
+                    ?: 0.0) * 100
             when {
                 divAuValue > 0 -> {
                     binding.realGoldPL.setText(
@@ -180,88 +187,88 @@ class HomeViewPagerFragment : Fragment() {
                     binding.realSilverPL.setText("( 0.00%)")
                 }
             }
-            if (preAu ?: 999999 > (it["AU"]?.toInt()!!)) {
-                ObjectAnimator.ofObject(
-                    binding.realGoldPrice,
-                    "backgroundColor",
-                    ArgbEvaluator(),
-                    white,
-                    color_down
-                )
-                    .setDuration(duration)
-                    .start();
-                ObjectAnimator.ofObject(
-                    binding.realGoldPrice,
-                    "backgroundColor",
-                    ArgbEvaluator(),
-                    color_down,
-                    white
-                )
-                    .setDuration(duration)
-                    .start();
-            } else if (preAu == (it["AU"]?.toInt()!!)) {
-                preAu = (it["AU"]?.toInt()!!)
-            } else {
-                ObjectAnimator.ofObject(
-                    binding.realGoldPrice,
-                    "backgroundColor",
-                    ArgbEvaluator(),
-                    white,
-                    color_up
-                )
-                    .setDuration(duration)
-                    .start();
-                ObjectAnimator.ofObject(
-                    binding.realGoldPrice,
-                    "backgroundColor",
-                    ArgbEvaluator(),
-                    color_up,
-                    white
-                )
-                    .setDuration(duration)
-                    .start();
-            }
-            if (preAg ?: 999999 > (it["AG"]?.toInt()!!)) {
-                ObjectAnimator.ofObject(
-                    binding.realSilverPrice,
-                    "backgroundColor",
-                    ArgbEvaluator(),
-                    white,
-                    color_down
-                )
-                    .setDuration(duration)
-                    .start();
-                ObjectAnimator.ofObject(
-                    binding.realSilverPrice,
-                    "backgroundColor",
-                    ArgbEvaluator(),
-                    color_down,
-                    white
-                )
-                    .setDuration(duration)
-                    .start();
-            } else if (preAg == it["AG"]?.toInt()!!) {
-                preAg = (it["AG"]?.toInt()!!);
-            } else {
-                ObjectAnimator.ofObject(
-                    binding.realSilverPrice,
-                    "backgroundColor",
-                    ArgbEvaluator(),
-                    white,
-                    color_up
-                )
-                    .setDuration(duration)
-                    .start();
-                ObjectAnimator.ofObject(
-                    binding.realSilverPrice,
-                    "backgroundColor",
-                    ArgbEvaluator(),
-                    color_up,
-                    white
-                )
-                    .setDuration(duration)
-                    .start();
-            }
+//            if (preAu ?: 999999 > (realData["AU"]?.toInt()!!)) {
+//                ObjectAnimator.ofObject(
+//                    binding.realGoldPrice,
+//                    "backgroundColor",
+//                    ArgbEvaluator(),
+//                    white,
+//                    color_down
+//                )
+//                    .setDuration(duration)
+//                    .start();
+//                ObjectAnimator.ofObject(
+//                    binding.realGoldPrice,
+//                    "backgroundColor",
+//                    ArgbEvaluator(),
+//                    color_down,
+//                    white
+//                )
+//                    .setDuration(duration)
+//                    .start();
+//            } else if (preAu == (realData["AU"]?.toInt()!!)) {
+//                preAu = (realData["AU"]?.toInt()!!)
+//            } else {
+//                ObjectAnimator.ofObject(
+//                    binding.realGoldPrice,
+//                    "backgroundColor",
+//                    ArgbEvaluator(),
+//                    white,
+//                    color_up
+//                )
+//                    .setDuration(duration)
+//                    .start();
+//                ObjectAnimator.ofObject(
+//                    binding.realGoldPrice,
+//                    "backgroundColor",
+//                    ArgbEvaluator(),
+//                    color_up,
+//                    white
+//                )
+//                    .setDuration(duration)
+//                    .start();
+//            }
+//            if (preAg ?: 999999 > (realData["AG"]?.toInt()!!)) {
+//                ObjectAnimator.ofObject(
+//                    binding.realSilverPrice,
+//                    "backgroundColor",
+//                    ArgbEvaluator(),
+//                    white,
+//                    color_down
+//                )
+//                    .setDuration(duration)
+//                    .start();
+//                ObjectAnimator.ofObject(
+//                    binding.realSilverPrice,
+//                    "backgroundColor",
+//                    ArgbEvaluator(),
+//                    color_down,
+//                    white
+//                )
+//                    .setDuration(duration)
+//                    .start();
+//            } else if (preAg == realData["AG"]?.toInt()!!) {
+//                preAg = (realData["AG"]?.toInt()!!);
+//            } else {
+//                ObjectAnimator.ofObject(
+//                    binding.realSilverPrice,
+//                    "backgroundColor",
+//                    ArgbEvaluator(),
+//                    white,
+//                    color_up
+//                )
+//                    .setDuration(duration)
+//                    .start();
+//                ObjectAnimator.ofObject(
+//                    binding.realSilverPrice,
+//                    "backgroundColor",
+//                    ArgbEvaluator(),
+//                    color_up,
+//                    white
+//                )
+//                    .setDuration(duration)
+//                    .start();
+//            }
 
 
         }

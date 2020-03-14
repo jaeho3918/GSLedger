@@ -187,7 +187,7 @@ class HomeViewPagerFragment : Fragment() {
                     binding.realSilverPL.setText("( 0.00%)")
                 }
             }
-//            if (preAu ?: 999999 > (realData["AU"]?.toInt()!!)) {
+//            if (preAu ?: 999999 > (it["AU"]?.toInt()!!)) {
 //                ObjectAnimator.ofObject(
 //                    binding.realGoldPrice,
 //                    "backgroundColor",
@@ -206,8 +206,8 @@ class HomeViewPagerFragment : Fragment() {
 //                )
 //                    .setDuration(duration)
 //                    .start();
-//            } else if (preAu == (realData["AU"]?.toInt()!!)) {
-//                preAu = (realData["AU"]?.toInt()!!)
+//            } else if (preAu == (it["AU"]?.toInt()!!)) {
+//                preAu = (it["AU"]?.toInt()!!)
 //            } else {
 //                ObjectAnimator.ofObject(
 //                    binding.realGoldPrice,
@@ -228,7 +228,7 @@ class HomeViewPagerFragment : Fragment() {
 //                    .setDuration(duration)
 //                    .start();
 //            }
-//            if (preAg ?: 999999 > (realData["AG"]?.toInt()!!)) {
+//            if (preAg ?: 999999 > (it["AG"]?.toInt()!!)) {
 //                ObjectAnimator.ofObject(
 //                    binding.realSilverPrice,
 //                    "backgroundColor",
@@ -247,8 +247,8 @@ class HomeViewPagerFragment : Fragment() {
 //                )
 //                    .setDuration(duration)
 //                    .start();
-//            } else if (preAg == realData["AG"]?.toInt()!!) {
-//                preAg = (realData["AG"]?.toInt()!!);
+//            } else if (preAg == it["AG"]?.toInt()!!) {
+//                preAg = (it["AG"]?.toInt()!!);
 //            } else {
 //                ObjectAnimator.ofObject(
 //                    binding.realSilverPrice,

@@ -35,6 +35,8 @@ class StatFragment : Fragment() {
     private lateinit var rgl: MutableList<Char>
     private val PREF_NAME = "01504f779d6c77df04"
 
+    private lateinit var ratio :List<Double>
+
     private var currencyOption =
         activity?.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)?.getInt(CURR_NAME, 0)
 
@@ -65,26 +67,14 @@ class StatFragment : Fragment() {
             if (!viewModel?.realData.value.isNullOrEmpty()) {
                 val realData = viewModel?.realData?.value!!
                 val currencyOption = realData["currency"]!!.toInt()
-                calculateProduct(binding, realData, products)
+                ratio = calculateProduct(binding, realData, products)
             }
-//            Handler().postDelayed({
-//                setChart(context, viewModel, binding)
-//            }, 600)
         }
         )
-//        if (!viewModel?.products?.value.isNullOrEmpty()) {
-//            Handler().postDelayed({
-//                setChart(context, viewModel, binding)
-//            }, 1300)
-//        } else {
-//            Handler().postDelayed({
-//                setChart(context, viewModel, binding)
-//            }, 1300)
-//        }
 
         Handler().postDelayed({
-            setChart(context, viewModel, binding)
-            }, 1800)
+            setChart(context, viewModel, binding, ratio)
+        }, 1800)
 
         return binding.root
     }
@@ -97,7 +87,8 @@ class StatFragment : Fragment() {
     private fun setChart(
         context: Context?,
         viewModel: HomeViewPagerViewModel?,
-        binding: StatFragmentBinding
+        binding: StatFragmentBinding,
+        ratio: List<Double>
     ) {
         val white = ContextCompat.getColor(context!!, R.color.white)
         val gray = ContextCompat.getColor(context!!, R.color.colorAccent)
@@ -110,8 +101,8 @@ class StatFragment : Fragment() {
         val backGround = ContextCompat.getColor(context!!, R.color.border_background)
         val duration = 530
 
-        var chartData = mutableListOf(0f,0f,0f,0f)
-        var chartData1 = viewModel?.ratioMetal?.value?.forEachIndexed() { idx, value ->
+        var chartData = mutableListOf(0f, 0f, 0f, 0f)
+        ratio.forEachIndexed { idx, value ->
             chartData[idx] = value.toFloat()
         }
 
@@ -210,7 +201,7 @@ class StatFragment : Fragment() {
         binding: StatFragmentBinding,
         realData: Map<String, Double>,
         products: List<Product>
-    ) {
+    ): List<Double> {
 
         val currency = realData[CURRENCY[realData["currency"]!!.toInt()]]!!
         val currencyOption = realData["currency"]!!.toInt()
@@ -290,7 +281,8 @@ class StatFragment : Fragment() {
         silverBar_Pl = result_silverBar - result_silverBar_BuyPrice
 
         /* set Visible Layout */
-        viewModel.ratioMetal.value = listOf(goldCoin_Ratio,goldBar_Ratio,silverCoin_Ratio,silverBar_Ratio)
+        viewModel.ratioMetal.value =
+            listOf(goldCoin_Ratio, goldBar_Ratio, silverCoin_Ratio, silverBar_Ratio)
 
         /* set Visible Layout */
         if (result_total > 0) {
@@ -331,6 +323,13 @@ class StatFragment : Fragment() {
 
             binding.silverBarLayout.visibility = View.VISIBLE
         }
+
+        return listOf(
+            goldCoin_Ratio,
+            goldBar_Ratio,
+            silverCoin_Ratio,
+            silverBar_Ratio
+        )
     }
 
     private fun priceToString(price: Double, type: String): String {

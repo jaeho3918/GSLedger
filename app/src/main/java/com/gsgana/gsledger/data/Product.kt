@@ -18,6 +18,7 @@ data class Product(
     @ColumnInfo(name = "weightr") var weightr: Float = 0f,
     @ColumnInfo(name = "currency") var currency: Int = 0,
     @ColumnInfo(name = "price") var price: Float = 0f,
+    @ColumnInfo(name = "totalPrice") var totalPrice: Float = 0f,
     @ColumnInfo(name = "buyDate") var buyDate: String = "",
     @ColumnInfo(name = "editDate") var editDate: String = "",
     @ColumnInfo(name = "memo") var memo: String = "",

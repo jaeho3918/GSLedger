@@ -35,7 +35,7 @@ class StatFragment : Fragment() {
     private lateinit var rgl: MutableList<Char>
     private val PREF_NAME = "01504f779d6c77df04"
 
-    private lateinit var ratio :List<Double>
+    private var ratio :List<Double>? = null
 
     private var currencyOption =
         activity?.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)?.getInt(CURR_NAME, 0)
@@ -58,7 +58,7 @@ class StatFragment : Fragment() {
         viewModel?.realData?.observe(viewLifecycleOwner, Observer { realData ->
             if (!viewModel?.products.value.isNullOrEmpty()) {
                 val products = viewModel?.products.value!!
-                calculateProduct(binding, realData, products)
+                ratio = calculateProduct(binding, realData, products)
             }
         }
         )
@@ -73,7 +73,7 @@ class StatFragment : Fragment() {
         )
 
         Handler().postDelayed({
-            setChart(context, viewModel, binding, ratio)
+            if (!ratio.isNullOrEmpty()) setChart(context, viewModel, binding, ratio!!)
         }, 1800)
 
         return binding.root
@@ -232,18 +232,28 @@ class StatFragment : Fragment() {
                 if (product.metal == 0) {
                     if (product.type == 0) {
                         goldCoin_Total += realData["AU"]!! * (1 + product.reg) * PACKAGENUM[product.packageType] * product.quantity * product.weightr * product.weight
-                        goldCoin_BuyPrice += product.price / realData[CURRENCY[product.currency]]!!
+                        goldCoin_BuyPrice += product.price / realData[CURRENCY[product.currency]]!! * PACKAGENUM[product.packageType] * product.quantity
+                        val test = goldCoin_Total
+                        val test111 = goldCoin_BuyPrice
                     } else if (product.type == 1) {
                         goldBar_Total += realData["AU"]!! * (1 + product.reg) * PACKAGENUM[product.packageType] * product.quantity * product.weightr * product.weight
-                        goldBar_BuyPrice += product.price / realData[CURRENCY[product.currency]]!!
+                        goldBar_BuyPrice += product.price / realData[CURRENCY[product.currency]]!! * PACKAGENUM[product.packageType] * product.quantity
+                        val test1 = goldBar_Total
+                        val test11 = goldBar_BuyPrice
+
                     }
                 } else if (product.metal == 1) {
                     if (product.type == 0) {
                         silverCoin_Total += realData["AG"]!! * (1 + product.reg) * PACKAGENUM[product.packageType] * product.quantity * product.weightr * product.weight
-                        silverCoin_BuyPrice += product.price / realData[CURRENCY[product.currency]]!!
+                        silverCoin_BuyPrice += product.price / realData[CURRENCY[product.currency]]!! * PACKAGENUM[product.packageType] * product.quantity
+                        val test2 = silverCoin_Total
+                        val test21 = silverCoin_BuyPrice
+
                     } else if (product.type == 1) {
                         silverBar_Total += realData["AG"]!! * (1 + product.reg) * PACKAGENUM[product.packageType] * product.quantity * product.weightr * product.weight
-                        silverBar_BuyPrice += product.price / realData[CURRENCY[product.currency]]!!
+                        silverBar_BuyPrice += product.price / realData[CURRENCY[product.currency]]!! * PACKAGENUM[product.packageType] * product.quantity
+                        val test3 = silverBar_Total
+                        val test31 = silverBar_BuyPrice
                     }
                 }
             }
@@ -253,7 +263,7 @@ class StatFragment : Fragment() {
         val total = goldCoin_Total + goldBar_Total + silverCoin_Total + silverBar_Total
         val total_Pl =
             total - (goldCoin_BuyPrice + goldBar_BuyPrice + silverCoin_BuyPrice + silverBar_BuyPrice)
-        val total_Plper = total_Pl / total
+        val total_Plper = total_Pl / total *100
 
         /*calculate Ratio*/
         goldCoin_Ratio = (goldCoin_Total / total)

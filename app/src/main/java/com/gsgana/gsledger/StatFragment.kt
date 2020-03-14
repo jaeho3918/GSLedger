@@ -67,7 +67,9 @@ class StatFragment : Fragment() {
                 val currencyOption = realData["currency"]!!.toInt()
                 calculateProduct(binding, realData, products)
             }
-            setChart(context, viewModel, binding)
+//            Handler().postDelayed({
+//                setChart(context, viewModel, binding)
+//            }, 600)
         }
         )
 
@@ -191,6 +193,7 @@ class StatFragment : Fragment() {
 
         pieChart.visibility = View.VISIBLE
         binding.chartprogress.visibility = View.GONE
+
         pieChart.invalidate()
 
         pieChart.animateY(1100, Easing.EaseInOutQuad)

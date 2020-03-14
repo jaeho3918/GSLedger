@@ -119,9 +119,9 @@ class HomeViewPagerFragment : Fragment() {
 
             val test = realData["DATE"]!!.toLong()
 
-            binding.realUpdatedDate.text = SimpleDateFormat("yyyy/MM/dd HH:mm:ss").format(
-                Date(realData["DATE"]!!.toLong()*1000)
-            )
+            binding.realUpdatedDate.text = SimpleDateFormat("yyyy/MM/dd HH:mm:ss")
+                .format(Date(realData["DATE"]!!.toLong()*1000))
+
 
             binding.realGoldCurrency.text = CURRENCYSYMBOL[currencyOption ?: 0]
             binding.realSilverCurrency.text = CURRENCYSYMBOL[currencyOption ?: 0]

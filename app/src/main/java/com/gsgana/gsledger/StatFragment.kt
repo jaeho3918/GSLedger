@@ -72,7 +72,6 @@ class StatFragment : Fragment() {
 //            }, 600)
         }
         )
-
 //        if (!viewModel?.products?.value.isNullOrEmpty()) {
 //            Handler().postDelayed({
 //                setChart(context, viewModel, binding)

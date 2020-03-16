@@ -54,7 +54,7 @@ class StatFragment : Fragment() {
 
         rgl = mutableListOf()
         mAuth = FirebaseAuth.getInstance()
-        fm = parentFragmentManager
+        fm = childFragmentManager
         fm.popBackStack()
 
 

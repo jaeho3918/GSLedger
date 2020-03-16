@@ -8,7 +8,7 @@ import androidx.room.RoomDatabase
 import com.commonsware.cwac.saferoom.SafeHelperFactory
 
 
-@Database(entities = [Product::class,ProductImage::class, Option::class], version = 1, exportSchema = false)
+@Database( entities = [Product::class, ProductImage::class, Option::class], version = 1, exportSchema = true)
 
 abstract class AppDatabase : RoomDatabase() {
     abstract fun productDao(): ProductDao
@@ -22,18 +22,17 @@ abstract class AppDatabase : RoomDatabase() {
 
         fun getInstance(
             context: Context,
-            key : CharArray?
+            key: CharArray?
         ): AppDatabase {
             return instance ?: synchronized(this) {
-                instance ?: buildDatabase(context,key).also { instance = it }
+                instance ?: buildDatabase(context, key).also { instance = it }
             }
         }
 
-        // Create and pre-populate the database. See this article for more details:
-        // https://medium.com/google-developers/7-pro-tips-for-room-fbadea4bfbd1#4785
-
-        private fun buildDatabase(context: Context,
-                                  key : CharArray?): AppDatabase {
+        private fun buildDatabase(
+            context: Context,
+            key: CharArray?
+        ): AppDatabase {
             val factory = SafeHelperFactory(key)
             return Room.databaseBuilder(context, AppDatabase::class.java, "product")
 //                .addMigrations(MIGRATION_1_2)

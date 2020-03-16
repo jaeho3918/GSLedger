@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.github.mikephil.charting.animation.Easing
@@ -35,7 +36,9 @@ class StatFragment : Fragment() {
     private lateinit var rgl: MutableList<Char>
     private val PREF_NAME = "01504f779d6c77df04"
 
-    private var ratio :List<Double>? = null
+    private lateinit var fm: FragmentManager
+
+    private var ratio: List<Double>? = null
 
     private var currencyOption =
         activity?.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)?.getInt(CURR_NAME, 0)
@@ -51,6 +54,9 @@ class StatFragment : Fragment() {
 
         rgl = mutableListOf()
         mAuth = FirebaseAuth.getInstance()
+        fm = parentFragmentManager
+        fm.popBackStack()
+
 
         binding = StatFragmentBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
@@ -105,6 +111,7 @@ class StatFragment : Fragment() {
         ratio.forEachIndexed { idx, value ->
             chartData[idx] = value.toFloat()
         }
+        if (ratio.isNullOrEmpty()) chartData.clear()
 
 
         val pieChart = binding.statChart
@@ -172,17 +179,17 @@ class StatFragment : Fragment() {
 
         val sumData = chartData?.sum()
 
-//        if (sumData > 0f) {
-//            pieChart.visibility = View.VISIBLE
-//            binding.chartprogress.visibility = View.GONE
-//            pieChart.invalidate()
-//        } else {
-//            binding.chartprogress.visibility = View.VISIBLE
-//            pieChart.visibility = View.GONE
-//        }
+        if (sumData > 0f) {
+            pieChart.visibility = View.VISIBLE
+            binding.chartprogress.visibility = View.GONE
+            pieChart.invalidate()
+        } else {
+            binding.chartprogress.visibility = View.VISIBLE
+            pieChart.visibility = View.GONE
+        }
 
-        pieChart.visibility = View.VISIBLE
-        binding.chartprogress.visibility = View.GONE
+//        pieChart.visibility = View.VISIBLE
+//        binding.chartprogress.visibility = View.GONE
 
         pieChart.invalidate()
 
@@ -263,7 +270,7 @@ class StatFragment : Fragment() {
         val total = goldCoin_Total + goldBar_Total + silverCoin_Total + silverBar_Total
         val total_Pl =
             total - (goldCoin_BuyPrice + goldBar_BuyPrice + silverCoin_BuyPrice + silverBar_BuyPrice)
-        val total_Plper = total_Pl / total *100
+        val total_Plper = total_Pl / total * 100
 
         /*calculate Ratio*/
         goldCoin_Ratio = (goldCoin_Total / total)

@@ -40,8 +40,6 @@ class MainActivity : AppCompatActivity() {
         InjectorUtils.provideHomeViewPagerViewModelFactory(this, intent.getCharArrayExtra(KEY))
     }
 
-    private var currencyOption: Int? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
@@ -75,7 +73,8 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    override fun onBackPressed() {
+//    override fun onBackPressed() {
+//
+//    }
 
-    }
 }

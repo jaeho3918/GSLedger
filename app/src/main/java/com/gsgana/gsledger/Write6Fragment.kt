@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.gsgana.gsledger.data.Product
@@ -23,40 +24,52 @@ class Write6Fragment : Fragment() {
 
     private lateinit var binding: FragmentWrite6Binding
 
+    private lateinit var fm: FragmentManager
+    private lateinit var product: Product
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        fm = parentFragmentManager
+
         val viewModel =
             ViewModelProviders.of(
                 activity!!,
                 InjectorUtils.provideWriteViewModelFactory(activity!!, null)
             )
                 .get(WriteViewModel::class.java)
+
         val binding = DataBindingUtil.inflate<FragmentWrite6Binding>(
             inflater, R.layout.fragment_write6, container, false
         )
+
         binding.layout6.setOnClickListener {
             viewModel.initProduct()
             findNavController().navigate(R.id.action_write6Fragment_to_homeViewPagerFragment)
         }
+
         binding.layout6r.setOnClickListener {
             viewModel.initProduct()
+            fm.popBackStack()
             findNavController().navigate(R.id.action_write6Fragment_to_homeViewPagerFragment)
         }
+
         binding.moveTo6.setOnClickListener {
             viewModel.initProduct()
+            fm.popBackStack()
             findNavController().navigate(R.id.action_write6Fragment_to_homeViewPagerFragment)
         }
-        binding.moveTo6r.setOnClickListener { findNavController().navigate(R.id.action_write6Fragment_to_write5Fragment) }
+
+        binding.moveTo6r.setOnClickListener {
+            findNavController().navigate(R.id.action_write6Fragment_to_write5Fragment)
+        }
 
         setTextUI(binding, viewModel)
 
-
         binding.callback = object : ListFragment.Callback {
             override fun add() {
-                var product = Product(null)
-
+                product = Product(null)
                 product.brand = viewModel.brand.value.toString()
                 product.metal = viewModel.metalField1.value ?: 0
                 product.type = viewModel.typeField1.value ?: 0
@@ -64,7 +77,7 @@ class Write6Fragment : Fragment() {
                 product.quantity = viewModel.quantityField.value?.toInt() ?: 0
                 product.weight = viewModel.weightMerger.value?.toFloat() ?: 0f
                 product.weightUnit = viewModel.weightUnitField.value ?: 0
-                product.weightr = viewModel.weightUnit.value?.toFloat()?: 1f
+                product.weightr = viewModel.weightUnit.value?.toFloat() ?: 1f
                 product.currency = viewModel.currencyField.value ?: 0
                 product.price = viewModel.price.value?.toFloat() ?: 0f
                 product.buyDate = viewModel.dateField.value ?: ""
@@ -103,9 +116,7 @@ class Write6Fragment : Fragment() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
-
         binding.memoEditText.setText(viewModel.memoField.value ?: "")
-
     }
 
     interface Callback {

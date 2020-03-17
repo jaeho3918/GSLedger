@@ -61,15 +61,27 @@
             app:spanCount="1"
             tools:listitem="@layout/list_item_product" />
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/write_Btn"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
-            android:clickable="true"
-            android:src="@drawable/ic_create"
-            app:fabSize="normal" />
+            android:layout_marginEnd="24dp"
+            android:layout_marginRight="24dp"
+            android:background="@drawable/fab"
+            android:padding="5dp"
+            android:layout_marginBottom="24dp">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/write_Btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:src="@drawable/ic_create"
+                app:backgroundTint="@color/white"
+                app:fabSize="normal" />
+        </LinearLayout>
     </RelativeLayout>
 
     <!--        <androidx.constraintlayout.widget.ConstraintLayout-->

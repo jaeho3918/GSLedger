@@ -79,8 +79,10 @@ class StatFragment : Fragment() {
         )
 
         Handler().postDelayed({
-            if (!ratio.isNullOrEmpty()) setChart(context, viewModel, binding, ratio!!)
-        }, 1800)
+            if (!ratio.isNullOrEmpty()) {
+                if (context!=null) setChart(context!!, viewModel, binding, ratio!!)
+            }
+        }, 1300)
 
         return binding.root
     }
@@ -91,20 +93,20 @@ class StatFragment : Fragment() {
     }
 
     private fun setChart(
-        context: Context?,
+        context: Context,
         viewModel: HomeViewPagerViewModel?,
         binding: StatFragmentBinding,
         ratio: List<Double>
     ) {
-        val white = ContextCompat.getColor(context!!, R.color.white)
-        val gray = ContextCompat.getColor(context!!, R.color.colorAccent)
-        val red = ContextCompat.getColor(context!!, R.color.red)
-        val green = ContextCompat.getColor(context!!, R.color.green)
-        val chart_goldC = ContextCompat.getColor(context!!, R.color.chart_goldC)
-        val chart_goldB = ContextCompat.getColor(context!!, R.color.chart_goldB)
-        val chart_silverC = ContextCompat.getColor(context!!, R.color.chart_silverC)
-        val chart_silverB = ContextCompat.getColor(context!!, R.color.chart_silverB)
-        val backGround = ContextCompat.getColor(context!!, R.color.border_background)
+        val white = ContextCompat.getColor(context, R.color.white)
+        val gray = ContextCompat.getColor(context, R.color.colorAccent)
+        val red = ContextCompat.getColor(context, R.color.red)
+        val green = ContextCompat.getColor(context, R.color.green)
+        val chart_goldC = ContextCompat.getColor(context, R.color.chart_goldC)
+        val chart_goldB = ContextCompat.getColor(context, R.color.chart_goldB)
+        val chart_silverC = ContextCompat.getColor(context, R.color.chart_silverC)
+        val chart_silverB = ContextCompat.getColor(context, R.color.chart_silverB)
+        val backGround = ContextCompat.getColor(context, R.color.border_background)
         val duration = 530
 
         var chartData = mutableListOf(0f, 0f, 0f, 0f)
@@ -301,14 +303,33 @@ class StatFragment : Fragment() {
         viewModel.ratioMetal.value =
             listOf(goldCoin_Ratio, goldBar_Ratio, silverCoin_Ratio, silverBar_Ratio)
 
+        if (total ==0.0){
+            binding.totalCurrency.text = ""
+            binding.totalPrice.text = "-"
+            binding.totalPlper.text = ""
+
+            binding.plPrice.text = "-"
+            binding.plCurrency.text = ""
+            binding.chartprogress.visibility = View.GONE
+        }
+
+
+
         if (result_goldCoin + result_goldBar == 0.0) {
             binding.goldprogress.visibility = View.GONE
             binding.goldNone.visibility = View.VISIBLE
+        } else {
+            binding.goldNone.visibility = View.GONE
         }
         if (result_silverCoin + result_silverBar == 0.0) {
             binding.silverNone.visibility = View.VISIBLE
             binding.silverprogress.visibility = View.GONE
+        } else {
+            binding.silverNone.visibility = View.GONE
         }
+
+
+
 
         /* set Visible Layout */
         if (result_total > 0) {
@@ -320,7 +341,7 @@ class StatFragment : Fragment() {
             binding.plCurrency.text = CURRENCYSYMBOL[currencyOption]
 
             binding.totalLayout.visibility = View.VISIBLE
-        } else{
+        } else {
 
         }
 
@@ -333,7 +354,7 @@ class StatFragment : Fragment() {
             binding.totalGoldLayout.visibility = View.VISIBLE
             binding.goldCoinLayout.visibility = View.VISIBLE
             binding.goldprogress.visibility = View.GONE
-        }else{
+        } else {
             binding.goldCoinLayout.visibility = View.GONE
         }
         if (result_goldBar > 0) {
@@ -345,7 +366,7 @@ class StatFragment : Fragment() {
             binding.totalGoldLayout.visibility = View.VISIBLE
             binding.goldBarLayout.visibility = View.VISIBLE
             binding.goldprogress.visibility = View.GONE
-        }else{
+        } else {
             binding.goldBarLayout.visibility = View.GONE
         }
         if (result_silverCoin > 0) {
@@ -357,7 +378,7 @@ class StatFragment : Fragment() {
             binding.totalSilverLayout.visibility = View.VISIBLE
             binding.silverCoinLayout.visibility = View.VISIBLE
             binding.silverprogress.visibility = View.GONE
-        }else{
+        } else {
             binding.silverCoinLayout.visibility = View.GONE
         }
         if (result_silverBar > 0) {
@@ -369,7 +390,7 @@ class StatFragment : Fragment() {
             binding.totalSilverLayout.visibility = View.VISIBLE
             binding.silverBarLayout.visibility = View.VISIBLE
             binding.silverprogress.visibility = View.GONE
-        }else{
+        } else {
             binding.silverBarLayout.visibility = View.GONE
         }
 

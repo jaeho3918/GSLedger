@@ -8,7 +8,7 @@ import androidx.room.RoomDatabase
 import com.commonsware.cwac.saferoom.SafeHelperFactory
 
 
-@Database( entities = [Product::class, ProductImage::class, Option::class], version = 1, exportSchema = true)
+@Database( entities = [Product::class, ProductImage::class, Option::class], version = 1, exportSchema = false)
 
 abstract class AppDatabase : RoomDatabase() {
     abstract fun productDao(): ProductDao

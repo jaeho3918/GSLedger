@@ -104,12 +104,18 @@ class DetailFragment : Fragment() {
                     detailViewModel.addProduct(product)
                     view?.findNavController()?.navigateUp()
                 }
+
+                override fun del() {
+                    detailViewModel.delProduct(args.id)
+                    view?.findNavController()?.navigateUp()
+                }
             }
         }
     }
 
     interface Callback {
         fun add()
+        fun del()
     }
 
     private fun dipToPixels(dipValue: Float): Float {

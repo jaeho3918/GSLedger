@@ -129,11 +129,11 @@ class HomeViewPagerFragment : Fragment() {
             binding.realSilverCurrency.text = CURRENCYSYMBOL[currencyOption!!]
 
             binding.realGoldPrice.text = String.format(
-                " %,.2f",
+                "%,.2f",
                 (realData["AU"]!! * (realData[CURRENCY[currencyOption!!]] ?: error("")))
             )
             binding.realSilverPrice.text = String.format(
-                " %,.2f",
+                "%,.2f",
                 (realData["AG"]!! * realData[CURRENCY[currencyOption!!]]!!)
             )
 
@@ -149,7 +149,7 @@ class HomeViewPagerFragment : Fragment() {
                 divAuValue > 0 -> {
                     binding.realGoldPL.setText(
                         "(" + "+" + String.format(
-                            " %,.2f",
+                            "%,.2f",
                             divAuValue
                         ) + "%)"
                     )
@@ -157,7 +157,7 @@ class HomeViewPagerFragment : Fragment() {
                 divAuValue < 0 -> {
                     binding.realGoldPL.setText(
                         "(" + "-" + String.format(
-                            " %,.2f",
+                            "%,.2f",
                             -1 * divAuValue
                         ) + "%)"
                     )
@@ -170,7 +170,7 @@ class HomeViewPagerFragment : Fragment() {
                 divAgValue > 0 -> {
                     binding.realSilverPL.setText(
                         "(" + "+" + String.format(
-                            " %,.2f",
+                            "%,.2f",
                             divAgValue
                         ) + "%)"
                     )
@@ -178,7 +178,7 @@ class HomeViewPagerFragment : Fragment() {
                 divAgValue < 0 -> {
                     binding.realSilverPL.setText(
                         "(" + "-" + String.format(
-                            " %,.2f",
+                            "%,.2f",
                             -1 * divAgValue
                         ) + "%)"
                     )

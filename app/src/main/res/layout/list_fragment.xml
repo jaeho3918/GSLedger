@@ -7,112 +7,104 @@
 
         <variable
             name="viewModel"
-            type="com.gsgana.gsledger.viewmodels.HomeViewPagerViewModel"/>
+            type="com.gsgana.gsledger.viewmodels.HomeViewPagerViewModel" />
 
         <variable
             name="callback"
             type="com.gsgana.gsledger.ListFragment.Callback" />
     </data>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-        <LinearLayout
-            android:id="@+id/ledger_linear"
-            android:layout_width="match_parent"
-            android:layout_height="43dp"
-            android:layout_gravity="left"
-            android:orientation="horizontal">
+        android:layout_height="match_parent">
+        <!--            <EditText-->
+        <!--                android:layout_width="0dp"-->
+        <!--                android:layout_marginRight="11dp"-->
+        <!--                android:textSize="@dimen/text_medium"-->
+        <!--                android:hint="Search"-->
+        <!--                android:layout_weight="1"-->
+        <!--                android:layout_height="wrap_content"/>-->
 
-            <EditText
-                android:layout_width="0dp"
-                android:layout_marginRight="11dp"
-                android:textSize="@dimen/text_medium"
-                android:hint="Search"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"/>
-            <View
-                android:layout_width="11dp"
-                android:layout_height="0dp"
-                />
-            <Button
-                android:id="@+id/item_search"
-                android:layout_width="70dp"
-                android:layout_height="31dp"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentBottom="true"
-                android:layout_marginRight="8dp"
-                android:background="@drawable/create_btn"
-                android:drawableLeft="@drawable/ic_search"
-                android:paddingLeft="28dp"
-                android:textAlignment="center"
-                android:textAllCaps="false"
-                android:textColor="@color/font_silver"
-                android:textSize="@dimen/text_medium" />
-            <Button
-                android:id="@+id/write_Btn"
-                android:layout_width="70dp"
-                android:layout_height="31dp"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentBottom="true"
-                android:layout_marginRight="21dp"
-                android:drawableLeft="@drawable/ic_create"
-                android:paddingLeft="28dp"
-                android:background="@drawable/create_btn"
-                android:textAllCaps="false"
-                android:textColor="@color/font_silver"
-                android:textSize="@dimen/text_medium" />
+        <!--            <Button-->
+        <!--                android:id="@+id/item_search"-->
+        <!--                android:layout_width="70dp"-->
+        <!--                android:layout_height="31dp"-->
+        <!--                android:layout_alignParentRight="true"-->
+        <!--                android:layout_alignParentBottom="true"-->
+        <!--                android:layout_marginRight="8dp"-->
+        <!--                android:background="@drawable/create_btn"-->
+        <!--                android:drawableLeft="@drawable/ic_search"-->
+        <!--                android:paddingLeft="28dp"-->
+        <!--                android:textAlignment="center"-->
+        <!--                android:textAllCaps="false"-->
+        <!--                android:textColor="@color/font_silver"-->
+        <!--                android:textSize="@dimen/text_medium" />-->
 
-        </LinearLayout>
+        <!--            <Button-->
+        <!--                android:id="@+id/write_Btn"-->
+        <!--                android:layout_width="130dp"-->
+        <!--                android:layout_height="51dp"-->
+        <!--                android:layout_alignParentRight="true"-->
+        <!--                android:layout_alignParentBottom="true"-->
+        <!--                android:drawableLeft="@drawable/ic_create"-->
+        <!--                android:paddingLeft="60dp"-->
+        <!--                android:background="@drawable/create_btn"/>-->
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/product_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:paddingTop="10dp"
-            android:clipToPadding="false"
-            app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
             android:layout_weight="1"
+            android:clipToPadding="false"
+            android:paddingTop="10dp"
+            app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
             app:spanCount="1"
-            tools:context="com.gsgana.gsledger.MainActivity"
             tools:listitem="@layout/list_item_product" />
 
-<!--        <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--            android:id="@+id/constraintLayout"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="80dp">-->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/write_Btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:clickable="true"
+            android:src="@drawable/ic_create"
+            app:fabSize="normal" />
+    </RelativeLayout>
 
-<!--            <Button-->
-<!--                android:id="@+id/insertBtn"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:onClick="@{() -> callback.add()}"-->
-<!--                android:text="INSERT"-->
-<!--                android:textAlignment="center"-->
-<!--                android:textSize="30dp"-->
-<!--                app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintHorizontal_bias="0.228"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toTopOf="parent"-->
-<!--                app:layout_constraintVertical_bias="0.499" />-->
+    <!--        <androidx.constraintlayout.widget.ConstraintLayout-->
+    <!--            android:id="@+id/constraintLayout"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="80dp">-->
 
-<!--            <Button-->
-<!--                android:id="@+id/deleteBtn"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginStart="36dp"-->
-<!--                android:onClick="@{() -> callback.del()}"-->
-<!--                android:text="DELETE"-->
-<!--                android:textAlignment="center"-->
-<!--                android:textSize="30dp"-->
-<!--                app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                app:layout_constraintStart_toEndOf="@+id/insertBtn"-->
-<!--                app:layout_constraintTop_toTopOf="parent" />-->
-<!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
+    <!--            <Button-->
+    <!--                android:id="@+id/insertBtn"-->
+    <!--                android:layout_width="wrap_content"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:onClick="@{() -> callback.add()}"-->
+    <!--                android:text="INSERT"-->
+    <!--                android:textAlignment="center"-->
+    <!--                android:textSize="30dp"-->
+    <!--                app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--                app:layout_constraintEnd_toEndOf="parent"-->
+    <!--                app:layout_constraintHorizontal_bias="0.228"-->
+    <!--                app:layout_constraintStart_toStartOf="parent"-->
+    <!--                app:layout_constraintTop_toTopOf="parent"-->
+    <!--                app:layout_constraintVertical_bias="0.499" />-->
 
-
-    </LinearLayout>
+    <!--            <Button-->
+    <!--                android:id="@+id/deleteBtn"-->
+    <!--                android:layout_width="wrap_content"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:layout_marginStart="36dp"-->
+    <!--                android:onClick="@{() -> callback.del()}"-->
+    <!--                android:text="DELETE"-->
+    <!--                android:textAlignment="center"-->
+    <!--                android:textSize="30dp"-->
+    <!--                app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--                app:layout_constraintStart_toEndOf="@+id/insertBtn"-->
+    <!--                app:layout_constraintTop_toTopOf="parent" />-->
+    <!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
 
 
 </layout>

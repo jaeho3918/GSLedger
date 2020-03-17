@@ -13,6 +13,7 @@
     <!-- Text Size -->
     <dimen name="text_micro">8sp</dimen>
     <dimen name="text_small">11sp</dimen>
+    <dimen name="text_medium1">11sp</dimen>
     <dimen name="text_medium">15sp</dimen>
     <dimen name="text_large">18sp</dimen>
     <dimen name="text_xmlarge">50sp</dimen>

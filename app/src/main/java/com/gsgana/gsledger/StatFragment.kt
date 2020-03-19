@@ -80,7 +80,7 @@ class StatFragment : Fragment() {
 
         Handler().postDelayed({
             if (!ratio.isNullOrEmpty()) {
-                if (context!=null) setChart(context!!, viewModel, binding, ratio!!)
+                setChart(context!!, binding, ratio!!) //if (context!=null)
             }
         }, 1300)
 
@@ -94,14 +94,13 @@ class StatFragment : Fragment() {
 
     private fun setChart(
         context: Context,
-        viewModel: HomeViewPagerViewModel?,
         binding: StatFragmentBinding,
         ratio: List<Double>
     ) {
-        val white = ContextCompat.getColor(context, R.color.white)
-        val gray = ContextCompat.getColor(context, R.color.colorAccent)
-        val red = ContextCompat.getColor(context, R.color.red)
-        val green = ContextCompat.getColor(context, R.color.green)
+//        val white = ContextCompat.getColor(context, R.color.white)
+//        val gray = ContextCompat.getColor(context, R.color.colorAccent)
+//        val red = ContextCompat.getColor(context, R.color.red)
+//        val green = ContextCompat.getColor(context, R.color.green)
         val chart_goldC = ContextCompat.getColor(context, R.color.chart_goldC)
         val chart_goldB = ContextCompat.getColor(context, R.color.chart_goldB)
         val chart_silverC = ContextCompat.getColor(context, R.color.chart_silverC)
@@ -181,7 +180,7 @@ class StatFragment : Fragment() {
 
         val sumData = chartData?.sum()
 
-        if (sumData > 0f) {
+        if (sumData != 0f) {
             pieChart.visibility = View.VISIBLE
             binding.chartprogress.visibility = View.GONE
             pieChart.invalidate()

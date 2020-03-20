@@ -3,6 +3,7 @@ package com.gsgana.gsledger.viewmodels
 import android.os.Build.BRAND
 import com.gsgana.gsledger.data.Product
 import com.gsgana.gsledger.data.Products
+import com.gsgana.gsledger.utilities.*
 
 class ProductsViewModel(private val product: Product) {
 
@@ -10,38 +11,43 @@ class ProductsViewModel(private val product: Product) {
         get() = product.id.toString()
 
     val brand
-        get() = product.brand
+        get() = product.year.toString() + " " +product.brand
 
     val memo
         get() = product.memo
 
-    val metal
-        get() = product.metal
-
-    val type
-        get() = product.type
-
-    val editDate
-        get() = product.editDate
+    val metalType
+        get() = METAL[product.metal] + " " + TYPE[product.type]
 
     val price
-        get() = product.price
+        get() = String.format("%,.2f", product.price)
 
     val currency
-        get() = product.currency
+        get() = CURRENCYSYMBOL[product.currency]
 
     val buyDate
         get() = product.buyDate
 
     val quantity
-        get() = product.quantity
+        get() = (product.quantity * PACKAGENUM[product.packageType]).toString()
+
+    val quantityDetail
+        get() = product.quantity.toString() + " x " + PACKAGETYPE[product.packageType]
 
     val weight
-        get() = product.weight
+        get() = product.weight.toString() + " " + WEIGHTUNIT[product.weightUnit]
 
-    val weightUnit
-        get() = product.weightUnit
+    val totalPrice
+        get() = String.format("%,.2f", product.prePrice)
 
-    val totalprice
-        get() = product.prePrice
+    val condition
+        get() = product.condition
+
+    val cert
+        get() = product.cert
+
+    val grade
+        get() = product.grade
+
+
 }

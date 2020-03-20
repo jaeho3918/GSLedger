@@ -44,8 +44,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/rounded_border"
-            android:padding="5dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="5dp">
 
             <!--            <ImageView-->
             <!--                android:id="@+id/product_item_image"-->
@@ -66,12 +66,18 @@
                 android:text="@{viewModel.brand}"
                 android:textAppearance="?attr/textAppearanceListItem" />
 
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
 
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/item_image"
-                android:layout_width="180dp"
-                android:layout_height="180dp"
-                card_view:srcCompat="@drawable/eagle_gc" />
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/item_image"
+                    android:padding="8dp"
+                    android:layout_width="180dp"
+                    android:layout_height="180dp"
+                    card_view:srcCompat="@drawable/eagle_gc" />
+
+            </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -85,7 +91,7 @@
                     android:layout_marginTop="16dp"
                     android:layout_weight="1"
                     android:gravity="center_horizontal"
-                    android:text="@{ConstantKt.METAL[viewModel.metal] +' '+ ConstantKt.TYPE[viewModel.type]}"
+                    android:text="@{viewModel.metalType}"
                     android:textAppearance="?attr/textAppearanceListItem" />
 
                 <TextView
@@ -95,7 +101,7 @@
                     android:layout_marginTop="16dp"
                     android:layout_weight="1"
                     android:gravity="center_horizontal"
-                    android:text="@{viewModel.weight +' ' + ConstantKt.WEIGHTUNIT[viewModel.weightUnit]}"
+                    android:text="@{viewModel.weight}"
                     android:textAppearance="?attr/textAppearanceListItem" />
             </LinearLayout>
 
@@ -121,7 +127,7 @@
                     android:layout_marginTop="16dp"
                     android:layout_weight="1"
                     android:gravity="center_horizontal"
-                    android:text="@{ConstantKt.CURRENCY[viewModel.currency]}"
+                    android:text="@{viewModel.currency}"
                     android:textAppearance="?attr/textAppearanceListItem" />
 
                 <TextView
@@ -131,7 +137,7 @@
                     android:layout_marginTop="16dp"
                     android:layout_weight="0.43"
                     android:gravity="center_horizontal"
-                    android:text="@{String.format(&quot;%,.2f&quot;,viewModel.price)}"
+                    android:text="@{viewModel.price}"
                     android:textAppearance="?attr/textAppearanceListItem" />
             </LinearLayout>
 
@@ -147,7 +153,7 @@
                     android:layout_marginTop="16dp"
                     android:layout_weight="1"
                     android:gravity="center_horizontal"
-                    android:text="@{ConstantKt.CURRENCY[viewModel.currency]}"
+                    android:text="@{viewModel.currency}"
                     android:textAppearance="?attr/textAppearanceListItem" />
 
                 <TextView
@@ -157,7 +163,7 @@
                     android:layout_marginTop="16dp"
                     android:layout_weight="0.43"
                     android:gravity="center_horizontal"
-                    android:text="@{String.format(&quot;%,.2f&quot;,viewModel.totalprice)}"
+                    android:text="@{viewModel.totalPrice}"
                     android:textAppearance="?attr/textAppearanceListItem" />
             </LinearLayout>
 

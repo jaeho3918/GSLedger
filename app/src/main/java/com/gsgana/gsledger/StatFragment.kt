@@ -185,8 +185,8 @@ class StatFragment : Fragment() {
             binding.chartprogress.visibility = View.GONE
             pieChart.invalidate()
         } else {
-            binding.chartprogress.visibility = View.VISIBLE
             pieChart.visibility = View.GONE
+            binding.chartprogress.visibility = View.VISIBLE
         }
 
 //        pieChart.visibility = View.VISIBLE

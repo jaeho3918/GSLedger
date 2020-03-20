@@ -21,10 +21,12 @@ class ProductAdapter(private val context: Context) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 
 
-        return ViewHolder( DataBindingUtil.inflate(
+        return ViewHolder(
+            DataBindingUtil.inflate(
                 LayoutInflater.from(parent.context),
                 R.layout.list_item_product, parent, false
-            ), context)
+            ), context
+        )
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -42,11 +44,12 @@ class ProductAdapter(private val context: Context) :
                 }
             }
 
-            binding.itemImage.setImageResource(getResource(
-                "drawable",
-                "eagle_gc",
-                context
-            )
+            binding.itemImage.setImageResource(
+                getResource(
+                    "drawable",
+                    "eagle_gc",
+                    context
+                )
             )
 
 
@@ -70,6 +73,7 @@ class ProductAdapter(private val context: Context) :
                 executePendingBindings()
             }
         }
+
         private fun getResource(type: String, resName: String, context: Context): Int {
 
             val resContext: Context = context.createPackageContext(context.packageName, 0)

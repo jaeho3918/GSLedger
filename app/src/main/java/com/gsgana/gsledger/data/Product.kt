@@ -25,7 +25,7 @@ data class Product(
     @ColumnInfo(name = "reg") var reg: Float = 0.0f,
     @ColumnInfo(name = "prePrice") var prePrice: Float = -1.0f,
     @ColumnInfo(name = "metalPrice") var metPrice: Float = -1.0f,
-    @ColumnInfo(name = "year") var year: Int = -1,
+    @ColumnInfo(name = "year") var year: Int = 0,
     @ColumnInfo(name = "condition") var condition: Int = -1,
     @ColumnInfo(name = "grade") var grade: String = "",
     @ColumnInfo(name = "cert") var cert: String = ""

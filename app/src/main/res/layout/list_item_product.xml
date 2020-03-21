@@ -24,12 +24,9 @@
         <variable
             name="product"
             type="com.gsgana.gsledger.data.Product" />
-
-
     </data>
-    <!--<variable
-                name="product"
-                type="com.gsgana.gsledger.data.Product"/>-->
+
+
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -57,134 +54,117 @@
             <!--                app:layout_constraintTop_toTopOf="parent" />-->
 
 
-            <TextView
-                android:id="@+id/product_item_brand"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:gravity="center_horizontal"
-                android:text="@{viewModel.brand}"
-                android:textAppearance="?attr/textAppearanceListItem" />
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/item_image"
-                    android:padding="8dp"
-                    android:layout_width="180dp"
-                    android:layout_height="180dp"
-                    card_view:srcCompat="@drawable/eagle_gc" />
-
-            </RelativeLayout>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/product_item_type"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_weight="1"
-                    android:gravity="center_horizontal"
-                    android:text="@{viewModel.metalType}"
-                    android:textAppearance="?attr/textAppearanceListItem" />
 
-                <TextView
-                    android:id="@+id/product_item_weight"
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/item_image"
+                        android:layout_width="150dp"
+                        android:layout_height="150dp"
+                        android:padding="8dp"
+                        card_view:srcCompat="@drawable/eagle_gc" />
+
+                </RelativeLayout>
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_weight="1"
-                    android:gravity="center_horizontal"
-                    android:text="@{viewModel.weight}"
-                    android:textAppearance="?attr/textAppearanceListItem" />
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/product_item_brand"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:gravity="left"
+                        android:text="@{viewModel.brand}"
+                        android:textAppearance="?attr/textAppearanceListItem"
+                        android:textSize="@dimen/text_medium"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/product_item_type"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_weight="1"
+                        android:gravity="left"
+                        android:text="@{viewModel.metalType + &quot; &quot; + viewModel.weight}"
+                        android:textAppearance="?attr/textAppearanceListItem"
+                        android:textSize="@dimen/text_medium"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/product_item_quantity"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:gravity="left"
+                        android:text="@{&quot;Quantity : &quot; + viewModel.quantity}"
+                        android:textAppearance="?attr/textAppearanceListItem"
+                        android:textSize="@dimen/text_medium" />
+
+                    <TextView
+                        android:id="@+id/product_item_quantityDetail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:text="@{viewModel.quantityDetail}"
+                        android:textAppearance="?attr/textAppearanceListItem"
+                        android:textSize="@dimen/text_small" />
+
+                    <TextView
+                        android:id="@+id/product_item_price"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_weight="0.43"
+                        android:gravity="left"
+                        android:text="@{&quot;Price per 1 unit : &quot; + viewModel.price}"
+                        android:textAppearance="?attr/textAppearanceListItem"
+                        android:textSize="@dimen/text_medium" />
+
+                    <TextView
+                        android:id="@+id/product_item_totalprice"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_weight="0.43"
+                        android:gravity="left"
+                        android:text="@{&quot;Total Price : &quot; + viewModel.totalPrice}"
+                        android:textAppearance="?attr/textAppearanceListItem"
+                        android:textSize="@dimen/text_medium" />
+
+                    <TextView
+                        android:id="@+id/product_item_metal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:gravity="left"
+                        android:text="@{&quot;Buy Date : &quot; + viewModel.buyDate}"
+                        android:textAppearance="?attr/textAppearanceListItem"
+                        android:textSize="@dimen/text_medium" />
+
+                    <TextView
+                        android:id="@+id/product_item_edit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:gravity="left"
+                        android:text="@{viewModel.memo}"
+                        android:textAppearance="?attr/textAppearanceListItem"
+                        android:textSize="@dimen/text_medium" />
+
+                </LinearLayout>
             </LinearLayout>
-
-            <TextView
-                android:id="@+id/product_item_quantity"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:text="@{&quot;quantity : &quot; + viewModel.quantity}"
-                android:textAppearance="?attr/textAppearanceListItem" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/product_item_currency"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_weight="1"
-                    android:gravity="center_horizontal"
-                    android:text="@{viewModel.currency}"
-                    android:textAppearance="?attr/textAppearanceListItem" />
-
-                <TextView
-                    android:id="@+id/product_item_price"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_weight="0.43"
-                    android:gravity="center_horizontal"
-                    android:text="@{viewModel.price}"
-                    android:textAppearance="?attr/textAppearanceListItem" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/product_item_totalcurrency"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_weight="1"
-                    android:gravity="center_horizontal"
-                    android:text="@{viewModel.currency}"
-                    android:textAppearance="?attr/textAppearanceListItem" />
-
-                <TextView
-                    android:id="@+id/product_item_totalprice"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_weight="0.43"
-                    android:gravity="center_horizontal"
-                    android:text="@{viewModel.totalPrice}"
-                    android:textAppearance="?attr/textAppearanceListItem" />
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/product_item_metal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:gravity="center_horizontal"
-                android:text="@{viewModel.buyDate}"
-                android:textAppearance="?attr/textAppearanceListItem" />
-
-            <TextView
-                android:id="@+id/product_item_edit"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
-                android:gravity="center_horizontal"
-                android:text="@{viewModel.memo}"
-                android:textAppearance="?attr/textAppearanceListItem" />
 
 
         </LinearLayout>

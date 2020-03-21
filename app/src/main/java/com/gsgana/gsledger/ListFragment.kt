@@ -34,8 +34,6 @@ class ListFragment : Fragment() {
     private lateinit var viewModelFactory: HomeViewPagerViewModelFactory
     private lateinit var rgl: MutableList<Char>
 
-    //    private lateinit var viewModel: HomeViewPagerViewModel
-
     private val viewModel: HomeViewPagerViewModel by viewModels {
         InjectorUtils.provideHomeViewPagerViewModelFactory(requireActivity(), null)
     }
@@ -79,7 +77,7 @@ class ListFragment : Fragment() {
         }
 
 
-        viewModel.products.observe(viewLifecycleOwner) { result ->
+        viewModel.getProducts().observe(viewLifecycleOwner) { result ->
             adapter.submitList(result)
         }
         return binding.root

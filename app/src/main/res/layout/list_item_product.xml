@@ -30,9 +30,9 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginBottom="5dp"
         android:onClick="@{clickListener}"
         app:cardElevation="8dp"
         app:cardPreventCornerOverlap="false">
@@ -42,7 +42,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/rounded_border"
             android:orientation="vertical"
-            android:padding="5dp">
+            android:padding="1dp">
 
             <!--            <ImageView-->
             <!--                android:id="@+id/product_item_image"-->
@@ -69,8 +69,7 @@
                         android:id="@+id/item_image"
                         android:layout_width="150dp"
                         android:layout_height="150dp"
-                        android:padding="8dp"
-                        card_view:srcCompat="@drawable/eagle_gc" />
+                        android:padding="8dp"/>
 
                 </RelativeLayout>
 
@@ -83,7 +82,7 @@
                         android:id="@+id/product_item_brand"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="5dp"
                         android:gravity="left"
                         android:text="@{viewModel.brand}"
                         android:textAppearance="?attr/textAppearanceListItem"
@@ -94,10 +93,8 @@
                         android:id="@+id/product_item_type"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
                         android:layout_weight="1"
                         android:gravity="left"
-                        android:text="@{viewModel.metalType + &quot; &quot; + viewModel.weight}"
                         android:textAppearance="?attr/textAppearanceListItem"
                         android:textSize="@dimen/text_medium"
                         android:textStyle="bold" />
@@ -106,7 +103,7 @@
                         android:id="@+id/product_item_quantity"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="5dp"
                         android:gravity="left"
                         android:text="@{&quot;Quantity : &quot; + viewModel.quantity}"
                         android:textAppearance="?attr/textAppearanceListItem"
@@ -119,24 +116,14 @@
                         android:gravity="left"
                         android:text="@{viewModel.quantityDetail}"
                         android:textAppearance="?attr/textAppearanceListItem"
+                        android:textColor="@color/font_silver"
                         android:textSize="@dimen/text_small" />
-
-                    <TextView
-                        android:id="@+id/product_item_price"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:layout_weight="0.43"
-                        android:gravity="left"
-                        android:text="@{&quot;Price per 1 unit : &quot; + viewModel.price}"
-                        android:textAppearance="?attr/textAppearanceListItem"
-                        android:textSize="@dimen/text_medium" />
 
                     <TextView
                         android:id="@+id/product_item_totalprice"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="5dp"
                         android:layout_weight="0.43"
                         android:gravity="left"
                         android:text="@{&quot;Total Price : &quot; + viewModel.totalPrice}"
@@ -144,22 +131,34 @@
                         android:textSize="@dimen/text_medium" />
 
                     <TextView
+                        android:id="@+id/product_item_price"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.43"
+                        android:gravity="left"
+                        android:text="@{&quot;Price per item : &quot; + viewModel.price}"
+                        android:textAppearance="?attr/textAppearanceListItem"
+                        android:textColor="@color/font_silver"
+                        android:textSize="@dimen/text_small" />
+
+                    <TextView
                         android:id="@+id/product_item_metal"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="5dp"
                         android:gravity="left"
                         android:text="@{&quot;Buy Date : &quot; + viewModel.buyDate}"
                         android:textAppearance="?attr/textAppearanceListItem"
                         android:textSize="@dimen/text_medium" />
 
                     <TextView
-                        android:id="@+id/product_item_edit"
+                        android:id="@+id/product_item_memo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
                         android:gravity="left"
-                        android:text="@{viewModel.memo}"
+                        android:text="@{&quot;Memo : &quot; + viewModel.memo}"
                         android:textAppearance="?attr/textAppearanceListItem"
                         android:textSize="@dimen/text_medium" />
 

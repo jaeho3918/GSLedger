@@ -35,6 +35,7 @@ class StatFragment : Fragment() {
     private val USERS_DB_PATH = "qnI4vK2zSUq6GdeT6b"
     private lateinit var rgl: MutableList<Char>
     private val PREF_NAME = "01504f779d6c77df04"
+    private var switchChart = false
 
     private lateinit var fm: FragmentManager
 
@@ -62,18 +63,31 @@ class StatFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
 
         viewModel?.realData?.observe(viewLifecycleOwner, Observer { realData ->
-            if (!viewModel?.products.value.isNullOrEmpty()) {
-                val products = viewModel?.products.value!!
+            if (!viewModel?.getProducts().value.isNullOrEmpty()) {
+                val products = viewModel?.getProducts().value!!
                 ratio = calculateProduct(binding, realData, products)
             }
         }
         )
 
-        viewModel?.products?.observe(viewLifecycleOwner, Observer { products ->
+        viewModel?.getProducts()?.observe(viewLifecycleOwner, Observer { products ->
             if (!viewModel?.realData.value.isNullOrEmpty()) {
                 val realData = viewModel?.realData?.value!!
                 val currencyOption = realData["currency"]!!.toInt()
                 ratio = calculateProduct(binding, realData, products)
+                setChart(context!!, binding, ratio!!)
+            } else {
+                binding.statChart.visibility = View.GONE
+                binding.totalCurrency.text = ""
+                binding.totalPrice.text = "-"
+                binding.totalPlper.text = ""
+                binding.plPrice.text = "-"
+                binding.plCurrency.text = ""
+                binding.goldprogress.visibility = View.GONE
+                binding.silverprogress.visibility = View.GONE
+                binding.goldNone.visibility = View.VISIBLE
+                binding.silverNone.visibility = View.VISIBLE
+
             }
         }
         )
@@ -302,7 +316,7 @@ class StatFragment : Fragment() {
         viewModel.ratioMetal.value =
             listOf(goldCoin_Ratio, goldBar_Ratio, silverCoin_Ratio, silverBar_Ratio)
 
-        if (total ==0.0){
+        if (total == 0.0) {
             binding.totalCurrency.text = ""
             binding.totalPrice.text = "-"
             binding.totalPlper.text = ""
@@ -326,8 +340,6 @@ class StatFragment : Fragment() {
         } else {
             binding.silverNone.visibility = View.GONE
         }
-
-
 
 
         /* set Visible Layout */

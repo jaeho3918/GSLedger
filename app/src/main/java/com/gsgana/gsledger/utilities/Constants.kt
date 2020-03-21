@@ -176,7 +176,7 @@ val CURRENCYSYMBOL = arrayOf(
 
 
 val WEIGHTUNIT = arrayOf(
-    "t oz", "g", "kg", "don"
+    "toz", "g", "kg", "don"
 )
 
 fun weightUnitTable(index: Int) = when (index) {

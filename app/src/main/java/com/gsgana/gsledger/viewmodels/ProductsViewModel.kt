@@ -16,11 +16,8 @@ class ProductsViewModel(private val product: Product) {
     val memo
         get() = product.memo
 
-    val metalType
-        get() = METAL[product.metal] + " " + TYPE[product.type]
-
     val price
-        get() = CURRENCYSYMBOL[product.currency] + " " + String.format("%,.2f", product.price)
+        get() = CURRENCYSYMBOL[product.currency] + String.format("%,.2f", product.price)
 
     val currency
         get() = CURRENCYSYMBOL[product.currency]
@@ -34,11 +31,8 @@ class ProductsViewModel(private val product: Product) {
     val quantityDetail
         get() = "("+product.quantity.toString() + " x " + PACKAGETYPE[product.packageType] +")"
 
-    val weight
-        get() = product.weight.toString() + " " + WEIGHTUNIT[product.weightUnit]
-
     val totalPrice
-        get() = CURRENCYSYMBOL[product.currency] + " " +String.format("%,.2f", product.prePrice)
+        get() = CURRENCYSYMBOL[product.currency] +String.format("%,.2f", product.prePrice)
 
     val condition
         get() = product.condition

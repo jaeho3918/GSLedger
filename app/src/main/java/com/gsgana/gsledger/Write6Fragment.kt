@@ -15,8 +15,6 @@ import androidx.navigation.fragment.findNavController
 import com.gsgana.gsledger.data.Product
 import com.gsgana.gsledger.databinding.FragmentWrite6Binding
 import com.gsgana.gsledger.utilities.*
-import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModel
-import com.gsgana.gsledger.viewmodels.ListViewModel
 import com.gsgana.gsledger.viewmodels.WriteViewModel
 
 

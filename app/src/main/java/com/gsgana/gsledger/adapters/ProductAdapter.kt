@@ -14,13 +14,15 @@ import com.gsgana.gsledger.HomeViewPagerFragmentDirections
 import com.gsgana.gsledger.R
 import com.gsgana.gsledger.data.Product
 import com.gsgana.gsledger.databinding.ListItemProductBinding
+import com.gsgana.gsledger.utilities.METAL
+import com.gsgana.gsledger.utilities.TYPE
+import com.gsgana.gsledger.utilities.WEIGHTUNIT
 import com.gsgana.gsledger.viewmodels.ProductsViewModel
+import java.lang.Exception
 
 class ProductAdapter(private val context: Context) :
     ListAdapter<Product, ProductAdapter.ViewHolder>(ProductDiffCallback()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-
-
         return ViewHolder(
             DataBindingUtil.inflate(
                 LayoutInflater.from(parent.context),
@@ -30,7 +32,7 @@ class ProductAdapter(private val context: Context) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(context, getItem(position))
     }
 
     class ViewHolder(
@@ -43,16 +45,6 @@ class ProductAdapter(private val context: Context) :
                     navigateToProduct(product, view)
                 }
             }
-
-            binding.itemImage.setImageResource(
-                getResource(
-                    "drawable",
-                    "eagle_gc",
-                    context
-                )
-            )
-
-
         }
 
         private fun navigateToProduct(
@@ -66,10 +58,72 @@ class ProductAdapter(private val context: Context) :
             it.findNavController().navigate(direction)
         }
 
-        fun bind(item: Product) {
+        fun bind(context: Context, item: Product) {
             with(binding) {
                 viewModel = ProductsViewModel(item)
                 binding.product = item
+                val brand = item.brand.toLowerCase().replace(" ", "")
+                val metal = METAL[item.metal].toLowerCase()
+                val type = TYPE[item.type].toLowerCase()
+                val metalType = METAL[product!!.metal] + " " + TYPE[product!!.type]
+                var weight = 0
+                //"Default_${METAL[item.metal]}${TYPE[item.type]}"
+                when (item.weight) {
+                    1.0f -> {
+                        weight = item.weight.toInt()
+                    }
+                    2.0f -> {
+                        weight = item.weight.toInt()
+                    }
+                    3.0f -> {
+                        weight = item.weight.toInt()
+                    }
+                    5.0f -> {
+                        weight = item.weight.toInt()
+                    }
+                    10.0f -> {
+                        weight = item.weight.toInt()
+                    }
+                    100.0f -> {
+                        weight = item.weight.toInt()
+                    }
+                    500.0f -> {
+                        weight = item.weight.toInt()
+                    }
+                }
+
+                if (item.memo.length > 0) {
+                    binding.productItemMemo.text = item.memo.replace("\n", " ")
+                } else if (item.memo.length > 18) {
+                    binding.productItemMemo.text = item.memo.replace("\n", " ").substring(0, 24)
+                }
+
+                if (weight == 0) {
+                    binding.productItemType.text =
+                        metalType + "   " + item.weight + WEIGHTUNIT[product!!.weightUnit]
+                } else {
+                    binding.productItemType.text =
+                        metalType + "   " + weight + WEIGHTUNIT[product!!.weightUnit]
+                }
+
+
+                val imgId = getResource(
+                    "drawable",
+                    "${brand}_${metal}${type}",
+                    context
+                )
+                if (imgId == 0) {
+                    binding.itemImage.setImageResource(
+                        getResource(
+                            "drawable",
+                            "default_goldbar",
+                            context
+                        )//"Default_${METAL[item.metal]}${TYPE[item.type]}"
+                    )
+                } else {
+                    binding.itemImage.setImageResource(imgId)
+                }
+
                 executePendingBindings()
             }
         }

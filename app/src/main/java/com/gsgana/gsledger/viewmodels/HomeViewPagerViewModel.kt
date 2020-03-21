@@ -12,13 +12,15 @@ class HomeViewPagerViewModel internal constructor(
     ViewModel() {
 
     var ratioMetal = MutableLiveData<List<Double>>(mutableListOf(0.0, 0.0, 0.0, 0.0))
-    val products: LiveData<List<Product>> = productRepository.getProducts()
+    private val products: LiveData<List<Product>> = productRepository.getProducts()
 
     val realData = MutableLiveData<Map<String, Double>>()
 
     val realTime = MutableLiveData<String>()
 
-
+    fun getProducts() : LiveData<List<Product>>  {
+        return products
+    }
 
     fun addProduct(product: Product) {
         viewModelScope.launch {

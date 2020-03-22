@@ -151,6 +151,12 @@ val METAL = arrayOf(
     "Paladium"
 )
 
+val METALCODE = arrayOf(
+    "AU",
+    "AG",
+    "PA"
+)
+
 fun metalTable(index: Int) = when (index) {
     0 -> METAL[0]
     1 -> METAL[1]

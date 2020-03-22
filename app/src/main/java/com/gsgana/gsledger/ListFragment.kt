@@ -38,6 +38,9 @@ class ListFragment : Fragment() {
         InjectorUtils.provideHomeViewPagerViewModelFactory(requireActivity(), null)
     }
 
+    private lateinit var realData: Map<String, Double>
+    private lateinit var adapter: ProductAdapter
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,11 +48,13 @@ class ListFragment : Fragment() {
     ): View? {
         binding = ListFragmentBinding.inflate(inflater, container, false)
 
-        val adapter = ProductAdapter(requireContext())
+        realData = viewModel.realData.value ?: mapOf()
+
+        adapter = ProductAdapter(requireContext(), realData)
         binding.productList.adapter = adapter
         binding.callback = object : Callback {
             override fun add() {
-                val randomStringInt = creatRandomStringInt()
+                val randomStringInt = createRandomStringInt()
                 product = Product(null)
 //                product.brand = randomStringInt[1] as String
                 product.metal = randomStringInt[0] as Int
@@ -66,12 +71,13 @@ class ListFragment : Fragment() {
 
                 viewModel.addProduct(product)
             }
+
             override fun del() {
                 viewModel.deleteProduct()
             }
         }
 
-        binding.writeBtn.setOnClickListener{
+        binding.writeBtn.setOnClickListener {
             findNavController()
                 .navigate(R.id.action_homeViewPagerFragment_to_write1Fragment)
         }
@@ -89,7 +95,7 @@ class ListFragment : Fragment() {
     }
 }
 
-fun creatRandomStringInt(): List<Any> {
+fun createRandomStringInt(): List<Any> {
     val charPool: List<Char> = ('a'..'z') + ('A'..'Z') + ('0'..'9')
     val STRING_LENGTH = 10
     val randomInt = kotlin.random.Random.nextInt(0, 3)
@@ -105,5 +111,5 @@ fun creatRandomStringInt(): List<Any> {
         .map(charPool::get)
         .joinToString("")
 
-    return listOf(randomInt,randomInt2, randomString, randomString2)
+    return listOf(randomInt, randomInt2, randomString, randomString2)
 }

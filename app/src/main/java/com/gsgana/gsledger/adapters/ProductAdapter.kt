@@ -14,14 +14,24 @@ import com.gsgana.gsledger.HomeViewPagerFragmentDirections
 import com.gsgana.gsledger.R
 import com.gsgana.gsledger.data.Product
 import com.gsgana.gsledger.databinding.ListItemProductBinding
-import com.gsgana.gsledger.utilities.METAL
-import com.gsgana.gsledger.utilities.TYPE
-import com.gsgana.gsledger.utilities.WEIGHTUNIT
+import com.gsgana.gsledger.utilities.*
 import com.gsgana.gsledger.viewmodels.ProductsViewModel
 import java.lang.Exception
 
-class ProductAdapter(private val context: Context) :
+class ProductAdapter(private val context: Context, private val realData: Map<String, Double>) :
     ListAdapter<Product, ProductAdapter.ViewHolder>(ProductDiffCallback()) {
+    private lateinit var brand: String
+    private lateinit var metal: String
+    private lateinit var type: String
+    private lateinit var metalType: String
+    private lateinit var weight: String
+
+    private val PREF_NAME = "01504f779d6c77df04"
+    private val PL = "18xRWXR1PDWaSW0jXI"
+
+    private val plSwitch = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).getInt(PL,0)
+
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
             DataBindingUtil.inflate(
@@ -32,7 +42,7 @@ class ProductAdapter(private val context: Context) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(context, getItem(position))
+        holder.bind(context, getItem(position), realData)
     }
 
     class ViewHolder(
@@ -58,7 +68,7 @@ class ProductAdapter(private val context: Context) :
             it.findNavController().navigate(direction)
         }
 
-        fun bind(context: Context, item: Product) {
+        fun bind(context: Context, item: Product, realData: Map<String, Double>) {
             with(binding) {
                 viewModel = ProductsViewModel(item)
                 binding.product = item
@@ -67,7 +77,25 @@ class ProductAdapter(private val context: Context) :
                 val type = TYPE[item.type].toLowerCase()
                 val metalType = METAL[product!!.metal] + " " + TYPE[product!!.type]
                 var weight = 0
-                //"Default_${METAL[item.metal]}${TYPE[item.type]}"
+                val metalPrice = realData[METALCODE[item.metal]]!!.toFloat()
+                var pl = 0f
+                val currency = realData[CURRENCY[item.currency]]!!.toFloat()
+                val price = item.price / (1 + item.reg)
+                val memo = item.memo.replace("\n", " ")
+
+
+                pl = when (item.currency) {
+                    0 -> {
+                        (price / (metalPrice) - 1) * 100f
+                    }
+                    else -> {
+                        (price / ((metalPrice) / currency) - 1) * 100f
+                    }
+                }
+                binding.productItemPl.text = "(" + "-" + String.format("%,.2f", pl) + "%)"
+                pl = 0f
+
+
                 when (item.weight) {
                     1.0f -> {
                         weight = item.weight.toInt()
@@ -91,11 +119,17 @@ class ProductAdapter(private val context: Context) :
                         weight = item.weight.toInt()
                     }
                 }
-
-                if (item.memo.length > 0) {
-                    binding.productItemMemo.text = item.memo.replace("\n", " ")
-                } else if (item.memo.length > 18) {
-                    binding.productItemMemo.text = item.memo.replace("\n", " ").substring(0, 24)
+                val test = item.memo.length
+                when {
+                    memo.length in 0..18 -> {
+                        binding.productItemMemo.text = "Memo : $memo"
+                    }
+                    memo.length > 18 -> {
+                        binding.productItemMemo.text = "Memo : ${memo.substring(0..18)} ..."
+                    }
+                    else -> {
+                        //                    binding.productItemMemo.text = realData["AU"].toString()
+                    }
                 }
 
                 if (weight == 0) {

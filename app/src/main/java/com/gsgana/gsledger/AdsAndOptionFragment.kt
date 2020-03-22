@@ -32,6 +32,11 @@ class AdsAndOptionFragment : Fragment() {
     private val PREF_NAME = "01504f779d6c77df04"
     private lateinit var binding: AdsAndOptionFragmentBinding
 
+
+    private val PL = "18xRWXR1PDWaSW0jXI"
+
+    private val plSwitch = context!!.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).getInt(PL,0)
+
     private val viewModel: HomeViewPagerViewModel by viewModels {
         InjectorUtils.provideHomeViewPagerViewModelFactory(requireActivity(), null)
     }
@@ -40,7 +45,6 @@ class AdsAndOptionFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
 
         binding = AdsAndOptionFragmentBinding.inflate(inflater, container, false)
 

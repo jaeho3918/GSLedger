@@ -76,6 +76,7 @@ class StatFragment : Fragment() {
                 val currencyOption = realData["currency"]!!.toInt()
                 ratio = calculateProduct(binding, realData, products)
                 setChart(context!!, binding, ratio!!)
+                switchChart = true
             } else {
                 binding.statChart.visibility = View.GONE
                 binding.totalCurrency.text = ""
@@ -94,7 +95,7 @@ class StatFragment : Fragment() {
 
         Handler().postDelayed({
             if (!ratio.isNullOrEmpty()) {
-                setChart(context!!, binding, ratio!!) //if (context!=null)
+                if (!switchChart) setChart(context!!, binding, ratio!!) //if (context!=null)
             }
         }, 1300)
 

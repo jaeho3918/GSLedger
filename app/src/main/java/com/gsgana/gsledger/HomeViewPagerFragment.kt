@@ -16,10 +16,7 @@ import androidx.lifecycle.observe
 import com.gsgana.gsledger.adapters.PagerAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 import com.google.firebase.firestore.FirebaseFirestore
 import com.gsgana.gsledger.adapters.PagerAdapter.Companion.ADSANDOPTION_PAGE_INDEX
 import com.gsgana.gsledger.adapters.PagerAdapter.Companion.LIST_PAGE_INDEX
@@ -62,6 +59,8 @@ class HomeViewPagerFragment : Fragment() {
     private var color_up: Int? = null
     private var color_down: Int? = null
 
+    private lateinit var databaseRef : DatabaseReference
+
     private val viewModel: HomeViewPagerViewModel by viewModels {
         InjectorUtils.provideHomeViewPagerViewModelFactory(requireActivity(), null)
     }
@@ -74,7 +73,7 @@ class HomeViewPagerFragment : Fragment() {
         val currencyOption =
             activity?.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)?.getInt(CURR_NAME, 0)
 
-        val databaseRef = FirebaseDatabase.getInstance().getReference(REAL_DB_PATH)
+        databaseRef = FirebaseDatabase.getInstance().getReference(REAL_DB_PATH)
         databaseRef.addValueEventListener(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {}
             override fun onDataChange(p0: DataSnapshot) {

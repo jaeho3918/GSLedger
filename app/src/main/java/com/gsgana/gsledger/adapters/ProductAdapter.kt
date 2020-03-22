@@ -80,19 +80,20 @@ class ProductAdapter(private val context: Context, private val realData: Map<Str
                 val metalPrice = realData[METALCODE[item.metal]]!!.toFloat()
                 var pl = 0f
                 val currency = realData[CURRENCY[item.currency]]!!.toFloat()
-                val price = item.price / (1 + item.reg)
                 val memo = item.memo.replace("\n", " ")
+                val price = metalPrice * (1 + item.reg)
 
+                pl = ( price/ (item.price/ currency) -1) * 100f
+//                pl = when (item.currency) {
+//                    0 -> {
+//                        (price / (metalPrice) - 1) * 100f
+//                    }
+//                    else -> {
+//                        (price / (metalPrice * currency) - 1) * 100f
+//                    }
+//                }
 
-                pl = when (item.currency) {
-                    0 -> {
-                        (price / (metalPrice) - 1) * 100f
-                    }
-                    else -> {
-                        (price / ((metalPrice) / currency) - 1) * 100f
-                    }
-                }
-                binding.productItemPl.text = "(" + "-" + String.format("%,.2f", pl) + "%)"
+                binding.productItemPl.text = "(" + String.format("%,.2f", pl) + "%)"
                 pl = 0f
 
 

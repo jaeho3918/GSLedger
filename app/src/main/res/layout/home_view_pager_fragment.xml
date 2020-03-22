@@ -150,13 +150,13 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="0.6"
+                    android:layout_weight="1"
                     android:paddingHorizontal="8dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:text="Last Updated : "
+                        android:text="Last updated : "
                         android:textColor="@color/font_silver"
                         android:textSize="@dimen/text_small" />
 
@@ -164,7 +164,7 @@
                         android:id="@+id/realUpdatedDate"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:text="2020/10/10 00:00:00 "
+                        android:text="2000/00/00 00:00:00 "
                         android:textColor="@color/font_silver"
                         android:textSize="@dimen/text_small" />
 
@@ -173,8 +173,20 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"></LinearLayout>
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.105"
+                    android:paddingRight="8dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="right"
+                        android:text="provided by investing.com"
+                        android:textColor="@color/font_silver"
+                        android:textSize="@dimen/text_small" />
+
+
+                </LinearLayout>
 
 
             </LinearLayout>

@@ -97,7 +97,7 @@ class StatFragment : Fragment() {
             if (!ratio.isNullOrEmpty()) {
                 if (!switchChart) setChart(context!!, binding, ratio!!) //if (context!=null)
             }
-        }, 1300)
+        }, 1800)
 
         return binding.root
     }
@@ -244,6 +244,11 @@ class StatFragment : Fragment() {
         var silverCoin_Pl = 0.0
         var silverBar_Pl = 0.0
 
+        var goldCoin_PlPer = 0.0
+        var goldBar_PlPer = 0.0
+        var silverCoin_PlPer = 0.0
+        var silverBar_PlPer = 0.0
+
         var goldCoin_Ratio = 0.0
         var goldBar_Ratio = 0.0
         var silverCoin_Ratio = 0.0
@@ -313,6 +318,12 @@ class StatFragment : Fragment() {
         silverCoin_Pl = result_silverCoin - result_silverCoin_BuyPrice
         silverBar_Pl = result_silverBar - result_silverBar_BuyPrice
 
+        /*calculate Pl*/
+        goldCoin_PlPer = (result_goldCoin - result_goldCoin_BuyPrice) / result_goldCoin
+        goldBar_PlPer = (result_goldBar - result_goldBar_BuyPrice) / result_goldBar
+        silverCoin_PlPer = (result_silverCoin - result_silverCoin_BuyPrice) / result_silverCoin
+        silverBar_PlPer = (result_silverBar - result_silverBar_BuyPrice) / result_silverBar
+
         /* set Visible Layout */
         viewModel.ratioMetal.value =
             listOf(goldCoin_Ratio, goldBar_Ratio, silverCoin_Ratio, silverBar_Ratio)
@@ -360,8 +371,8 @@ class StatFragment : Fragment() {
         if (result_goldCoin > 0) {
             binding.goldCoinCurrency.text = CURRENCYSYMBOL[currencyOption]
             binding.goldCoinPrice.text = priceToString(result_goldCoin, "PriceInt")
-            binding.goldCoinPl.text = priceToString(goldCoin_Pl, "PricePl")
-            binding.goldCoinPlCurrency.text = "(" + CURRENCYSYMBOL[currencyOption]
+            binding.goldCoinPl.text = "${priceToString(goldCoin_PlPer, "Pl")} ${CURRENCYSYMBOL[currencyOption]} ${priceToString(goldCoin_Pl, "PricePl")}"
+//            binding.goldCoinPlCurrency.text = CURRENCYSYMBOL[currencyOption] //"(" + CURRENCYSYMBOL[currencyOption]
 
             binding.totalGoldLayout.visibility = View.VISIBLE
             binding.goldCoinLayout.visibility = View.VISIBLE
@@ -372,8 +383,8 @@ class StatFragment : Fragment() {
         if (result_goldBar > 0) {
             binding.goldBarCurrency.text = CURRENCYSYMBOL[currencyOption]
             binding.goldBarPrice.text = priceToString(result_goldBar, "PriceInt")
-            binding.goldBarPl.text = priceToString(goldBar_Pl, "PricePl")
-            binding.goldBarPlCurrency.text = "(" + CURRENCYSYMBOL[currencyOption]
+            binding.goldBarPl.text = "${priceToString(goldBar_PlPer, "Pl")} ${CURRENCYSYMBOL[currencyOption]} ${priceToString(goldBar_Pl, "PricePl")}"
+//            binding.goldBarPlCurrency.text = CURRENCYSYMBOL[currencyOption] //"(" + CURRENCYSYMBOL[currencyOption]
 
             binding.totalGoldLayout.visibility = View.VISIBLE
             binding.goldBarLayout.visibility = View.VISIBLE
@@ -384,8 +395,8 @@ class StatFragment : Fragment() {
         if (result_silverCoin > 0) {
             binding.silverCoinCurrency.text = CURRENCYSYMBOL[currencyOption]
             binding.silverCoinPrice.text = priceToString(result_silverCoin, "PriceInt")
-            binding.silverCoinPl.text = priceToString(silverCoin_Pl, "PricePl")
-            binding.silverCoinPlCurrency.text = "(" + CURRENCYSYMBOL[currencyOption]
+            binding.silverCoinPl.text = "${priceToString(silverCoin_PlPer, "Pl")} ${CURRENCYSYMBOL[currencyOption]} ${priceToString(silverCoin_Pl, "PricePl")}"
+//            binding.silverCoinPlCurrency.text = CURRENCYSYMBOL[currencyOption] //"(" + CURRENCYSYMBOL[currencyOption]
 
             binding.totalSilverLayout.visibility = View.VISIBLE
             binding.silverCoinLayout.visibility = View.VISIBLE
@@ -396,8 +407,8 @@ class StatFragment : Fragment() {
         if (result_silverBar > 0) {
             binding.silverBarCurrency.text = CURRENCYSYMBOL[currencyOption]
             binding.silverBarPrice.text = priceToString(result_silverBar, "PriceInt")
-            binding.silverBarPl.text = priceToString(silverBar_Pl, "PricePl")
-            binding.silverBarPlCurrency.text = "(" + CURRENCYSYMBOL[currencyOption]
+            binding.silverBarPl.text = "${priceToString(silverBar_PlPer, "Pl")} ${CURRENCYSYMBOL[currencyOption]} ${priceToString(silverBar_Pl, "PricePl")}"
+//            binding.silverBarPlCurrency.text = CURRENCYSYMBOL[currencyOption] //"(" + CURRENCYSYMBOL[currencyOption]
 
             binding.totalSilverLayout.visibility = View.VISIBLE
             binding.silverBarLayout.visibility = View.VISIBLE
@@ -427,10 +438,10 @@ class StatFragment : Fragment() {
 
             "Pl" -> {
                 when {
-                    price > 0 -> {
+                    price > 0.01 -> {
                         "(+" + String.format("%,.2f", price) + "%)"
                     }
-                    price < 0 -> {
+                    price < -0.01 -> {
                         "(" + String.format("%,.2f", price) + "%)"
                     }
                     else -> "( 0.00%)"
@@ -438,13 +449,13 @@ class StatFragment : Fragment() {
             }
             "PricePl" -> {
                 when {
-                    price > 0 -> {
-                        "+" + String.format("%,.0f", price) + ")"
+                    price > 1 -> {
+                        "+" + String.format("%,.0f", price)
                     }
-                    price < 0 -> {
-                        "" + String.format("%,.0f", price) + ")"
+                    price < -1 -> {
+                        "" + String.format("%,.0f", price)
                     }
-                    else -> "( 0.00%)"
+                    else -> "0"
                 }
             }
 

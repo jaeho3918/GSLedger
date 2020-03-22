@@ -35,7 +35,7 @@ class AdsAndOptionFragment : Fragment() {
 
     private val PL = "18xRWXR1PDWaSW0jXI"
 
-    private val plSwitch = context!!.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).getInt(PL,0)
+    private var plSwitch = context?.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)?.getInt(PL,0)
 
     private val viewModel: HomeViewPagerViewModel by viewModels {
         InjectorUtils.provideHomeViewPagerViewModelFactory(requireActivity(), null)

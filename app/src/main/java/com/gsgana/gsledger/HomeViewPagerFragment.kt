@@ -116,9 +116,7 @@ class HomeViewPagerFragment : Fragment() {
             val currencyOption = activity?.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
                 ?.getInt(CURR_NAME, 0)
 
-            val test = realData["DATE"]!!.toLong()
-
-            binding.realUpdatedDate.text = SimpleDateFormat("yyyy/MM/dd HH:mm:ss")
+            binding.realUpdatedDate.text = SimpleDateFormat("yyyy/MM/dd HH:mm")
                 .format(Date(realData["DATE"]!!.toLong()*1000))
 
 

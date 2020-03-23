@@ -82,6 +82,7 @@ class Write6Fragment : Fragment() {
                 product.reg = viewModel.regField.value ?: 0f
                 product.memo = viewModel.memoField.value ?: ""
                 product.prePrice = viewModel.totalPrice.value?.toFloat() ?: 0f
+                product.metalPrice = viewModel.metalPriceField.value?.toFloat() ?: 0f
 
                 viewModel.addProduct(product)
                 viewModel.initProduct()

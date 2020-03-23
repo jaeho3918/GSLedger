@@ -19,4 +19,4 @@ interface ServerNetwork {
 
 data class Data(var reg : String,
                 var metal : String,
-                var currency : String)
+                var cur : String)

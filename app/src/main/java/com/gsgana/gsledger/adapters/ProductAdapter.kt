@@ -84,6 +84,7 @@ class ProductAdapter(private val context: Context, private val realData: Map<Str
                 val price = metalPrice * (1 + item.reg)
 
                 pl = ( price/ (item.price/ currency) -1) * 100f
+
 //                pl = when (item.currency) {
 //                    0 -> {
 //                        (price / (metalPrice) - 1) * 100f

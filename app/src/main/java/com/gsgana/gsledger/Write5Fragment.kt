@@ -116,7 +116,7 @@ class Write5Fragment : Fragment() {
                                     ) {
                                         binding.resultPrice.text = response.body().toString()
                                         viewModel.regField.value = response.body()?.reg?.toFloat()
-                                        viewModel.metalPriceField.value = response.body()?.cur?.toFloat()
+                                        viewModel.curField.value = response.body()?.cur?.toFloat()
                                     }
                                 })
                         } else {

@@ -37,7 +37,7 @@ class WriteViewModel internal constructor(
 
     val regField = MutableLiveData<Float>(0f)
 
-    val metalPriceField = MutableLiveData<Float>(0f)
+    val curField = MutableLiveData<Float>(0f)
 
     val gradeField = MutableLiveData<Int?>(null)
 

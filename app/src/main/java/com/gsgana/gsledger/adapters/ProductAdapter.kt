@@ -29,7 +29,8 @@ class ProductAdapter(private val context: Context, private val realData: Map<Str
     private val PREF_NAME = "01504f779d6c77df04"
     private val PL = "18xRWXR1PDWaSW0jXI"
 
-    private val plSwitch = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).getInt(PL,0)
+    private val plSwitch =
+        context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).getInt(PL, 0)
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -81,9 +82,12 @@ class ProductAdapter(private val context: Context, private val realData: Map<Str
                 var pl = 0f
                 val currency = realData[CURRENCY[item.currency]]!!.toFloat()
                 val memo = item.memo.replace("\n", " ")
-                val price = metalPrice * (1 + item.reg)
+                val realPrice =
+                    metalPrice * (1 + item.reg) * PACKAGENUM[item.packageType] * item.quantity * item.weightr * item.weight
 
-                pl = ( price/ (item.price/ currency) -1) * 100f
+                val price = item.prePrice / currency
+
+                pl = ((realPrice - price) / realPrice) * 100f
 
 //                pl = when (item.currency) {
 //                    0 -> {
@@ -123,14 +127,14 @@ class ProductAdapter(private val context: Context, private val realData: Map<Str
                 }
                 val test = item.memo.length
                 when {
-                    memo.length in 0..18 -> {
+                    memo.length in 1..18 -> {
                         binding.productItemMemo.text = "Memo : $memo"
                     }
                     memo.length > 18 -> {
                         binding.productItemMemo.text = "Memo : ${memo.substring(0..18)} ..."
                     }
                     else -> {
-                        //                    binding.productItemMemo.text = realData["AU"].toString()
+                        binding.productItemMemo.visibility = View.GONE
                     }
                 }
 

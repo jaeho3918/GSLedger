@@ -1,6 +1,7 @@
 package com.gsgana.gsledger
 
 import android.content.Context
+import android.content.res.Resources
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -20,6 +21,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.observe
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.common.io.Resources.getResource
 import com.gsgana.gsledger.data.Product
 import com.gsgana.gsledger.databinding.DetailFragmentBinding
 import com.gsgana.gsledger.utilities.*
@@ -35,7 +37,7 @@ class DetailFragment : Fragment() {
         InjectorUtils.provideDetailViewModelFactory(requireActivity(), args.id)
     }
 
-    private lateinit var binding : DetailFragmentBinding
+    private lateinit var binding: DetailFragmentBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,19 +52,47 @@ class DetailFragment : Fragment() {
 //        val preValue_id = args.id
 
 
-        subscribeUi(binding, detailViewModel)
+        subscribeUi(binding, detailViewModel, context!!)
 
         return binding.root
     }
 
-    private fun subscribeUi(binding: DetailFragmentBinding, viewModel: DetailViewModel) {
+    private fun subscribeUi(
+        binding: DetailFragmentBinding,
+        viewModel: DetailViewModel,
+        context: Context
+    ) {
 
-        detailViewModel.getProduct().observe(viewLifecycleOwner) {product ->
+        detailViewModel.getProduct().observe(viewLifecycleOwner) { product ->
 
             binding.viewModel = detailViewModel
             binding.lifecycleOwner = viewLifecycleOwner
 
             val preValue = product
+
+            val brand = product.brand.toLowerCase().replace(" ", "")
+            val metal = METAL[product.metal].toLowerCase()
+            val type = TYPE[product.type].toLowerCase()
+            val metalType = METAL[product!!.metal] + " " + TYPE[product!!.type]
+            var weight = 0
+
+            val imgId = getResource(
+                "drawable",
+                "${brand}_${metal}${type}",
+                context
+            )
+            if (imgId == 0) {
+                binding.itemImage.setImageResource(
+                    getResource(
+                        "drawable",
+                        "default_goldbar",
+                        context
+                    )//"Default_${METAL[item.metal]}${TYPE[item.type]}"
+                )
+            } else {
+                binding.itemImage.setImageResource(imgId)
+            }
+
 
             //Set EditData_Button of Edit Button
             binding.callback = object : Callback {
@@ -83,6 +113,7 @@ class DetailFragment : Fragment() {
                     detailViewModel.addProduct(newproduct)
                     view?.findNavController()?.navigateUp()
                 }
+
                 override fun del() {
                     detailViewModel.delProduct(args.id)
                     view?.findNavController()?.navigateUp()
@@ -102,6 +133,17 @@ class DetailFragment : Fragment() {
             dipValue,
             resources.displayMetrics
         )
+
+
+    }
+
+    private fun getResource(type: String, resName: String, context: Context): Int {
+
+        val resContext: Context = context.createPackageContext(context.packageName, 0)
+        val res: Resources = resContext.resources
+        val id: Int = res.getIdentifier(resName, type, context.packageName)
+
+        return id
     }
 //
 //    private fun setSpinnerUi(binding: DetailFragmentBinding, viewModel: DetailViewModel) {

@@ -150,7 +150,15 @@
                         android:textAlignment="center"
                         android:textSize="36dp" />
 
+
                 </LinearLayout>
+
+                <com.github.florent37.androidslidr.Slidr
+                    android:id="@+id/seekBar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:slidr_regions_centerText="false"
+                    app:slidr_region_leftColor="#4CAF50" />
 
                 <TextView
                     android:id="@+id/result_price"

@@ -84,7 +84,6 @@ class ProductAdapter(private val context: Context, private val realData: Map<Str
                 val memo = item.memo.replace("\n", " ")
                 val realPrice =
                     metalPrice * (1 + item.reg) * PACKAGENUM[item.packageType] * item.quantity * item.weightr * item.weight
-
                 val price = item.prePrice / currency
 
                 pl = ((realPrice - price) / realPrice) * 100f

@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.os.Handler
 import android.util.TypedValue
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -75,11 +76,14 @@ class AdsAndOptionFragment : Fragment() {
                     id: Long
                 ) {
                     sf?.edit()?.putInt(CURR_NAME, position)?.commit()
-                    val getData = viewModel?.realData?.value?.toMutableMap()
-                    getData?.set("currency", position.toDouble())
+                    Handler().postDelayed({
+                        val getData = viewModel?.realData?.value?.toMutableMap()
+                        getData?.set("currency", position.toDouble())
 
-                    viewModel?.realData?.value = getData?.toMap()
-                    getData?.clear()
+                        viewModel?.realData?.value = getData?.toMap()
+                        getData?.clear()
+                    }, 500)
+
                 }
             }
 

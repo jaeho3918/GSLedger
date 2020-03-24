@@ -4,6 +4,8 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.view.View
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
@@ -18,6 +20,7 @@ import com.gsgana.gsledger.data.AppDatabase
 import com.gsgana.gsledger.databinding.ActivityMainBinding
 import com.gsgana.gsledger.utilities.InjectorUtils
 import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModel
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -45,32 +48,12 @@ class MainActivity : AppCompatActivity() {
         DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
         intent.removeExtra(KEY)
 
-//        val currencyOption =
-//            getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)?.getInt(CURR_NAME, 0)
-//
-//        val databaseRef = FirebaseDatabase.getInstance().getReference(REAL_DB_PATH)
-//        databaseRef.addValueEventListener(object : ValueEventListener {
-//            override fun onCancelled(p0: DatabaseError) {}
-//            override fun onDataChange(p0: DataSnapshot) {
-//                val data = p0?.value as HashMap<String, Double>
-//
-//                if (currencyOption != null) {
-//                    if (!viewModel.realData.value.isNullOrEmpty()) {
-//                        data["currency"] = viewModel.realData.value?.getValue("currency") ?: 0.0
-//                    } else {
-//                        data["currency"] = currencyOption.toDouble()
-//                    }
-//                }
-//                data["USD"] = 1.0
-//
-//                viewModel.realData.value = data
-//                viewModel.realTime.value = (p0.value as HashMap<String, String>)["DATE"]
-//            }
-//
-//
-//        }
-//        )
-
+        Handler().postDelayed(
+            {
+                loading.visibility= View.GONE
+                homeViewPagerFragmentpage.visibility = View.VISIBLE
+            },1500
+        )
     }
 
 //    override fun onBackPressed() {

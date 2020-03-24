@@ -36,7 +36,8 @@ class AdsAndOptionFragment : Fragment() {
 
     private val PL = "18xRWXR1PDWaSW0jXI"
 
-    private var plSwitch = context?.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)?.getInt(PL,0)
+    private var plSwitch =
+        context?.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)?.getInt(PL, 0)
 
     private val viewModel: HomeViewPagerViewModel by viewModels {
         InjectorUtils.provideHomeViewPagerViewModelFactory(requireActivity(), null)
@@ -76,19 +77,20 @@ class AdsAndOptionFragment : Fragment() {
                     id: Long
                 ) {
                     sf?.edit()?.putInt(CURR_NAME, position)?.commit()
-                    Handler().postDelayed({
-                        val getData = viewModel?.realData?.value?.toMutableMap()
-                        getData?.set("currency", position.toDouble())
+                    val getData = viewModel?.realData?.value?.toMutableMap()
+                    getData?.set("currency", position.toDouble())
 
-                        viewModel?.realData?.value = getData?.toMap()
-                        getData?.clear()
-                    }, 500)
+                    viewModel?.realData?.value = getData?.toMap()
+                    getData?.clear()
+
 
                 }
             }
 
         if (!viewModel?.realData?.value.isNullOrEmpty()) {
-            binding.currencyOption.setSelection(viewModel?.realData?.value?.get("currency")!!.toInt())
+            binding.currencyOption.setSelection(
+                viewModel?.realData?.value?.get("currency")!!.toInt()
+            )
         }
     }
 

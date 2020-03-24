@@ -90,6 +90,7 @@ class IntroActivity : AppCompatActivity() {
                                 rgl_b.clear()
                                 val intent =
                                     Intent(applicationContext, MainActivity::class.java)
+                                intent.addFlags (Intent.FLAG_ACTIVITY_NO_ANIMATION)
                                 intent.putExtra(KEY, rgl)
                                 startActivity(intent)
                                 rgl = charArrayOf()
@@ -160,6 +161,7 @@ class IntroActivity : AppCompatActivity() {
                         rgl = rgl_b.toCharArray()
                         rgl_b.clear()
                         val intent = Intent(applicationContext, MainActivity::class.java)
+                        intent.addFlags (Intent.FLAG_ACTIVITY_NO_ANIMATION)
                         intent.putExtra(KEY, rgl)
                         rgl = charArrayOf()
                         startActivity(intent)
@@ -184,6 +186,7 @@ class IntroActivity : AppCompatActivity() {
                                     rgl = rgl_b.toCharArray()
                                     rgl_b.clear()
                                     val intent = Intent(applicationContext, MainActivity::class.java)
+                                    intent.addFlags (Intent.FLAG_ACTIVITY_NO_ANIMATION)
                                     intent.putExtra(KEY, rgl)
                                     rgl = charArrayOf()
                                     startActivity(intent)

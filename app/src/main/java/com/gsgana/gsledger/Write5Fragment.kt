@@ -59,8 +59,7 @@ class Write5Fragment : Fragment() {
         binding.moveTo5.setOnClickListener { findNavController().navigate(R.id.action_write5Fragment_to_write6Fragment) }
         binding.moveTo5r.setOnClickListener { findNavController().navigate(R.id.action_write5Fragment_to_write4Fragment) }
 
-        binding.seekBar.max = 0.99f
-        binding.seekBar.setMin(0f)
+
 
         binding.callback = object : Callback {
             override fun click() {

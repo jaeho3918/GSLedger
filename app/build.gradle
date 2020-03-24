@@ -80,7 +80,7 @@ android {
         implementation 'org.bouncycastle:bcpkix-jdk15on:1.56'//
         implementation "com.commonsware.cwac:saferoom:1.2.1"
         implementation 'com.github.zagum:Android-SwitchIcon:1.4.0'
-        implementation 'com.github.florent37:android-slidr:1.0.3'
+//        implementation 'com.github.warkiz.widget:indicatorseekbar:2.1.2'
 //
         //firebase
         implementation 'com.google.firebase:firebase-functions:19.0.1'

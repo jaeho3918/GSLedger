@@ -84,7 +84,7 @@ class Write5Fragment : Fragment() {
                     addProperty("brand", viewModel.brandField1.value)
                     addProperty("weight", viewModel.weightCalculator.value)
                     addProperty("quantity", viewModel.quantityField.value)
-                    addProperty("weightr", viewModel.weightr.value)
+                    addProperty("weightr", viewModel.weightUnit.value)
                     addProperty("packageType", viewModel.packageTypeField.value.toString())
                     addProperty("grade", viewModel.gradeField.value.toString())
                     addProperty("gradeNum", viewModel.gradeNumField.value.toString())

@@ -154,28 +154,28 @@ class WriteViewModel internal constructor(
         .apply {
             addSource(weightMerger) {
                 val test1 = weightMerger.value?.toFloat() ?: 1f
-                val test2 = weightUnit.value ?: 1f
+                val test2 =  1f
                 val test3 = quantityField.value?.toInt() ?: 1
                 val test4 = packageType.value ?: 1
                 value = String.format("%.6f", test1 * test2 * test3 * test4)
             }
             addSource(weightUnit) {
                 val test1 = weightMerger.value?.toFloat() ?: 1f
-                val test2 = weightUnit.value ?: 1f
+                val test2 =  1f
                 val test3 = quantityField.value?.toInt() ?: 1
                 val test4 = packageType.value ?: 1
                 value = String.format("%.6f", test1 * test2 * test3 * test4)
             }
             addSource(quantityField) {
                 val test1 = weightMerger.value?.toFloat() ?: 1f
-                val test2 = weightUnit.value ?: 1f
+                val test2 =  1f
                 val test3 = quantityField.value?.toInt() ?: 1
                 val test4 = packageType.value ?: 1
                 value = String.format("%.6f", test1 * test2 * test3 * test4)
             }
             addSource(packageType) {
                 val test1 = weightMerger.value?.toFloat() ?: 1f
-                val test2 = weightUnit.value ?: 1f
+                val test2 =  1f
                 val test3 = quantityField.value?.toInt() ?: 1
                 val test4 = packageType.value ?: 1
                 value = String.format("%.6f", test1 * test2 * test3 * test4)

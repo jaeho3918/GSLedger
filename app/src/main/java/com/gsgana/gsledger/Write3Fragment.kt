@@ -36,7 +36,10 @@ class Write3Fragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val viewModel =
-            ViewModelProviders.of(activity!!, InjectorUtils.provideWriteViewModelFactory(activity!!,null))
+            ViewModelProviders.of(
+                activity!!,
+                InjectorUtils.provideWriteViewModelFactory(activity!!, null)
+            )
                 .get(WriteViewModel::class.java)
 
 
@@ -60,8 +63,9 @@ class Write3Fragment : Fragment() {
         setSpinnerUi(binding, viewModel)
         setEditTextUi(binding, viewModel)
 
-        viewModel.weightCalculator.observe(this) {weight ->
-            binding.weightCalculate1.text = weight //String.format("%.2f",weight)
+        viewModel.weightCalculator.observe(this) { weight ->
+            val buf_string = weight
+            binding.weightCalculate1.text = buf_string //String.format("%.2f",weight)
         }
 
 
@@ -103,7 +107,6 @@ class Write3Fragment : Fragment() {
                 ) {
                     viewModel.weightUnitField.value = position
                     binding.weightUnit.text = WEIGHTUNIT[position]
-
                 }
             }
         if (viewModel.weightUnitField.value!! > 0) {
@@ -184,19 +187,6 @@ class Write3Fragment : Fragment() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         }
         )
-
-
-        binding.weightEditText1.setOnKeyListener(View.OnKeyListener(){ _: View, keyCode: Int, event: KeyEvent ->
-            if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
-                //Perform Code
-                binding.weightEditText2.moveCursorToVisibleOffset()
-
-                return@OnKeyListener true
-            }
-            false
-        }
-        )
-
 
     }
 

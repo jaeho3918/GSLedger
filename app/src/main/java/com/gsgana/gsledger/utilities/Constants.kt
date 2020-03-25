@@ -74,13 +74,15 @@ val GBTABLE = arrayOf(
     "LS-Nikko Minted",
     "LS-Nikko Cast",
     "Asahi Minted",
-    "Asahi cast",
+    "Asahi Cast",
     "KOMSCO Lunar",
     "KOMSCO Orodt",
     "Scottsdale Cast",
     "Scottsdale Minted",
     "Scottsdale Marquee",
-    "Scottsdale Lunar"
+    "Scottsdale Lunar",
+    "Heraeus Cast",
+    "Heraeus Minted"
 )
 
 val SCTABLE = arrayOf(
@@ -129,7 +131,9 @@ val SBTABLE = arrayOf(
     "KOMSCO Cast",
     "Scottsdale Cast",
     "Scottsdale Minted",
-    "Scottsdale Stacker Round"
+    "Scottsdale Stacker Round",
+    "Heraeus Cast",
+    "Heraeus Minted"
 )
 
 
@@ -277,7 +281,7 @@ val GRADE = arrayOf(
 //    "KMLNGB" to "KOMSCO Lunar Bar",
 //    "KMORGB" to "KOMSCO Orodt Bar",
 //    "ASNMGB" to "Asahi minted Bar",
-//    "ASNCGB" to "Asahi cast Bar",
+//    "ASNCGB" to "Asahi Cast Bar",
 //    "GENCGB" to "Geiger Edelmetalle Cast Bar",
 //    "GENMGB" to "Geiger Edelmetalle Minted Bar",
 //    "SDNCGB" to "Scottsdale Cast Bar",

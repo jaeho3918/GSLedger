@@ -86,11 +86,11 @@
                         android:id="@+id/priceEditText1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_weight="0.8"
                         android:hint="00"
                         android:inputType="number"
-                        android:maxLength="8"
-                        android:nextFocusForward="@+id/price_editText2"
+                        android:maxLength="9"
+                        android:nextFocusRight="@+id/price_editText2"
                         android:textAlignment="center"
                         android:textSize="29sp" />
 
@@ -111,9 +111,10 @@
                         android:layout_weight="1"
                         android:hint="00"
                         android:inputType="number"
-                        android:maxLength="8"
+                        android:maxLength="2"
                         android:textAlignment="center"
-                        android:textSize="29sp" />
+                        android:textSize="29sp"
+                        android:imeOptions="actionDone"/>
 
 
                 </LinearLayout>
@@ -192,13 +193,6 @@
             android:layout_weight="1"
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/moveTo5r"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="PRE"
-                android:textSize="50dp" />
 
             <Button
                 android:id="@+id/moveTo5"
@@ -206,7 +200,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="NEXT"
-                android:textSize="50dp" />
+                android:textSize="35dp"
+                android:theme="@style/NextButton" />
         </LinearLayout>
 
     </LinearLayout>

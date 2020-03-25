@@ -51,7 +51,6 @@ class Write4Fragment : Fragment() {
         }
 
         binding.moveTo4.setOnClickListener { findNavController().navigate(R.id.action_write4Fragment_to_write5Fragment) }
-        binding.moveTo4r.setOnClickListener { findNavController().navigate(R.id.action_write4Fragment_to_write3Fragment) }
 
         Toast.makeText(activity, viewModel.product.toString(), Toast.LENGTH_LONG).show()
 

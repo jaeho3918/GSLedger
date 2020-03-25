@@ -64,10 +64,6 @@ class Write1Fragment : Fragment() {
             }
         }
 
-        binding.moveTo1r.setOnClickListener {
-            viewModel.initProduct()
-            findNavController().navigate(R.id.action_write1Fragment_to_homeViewPagerFragment)
-        }
 
         binding.select11.setOnClickListener {
             select1_1.switchState()

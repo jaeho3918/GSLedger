@@ -59,9 +59,6 @@ class Write6Fragment : Fragment() {
             findNavController().navigate(R.id.action_write6Fragment_to_homeViewPagerFragment)
         }
 
-        binding.moveTo6r.setOnClickListener {
-            findNavController().navigate(R.id.action_write6Fragment_to_write5Fragment)
-        }
 
         setTextUI(binding, viewModel)
 

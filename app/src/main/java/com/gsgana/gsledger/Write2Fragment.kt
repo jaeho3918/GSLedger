@@ -1,6 +1,8 @@
 package com.gsgana.gsledger
 
+import android.content.Context
 import android.content.Intent
+import android.content.res.Resources
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.util.TypedValue
@@ -49,9 +51,6 @@ class Write2Fragment : Fragment() {
             viewModel.product.brand = viewModel.brand.value!!
             findNavController().navigate(R.id.action_write2Fragment_to_write3Fragment)
         }
-        binding.moveTo2r.setOnClickListener {
-            findNavController().navigate(R.id.action_write2Fragment_to_write1Fragment)
-        }
 
         if (viewModel.brandField1.value!! < 0) {
             setSpinnerUi(
@@ -63,6 +62,31 @@ class Write2Fragment : Fragment() {
         } else {
             setSpinnerUi(binding, viewModel, array = viewModel.write2Array)
         }
+//        val brand = "default"
+//        val metal = METAL[viewModel.metalField1.value!!].toLowerCase()
+//        val type = TYPE[viewModel.typeField1.value!!].toLowerCase()
+//
+//        val imgId = getResource(
+//            "drawable",
+//            "${brand}_${metal}${type}",
+//            context!!
+//        )
+//        if (imgId == 0) {
+//            binding.brandImage.setImageResource(
+//                getResource(
+//                    "drawable",
+//                    "default_goldbar",
+//                    context!!
+//                )
+////                        getResource(
+////                        "drawable",
+////                "default_${metal}${type}",
+////                context!!
+////            )//"Default_${METAL[item.metal]}${TYPE[item.type]}"
+//            )
+//        } else {
+//            binding.brandImage.setImageResource(imgId)
+//        }
         return binding.root
     }
 
@@ -85,7 +109,7 @@ class Write2Fragment : Fragment() {
 
         val brand_adpater =
             ArrayAdapter(
-                context!!, R.layout.support_simple_spinner_dropdown_item, write2Array ?: arrayOf("ㅠㅠㅠㅠ")
+                context!!, R.layout.support_simple_spinner_dropdown_item, write2Array ?: arrayOf("")
             )
         binding.brandSpn.adapter = brand_adpater
         binding.brandSpn.dropDownVerticalOffset = dipToPixels(53f).toInt()
@@ -99,6 +123,39 @@ class Write2Fragment : Fragment() {
             ) {
                 viewModel.brand.value = write2Array?.get(position)
                 viewModel.brandField1.value = position
+
+                var brand = write2Array?.get(position)
+                val metal = METAL[viewModel.metalField1.value!!].toLowerCase()
+                val type = TYPE[viewModel.typeField1.value!!].toLowerCase()
+
+                binding.brandTitle.text = "${write2Array?.get(position)} ${metal.capitalize()} ${type.capitalize()} "
+
+                brand = brand!!.toLowerCase().replace(" ", "")
+
+                val imgId = getResource(
+                    "drawable",
+                    "${brand}_${metal}${type}",
+                    context!!
+                )
+                if (imgId == 0) {
+                    binding.brandImage.setImageResource(
+                        getResource(
+                            "drawable",
+                            "default_goldbar",
+                            context!!
+                        )
+//                        getResource(
+//                        "drawable",
+//                "default_${metal}${type}",
+//                context!!
+//            )//"Default_${METAL[item.metal]}${TYPE[item.type]}"
+                    )
+                } else {
+                    binding.brandImage.setImageResource(imgId)
+                }
+
+
+
             }
         }
 
@@ -113,6 +170,15 @@ class Write2Fragment : Fragment() {
             dipValue,
             resources.displayMetrics
         )
+    }
+
+    private fun getResource(type: String, resName: String, context: Context): Int {
+
+        val resContext: Context = context.createPackageContext(context.packageName, 0)
+        val res: Resources = resContext.resources
+        val id: Int = res.getIdentifier(resName, type, context.packageName)
+
+        return id
     }
 
     private fun selectTable(metal: Int, type: Int): Array<String> {

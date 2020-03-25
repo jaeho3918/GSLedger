@@ -97,7 +97,7 @@ class ProductAdapter(private val context: Context, private val realData: Map<Str
 //                    }
 //                }
 
-                binding.productItemPl.text = "(" + String.format("%,.2f", pl) + "%)"
+                binding.productItemPl.text = priceToString(pl.toDouble(),"Pl")
                 pl = 0f
 
 
@@ -124,6 +124,7 @@ class ProductAdapter(private val context: Context, private val realData: Map<Str
                         weight = item.weight.toInt()
                     }
                 }
+
                 val test = item.memo.length
                 when {
                     memo.length in 1..18 -> {
@@ -166,6 +167,46 @@ class ProductAdapter(private val context: Context, private val realData: Map<Str
                 executePendingBindings()
             }
         }
+        private fun priceToString(price: Double, type: String): String {
+
+            return when (type) {
+                "PriceInt" -> {
+                    String.format("%,.0f", price)
+                }
+
+                "PriceFloat" -> {
+                    String.format("%,.2f", price)
+                }
+
+                "Pl" -> {
+                    when {
+                        price > 0.01 -> {
+                            "(+" + String.format("%,.2f", price) + "%)"
+                        }
+                        price < -0.01 -> {
+                            "(" + String.format("%,.2f", price) + "%)"
+                        }
+                        else -> "( 0.00%)"
+                    }
+                }
+                "PricePl" -> {
+                    when {
+                        price > 1 -> {
+                            "+" + String.format("%,.0f", price)
+                        }
+                        price < -1 -> {
+                            "" + String.format("%,.0f", price)
+                        }
+                        else -> "0"
+                    }
+                }
+
+                else -> {
+
+                    ""
+                }
+            }
+        }
 
         private fun getResource(type: String, resName: String, context: Context): Int {
 
@@ -190,5 +231,6 @@ class ProductAdapter(private val context: Context, private val realData: Map<Str
             return oldItem == newItem
         }
     }
+
 
 }

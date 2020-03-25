@@ -207,21 +207,15 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/moveTo6r"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="PRE"
-                android:textSize="50dp" />
-
-            <Button
                 android:id="@+id/moveTo6"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="NEXT"
+                android:text="Summit"
                 android:onClick="@{() -> callback.add()}"
-                android:textSize="50dp" />
+                android:textSize="35dp"
+                android:theme="@style/NextButton" />
+
         </LinearLayout>
 
     </LinearLayout>

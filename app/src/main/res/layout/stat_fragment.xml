@@ -181,7 +181,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="45dp"
+                        android:layout_width="48dp"
                         android:layout_height="wrap_content"
                         android:text="Gold"
                         android:textColor="@color/font_gold"
@@ -202,7 +202,7 @@
                             android:visibility="gone">
 
                             <TextView
-                                android:layout_width="49dp"
+                                android:layout_width="52dp"
                                 android:layout_height="wrap_content"
                                 android:text="Coin"
                                 android:textColor="@color/font_gold"
@@ -258,7 +258,7 @@
 
 
                             <TextView
-                                android:layout_width="49dp"
+                                android:layout_width="52dp"
                                 android:layout_height="wrap_content"
                                 android:text="Bar"
                                 android:textColor="@color/font_gold"
@@ -330,7 +330,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="45dp"
+                        android:layout_width="48dp"
                         android:layout_height="wrap_content"
                         android:text="Silver"
                         android:textSize="@dimen/text_medium" />

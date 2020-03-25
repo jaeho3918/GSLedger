@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.TypedValue
+import android.view.KeyEvent
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -55,13 +56,12 @@ class Write3Fragment : Fragment() {
             findNavController().navigate(R.id.action_write3Fragment_to_write4Fragment)
         }
 
-        binding.moveTo3r.setOnClickListener { findNavController().navigate(R.id.action_write3Fragment_to_write2Fragment) }
 
         setSpinnerUi(binding, viewModel)
         setEditTextUi(binding, viewModel)
 
-        viewModel.weightCalculator.observe(this) {
-            binding.weightCalculate1.text = it.toString()
+        viewModel.weightCalculator.observe(this) {weight ->
+            binding.weightCalculate1.text = weight //String.format("%.2f",weight)
         }
 
 
@@ -102,6 +102,7 @@ class Write3Fragment : Fragment() {
                     id: Long
                 ) {
                     viewModel.weightUnitField.value = position
+                    binding.weightUnit.text = WEIGHTUNIT[position]
 
                 }
             }
@@ -183,6 +184,20 @@ class Write3Fragment : Fragment() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         }
         )
+
+
+        binding.weightEditText1.setOnKeyListener(View.OnKeyListener(){ _: View, keyCode: Int, event: KeyEvent ->
+            if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
+                //Perform Code
+                binding.weightEditText2.moveCursorToVisibleOffset()
+
+                return@OnKeyListener true
+            }
+            false
+        }
+        )
+
+
     }
 
     private fun dipToPixels(dipValue: Float): Float {

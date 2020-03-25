@@ -71,8 +71,27 @@
                     android:id="@+id/brand_spn"
                     android:layout_marginTop="50dp"
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"/>
+                    android:layout_height="50dp"
+                    android:layout_marginBottom="24dp"/>
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/brand_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="240dp"
+                    android:src="@drawable/default_goldbar"
+                    android:layout_marginBottom="24dp"/>
+
+                <TextView
+                    android:id="@+id/brand_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:textAlignment="center"
+                    android:textSize="29sp" />
+
             </LinearLayout>
+
+
         </LinearLayout>
 
         <LinearLayout
@@ -81,13 +100,6 @@
             android:layout_weight="1"
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/moveTo2r"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="PRE"
-                android:textSize="50dp" />
 
             <Button
                 android:id="@+id/moveTo2"
@@ -95,7 +107,8 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="NEXT"
-                android:textSize="50dp" />
+                android:textSize="35dp"
+                android:theme="@style/NextButton"/>
         </LinearLayout>
 
     </LinearLayout>

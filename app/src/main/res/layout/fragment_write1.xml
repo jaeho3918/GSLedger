@@ -182,13 +182,6 @@
             android:layout_weight="1"
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/moveTo1r"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="PRE"
-                android:textSize="50dp" />
 
             <Button
                 android:id="@+id/moveTo1"
@@ -196,7 +189,10 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="NEXT"
-                android:textSize="50dp" />
+                android:textSize="35dp"
+                android:theme="@style/NextButton"
+                />
+
         </LinearLayout>
 
     </LinearLayout>

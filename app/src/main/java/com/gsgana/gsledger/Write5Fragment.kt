@@ -57,7 +57,6 @@ class Write5Fragment : Fragment() {
         }
 
         binding.moveTo5.setOnClickListener { findNavController().navigate(R.id.action_write5Fragment_to_write6Fragment) }
-        binding.moveTo5r.setOnClickListener { findNavController().navigate(R.id.action_write5Fragment_to_write4Fragment) }
 
 
 

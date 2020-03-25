@@ -28,7 +28,8 @@
             android:id="@+id/action_detailFragment_to_homeViewPagerFragment2"
             app:destination="@+id/homeViewPagerFragment"
             app:launchSingleTop="false"
-            app:popUpToInclusive="false" />
+            app:popUpToInclusive="false"
+            app:popUpTo="@+id/nav_graph" />
     </fragment>
 
     <fragment
@@ -38,10 +39,16 @@
         tools:layout="@layout/fragment_write1" >
         <action
             android:id="@+id/action_write1Fragment_to_write2Fragment"
-            app:destination="@id/write2Fragment" />
+            app:destination="@id/write2Fragment"
+            app:launchSingleTop="false"
+            app:popUpToInclusive="false"
+            app:popUpTo="@+id/homeViewPagerFragment" />
         <action
             android:id="@+id/action_write1Fragment_to_homeViewPagerFragment"
-            app:destination="@id/homeViewPagerFragment" />
+            app:destination="@id/homeViewPagerFragment"
+            app:launchSingleTop="false"
+            app:popUpToInclusive="false"
+            app:popUpTo="@+id/homeViewPagerFragment" />
     </fragment>
     <fragment
         android:id="@+id/write2Fragment"
@@ -50,13 +57,22 @@
         tools:layout="@layout/fragment_write2" >
         <action
             android:id="@+id/action_write2Fragment_to_write3Fragment"
-            app:destination="@id/write3Fragment" />
+            app:destination="@id/write3Fragment"
+            app:launchSingleTop="false"
+            app:popUpToInclusive="false"
+            app:popUpTo="@+id/homeViewPagerFragment" />
         <action
             android:id="@+id/action_write2Fragment_to_write1Fragment"
-            app:destination="@id/write1Fragment" />
+            app:destination="@id/write1Fragment"
+            app:launchSingleTop="false"
+            app:popUpToInclusive="false"
+            app:popUpTo="@+id/homeViewPagerFragment" />
         <action
             android:id="@+id/action_write2Fragment_to_homeViewPagerFragment"
-            app:destination="@id/homeViewPagerFragment" />
+            app:destination="@id/homeViewPagerFragment"
+            app:launchSingleTop="false"
+            app:popUpToInclusive="false"
+            app:popUpTo="@+id/homeViewPagerFragment" />
     </fragment>
 
     <fragment
@@ -66,13 +82,22 @@
         tools:layout="@layout/fragment_write3" >
         <action
             android:id="@+id/action_write3Fragment_to_write4Fragment"
-            app:destination="@id/write4Fragment" />
+            app:destination="@id/write4Fragment"
+            app:launchSingleTop="false"
+            app:popUpToInclusive="false"
+            app:popUpTo="@+id/homeViewPagerFragment" />
         <action
             android:id="@+id/action_write3Fragment_to_write2Fragment"
-            app:destination="@id/write2Fragment" />
+            app:destination="@id/write2Fragment"
+            app:launchSingleTop="false"
+            app:popUpToInclusive="false"
+            app:popUpTo="@+id/homeViewPagerFragment" />
         <action
             android:id="@+id/action_write3Fragment_to_homeViewPagerFragment"
-            app:destination="@id/homeViewPagerFragment" />
+            app:destination="@id/homeViewPagerFragment"
+            app:launchSingleTop="false"
+            app:popUpToInclusive="false"
+            app:popUpTo="@+id/homeViewPagerFragment" />
     </fragment>
 
     <fragment
@@ -82,13 +107,22 @@
         tools:layout="@layout/fragment_write4" >
         <action
             android:id="@+id/action_write4Fragment_to_write5Fragment"
-            app:destination="@id/write5Fragment" />
+            app:destination="@id/write5Fragment"
+            app:launchSingleTop="false"
+            app:popUpToInclusive="false"
+            app:popUpTo="@+id/homeViewPagerFragment" />
         <action
             android:id="@+id/action_write4Fragment_to_write3Fragment"
-            app:destination="@id/write3Fragment" />
+            app:destination="@id/write3Fragment"
+            app:launchSingleTop="false"
+            app:popUpToInclusive="false"
+            app:popUpTo="@+id/homeViewPagerFragment" />
         <action
             android:id="@+id/action_write4Fragment_to_homeViewPagerFragment"
-            app:destination="@id/homeViewPagerFragment" />
+            app:destination="@id/homeViewPagerFragment"
+            app:launchSingleTop="false"
+            app:popUpToInclusive="false"
+            app:popUpTo="@+id/homeViewPagerFragment" />
     </fragment>
 
     <fragment
@@ -98,13 +132,21 @@
         tools:layout="@layout/fragment_write5" >
         <action
             android:id="@+id/action_write5Fragment_to_write6Fragment"
-            app:destination="@id/write6Fragment" />
+            app:destination="@id/write6Fragment"
+            app:launchSingleTop="false"
+            app:popUpToInclusive="false"
+            app:popUpTo="@+id/homeViewPagerFragment" />
         <action
             android:id="@+id/action_write5Fragment_to_write4Fragment"
-            app:destination="@id/write4Fragment" />
+            app:destination="@id/write4Fragment"
+            app:launchSingleTop="false"
+            app:popUpToInclusive="false"/>
         <action
             android:id="@+id/action_write5Fragment_to_homeViewPagerFragment"
-            app:destination="@id/homeViewPagerFragment" />
+            app:destination="@id/homeViewPagerFragment"
+            app:launchSingleTop="false"
+            app:popUpToInclusive="false"
+            app:popUpTo="@+id/homeViewPagerFragment" />
     </fragment>
 
 
@@ -115,13 +157,22 @@
         tools:layout="@layout/fragment_write6" >
         <action
             android:id="@+id/action_write6Fragment_to_homeViewPagerFragment"
-            app:destination="@id/homeViewPagerFragment" />
+            app:destination="@id/homeViewPagerFragment"
+            app:launchSingleTop="false"
+            app:popUpToInclusive="false"
+            app:popUpTo="@+id/homeViewPagerFragment" />
         <action
             android:id="@+id/action_write6Fragment_to_write5Fragment"
-            app:destination="@id/write5Fragment" />
+            app:destination="@id/write5Fragment"
+            app:launchSingleTop="false"
+            app:popUpToInclusive="false"
+            app:popUpTo="@+id/homeViewPagerFragment" />
         <action
             android:id="@+id/action_write6Fragment_to_homeViewPagerFragment2"
-            app:destination="@id/homeViewPagerFragment" />
+            app:destination="@id/homeViewPagerFragment"
+            app:launchSingleTop="false"
+            app:popUpToInclusive="false"
+            app:popUpTo="@+id/homeViewPagerFragment" />
     </fragment>
 
 </navigation>

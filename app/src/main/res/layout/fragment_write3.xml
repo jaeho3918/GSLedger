@@ -76,13 +76,14 @@
                         android:id="@+id/weight_editText1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:textAlignment="center"
-                        android:inputType="number"
-                        android:maxLength="8"
-                        android:nextFocusForward="@+id/weight_editText2"
+                        android:layout_weight="0.8"
                         android:hint="00"
-                        android:textSize="29sp" />
+                        android:inputType="number"
+                        android:maxLength="10"
+                        android:nextFocusUp="@+id/weight_editText2"
+                        android:textAlignment="center"
+                        android:textSize="29sp"
+                        />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -101,7 +102,8 @@
                         android:layout_weight="1"
                         android:inputType="number"
                         android:hint="00"
-                        android:maxLength="8"
+                        android:maxLength="2"
+                        android:nextFocusDown="@+id/quantity_editText1"
                         android:textAlignment="center"
                         android:textSize="29sp" />
 
@@ -128,7 +130,8 @@
                         android:hint="00"
                         android:maxLength="8"
                         android:textAlignment="center"
-                        android:textSize="29sp" />
+                        android:textSize="29sp"
+                        android:imeOptions="actionDone"/>
 
                     <Spinner
                         android:id="@+id/packageType_spinner1"
@@ -164,11 +167,15 @@
                         android:textAlignment="center"
                         android:textSize="29sp" />
 
-                    <Spinner
-                        android:id="@+id/weight_currency1"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1" />
+                        <TextView
+                            android:id="@+id/weight_unit"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:textAlignment="center"
+                            android:textSize="29sp" />
+
+
                     </LinearLayout>
 
                 </LinearLayout>
@@ -184,20 +191,13 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/moveTo3r"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="PRE"
-                android:textSize="50dp" />
-
-            <Button
                 android:id="@+id/moveTo3"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="NEXT"
-                android:textSize="50dp" />
+                android:textSize="35dp"
+                android:theme="@style/NextButton"/>
         </LinearLayout>
     </LinearLayout>
 

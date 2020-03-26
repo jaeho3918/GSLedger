@@ -5,6 +5,7 @@ import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
@@ -27,13 +28,16 @@ class ProductAdapter(private val context: Context, private val realData: Map<Str
     private lateinit var weight: String
 
     private val PREF_NAME = "01504f779d6c77df04"
-    private val PL = "18xRWXR1PDWaSW0jXI"
+    private val PL = "18xRWR1PDWW01PjjXI"
+    private val UPDOWN = "17RD79dX7d1DWf0j0I"
 
     private val plSwitch =
-        context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).getInt(PL, 0)
+           context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).getInt(PL, 0)
 
+    private val optionUpdown =
+        context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).getInt(UPDOWN, 0)
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
             DataBindingUtil.inflate(
                 LayoutInflater.from(parent.context),
@@ -97,7 +101,10 @@ class ProductAdapter(private val context: Context, private val realData: Map<Str
 //                    }
 //                }
 
-                binding.productItemPl.text = priceToString(pl.toDouble(),"Pl")
+                binding.productItemTotalprice.text =
+                    CURRENCYSYMBOL[item.currency] +" "+priceToString((realPrice * currency).toDouble(), "PriceInt")
+
+                binding.productItemPl.text = priceToString(pl.toDouble(), "Pl")
                 pl = 0f
 
 
@@ -125,7 +132,6 @@ class ProductAdapter(private val context: Context, private val realData: Map<Str
                     }
                 }
 
-                val test = item.memo.length
                 when {
                     memo.length in 1..18 -> {
                         binding.productItemMemo.text = "Memo : $memo"
@@ -139,11 +145,10 @@ class ProductAdapter(private val context: Context, private val realData: Map<Str
                 }
 
                 if (weight == 0) {
-                    binding.productItemType.text =
-                        metalType + "   " + item.weight + WEIGHTUNIT[product!!.weightUnit]
+                    binding.productItemType.text = item.weight.toString() + WEIGHTUNIT[product!!.weightUnit] + "   " + metalType
                 } else {
                     binding.productItemType.text =
-                        metalType + "   " + weight + WEIGHTUNIT[product!!.weightUnit]
+                        weight.toString() + WEIGHTUNIT[product!!.weightUnit] + "   " + metalType
                 }
 
 
@@ -167,7 +172,54 @@ class ProductAdapter(private val context: Context, private val realData: Map<Str
                 executePendingBindings()
             }
         }
+
         private fun priceToString(price: Double, type: String): String {
+
+            return when (type) {
+                "PriceInt" -> {
+                    String.format("%,.0f", price)
+                }
+
+                "PriceFloat" -> {
+                    String.format("%,.2f", price)
+                }
+
+                "Pl" -> {
+                    when {
+                        price > 0.01 -> {
+                            "(+" + String.format("%,.2f", price) + "%)"
+                        }
+                        price < -0.01 -> {
+                            "(" + String.format("%,.2f", price) + "%)"
+                        }
+                        else -> "( 0.00%)"
+                    }
+                }
+                "PricePl" -> {
+                    when {
+                        price > 1 -> {
+                            "+" + String.format("%,.0f", price)
+                        }
+                        price < -1 -> {
+                            "" + String.format("%,.0f", price)
+                        }
+                        else -> "0"
+                    }
+                }
+
+                else -> {
+
+                    ""
+                }
+            }
+        }
+
+        private fun priceToString111(
+            price: Double,
+            type: String,
+            textView: TextView,
+            style: Int = 0
+        ): String {
 
             return when (type) {
                 "PriceInt" -> {

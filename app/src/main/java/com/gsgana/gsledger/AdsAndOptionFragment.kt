@@ -23,6 +23,7 @@ import com.gsgana.gsledger.databinding.HomeViewPagerFragmentBinding
 import com.gsgana.gsledger.databinding.StatFragmentBinding
 import com.gsgana.gsledger.utilities.CURRENCY
 import com.gsgana.gsledger.utilities.InjectorUtils
+import com.gsgana.gsledger.utilities.LANGUAGE
 import com.gsgana.gsledger.viewmodels.AdsAndOptionViewModel
 import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModel
 import com.gsgana.gsledger.viewmodels.WriteViewModel
@@ -31,10 +32,11 @@ import com.gsgana.gsledger.viewmodels.WriteViewModel
 class AdsAndOptionFragment : Fragment() {
     private val CURR_NAME = "1w3d4f7w9d2qG2eT36"
     private val PREF_NAME = "01504f779d6c77df04"
+    private val LANG_NAME= "f79604050dfc500715"
     private lateinit var binding: AdsAndOptionFragmentBinding
 
-
-    private val PL = "18xRWXR1PDWaSW0jXI"
+    private val PL = "18xRWR1PDWW01PjjXI"
+    private val UPDOWN = "17RD79dX7d1DWf0j0I"
 
     private var plSwitch =
         context?.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)?.getInt(PL, 0)
@@ -90,6 +92,31 @@ class AdsAndOptionFragment : Fragment() {
         if (!viewModel?.realData?.value.isNullOrEmpty()) {
             binding.currencyOption.setSelection(
                 viewModel?.realData?.value?.get("currency")!!.toInt()
+            )
+        }
+
+        adapter =
+            ArrayAdapter(
+                context!!, R.layout.support_simple_spinner_dropdown_item, LANGUAGE
+            )
+        binding.LanguageOption.adapter = adapter
+        binding.LanguageOption.dropDownVerticalOffset = dipToPixels(53f).toInt()
+        binding.LanguageOption.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(parent: AdapterView<*>?) {}
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    sf?.edit()?.putInt(LANG_NAME, position)?.commit()
+                }
+            }
+
+        sf?.getInt(LANG_NAME,0)?.let {position ->
+            binding.LanguageOption.setSelection(
+                position
             )
         }
     }

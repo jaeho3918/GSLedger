@@ -23,12 +23,13 @@
     </data>
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="11dp"
         android:orientation="vertical">
 
         <ScrollView
-            android:layout_width="409dp"
+            android:layout_width="match_parent"
             android:layout_height="664dp"
             android:layout_weight="1"
             tools:layout_editor_absoluteX="1dp"
@@ -36,7 +37,7 @@
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
                 android:layout_marginBottom="5dp"

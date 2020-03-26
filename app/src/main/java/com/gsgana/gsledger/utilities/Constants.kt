@@ -177,6 +177,10 @@ val CURRENCYSYMBOL = arrayOf(
     "$", "￡", "€", "¥", "¥", "₩", "$", "$", "₹"
 )
 
+val LANGUAGE = arrayOf(
+    "English", "Japanese", "Chinese", "Korean"
+)
+
 //val CURRENCYSYMBOL = arrayOf(
 //    "$", "￡", "€", "¥", "Ұ", "₩", "C$", "A$", "₹"
 //)

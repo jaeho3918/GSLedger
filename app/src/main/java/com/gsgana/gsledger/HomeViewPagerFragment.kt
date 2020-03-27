@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProviders
@@ -73,16 +74,6 @@ class HomeViewPagerFragment : Fragment() {
         val currencyOption =
             activity?.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)?.getInt(CURR_NAME, 0)
 
-        val option =
-            activity!!.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit().putStringSet(
-                "11", mutableSetOf("", "", "", "", "", "", "")
-
-            )
-        val tset = mutableSetOf("", "", "", "", "", "", "")
-        tset.add("111")
-        tset.contains("111")
-
-
         databaseRef = FirebaseDatabase.getInstance().getReference(REAL_DB_PATH)
         databaseRef.addValueEventListener(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {}
@@ -105,12 +96,6 @@ class HomeViewPagerFragment : Fragment() {
             }
         }
         )
-
-        white = ContextCompat.getColor(context!!, R.color.white)
-        gray = ContextCompat.getColor(context!!, R.color.colorAccent)
-        red = ContextCompat.getColor(context!!, R.color.mu1_data_down)
-        green = ContextCompat.getColor(context!!, R.color.mu1_data_up)
-        blue = ContextCompat.getColor(context!!, R.color.mu2_data_down)
 
         binding = HomeViewPagerFragmentBinding.inflate(inflater, container, false)
         val tabLayout = binding.tabLayout
@@ -152,135 +137,81 @@ class HomeViewPagerFragment : Fragment() {
             val divAgValue =
                 ((realData["AG"] ?: 0.0) - (realData["YESAG"] ?: 0.0)) / (realData["AG"]
                     ?: 0.0) * 100
-            when {
-                divAuValue > 0 -> {
-                    binding.realGoldPL.setText(
-                        "(" + "+" + String.format(
-                            "%,.2f",
-                            divAuValue
-                        ) + "%)"
-                    )
-                }
-                divAuValue < 0 -> {
-                    binding.realGoldPL.setText(
-                        "(" + "-" + String.format(
-                            "%,.2f",
-                            -1 * divAuValue
-                        ) + "%)"
-                    )
-                }
-                else -> {
-                    binding.realGoldPL.setText("( 0.00%)");
-                }
-            }
-            when {
-                divAgValue > 0 -> {
-                    binding.realSilverPL.setText(
-                        "(" + "+" + String.format(
-                            "%,.2f",
-                            divAgValue
-                        ) + "%)"
-                    )
-                }
-                divAgValue < 0 -> {
-                    binding.realSilverPL.setText(
-                        "(" + "-" + String.format(
-                            "%,.2f",
-                            -1 * divAgValue
-                        ) + "%)"
-                    )
-                }
-                else -> {
-                    binding.realSilverPL.setText("( 0.00%)")
-                }
-            }
-//            if (preAu ?: 999999 > (it["AU"]?.toInt()!!)) {
-//                ObjectAnimator.ofObject(
-//                    binding.realGoldPrice,
-//                    "backgroundColor",
-//                    ArgbEvaluator(),
-//                    white,
-//                    color_down
-//                )
-//                    .setDuration(duration)
-//                    .start();
-//                ObjectAnimator.ofObject(
-//                    binding.realGoldPrice,
-//                    "backgroundColor",
-//                    ArgbEvaluator(),
-//                    color_down,
-//                    white
-//                )
-//                    .setDuration(duration)
-//                    .start();
-//            } else if (preAu == (it["AU"]?.toInt()!!)) {
-//                preAu = (it["AU"]?.toInt()!!)
-//            } else {
-//                ObjectAnimator.ofObject(
-//                    binding.realGoldPrice,
-//                    "backgroundColor",
-//                    ArgbEvaluator(),
-//                    white,
-//                    color_up
-//                )
-//                    .setDuration(duration)
-//                    .start();
-//                ObjectAnimator.ofObject(
-//                    binding.realGoldPrice,
-//                    "backgroundColor",
-//                    ArgbEvaluator(),
-//                    color_up,
-//                    white
-//                )
-//                    .setDuration(duration)
-//                    .start();
-//            }
-//            if (preAg ?: 999999 > (it["AG"]?.toInt()!!)) {
-//                ObjectAnimator.ofObject(
-//                    binding.realSilverPrice,
-//                    "backgroundColor",
-//                    ArgbEvaluator(),
-//                    white,
-//                    color_down
-//                )
-//                    .setDuration(duration)
-//                    .start();
-//                ObjectAnimator.ofObject(
-//                    binding.realSilverPrice,
-//                    "backgroundColor",
-//                    ArgbEvaluator(),
-//                    color_down,
-//                    white
-//                )
-//                    .setDuration(duration)
-//                    .start();
-//            } else if (preAg == it["AG"]?.toInt()!!) {
-//                preAg = (it["AG"]?.toInt()!!);
-//            } else {
-//                ObjectAnimator.ofObject(
-//                    binding.realSilverPrice,
-//                    "backgroundColor",
-//                    ArgbEvaluator(),
-//                    white,
-//                    color_up
-//                )
-//                    .setDuration(duration)
-//                    .start();
-//                ObjectAnimator.ofObject(
-//                    binding.realSilverPrice,
-//                    "backgroundColor",
-//                    ArgbEvaluator(),
-//                    color_up,
-//                    white
-//                )
-//                    .setDuration(duration)
-//                    .start();
-//            }
-
-
+            setPriceColor(context!!,divAuValue,"pl",binding.realGoldPL)
+            setPriceColor(context!!,divAgValue,"pl",binding.realSilverPL)
         }
 
         return binding.root
+    }
+
+    private fun setPriceColor(
+        context: Context,
+        price: Double,
+        type: String,
+        textView: TextView,
+        style: Int = 0,
+        plSwitch: Int = 1
+    ): Unit {
+
+        if (plSwitch == 0) {
+            textView.visibility = View.INVISIBLE
+            return
+        }
+
+        val white = ContextCompat.getColor(context!!, R.color.white)
+        val gray = ContextCompat.getColor(context!!, R.color.colorAccent)
+        val red = ContextCompat.getColor(context!!, R.color.mu1_data_down)
+        val green = ContextCompat.getColor(context!!, R.color.mu1_data_up)
+        val blue = ContextCompat.getColor(context!!, R.color.mu2_data_down)
+
+        val string = when (type) {
+            "priceint" -> {
+                String.format("%,.0f", price)
+            }
+
+            "pricefloat" -> {
+                String.format("%,.2f", price)
+            }
+
+            "pl" -> {
+                when {
+                    price > 0.01 -> {
+                        if (style == 0) textView.setTextColor(green) else textView.setTextColor(
+                            red
+                        )
+                        "(+" + String.format("%,.2f", price) + "%)"
+                    }
+                    price < -0.01 -> {
+                        if (style == 0) textView.setTextColor(red) else textView.setTextColor(
+                            blue
+                        )
+                        "(" + String.format("%,.2f", price) + "%)"
+                    }
+                    else -> "( 0.00%)"
+                }
+            }
+            "pricepl" -> {
+                when {
+                    price > 1 -> {
+                        if (style == 0) textView.setTextColor(green) else textView.setTextColor(
+                            red
+                        )
+                        "+" + String.format("%,.0f", price)
+                    }
+                    price < -1 -> {
+                        if (style == 0) textView.setTextColor(red) else textView.setTextColor(
+                            blue
+                        )
+                        "" + String.format("%,.0f", price)
+                    }
+                    else -> "0"
+                }
+            }
+            else -> {
+                ""
+            }
+        }
+        textView.text = string
     }
 
 

@@ -17,17 +17,17 @@
     <color name="green">#ff37d08d</color>
 
 
-    <color name="mu1_data_up">#ff7eccaa</color>
-    <color name="mu1_data_down">#ffffb2b6</color>
+    <color name="mu1_data_up">#ff41c38a</color>
+    <color name="mu1_data_down">#fffd6166</color>
 
-    <color name="mu2_data_up">#ffffb2b6</color>
-    <color name="mu2_data_down">#ff00a2ff</color>
+    <color name="mu2_data_up">#fffd6166</color>
+    <color name="mu2_data_down">#ff008bdb</color>
 
     <color name="chart_white">#ffEEEEEE</color>
 
     <color name="chart_silverC">#aaa8a8a8</color>
     <color name="chart_goldC">#CCffcb38</color>
-<!---->
+    <!---->
     <color name="chart_silverB">#ffd6d6d6</color>
     <color name="chart_goldB">#ffffe696</color>
 </resources>

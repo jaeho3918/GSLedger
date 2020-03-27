@@ -69,7 +69,7 @@
                         android:id="@+id/item_image"
                         android:layout_width="150dp"
                         android:layout_height="150dp"
-                        android:padding="8dp" />
+                        android:layout_marginVertical="15dp" />
 
                 </RelativeLayout>
 
@@ -103,21 +103,21 @@
                         android:id="@+id/product_item_quantity"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
+                        android:layout_marginTop="11dp"
                         android:gravity="left"
                         android:text="@{&quot;Quantity : &quot; + viewModel.quantity}"
                         android:textAppearance="?attr/textAppearanceListItem"
                         android:textSize="@dimen/text_medium" />
 
-<!--                    <TextView-->
-<!--                        android:id="@+id/product_item_quantityDetail"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:gravity="left"-->
-<!--                        android:text="@{viewModel.quantityDetail}"-->
-<!--                        android:textAppearance="?attr/textAppearanceListItem"-->
-<!--                        android:textColor="@color/font_silver"-->
-<!--                        android:textSize="@dimen/text_small" />-->
+                    <!--                    <TextView-->
+                    <!--                        android:id="@+id/product_item_quantityDetail"-->
+                    <!--                        android:layout_width="wrap_content"-->
+                    <!--                        android:layout_height="wrap_content"-->
+                    <!--                        android:gravity="left"-->
+                    <!--                        android:text="@{viewModel.quantityDetail}"-->
+                    <!--                        android:textAppearance="?attr/textAppearanceListItem"-->
+                    <!--                        android:textColor="@color/font_silver"-->
+                    <!--                        android:textSize="@dimen/text_small" />-->
 
 
                     <!--                    android:text="@{&quot;Total Price : &quot; + viewModel.totalPrice}"-->
@@ -126,7 +126,7 @@
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
                         android:layout_gravity="bottom"
-                        android:layout_marginTop="5dp"
+                        android:layout_marginTop="11dp"
                         android:gravity="bottom">
 
                         <TextView
@@ -155,7 +155,7 @@
                         android:id="@+id/product_item_metal"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
+                        android:layout_marginTop="11dp"
                         android:gravity="left"
                         android:text="@{&quot;Buy Date : &quot; + viewModel.buyDate}"
                         android:textAppearance="?attr/textAppearanceListItem"
@@ -165,7 +165,7 @@
                         android:id="@+id/product_item_memo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
+                        android:layout_marginTop="11dp"
                         android:gravity="left"
                         android:textAppearance="?attr/textAppearanceListItem"
                         android:textSize="@dimen/text_medium" />

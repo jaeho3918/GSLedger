@@ -59,7 +59,7 @@ class HomeViewPagerFragment : Fragment() {
     private var color_up: Int? = null
     private var color_down: Int? = null
 
-    private lateinit var databaseRef : DatabaseReference
+    private lateinit var databaseRef: DatabaseReference
 
     private val viewModel: HomeViewPagerViewModel by viewModels {
         InjectorUtils.provideHomeViewPagerViewModelFactory(requireActivity(), null)
@@ -72,6 +72,16 @@ class HomeViewPagerFragment : Fragment() {
 
         val currencyOption =
             activity?.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)?.getInt(CURR_NAME, 0)
+
+        val option =
+            activity!!.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).edit().putStringSet(
+                "11", mutableSetOf("", "", "", "", "", "", "")
+
+            )
+        val tset = mutableSetOf("", "", "", "", "", "", "")
+        tset.add("111")
+        tset.contains("111")
+
 
         databaseRef = FirebaseDatabase.getInstance().getReference(REAL_DB_PATH)
         databaseRef.addValueEventListener(object : ValueEventListener {
@@ -117,7 +127,7 @@ class HomeViewPagerFragment : Fragment() {
                 ?.getInt(CURR_NAME, 0)
 
             binding.realUpdatedDate.text = SimpleDateFormat("yyyy/MM/dd HH:mm")
-                .format(Date(realData["DATE"]!!.toLong()*1000))
+                .format(Date(realData["DATE"]!!.toLong() * 1000))
 
 
             binding.realGoldCurrency.text = CURRENCYSYMBOL[currencyOption ?: 0]

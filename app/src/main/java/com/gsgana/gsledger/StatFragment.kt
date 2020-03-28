@@ -372,7 +372,7 @@ class StatFragment : Fragment() {
             binding.goldCoinPl.text = "${priceToString(
                 goldCoin_PlPer,
                 "Pl"
-            )} ${CURRENCYSYMBOL[currencyOption]} ${priceToString(goldCoin_Pl, "PricePl")}"
+            )}" //${CURRENCYSYMBOL[currencyOption]} ${priceToString(goldCoin_Pl, "PricePl")}
 //            binding.goldCoinPlCurrency.text = CURRENCYSYMBOL[currencyOption] //"(" + CURRENCYSYMBOL[currencyOption]
 
             binding.totalGoldLayout.visibility = View.VISIBLE
@@ -387,7 +387,7 @@ class StatFragment : Fragment() {
             binding.goldBarPl.text = "${priceToString(
                 goldBar_PlPer,
                 "Pl"
-            )} ${CURRENCYSYMBOL[currencyOption]} ${priceToString(goldBar_Pl, "PricePl")}"
+            )}"// ${CURRENCYSYMBOL[currencyOption]} ${priceToString(goldBar_Pl, "PricePl")}
 //            binding.goldBarPlCurrency.text = CURRENCYSYMBOL[currencyOption] //"(" + CURRENCYSYMBOL[currencyOption]
 
             binding.totalGoldLayout.visibility = View.VISIBLE
@@ -402,7 +402,7 @@ class StatFragment : Fragment() {
             binding.silverCoinPl.text = "${priceToString(
                 silverCoin_PlPer,
                 "Pl"
-            )} ${CURRENCYSYMBOL[currencyOption]} ${priceToString(silverCoin_Pl, "PricePl")}"
+            )}"// ${CURRENCYSYMBOL[currencyOption]} ${priceToString(silverCoin_Pl, "PricePl")}
 //            binding.silverCoinPlCurrency.text = CURRENCYSYMBOL[currencyOption] //"(" + CURRENCYSYMBOL[currencyOption]
 
             binding.totalSilverLayout.visibility = View.VISIBLE
@@ -417,7 +417,7 @@ class StatFragment : Fragment() {
             binding.silverBarPl.text = "${priceToString(
                 silverBar_PlPer,
                 "Pl"
-            )} ${CURRENCYSYMBOL[currencyOption]} ${priceToString(silverBar_Pl, "PricePl")}"
+            )}"// ${CURRENCYSYMBOL[currencyOption]} ${priceToString(silverBar_Pl, "PricePl")}
 //            binding.silverBarPlCurrency.text = CURRENCYSYMBOL[currencyOption] //"(" + CURRENCYSYMBOL[currencyOption]
 
             binding.totalSilverLayout.visibility = View.VISIBLE

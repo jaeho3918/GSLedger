@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
@@ -32,27 +33,26 @@ class ProductAdapter(private val context: Context, private val realData: Map<Str
     private val UPDOWN = "17RD79dX7d1DWf0j0I"
 
     private val plSwitch =
-           context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).getInt(PL, 0)
+        context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).getInt(PL, 0)
 
-    private val optionUpdown =
-        context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).getInt(UPDOWN, 0)
+    private val plStlye =
+        context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).getInt(UPDOWN, 1)
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
             DataBindingUtil.inflate(
                 LayoutInflater.from(parent.context),
                 R.layout.list_item_product, parent, false
-            ), context
+            )
         )
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(context, getItem(position), realData)
+        holder.bind(context, getItem(position), realData,plSwitch,plStlye)
     }
 
     class ViewHolder(
-        private val binding: ListItemProductBinding,
-        context: Context
+        private val binding: ListItemProductBinding
     ) : RecyclerView.ViewHolder(binding.root) {
         init {
             binding.setClickListener { view ->
@@ -73,7 +73,13 @@ class ProductAdapter(private val context: Context, private val realData: Map<Str
             it.findNavController().navigate(direction)
         }
 
-        fun bind(context: Context, item: Product, realData: Map<String, Double>) {
+        fun bind(
+            context: Context,
+            item: Product,
+            realData: Map<String, Double>,
+            plSwitch: Int,
+            plStlye: Int
+        ) {
             with(binding) {
                 viewModel = ProductsViewModel(item)
                 binding.product = item
@@ -102,10 +108,14 @@ class ProductAdapter(private val context: Context, private val realData: Map<Str
 //                }
 
                 binding.productItemTotalprice.text =
-                    CURRENCYSYMBOL[item.currency] +" "+priceToString((realPrice * currency).toDouble(), "PriceInt")
+                    CURRENCYSYMBOL[item.currency] + " " + priceToString(
+                        (realPrice * currency).toDouble(),
+                        "PriceInt"
+                    )
 
-                binding.productItemPl.text = priceToString(pl.toDouble(), "Pl")
+                setPriceColor(context,pl.toDouble(),"pl",binding.productItemPl,plSwitch,plStlye)
                 pl = 0f
+
 
 
                 when (item.weight) {
@@ -145,7 +155,8 @@ class ProductAdapter(private val context: Context, private val realData: Map<Str
                 }
 
                 if (weight == 0) {
-                    binding.productItemType.text = item.weight.toString() + WEIGHTUNIT[product!!.weightUnit] + "   " + metalType
+                    binding.productItemType.text =
+                        item.weight.toString() + WEIGHTUNIT[product!!.weightUnit] + "   " + metalType
                 } else {
                     binding.productItemType.text =
                         weight.toString() + WEIGHTUNIT[product!!.weightUnit] + "   " + metalType
@@ -214,50 +225,74 @@ class ProductAdapter(private val context: Context, private val realData: Map<Str
             }
         }
 
-        private fun priceToString111(
+        private fun setPriceColor(
+            context: Context,
             price: Double,
             type: String,
             textView: TextView,
-            style: Int = 0
-        ): String {
+            style: Int = 0,
+            plSwitch: Int = 1
+        ): Int {
 
-            return when (type) {
-                "PriceInt" -> {
+            if (plSwitch == 0) {
+                textView.visibility = View.INVISIBLE
+                return 0
+            }
+//        val white = ContextCompat.getColor(context, R.color.white)
+//        val gray = ContextCompat.getColor(context, R.color.colorAccent)
+            val red = ContextCompat.getColor(context, R.color.mu1_data_down)
+            val green = ContextCompat.getColor(context, R.color.mu1_data_up)
+            val blue = ContextCompat.getColor(context, R.color.mu2_data_down)
+
+            val string = when (type) {
+                "priceint" -> {
                     String.format("%,.0f", price)
                 }
 
-                "PriceFloat" -> {
+                "pricefloat" -> {
                     String.format("%,.2f", price)
                 }
 
-                "Pl" -> {
+                "pl" -> {
                     when {
                         price > 0.01 -> {
+                            if (style == 0) textView.setTextColor(green) else textView.setTextColor(
+                                red
+                            )
                             "(+" + String.format("%,.2f", price) + "%)"
                         }
                         price < -0.01 -> {
+                            if (style == 0) textView.setTextColor(red) else textView.setTextColor(
+                                blue
+                            )
                             "(" + String.format("%,.2f", price) + "%)"
                         }
                         else -> "( 0.00%)"
                     }
                 }
-                "PricePl" -> {
+                "pricepl" -> {
                     when {
                         price > 1 -> {
+                            if (style == 0) textView.setTextColor(green) else textView.setTextColor(
+                                red
+                            )
                             "+" + String.format("%,.0f", price)
                         }
                         price < -1 -> {
+                            if (style == 0) textView.setTextColor(red) else textView.setTextColor(
+                                blue
+                            )
                             "" + String.format("%,.0f", price)
                         }
                         else -> "0"
                     }
                 }
-
                 else -> {
-
                     ""
                 }
             }
+            textView.text = string
+            return 1
         }
 
         private fun getResource(type: String, resName: String, context: Context): Int {

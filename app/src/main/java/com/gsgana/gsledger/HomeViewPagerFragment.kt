@@ -151,18 +151,17 @@ class HomeViewPagerFragment : Fragment() {
         textView: TextView,
         style: Int = 0,
         plSwitch: Int = 1
-    ): Unit {
+    ): Int {
 
         if (plSwitch == 0) {
             textView.visibility = View.INVISIBLE
-            return
+            return 0
         }
-
-        val white = ContextCompat.getColor(context!!, R.color.white)
-        val gray = ContextCompat.getColor(context!!, R.color.colorAccent)
-        val red = ContextCompat.getColor(context!!, R.color.mu1_data_down)
-        val green = ContextCompat.getColor(context!!, R.color.mu1_data_up)
-        val blue = ContextCompat.getColor(context!!, R.color.mu2_data_down)
+//        val white = ContextCompat.getColor(context, R.color.white)
+//        val gray = ContextCompat.getColor(context, R.color.colorAccent)
+        val red = ContextCompat.getColor(context, R.color.mu1_data_down)
+        val green = ContextCompat.getColor(context, R.color.mu1_data_up)
+        val blue = ContextCompat.getColor(context, R.color.mu2_data_down)
 
         val string = when (type) {
             "priceint" -> {
@@ -212,6 +211,7 @@ class HomeViewPagerFragment : Fragment() {
             }
         }
         textView.text = string
+        return 1
     }
 
 

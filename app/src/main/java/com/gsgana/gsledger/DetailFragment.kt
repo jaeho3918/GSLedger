@@ -15,6 +15,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.RadioGroup
 import android.widget.Spinner
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
@@ -50,7 +51,6 @@ class DetailFragment : Fragment() {
         )
 
 //        val preValue_id = args.id
-
 
         subscribeUi(binding, detailViewModel, context!!)
 

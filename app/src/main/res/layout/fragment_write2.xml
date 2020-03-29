@@ -61,7 +61,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.6"
+                        android:layout_weight="0.3"
                         android:text="Write Page 2/6"
                         android:textAlignment="center"
                         android:textSize="29sp" />

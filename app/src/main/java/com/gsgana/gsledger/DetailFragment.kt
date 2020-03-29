@@ -20,6 +20,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.observe
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.common.io.Resources.getResource
 import com.gsgana.gsledger.data.Product
@@ -51,6 +52,9 @@ class DetailFragment : Fragment() {
 
 //        val preValue_id = args.id
 
+        binding.detailBackButton.setOnClickListener {
+            findNavController().navigate(R.id.action_detailFragment_to_homeViewPagerFragment)
+        }
 
         subscribeUi(binding, detailViewModel, context!!)
 

@@ -130,6 +130,7 @@ class HomeViewPagerFragment : Fragment() {
 
 
             /////////////////////////////////////////////////////////////////////////////////////////////
+
             val divAuValue =
                 ((realData["AU"] ?: 0.0) - (realData["YESAU"] ?: 0.0)) / (realData["AU"]
                     ?: 0.0) * 100

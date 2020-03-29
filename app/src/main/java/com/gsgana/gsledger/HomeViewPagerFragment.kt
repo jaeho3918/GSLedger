@@ -33,32 +33,31 @@ import kotlin.collections.HashMap
 
 class HomeViewPagerFragment : Fragment() {
     private lateinit var binding: HomeViewPagerFragmentBinding
-    private val REAL_NAME = "sYTVBn2FO8VNT9Ykw90L"
     private val CURR_NAME = "1w3d4f7w9d2qG2eT36"
     private val PREF_NAME = "01504f779d6c77df04"
     private val REAL_DB_PATH = "sYTVBn6F18VT6Ykw6L"
-    private val LAST_DB_PATH = "OGn6sgTK6umHojW6QV"
+//    private val LAST_DB_PATH = "OGn6sgTK6umHojW6QV"
+//    private val REAL_NAME = "sYTVBn2FO8VNT9Ykw90L"
 
-    private lateinit var mAuth: FirebaseAuth
-    private val USERS_DB_PATH = "qnI4vK2zSUq6GdeT6b"
-
-    private lateinit var rgl: CharArray
-    private lateinit var rgl_b: MutableList<Char>
-
-    private lateinit var database: FirebaseDatabase
-
-    private var currencyOption: Int? = null
-
-    private var white: Int? = null
-    private var gray: Int? = null
-    private var red: Int? = null
-    private var green: Int? = null
-    private var blue: Int? = null
-    private var preAu: Int? = null
-    private var preAg: Int? = null
-    private var duration: Long = 530
-    private var color_up: Int? = null
-    private var color_down: Int? = null
+//    private lateinit var mAuth: FirebaseAuth
+//    private val USERS_DB_PATH = "qnI4vK2zSUq6GdeT6b"
+//
+//    private lateinit var rgl: CharArray
+//    private lateinit var rgl_b: MutableList<Char>
+//
+//    private lateinit var database: FirebaseDatabase
+//
+//    private var currencyOption: Int? = null
+//    private var white: Int? = null
+//    private var gray: Int? = null
+//    private var red: Int? = null
+//    private var green: Int? = null
+//    private var blue: Int? = null
+//    private var preAu: Int? = null
+//    private var preAg: Int? = null
+//    private var duration: Long = 530
+//    private var color_up: Int? = null
+//    private var color_down: Int? = null
 
     private lateinit var databaseRef: DatabaseReference
 
@@ -117,12 +116,12 @@ class HomeViewPagerFragment : Fragment() {
 
             binding.realGoldCurrency.text = CURRENCYSYMBOL[currencyOption ?: 0]
             binding.realSilverCurrency.text = CURRENCYSYMBOL[currencyOption ?: 0]
-            binding.realGoldCurrency.text = CURRENCYSYMBOL[currencyOption!!]
-            binding.realSilverCurrency.text = CURRENCYSYMBOL[currencyOption!!]
+            binding.realGoldCurrency.text = CURRENCYSYMBOL[currencyOption ?: 0]
+            binding.realSilverCurrency.text = CURRENCYSYMBOL[currencyOption ?: 0]
 
             binding.realGoldPrice.text = String.format(
                 "%,.2f",
-                (realData["AU"]!! * (realData[CURRENCY[currencyOption!!]] ?: error("")))
+                (realData["AU"]!! * (realData[CURRENCY[currencyOption ?: 0]] ?: error("")))
             )
             binding.realSilverPrice.text = String.format(
                 "%,.2f",

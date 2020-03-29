@@ -258,7 +258,7 @@ class StatFragment : Fragment() {
         products?.forEach { product ->
             /* sum each metal and type  */
             val product_currency = realData[CURRENCY[product.currency]]!!
-
+//
             if (!realData.isNullOrEmpty()) {
                 if (product.metal == 0) {
                     if (product.type == 0) {

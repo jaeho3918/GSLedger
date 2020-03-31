@@ -181,7 +181,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="right"
-                        android:text="provided by investing.com"
+                        android:text="per 1 toz"
                         android:textColor="@color/font_silver"
                         android:textSize="@dimen/text_small" />
 

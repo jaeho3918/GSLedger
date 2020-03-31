@@ -74,6 +74,7 @@ class DetailFragment : Fragment() {
 
             val preValue = product
 
+
             val brand = product.brand.toLowerCase().replace(" ", "")
             val metal = METAL[product.metal].toLowerCase()
             val type = TYPE[product.type].toLowerCase()

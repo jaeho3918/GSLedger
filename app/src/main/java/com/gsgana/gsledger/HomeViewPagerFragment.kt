@@ -36,17 +36,15 @@ class HomeViewPagerFragment : Fragment() {
     private val CURR_NAME = "1w3d4f7w9d2qG2eT36"
     private val PREF_NAME = "01504f779d6c77df04"
     private val REAL_DB_PATH = "sYTVBn6F18VT6Ykw6L"
-//    private val LAST_DB_PATH = "OGn6sgTK6umHojW6QV"
-//    private val REAL_NAME = "sYTVBn2FO8VNT9Ykw90L"
+    private val LAST_DB_PATH = "OGn6sgTK6umHojW6QV"
+    private val REAL_NAME = "sYTVBn2FO8VNT9Ykw90L"
 
-//    private lateinit var mAuth: FirebaseAuth
-//    private val USERS_DB_PATH = "qnI4vK2zSUq6GdeT6b"
-//
-//    private lateinit var rgl: CharArray
-//    private lateinit var rgl_b: MutableList<Char>
-//
-//    private lateinit var database: FirebaseDatabase
-//
+    private lateinit var mAuth: FirebaseAuth
+    private val USERS_DB_PATH = "qnI4vK2zSUq6GdeT6b"
+    private lateinit var rgl: CharArray
+    private lateinit var rgl_b: MutableList<Char>
+    private lateinit var database: FirebaseDatabase
+
 //    private var currencyOption: Int? = null
 //    private var white: Int? = null
 //    private var gray: Int? = null
@@ -87,11 +85,7 @@ class HomeViewPagerFragment : Fragment() {
                     }
                 }
                 data["USD"] = 1.0
-
                 viewModel.realData.value = data
-
-                /////////////////////////////////////////////////////////////////////////////////////////////
-
             }
         }
         )

@@ -113,11 +113,11 @@
                     android:text="Currency"
                     android:textColor="@color/font_silver"
                     android:textSize="@dimen/text_large"
-                    app:layout_constraintBottom_toTopOf="@+id/currencyOption"
+                    app:layout_constraintBottom_toTopOf="@+id/currencyOption1"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <Spinner
-                    android:id="@+id/currencyOption"
+                    android:id="@+id/currencyOption1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -142,11 +142,11 @@
                     android:text="Language"
                     android:textColor="@color/font_silver"
                     android:textSize="@dimen/text_large"
-                    app:layout_constraintBottom_toTopOf="@+id/LanguageOption"
+                    app:layout_constraintBottom_toTopOf="@+id/LanguageOption1"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <Spinner
-                    android:id="@+id/LanguageOption"
+                    android:id="@+id/LanguageOption1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

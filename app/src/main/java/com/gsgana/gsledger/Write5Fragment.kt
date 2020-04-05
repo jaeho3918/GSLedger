@@ -63,12 +63,88 @@ class Write5Fragment : Fragment() {
             findNavController().navigate(R.id.action_write5Fragment_to_homeViewPagerFragment)
             viewModel.initProduct()
         }
+//
+//        binding.moveTo5.setOnClickListener { findNavController().navigate(R.id.action_write5Fragment_to_write6Fragment) }
 
-        binding.moveTo5.setOnClickListener { findNavController().navigate(R.id.action_write5Fragment_to_write6Fragment) }
 
 
+        binding.callbackRequest = object : CallbackRequest {
+            override fun click() {
+                val test = viewModel.dateField.value?.split("/")
+                var date_buf = if (test.isNullOrEmpty()) {
+                    val cal = Calendar.getInstance()
+                    val _year = cal.get(Calendar.YEAR)
+                    val _month = cal.get(Calendar.MONTH) + 1
+                    val _date = cal.get(Calendar.DATE)
+                    viewModel.dateField.value ?: String.format(
+                        "%04d%02d%02d", _year, _month, _date
+                    )
+                } else {
+                    String.format(
+                        "%04d%02d%02d", test[0].toInt(), test[1].toInt(), test[2].toInt()
+                    )
+                }
 
-        binding.callback = object : Callback {
+                val jsonParam = JsonObject().apply {
+                    addProperty("metal", viewModel.metalField1.value.toString())
+                    addProperty("type1", viewModel.typeField1.value.toString())
+                    addProperty("brand", viewModel.brandField1.value)
+                    addProperty("weight", viewModel.weightCalculator.value)
+                    addProperty("quantity", viewModel.quantityField.value)
+                    addProperty("weightr", viewModel.weightUnit.value)
+                    addProperty("packageType1", viewModel.packageTypeField.value.toString())
+                    addProperty("grade", viewModel.gradeField.value.toString())
+                    addProperty("gradeNum", viewModel.gradeNumField.value.toString())
+                    addProperty("currency", viewModel.currencyField.value.toString())
+                    addProperty("priceMerger", viewModel.price.value)
+                    addProperty("date", date_buf)
+                }
+                val retrofit = Retrofit.Builder()
+                    .baseUrl(URL)
+                    .addConverterFactory(GsonConverterFactory.create()).build()
+                val service = retrofit.create(ServerRequest::class.java)
+
+                val mUser = FirebaseAuth.getInstance().currentUser
+                mUser?.getIdToken(true)
+                    ?.addOnCompleteListener { p0 ->
+                        if (p0.isSuccessful) {
+                            val idToken = p0.result?.token
+
+                            service.postRequest(idToken!!, jsonParam)
+                                ?.enqueue(object : retrofit2.Callback<DataRequest> {
+                                    override fun onFailure(call: Call<DataRequest>, t: Throwable) {
+                                        Toast.makeText(activity, t.toString(), Toast.LENGTH_LONG)
+                                            .show()
+                                    }
+
+                                    override fun onResponse(
+                                        call: Call<DataRequest>,
+                                        response: Response<DataRequest>
+                                    ) {
+                                        Toast.makeText(activity, response.body().toString(), Toast.LENGTH_LONG).show()
+
+                                        val splitPrice = response.body()?.price1?.split(".")
+
+                                        binding.priceEditText1.setText(splitPrice!![0])
+                                        binding.priceEditText2.setText(splitPrice!![1])
+
+                                        binding.priceEditText1.visibility = View.VISIBLE
+                                        binding.priceEditText2.visibility = View.VISIBLE
+                                        binding.priceEditText3.visibility = View.VISIBLE
+                                        binding.resultSubmit.visibility = View.GONE
+                                        binding.currencySpinner1.visibility = View.GONE
+                                        binding.currencyTextView1.visibility = View.VISIBLE
+                                        binding.currencyTextView1.text = CURRENCY[viewModel.currencyField.value!!]
+                                    }
+                                })
+                        } else {
+                            p0.exception
+                            Toast.makeText(activity, "Response?", Toast.LENGTH_LONG).show()
+                        }
+                    }
+            }
+        }
+        binding.callbackSummit = object : CallbackSummit {
             override fun click() {
                 val test = viewModel.dateField.value?.split("/")
                 var date_buf = if (test.isNullOrEmpty()) {
@@ -103,7 +179,7 @@ class Write5Fragment : Fragment() {
                 val retrofit = Retrofit.Builder()
                     .baseUrl(URL)
                     .addConverterFactory(GsonConverterFactory.create()).build()
-                val service = retrofit.create(ServerNetwork::class.java)
+                val service = retrofit.create(ServerSummit::class.java)
 
                 val mUser = FirebaseAuth.getInstance().currentUser
                 mUser?.getIdToken(true)
@@ -130,6 +206,7 @@ class Write5Fragment : Fragment() {
                                         binding.priceEditText2.visibility = View.VISIBLE
                                         binding.priceEditText2.visibility = View.VISIBLE
                                         binding.resultSubmit.visibility = View.GONE
+                                        findNavController().navigate(R.id.action_write5Fragment_to_write6Fragment)
                                     }
                                 })
                         } else {
@@ -243,7 +320,11 @@ class Write5Fragment : Fragment() {
     }
 
 
-    interface Callback {
+    interface CallbackRequest {
+        fun click()
+
+    }
+    interface CallbackSummit {
         fun click()
 
     }

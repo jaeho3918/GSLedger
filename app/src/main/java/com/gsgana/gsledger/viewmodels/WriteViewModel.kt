@@ -84,7 +84,7 @@ class WriteViewModel internal constructor(
     val priceMerger = MediatorLiveData<String>()
         .apply {
             addSource(priceField1) {
-                var test1 = priceField1.value ?: "0"
+                var test1 = priceField1.value ?: "1"
                 val test2 = priceField2.value ?: "00"
                 if (test1 == "") {
                     test1 = "0"
@@ -93,7 +93,7 @@ class WriteViewModel internal constructor(
                 value = test3
             }
             addSource(priceField2) {
-                var test1 = priceField1.value ?: "0"
+                var test1 = priceField1.value ?: "1"
                 val test2 = priceField2.value ?: "00"
                 if (test1 == "") {
                     test1 = "0"

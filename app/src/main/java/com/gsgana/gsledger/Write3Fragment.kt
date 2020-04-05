@@ -143,8 +143,6 @@ class Write3Fragment : Fragment() {
         array: Array<String>? = null,
         table: Array<String>? = null
     ) {
-        binding.weightEditText1.setText(viewModel.weightField1.value ?: "")
-        binding.weightEditText2.setText(viewModel.weightField2.value ?: "")
         binding.quantityEditText1.setText(viewModel.quantityField.value ?: "1")
 
         binding.weightEditText1.addTextChangedListener(object : TextWatcher {
@@ -188,6 +186,8 @@ class Write3Fragment : Fragment() {
         }
         )
 
+        binding.weightEditText1.setText(viewModel.weightField1.value ?: "1")
+        binding.weightEditText2.setText(viewModel.weightField2.value ?: "")
     }
 
     private fun dipToPixels(dipValue: Float): Float {

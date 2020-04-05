@@ -14,8 +14,12 @@
             type="com.gsgana.gsledger.viewmodels.DetailViewModel" />
 
         <variable
-            name="Callback"
-            type="com.gsgana.gsledger.Write5Fragment.Callback" />
+            name="CallbackRequest"
+            type="com.gsgana.gsledger.Write5Fragment.CallbackRequest" />
+
+        <variable
+            name="CallbackSummit"
+            type="com.gsgana.gsledger.Write5Fragment.CallbackSummit" />
 
     </data>
 
@@ -89,12 +93,24 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="29dp"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:gravity="bottom">
+
                         <Spinner
                             android:id="@+id/currency_spinner1"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1" />
+
+                        <TextView
+                            android:id="@+id/currency_textView1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textSize="29sp"
+                            android:textAlignment="center"
+                            android:visibility="gone"
+                            />
 
                         <EditText
                             android:id="@+id/priceEditText1"
@@ -149,7 +165,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="36dp"
-                            android:onClick="@{() -> Callback.click()}"
+                            android:onClick="@{() -> CallbackRequest.click()}"
                             android:text="submit"
                             android:textAlignment="center"
                             android:textSize="36dp" />
@@ -240,6 +256,7 @@
                 android:layout_weight="1"
                 android:text="NEXT"
                 android:textSize="35dp"
+                android:onClick="@{() -> CallbackSummit.click()}"
                 android:theme="@style/NextButton" />
         </LinearLayout>
 

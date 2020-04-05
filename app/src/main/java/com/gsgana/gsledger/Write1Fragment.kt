@@ -36,6 +36,8 @@ class Write1Fragment : Fragment() {
             )
                 .get(WriteViewModel::class.java)
 
+        viewModel.initProduct()
+
         binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_write1, container, false
         )

@@ -80,8 +80,10 @@ class Write6Fragment : Fragment() {
                 product.memo = viewModel.memoField.value ?: ""
                 product.prePrice = viewModel.totalPrice.value?.toFloat() ?: 0f
                 product.cur = viewModel.curField.value?.toFloat() ?: 0f
-
+                product.year = viewModel.yearSeriesField.value ?: 0
+                product.pre = viewModel.pre.value ?: 0f
                 viewModel.addProduct(product)
+
                 viewModel.initProduct()
                 findNavController().navigate(R.id.action_write6Fragment_to_homeViewPagerFragment)
             }
@@ -95,7 +97,7 @@ class Write6Fragment : Fragment() {
 
     private fun setTextUI(binding: FragmentWrite6Binding, viewModel: WriteViewModel) {
         binding.write6BrandText.text = viewModel.brand.value
-        binding.write6YearText.text = viewModel.yearSeriesField.value
+        binding.write6YearText.text = viewModel.yearSeriesField.value.toString()
         binding.write6WeightText.text = viewModel.weightMerger.value
         binding.write6MetalText.text = METAL[viewModel.metalField1.value ?: 0]
         binding.write6TypeText.text = TYPE[viewModel.typeField1.value ?: 0]

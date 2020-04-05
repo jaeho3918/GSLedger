@@ -70,6 +70,10 @@ class Write5Fragment : Fragment() {
 
         binding.callbackRequest = object : CallbackRequest {
             override fun click() {
+                binding.requestButton.isEnabled=false
+                binding.requestButton.text=""
+                binding.requestProgress.visibility=View.VISIBLE
+
                 val test = viewModel.dateField.value?.split("/")
                 var date_buf = if (test.isNullOrEmpty()) {
                     val cal = Calendar.getInstance()
@@ -125,13 +129,17 @@ class Write5Fragment : Fragment() {
 
                                         val splitPrice = response.body()?.price1?.split(".")
 
+                                        viewModel.priceField.value = splitPrice!!.toMutableList()
                                         binding.priceEditText1.setText(splitPrice!![0])
                                         binding.priceEditText2.setText(splitPrice!![1])
 
                                         binding.priceEditText1.visibility = View.VISIBLE
                                         binding.priceEditText2.visibility = View.VISIBLE
                                         binding.priceEditText3.visibility = View.VISIBLE
-                                        binding.resultSubmit.visibility = View.GONE
+                                        binding.requestButton.visibility = View.GONE
+                                        binding.requestProgress.visibility = View.GONE
+                                        binding.summitButton.isEnabled = true
+
                                         binding.currencySpinner1.visibility = View.GONE
                                         binding.currencyTextView1.visibility = View.VISIBLE
                                         binding.currencyTextView1.text = CURRENCY[viewModel.currencyField.value!!]
@@ -146,6 +154,11 @@ class Write5Fragment : Fragment() {
         }
         binding.callbackSummit = object : CallbackSummit {
             override fun click() {
+
+                binding.summitProgress.visibility=View.VISIBLE
+                binding.summitButton.isEnabled=false
+                binding.summitButton.text = ""
+
                 val test = viewModel.dateField.value?.split("/")
                 var date_buf = if (test.isNullOrEmpty()) {
                     val cal = Calendar.getInstance()
@@ -169,7 +182,7 @@ class Write5Fragment : Fragment() {
                     addProperty("weight", viewModel.weightCalculator.value)
                     addProperty("quantity", viewModel.quantityField.value)
                     addProperty("weightr", viewModel.weightUnit.value)
-                    addProperty("packageType", viewModel.packageTypeField.value.toString())
+                    addProperty("packageType1", viewModel.packageTypeField.value.toString())
                     addProperty("grade", viewModel.gradeField.value.toString())
                     addProperty("gradeNum", viewModel.gradeNumField.value.toString())
                     addProperty("currency", viewModel.currencyField.value.toString())
@@ -201,11 +214,11 @@ class Write5Fragment : Fragment() {
                                         binding.resultPrice.text = response.body().toString()
                                         viewModel.regField.value = response.body()?.reg?.toFloat()
                                         viewModel.curField.value = response.body()?.cur?.toFloat()
+                                        viewModel.pre.value = response.body()?.pre?.toFloat()
 
                                         binding.priceEditText1.visibility = View.VISIBLE
                                         binding.priceEditText2.visibility = View.VISIBLE
                                         binding.priceEditText2.visibility = View.VISIBLE
-                                        binding.resultSubmit.visibility = View.GONE
                                         findNavController().navigate(R.id.action_write5Fragment_to_write6Fragment)
                                     }
                                 })

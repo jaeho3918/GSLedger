@@ -43,7 +43,7 @@ class WriteViewModel internal constructor(
 
     val gradeNumField = MutableLiveData<Int?>(null)
 
-    val yearSeriesField = MutableLiveData<String>(null)
+    val yearSeriesField = MutableLiveData<Int>(null)
 
     val dateField = MutableLiveData<String>(null)
 
@@ -58,6 +58,8 @@ class WriteViewModel internal constructor(
     val memoField = MutableLiveData<String>(null)
 
     val totalPrice = MutableLiveData<String>(null)
+
+    val pre = MutableLiveData<Float>(null)
 
     val price: LiveData<String> = Transformations.map(priceField) {
         "${it[0] ?: "0"}.${it[1] ?: "00"}"

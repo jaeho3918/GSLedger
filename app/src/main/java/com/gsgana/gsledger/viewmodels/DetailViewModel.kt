@@ -6,9 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gsgana.gsledger.data.Product
 import com.gsgana.gsledger.data.ProductRepository
-import com.gsgana.gsledger.utilities.CURRENCYSYMBOL
-import com.gsgana.gsledger.utilities.PACKAGENUM
-import com.gsgana.gsledger.utilities.PACKAGETYPE
+import com.gsgana.gsledger.utilities.*
 import kotlinx.coroutines.launch
 
 class DetailViewModel(
@@ -23,11 +21,21 @@ class DetailViewModel(
     }
 
     val brand
-        get() = product.value!!.brand //product.value!!.year.toString() + " " +
+        get() = {
+            val buf_weight = when (product.value!!.weight) {
+                1f -> "1"
+                0.05f -> "1/20"
+                0.1f -> "1/10"
+                0.4f -> "4/10"
+                0.5f -> "1/2"
+                else -> "1"
+            }
+            product.value!!.year.toString() + " " + buf_weight + WEIGHTUNITBRAND[product.value!!.weightUnit] + " " + METAL[product.value!!.metal] + " " + TYPE[product.value!!.type] + product.value!!.brand //
+        }
 
     val img
-        get()={
-           1
+        get() = {
+            1
         }
 
     val memo
@@ -48,8 +56,11 @@ class DetailViewModel(
     val quantity
         get() = (product.value!!.quantity * PACKAGENUM[product.value!!.packageType]).toString()
 
-    val quantityDetail
-        get() = "(" + product.value!!.quantity.toString() + " x " + PACKAGETYPE[product.value!!.packageType] + ")"
+    val packageType
+        get() = "Package : " + PACKAGETYPE[product.value!!.packageType]
+
+//    val quantityDetail
+//        get() = "Quantity : "+(product.value!!.quantity * PACKAGENUM[product.value!!.packageType]).toString() + " (" + product.value!!.quantity.toString() + " x " + PACKAGETYPE[product.value!!.packageType] + ")"
 
     val totalPrice
         get() = CURRENCYSYMBOL[product.value!!.currency] + String.format(

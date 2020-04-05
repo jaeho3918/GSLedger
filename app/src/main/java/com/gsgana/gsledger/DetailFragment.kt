@@ -1,37 +1,41 @@
 package com.gsgana.gsledger
 
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.content.res.Resources
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
+import android.os.Handler
 import android.util.TypedValue
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.RadioGroup
-import android.widget.Spinner
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.observe
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.google.common.io.Resources.getResource
+import com.firebase.ui.auth.AuthUI.getApplicationContext
+import com.google.firebase.database.*
 import com.gsgana.gsledger.data.Product
 import com.gsgana.gsledger.databinding.DetailFragmentBinding
-import com.gsgana.gsledger.utilities.*
+import com.gsgana.gsledger.utilities.InjectorUtils
+import com.gsgana.gsledger.utilities.METAL
+import com.gsgana.gsledger.utilities.TYPE
+import com.gsgana.gsledger.utilities.WEIGHTUNITBRAND
 import com.gsgana.gsledger.viewmodels.DetailViewModel
+import kotlinx.android.synthetic.main.detail_fragment.*
 
 
 class DetailFragment : Fragment() {
 
     private val args: DetailFragmentArgs by navArgs()
+
+    private val REAL_DB_PATH = "sYTVBn6F18VT6Ykw6L"
+    private val databaseRef = FirebaseDatabase.getInstance().getReference(REAL_DB_PATH)
 
     private lateinit var product: Product
     private val detailViewModel: DetailViewModel by viewModels {
@@ -39,6 +43,8 @@ class DetailFragment : Fragment() {
     }
 
     private lateinit var binding: DetailFragmentBinding
+
+    private var pre: Float? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,8 +55,6 @@ class DetailFragment : Fragment() {
         binding = DataBindingUtil.inflate<DetailFragmentBinding>(
             inflater, R.layout.detail_fragment, container, false
         )
-
-//        val preValue_id = args.id
 
         binding.detailBackButton.setOnClickListener {
             findNavController().navigate(R.id.action_detailFragment_to_homeViewPagerFragment)
@@ -72,14 +76,41 @@ class DetailFragment : Fragment() {
             binding.viewModel = detailViewModel
             binding.lifecycleOwner = viewLifecycleOwner
 
-            val preValue = product
+            databaseRef.addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(p0: DatabaseError) {}
+                override fun onDataChange(p0: DataSnapshot) {
+                    val data = p0?.value as HashMap<String, Double>
+                    if (product.metal == 0) {
+                        pre = (data["AU"] ?: 0.0).toFloat()
+                    } else if (product.metal == 1) {
+                        pre = (data["AG"] ?: 0.0).toFloat()
+                    }
+                }
+            })
 
+            val preValue = product
 
             val brand = product.brand.toLowerCase().replace(" ", "")
             val metal = METAL[product.metal].toLowerCase()
             val type = TYPE[product.type].toLowerCase()
-            val metalType = METAL[product!!.metal] + " " + TYPE[product!!.type]
-            var weight = 0
+
+            val buf_brand = if (product.brand == "Default") {
+                ""
+            } else {
+                product.brand
+            }
+
+            val buf_weight = when (product.weight) {
+                1f -> "1"
+                0.05f -> "1/20"
+                0.1f -> "1/10"
+                0.4f -> "4/10"
+                0.5f -> "1/2"
+                else -> "1"
+            }
+            //
+            product_item_brand.text =
+                product.year.toString() + " " + buf_weight + WEIGHTUNITBRAND[product.weightUnit] + " " + METAL[product.metal] + TYPE[product.type] + " " + buf_brand
 
             val imgId = getResource(
                 "drawable",
@@ -98,6 +129,13 @@ class DetailFragment : Fragment() {
                 binding.itemImage.setImageResource(imgId)
             }
 
+            Handler().postDelayed(
+                {
+                    binding.productItemPl.text =
+                        ((pre!! - product.pre) / (product.pre) * 100).toString()
+                }, 500
+            )
+
 
             //Set EditData_Button of Edit Button
             binding.callback = object : Callback {
@@ -114,14 +152,31 @@ class DetailFragment : Fragment() {
                     newproduct.price = preValue.price
                     newproduct.buyDate = preValue.buyDate
                     newproduct.editDate = preValue.editDate
-//                    newproduct.memo = binding.memoEditText.text.toString()
+                    newproduct.memo = binding.productItemMemo.text.toString()
                     detailViewModel.addProduct(newproduct)
                     view?.findNavController()?.navigateUp()
                 }
 
                 override fun del() {
-                    detailViewModel.delProduct(args.id)
-                    view?.findNavController()?.navigateUp()
+
+                    val builder: AlertDialog.Builder = AlertDialog.Builder(context)
+                    builder.setTitle("AlertDialog Title")
+                    builder.setMessage("AlertDialog Content")
+                    builder.setPositiveButton("Delete",
+                        DialogInterface.OnClickListener { _, _ ->
+//                            Toast.makeText(
+//                                context,
+//                                "예를 선택했습니다.",
+//                                Toast.LENGTH_LONG
+//                            ).show()
+                            detailViewModel.delProduct(args.id)
+                            view?.findNavController()?.navigateUp()
+                        })
+                    builder.setNegativeButton("No",
+                        DialogInterface.OnClickListener { _, _ ->
+                        })
+                    builder.show()
+
                 }
             }
         }

@@ -136,13 +136,15 @@ class Write4Fragment : Fragment() {
         val year = Calendar.getInstance().get(Calendar.YEAR)
         binding.yearSeriesPicker.minValue = 1992
         binding.yearSeriesPicker.maxValue = year //
+        binding.yearSeriesPicker.value = year
+        viewModel.yearSeriesField.value = year
+
         binding.yearSeriesPicker.wrapSelectorWheel = false
         binding.yearSeriesPicker.descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
         binding.yearSeriesPicker.setOnValueChangedListener { _: NumberPicker?, _: Int, newVal: Int ->
-            viewModel.yearSeriesField.value = newVal.toString()
+            viewModel.yearSeriesField.value = newVal
         }
-        binding.yearSeriesPicker.value =
-            viewModel.yearSeriesField.value?.toInt() ?: year
+
 
     }
 

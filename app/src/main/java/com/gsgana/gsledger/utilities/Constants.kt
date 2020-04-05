@@ -25,8 +25,6 @@ val BRAND = hashMapOf(
     "SAKR" to "Krugerrand"
 )
 
-val BRAND_ARRAY = BRAND.values.toTypedArray()
-
 val GCTABLE = arrayOf(
     "Default",
     "American Buffalo",

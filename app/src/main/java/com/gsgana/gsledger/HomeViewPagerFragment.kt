@@ -3,6 +3,7 @@ package com.gsgana.gsledger
 import android.animation.ArgbEvaluator
 import android.animation.ObjectAnimator
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
 import androidx.fragment.app.Fragment
@@ -33,11 +34,13 @@ import kotlin.collections.HashMap
 
 class HomeViewPagerFragment : Fragment() {
     private lateinit var binding: HomeViewPagerFragmentBinding
-    private val CURR_NAME = "1w3d4f7w9d2qG2eT36"
-    private val PREF_NAME = "01504f779d6c77df04"
     private val REAL_DB_PATH = "sYTVBn6F18VT6Ykw6L"
     private val LAST_DB_PATH = "OGn6sgTK6umHojW6QV"
     private val REAL_NAME = "sYTVBn2FO8VNT9Ykw90L"
+
+    private val PREF_NAME = "01504f779d6c77df04"
+    private val CURR_NAME = "1w3d4f7w9d2qG2eT36"
+    private val WEIGHT_NAME = "f79604050dfc500715"
 
     private lateinit var mAuth: FirebaseAuth
     private val USERS_DB_PATH = "qnI4vK2zSUq6GdeT6b"
@@ -45,17 +48,12 @@ class HomeViewPagerFragment : Fragment() {
     private lateinit var rgl_b: MutableList<Char>
     private lateinit var database: FirebaseDatabase
 
-//    private var currencyOption: Int? = null
-//    private var white: Int? = null
-//    private var gray: Int? = null
-//    private var red: Int? = null
-//    private var green: Int? = null
-//    private var blue: Int? = null
-//    private var preAu: Int? = null
-//    private var preAg: Int? = null
-//    private var duration: Long = 530
-//    private var color_up: Int? = null
-//    private var color_down: Int? = null
+    private lateinit var option: SharedPreferences
+
+    private var currencyOption: Int? = null
+    private var weightOption: Int? = null
+
+    private var weight: Double? = null
 
     private lateinit var databaseRef: DatabaseReference
 
@@ -68,20 +66,24 @@ class HomeViewPagerFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        val currencyOption =
-            activity?.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)?.getInt(CURR_NAME, 0)
-
+        option = activity!!.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
         databaseRef = FirebaseDatabase.getInstance().getReference(REAL_DB_PATH)
+
         databaseRef.addValueEventListener(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {}
             override fun onDataChange(p0: DataSnapshot) {
+
                 val data = p0?.value as HashMap<String, Double>
+                currencyOption = option.getInt(CURR_NAME, 0)
+                weightOption = option.getInt(WEIGHT_NAME, 0)
 
                 if (currencyOption != null) {
                     if (!viewModel.realData.value.isNullOrEmpty()) {
                         data["currency"] = viewModel.realData.value?.getValue("currency") ?: 0.0
+                        data["weightUnit"] = viewModel.realData.value?.getValue("weightUnit") ?: 0.0
                     } else {
-                        data["currency"] = currencyOption.toDouble()
+                        data["currency"] = currencyOption!!.toDouble()
+                        data["weightUnit"] = weightOption!!.toDouble()
                     }
                 }
                 data["USD"] = 1.0
@@ -113,13 +115,25 @@ class HomeViewPagerFragment : Fragment() {
             binding.realGoldCurrency.text = CURRENCYSYMBOL[currencyOption ?: 0]
             binding.realSilverCurrency.text = CURRENCYSYMBOL[currencyOption ?: 0]
 
+            weight = when (realData["weightUnit"]!!) {
+                0.0 -> 1.0 //toz
+                1.0 -> 0.03215 //g
+                2.0 -> 32.150747  //kg
+                3.0 -> 0.120565//don
+                else -> 1.0
+            }
+
+            binding.weightUnitLabel.text = "Spot Price (Unit: 1${WEIGHTUNIT[realData["weightUnit"]!!.toInt()]})"
+
             binding.realGoldPrice.text = String.format(
                 "%,.2f",
-                (realData["AU"]!! * (realData[CURRENCY[currencyOption ?: 0]] ?: error("")))
+                (realData["AU"]!! * realData[CURRENCY[currencyOption!!]]!! * weight!!
+
+                        )
             )
             binding.realSilverPrice.text = String.format(
                 "%,.2f",
-                (realData["AG"]!! * realData[CURRENCY[currencyOption!!]]!!)
+                (realData["AG"]!! * realData[CURRENCY[currencyOption!!]]!! * weight!!)
             )
 
 
@@ -131,8 +145,8 @@ class HomeViewPagerFragment : Fragment() {
             val divAgValue =
                 ((realData["AG"] ?: 0.0) - (realData["YESAG"] ?: 0.0)) / (realData["AG"]
                     ?: 0.0) * 100
-            setPriceColor(context!!,divAuValue,"pl",binding.realGoldPL)
-            setPriceColor(context!!,divAgValue,"pl",binding.realSilverPL)
+            setPriceColor(context!!, divAuValue, "pl", binding.realGoldPL)
+            setPriceColor(context!!, divAgValue, "pl", binding.realSilverPL)
         }
 
         return binding.root

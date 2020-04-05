@@ -1,6 +1,7 @@
 package com.gsgana.gsledger
 
 import android.content.Context
+import android.content.SharedPreferences
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.text.Editable
@@ -33,16 +34,23 @@ import java.util.*
 
 class Write5Fragment : Fragment() {
 
+    private val PREF_NAME = "01504f779d6c77df04"
+    private val CURR_NAME = "1w3d4f7w9d2qG2eT36"
+    private var option: Int? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val viewModel =
             ViewModelProviders.of(
-                activity!!,
-                InjectorUtils.provideWriteViewModelFactory(activity!!, null)
-            )
+                    activity!!,
+                    InjectorUtils.provideWriteViewModelFactory(activity!!, null)
+                )
                 .get(WriteViewModel::class.java)
+
+        option =
+            activity!!.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).getInt(CURR_NAME, 0)
 
         val binding = DataBindingUtil.inflate<FragmentWrite5Binding>(
             inflater, R.layout.fragment_write5, container, false
@@ -117,6 +125,11 @@ class Write5Fragment : Fragment() {
                                         binding.resultPrice.text = response.body().toString()
                                         viewModel.regField.value = response.body()?.reg?.toFloat()
                                         viewModel.curField.value = response.body()?.cur?.toFloat()
+
+                                        binding.priceEditText1.visibility = View.VISIBLE
+                                        binding.priceEditText2.visibility = View.VISIBLE
+                                        binding.priceEditText2.visibility = View.VISIBLE
+                                        binding.resultSubmit.visibility = View.GONE
                                     }
                                 })
                         } else {
@@ -223,7 +236,7 @@ class Write5Fragment : Fragment() {
                     viewModel.currencyField.value = position
                 }
             }
-
+        binding.currencySpinner1.setSelection(option ?: 0)
     }
 
 

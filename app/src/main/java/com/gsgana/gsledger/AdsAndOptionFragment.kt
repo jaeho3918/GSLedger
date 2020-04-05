@@ -2,6 +2,7 @@ package com.gsgana.gsledger
 
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.os.Handler
@@ -24,22 +25,23 @@ import com.gsgana.gsledger.databinding.StatFragmentBinding
 import com.gsgana.gsledger.utilities.CURRENCY
 import com.gsgana.gsledger.utilities.InjectorUtils
 import com.gsgana.gsledger.utilities.LANGUAGE
+import com.gsgana.gsledger.utilities.WEIGHTUNIT
 import com.gsgana.gsledger.viewmodels.AdsAndOptionViewModel
 import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModel
 import com.gsgana.gsledger.viewmodels.WriteViewModel
 
 
 class AdsAndOptionFragment : Fragment() {
-    private val CURR_NAME = "1w3d4f7w9d2qG2eT36"
     private val PREF_NAME = "01504f779d6c77df04"
-    private val LANG_NAME= "f79604050dfc500715"
+    private val CURR_NAME = "1w3d4f7w9d2qG2eT36"
+    private val WEIGHT_NAME = "f79604050dfc500715"
     private lateinit var binding: AdsAndOptionFragmentBinding
 
     private val PL = "18xRWR1PDWW01PjjXI"
     private val UPDOWN = "17RD79dX7d1DWf0j0I"
 
-    private var plSwitch =
-        context?.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)?.getInt(PL, 0)
+    private lateinit var option: SharedPreferences
+    private lateinit var adapter: ArrayAdapter<String>
 
     private val viewModel: HomeViewPagerViewModel by viewModels {
         InjectorUtils.provideHomeViewPagerViewModelFactory(requireActivity(), null)
@@ -52,6 +54,8 @@ class AdsAndOptionFragment : Fragment() {
 
         binding = AdsAndOptionFragmentBinding.inflate(inflater, container, false)
 
+        option = activity!!.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+
         setSpinner(binding, viewModel)
 
         return binding.root
@@ -61,12 +65,12 @@ class AdsAndOptionFragment : Fragment() {
         binding: AdsAndOptionFragmentBinding,
         viewModel: HomeViewPagerViewModel?
     ) {
-        val sf = activity?.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
 
-        var adapter =
+        adapter =
             ArrayAdapter(
                 context!!, R.layout.support_simple_spinner_dropdown_item, CURRENCY
             )
+
         binding.currencyOption.adapter = adapter
         binding.currencyOption.dropDownVerticalOffset = dipToPixels(53f).toInt()
         binding.currencyOption.onItemSelectedListener =
@@ -78,30 +82,23 @@ class AdsAndOptionFragment : Fragment() {
                     position: Int,
                     id: Long
                 ) {
-                    sf?.edit()?.putInt(CURR_NAME, position)?.commit()
+                    option.edit()?.putInt(CURR_NAME, position)?.apply()
                     val getData = viewModel?.realData?.value?.toMutableMap()
                     getData?.set("currency", position.toDouble())
-
                     viewModel?.realData?.value = getData?.toMap()
                     getData?.clear()
-
-
                 }
             }
 
-        if (!viewModel?.realData?.value.isNullOrEmpty()) {
-            binding.currencyOption.setSelection(
-                viewModel?.realData?.value?.get("currency")!!.toInt()
-            )
-        }
 
         adapter =
             ArrayAdapter(
-                context!!, R.layout.support_simple_spinner_dropdown_item, LANGUAGE
+                context!!, R.layout.support_simple_spinner_dropdown_item, WEIGHTUNIT
             )
-        binding.LanguageOption.adapter = adapter
-        binding.LanguageOption.dropDownVerticalOffset = dipToPixels(53f).toInt()
-        binding.LanguageOption.onItemSelectedListener =
+
+        binding.weightUnitOption.adapter = adapter
+        binding.weightUnitOption.dropDownVerticalOffset = dipToPixels(53f).toInt()
+        binding.weightUnitOption.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onNothingSelected(parent: AdapterView<*>?) {}
                 override fun onItemSelected(
@@ -110,15 +107,18 @@ class AdsAndOptionFragment : Fragment() {
                     position: Int,
                     id: Long
                 ) {
-                    sf?.edit()?.putInt(LANG_NAME, position)?.commit()
+                    option.edit()?.putInt(WEIGHT_NAME, position)?.apply()
+                    val getData = viewModel?.realData?.value?.toMutableMap()
+                    getData?.set("weightUnit", position.toDouble())
+                    viewModel?.realData?.value = getData?.toMap()
+                    getData?.clear()
                 }
             }
 
-        sf?.getInt(LANG_NAME,0)?.let {position ->
-            binding.LanguageOption.setSelection(
-                position
-            )
-        }
+
+        binding.currencyOption.setSelection(viewModel!!.realData.value?.get("currency")!!.toInt())
+        binding.weightUnitOption.setSelection(viewModel!!.realData.value?.get("weightUnit")!!.toInt())
+
     }
 
     interface Callback {

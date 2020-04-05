@@ -217,12 +217,6 @@ class Write5Fragment : Fragment() {
                 context!!, R.layout.support_simple_spinner_dropdown_item, CURRENCY
             )
         binding.currencySpinner1.adapter = adapter
-        binding.currencySpinner1.setSelection(
-            activity?.getSharedPreferences(
-                "option18",
-                Context.MODE_PRIVATE
-            )?.getInt("currency", 0)!!
-        )
         binding.currencySpinner1.dropDownVerticalOffset = dipToPixels(53f).toInt()
         binding.currencySpinner1.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {

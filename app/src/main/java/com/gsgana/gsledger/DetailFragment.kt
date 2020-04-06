@@ -134,9 +134,13 @@ class DetailFragment : Fragment() {
 
             Handler().postDelayed(
                 {
+                    val test1 = (pre!! - product.pre)
+                    val test3 = (pre!! - product.pre) / (product.pre)
+                    val test4 = (pre!! - product.pre) / (product.pre) * 100
+
                     binding.productItemPl.text =
-                        ((pre!! - product.pre) / (product.pre) * 100).toString()
-                }, 500
+                        ((pre!! - product.pre) / (pre?:product.pre) * 100).toString()
+                }, 1300
             )
 
 

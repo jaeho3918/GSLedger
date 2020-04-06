@@ -84,6 +84,8 @@ class Write4Fragment : Fragment() {
                             0 -> INVISIBLE
                             1 -> VISIBLE
                             2 -> VISIBLE
+                            3 -> VISIBLE
+                            4 -> VISIBLE
                             else -> INVISIBLE
                         }
 

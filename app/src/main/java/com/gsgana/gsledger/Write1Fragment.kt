@@ -20,15 +20,33 @@ import kotlinx.android.synthetic.main.fragment_write1.*
 class Write1Fragment : Fragment() {
 
     private lateinit var binding: FragmentWrite1Binding
-//    private val key = null
+    //    private val key = null
 //    private val viewModel: WriteViewModel by viewModels {
 //        InjectorUtils.provideWriteViewModelFactory(requireContext(), key)
 //    }
+    private var goldCoinSwitch = false
+    private var goldBarSwitch = false
+    private var silverCoinSwitch = false
+    private var silverBarSwitch = false
+
+    private var goldTextColor = 0
+    private var silverTextColor = 0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        goldTextColor = resources.getColor(
+            R.color.font_gold,
+            null
+        )
+        silverTextColor = resources.getColor(
+            R.color.font_silver,
+            null
+        )
+
+
         val viewModel =
             ViewModelProviders.of(
                 activity!!,
@@ -60,115 +78,160 @@ class Write1Fragment : Fragment() {
 
             } else if (viewModel.metalField1.value == null) {
                 Toast.makeText(context, "종류을 선택해주세요.", Toast.LENGTH_LONG).show()
-
-            } else if (viewModel.typeField1.value == null) {
-                Toast.makeText(context, "형태를 선택해주세요.", Toast.LENGTH_LONG).show()
             }
         }
+        binding.goldCoin.setOnClickListener {
+            goldCoinSwitch = true
+            viewModel.metalField1.value = 0
+            viewModel.typeField1.value = 0
+            binding.stateLabel.text = "Gold Coin"
+            binding.stateLabel.setTextColor(goldTextColor)
+            binding.goldCoin.setImageDrawable(
+                resources.getDrawable(
+                    R.drawable.ic_default_goldcoin,
+                    null
+                )
+            )
 
+            when {
+                goldBarSwitch -> binding.goldBar.setImageDrawable(
+                    resources.getDrawable(
+                        R.drawable.ic_default_goldbar_none,
+                        null
+                    )
+                )
 
-        binding.select11.setOnClickListener {
-            select1_1.switchState()
-            if (select1_1.isIconEnabled) {
-                select1_2.setIconEnabled(false)
-                binding.label11.text = "GOLD"
-                viewModel.metalField1.value = 0
-                binding.label11.visibility = View.VISIBLE
-                viewModel.brandField1.value = -1
-
-            } else {
-                select1_2.setIconEnabled(true)
-                binding.label11.text = "SILVER"
-                viewModel.metalField1.value = 1
-                binding.label11.visibility = View.VISIBLE
-                viewModel.brandField1.value = -1
-
+                silverCoinSwitch -> binding.silverCoin.setImageDrawable(
+                    resources.getDrawable(
+                        R.drawable.ic_default_silvercoin_none,
+                        null
+                    )
+                )
+                silverBarSwitch -> binding.silverBar.setImageDrawable(
+                    resources.getDrawable(
+                        R.drawable.ic_default_silverbar_none,
+                        null
+                    )
+                )
             }
-        }
-        binding.select12.setOnClickListener {
-            select1_2.switchState()
-            if (select1_2.isIconEnabled) {
-                select1_1.setIconEnabled(false)
-                viewModel.metalField1.value = 1
-                binding.label11.text = "SILVER"
-                binding.label11.visibility = View.VISIBLE
-                viewModel.brandField1.value = -1
-            } else {
-                select1_1.setIconEnabled(true)
-                viewModel.metalField1.value = 0
-                binding.label11.text = "GOLD"
-                binding.label11.visibility = View.VISIBLE
-                viewModel.brandField1.value = -1
-            }
-        }
-        binding.select21.setOnClickListener {
-            select2_1.switchState()
-            if (select2_1.isIconEnabled) {
-                select2_2.setIconEnabled(false)
-                viewModel.typeField1.value = 0
-                binding.label12.text = "COIN"
-                binding.label12.visibility = View.VISIBLE
-                viewModel.brandField1.value = -1
-            } else {
-                select2_2.setIconEnabled(true)
-                viewModel.typeField1.value = 1
-                binding.label12.text = "BAR"
-                binding.label12.visibility = View.VISIBLE
-                viewModel.brandField1.value = -1
-            }
-        }
-        binding.select22.setOnClickListener {
-            select2_2.switchState()
-            if (select2_2.isIconEnabled) {
-                select2_1.setIconEnabled(false)
-                viewModel.typeField1.value = 1
-                binding.label12.text = "BAR"
-                binding.label12.visibility = View.VISIBLE
-                viewModel.brandField1.value = -1
-            } else {
-                select2_1.setIconEnabled(true)
-                viewModel.typeField1.value = 0
-                binding.label12.text = "COIN"
-                binding.label12.visibility = View.VISIBLE
-                viewModel.brandField1.value = -1
-            }
+            goldBarSwitch = false
+            silverCoinSwitch = false
+            silverBarSwitch = false
         }
 
-        when (viewModel.metalField1.value) {
-            0 -> {
-                binding.select11.setIconEnabled(true)
-                binding.label11.text = "GOLD"
-                binding.label11.visibility = View.VISIBLE
+        binding.goldBar.setOnClickListener {
+            goldBarSwitch = true
+            viewModel.metalField1.value = 0
+            viewModel.typeField1.value = 1
+            binding.stateLabel.text = "Gold Bar"
+            binding.stateLabel.setTextColor(goldTextColor)
+            binding.goldBar.setImageDrawable(
+                resources.getDrawable(
+                    R.drawable.ic_default_goldbar,
+                    null
+                )
+            )
+            when {
+                goldCoinSwitch -> binding.goldCoin.setImageDrawable(
+                    resources.getDrawable(
+                        R.drawable.ic_default_goldcoin_none,
+                        null
+                    )
+                )
+                silverCoinSwitch -> binding.silverCoin.setImageDrawable(
+                    resources.getDrawable(
+                        R.drawable.ic_default_silvercoin_none,
+                        null
+                    )
+                )
+                silverBarSwitch -> binding.silverBar.setImageDrawable(
+                    resources.getDrawable(
+                        R.drawable.ic_default_silverbar_none,
+                        null
+                    )
+                )
             }
-            1 -> {
-                binding.select12.setIconEnabled(true)
-                binding.label11.text = "SILVER"
-                binding.label11.visibility = View.VISIBLE
-            }
-            else -> {
-                binding.select11.setIconEnabled(false)
-                binding.select12.setIconEnabled(false)
-                binding.label11.visibility = View.GONE
-            }
+            goldCoinSwitch = false
+            silverCoinSwitch = false
+            silverBarSwitch = false
         }
 
-        when (viewModel.typeField1.value) {
-            0 -> {
-                binding.select21.setIconEnabled(true)
-                binding.label12.text = "COIN"
-                binding.label12.visibility = View.VISIBLE
+        binding.silverCoin.setOnClickListener {
+            silverCoinSwitch = true
+            viewModel.metalField1.value = 1
+            viewModel.typeField1.value = 0
+            binding.stateLabel.text = "Silver Coin"
+            binding.stateLabel.setTextColor(silverTextColor)
+            binding.silverCoin.setImageDrawable(
+                resources.getDrawable(
+                    R.drawable.ic_default_silvercoin,
+                    null
+                )
+            )
+
+            when {
+                goldBarSwitch -> binding.goldBar.setImageDrawable(
+                    resources.getDrawable(
+                        R.drawable.ic_default_goldbar_none,
+                        null
+                    )
+                )
+                goldCoinSwitch -> binding.goldCoin.setImageDrawable(
+                    resources.getDrawable(
+                        R.drawable.ic_default_goldcoin_none,
+                        null
+                    )
+                )
+                silverBarSwitch -> binding.silverBar.setImageDrawable(
+                    resources.getDrawable(
+                        R.drawable.ic_default_silverbar_none,
+                        null
+                    )
+                )
             }
-            1 -> {
-                binding.select22.setIconEnabled(true)
-                binding.label12.text = "BAR"
-                binding.label12.visibility = View.VISIBLE
-            }
-            else -> {
-                binding.select21.setIconEnabled(false)
-                binding.select22.setIconEnabled(false)
-                binding.label12.visibility = View.GONE
-            }
+            goldBarSwitch = false
+            goldCoinSwitch = false
+            silverBarSwitch = false
         }
+
+        binding.silverBar.setOnClickListener {
+            silverBarSwitch = true
+            viewModel.metalField1.value = 1
+            viewModel.typeField1.value = 1
+            binding.stateLabel.text = "Silver Bar"
+            binding.stateLabel.setTextColor(silverTextColor)
+            binding.silverBar.setImageDrawable(
+                resources.getDrawable(
+                    R.drawable.ic_default_silverbar,
+                    null
+                )
+            )
+
+            when {
+                goldBarSwitch -> binding.goldBar.setImageDrawable(
+                    resources.getDrawable(
+                        R.drawable.ic_default_goldbar_none,
+                        null
+                    )
+                )
+                goldCoinSwitch -> binding.goldCoin.setImageDrawable(
+                    resources.getDrawable(
+                        R.drawable.ic_default_goldcoin_none,
+                        null
+                    )
+                )
+                silverCoinSwitch -> binding.silverCoin.setImageDrawable(
+                    resources.getDrawable(
+                        R.drawable.ic_default_silvercoin_none,
+                        null
+                    )
+                )
+            }
+            goldBarSwitch = false
+            goldCoinSwitch = false
+            silverCoinSwitch = false
+        }
+
 
         return binding.root
     }

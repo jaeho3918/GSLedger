@@ -15,6 +15,10 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.observe
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.InterstitialAd
+import com.google.android.gms.ads.MobileAds
 import com.gsgana.gsledger.adapters.PagerAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
@@ -57,6 +61,8 @@ class HomeViewPagerFragment : Fragment() {
 
     private lateinit var databaseRef: DatabaseReference
 
+    private lateinit var mAdView : AdView
+
     private val viewModel: HomeViewPagerViewModel by viewModels {
         InjectorUtils.provideHomeViewPagerViewModelFactory(requireActivity(), null)
     }
@@ -93,6 +99,12 @@ class HomeViewPagerFragment : Fragment() {
         )
 
         binding = HomeViewPagerFragmentBinding.inflate(inflater, container, false)
+
+        MobileAds.initialize(context)
+        mAdView = binding.adView
+        val adRequest = AdRequest.Builder().build()
+        mAdView.loadAd(adRequest)
+
         val tabLayout = binding.tabLayout
         val viewPager = binding.viewPager
 

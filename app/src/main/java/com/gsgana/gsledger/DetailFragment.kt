@@ -90,7 +90,7 @@ class DetailFragment : Fragment() {
 
             val preValue = product
 
-            val brand = product.brand.toLowerCase().replace(" ", "")
+            var brand = product.brand.toLowerCase()
             val metal = METAL[product.metal].toLowerCase()
             val type = TYPE[product.type].toLowerCase()
 
@@ -112,18 +112,21 @@ class DetailFragment : Fragment() {
             product_item_brand.text =
                 product.year.toString() + " " + buf_weight + WEIGHTUNITBRAND[product.weightUnit] + " " + METAL[product.metal] + TYPE[product.type] + " " + buf_brand
 
+            brand = (brand ?: "default").toLowerCase().replace(" ", "").replace("'", "")
+                .replace(".", "").replace("-", "")
+
             val imgId = getResource(
                 "drawable",
-                "${brand}_${metal}${type}",
+                "${brand}_${metal[0]}${type[0]}",
                 context
             )
             if (imgId == 0) {
                 binding.itemImage.setImageResource(
                     getResource(
                         "drawable",
-                        "default_goldbar",
-                        context
-                    )//"Default_${METAL[item.metal]}${TYPE[item.type]}"
+                        "ic_default_${metal}${type}",
+                        context!!
+                    )
                 )
             } else {
                 binding.itemImage.setImageResource(imgId)

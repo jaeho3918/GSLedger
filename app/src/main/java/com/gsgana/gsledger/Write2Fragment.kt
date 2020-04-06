@@ -32,7 +32,10 @@ class Write2Fragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val viewModel =
-            ViewModelProviders.of(activity!!, InjectorUtils.provideWriteViewModelFactory(activity!!,null))
+            ViewModelProviders.of(
+                activity!!,
+                InjectorUtils.provideWriteViewModelFactory(activity!!, null)
+            )
                 .get(WriteViewModel::class.java)
 
         val binding = DataBindingUtil.inflate<FragmentWrite2Binding>(
@@ -51,17 +54,22 @@ class Write2Fragment : Fragment() {
             viewModel.product.brand = viewModel.brand.value!!
             findNavController().navigate(R.id.action_write2Fragment_to_write3Fragment)
         }
-
-        if (viewModel.brandField1.value!! < 0) {
-            setSpinnerUi(
-                binding, viewModel, table = selectTable(
-                    viewModel.metalField1.value!!,
-                    viewModel.typeField1.value!!
-                )
+        setSpinnerUi(
+            binding, viewModel, table = selectTable(
+                viewModel.metalField1.value!!,
+                viewModel.typeField1.value!!
             )
-        } else {
-            setSpinnerUi(binding, viewModel, array = viewModel.write2Array)
-        }
+        )
+//        if (viewModel.brandField1.value!! < 0) {
+//            setSpinnerUi(
+//                binding, viewModel, table = selectTable(
+//                    viewModel.metalField1.value!!,
+//                    viewModel.typeField1.value!!
+//                )
+//            )
+//        } else {
+//            setSpinnerUi(binding, viewModel, array = viewModel.write2Array)
+//        }
 //        val brand = "default"
 //        val metal = METAL[viewModel.metalField1.value!!].toLowerCase()
 //        val type = TYPE[viewModel.typeField1.value!!].toLowerCase()
@@ -123,37 +131,32 @@ class Write2Fragment : Fragment() {
             ) {
                 viewModel.brand.value = write2Array?.get(position)
                 viewModel.brandField1.value = position
-
                 var brand = write2Array?.get(position)
                 val metal = METAL[viewModel.metalField1.value!!].toLowerCase()
                 val type = TYPE[viewModel.typeField1.value!!].toLowerCase()
 
-                binding.brandTitle.text = "${write2Array?.get(position)} ${metal.capitalize()} ${type.capitalize()} "
+                binding.brandTitle.text =
+                    "${write2Array?.get(position)} ${metal.capitalize()} ${type.capitalize()} "
 
-                brand = brand!!.toLowerCase().replace(" ", "")
-
+                brand = (brand ?: "default").toLowerCase().replace(" ", "").replace("'", "")
+                    .replace(".", "").replace("-", "")
+                val test = "${brand}_${metal[0]}${type[0]}"
                 val imgId = getResource(
                     "drawable",
-                    "${brand}_${metal}${type}",
+                    "${brand}_${metal[0]}${type[0]}",
                     context!!
                 )
                 if (imgId == 0) {
                     binding.brandImage.setImageResource(
                         getResource(
                             "drawable",
-                            "default_goldbar",
+                            "ic_default_${metal}${type}",
                             context!!
                         )
-//                        getResource(
-//                        "drawable",
-//                "default_${metal}${type}",
-//                context!!
-//            )//"Default_${METAL[item.metal]}${TYPE[item.type]}"
                     )
                 } else {
                     binding.brandImage.setImageResource(imgId)
                 }
-
 
 
             }

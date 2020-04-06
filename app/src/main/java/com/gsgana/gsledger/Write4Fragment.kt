@@ -1,25 +1,20 @@
 package com.gsgana.gsledger
 
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.TypedValue
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.*
+import android.view.View.INVISIBLE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.widget.*
-import androidx.core.view.get
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.gsgana.gsledger.databinding.FragmentWrite4Binding
 import com.gsgana.gsledger.utilities.GRADE
 import com.gsgana.gsledger.utilities.InjectorUtils
-import com.gsgana.gsledger.utilities.PACKAGETYPE
-import com.gsgana.gsledger.utilities.WEIGHTUNIT
 import com.gsgana.gsledger.viewmodels.WriteViewModel
 import java.util.*
 
@@ -107,7 +102,11 @@ class Write4Fragment : Fragment() {
         val _year = cal.get(Calendar.YEAR)
         val _month = cal.get(Calendar.MONTH)
         val _date = cal.get(Calendar.DATE)
+        cal.set(1993, 2, 18)
 
+        val now = System.currentTimeMillis() - 1000
+        binding.datePicker1.minDate = cal.timeInMillis
+        binding.datePicker1.maxDate = now
         binding.datePicker1.init(
             _year, _month, _date
         ) { _: DatePicker, i: Int, i1: Int, i2: Int ->
@@ -121,6 +120,8 @@ class Write4Fragment : Fragment() {
                 date?.get(0)!!.toInt(), (date?.get(1)!!.toInt() - 1), date?.get(2)!!.toInt()
             ) { _: DatePicker, i: Int, i1: Int, i2: Int ->
                 viewModel.dateField.value = "$i/${i1 + 1}/$i2"
+                binding.yearSeriesPicker.value = i
+                viewModel.yearSeriesField.value = i
             }
         }
 
@@ -136,6 +137,7 @@ class Write4Fragment : Fragment() {
         val year = Calendar.getInstance().get(Calendar.YEAR)
         binding.yearSeriesPicker.minValue = 1992
         binding.yearSeriesPicker.maxValue = year //
+
         binding.yearSeriesPicker.value = year
         viewModel.yearSeriesField.value = year
 

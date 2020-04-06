@@ -199,7 +199,8 @@
             android:layout_height="match_parent"
             android:layout_weight="1"></androidx.viewpager2.widget.ViewPager2>
 
-        <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
+        <com.google.android.gms.ads.AdView
+            xmlns:ads="http://schemas.android.com/apk/res-auto"
             android:id="@+id/adView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

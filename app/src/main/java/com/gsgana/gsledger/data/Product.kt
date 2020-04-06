@@ -29,7 +29,8 @@ data class Product(
     @ColumnInfo(name = "condition") var condition: Int = -1,
     @ColumnInfo(name = "grade") var grade: String = "",
     @ColumnInfo(name = "cert") var cert: String = "",
-    @ColumnInfo(name = "pre") var pre: Float = 0.0f
+    @ColumnInfo(name = "pre") var pre: Float = 0.0f,
+    @ColumnInfo(name = "chart") var chart: String = ""
 )
 
 

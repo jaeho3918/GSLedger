@@ -8,11 +8,10 @@ import android.os.Handler
 import android.view.View
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProviders
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.InterstitialAd
+import com.google.android.gms.ads.MobileAds
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.firestore.FirebaseFirestore
@@ -39,6 +38,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var database: FirebaseDatabase
     //    private lateinit var viewModel: HomeViewPagerViewModel
 
+    private val AD_UNIT_ID = "ca-app-pub-3940256099942544/1033173712"
+    private lateinit var mInterstitialAd: InterstitialAd
+
     private val viewModel: HomeViewPagerViewModel by viewModels {
         InjectorUtils.provideHomeViewPagerViewModelFactory(this, intent.getCharArrayExtra(KEY))
     }
@@ -48,6 +50,11 @@ class MainActivity : AppCompatActivity() {
         DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
         intent.removeExtra(KEY)
 
+        MobileAds.initialize(this)
+        mInterstitialAd = InterstitialAd(this)
+        mInterstitialAd.adUnitId = AD_UNIT_ID
+        mInterstitialAd.loadAd(AdRequest.Builder().build())
+
         Handler().postDelayed(
             {
                 loading.visibility= View.GONE
@@ -56,8 +63,8 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
-//    override fun onBackPressed() {
-//
-//    }
-
+    override fun finish() {
+        super.finish()
+        mInterstitialAd.show()
+    }
 }

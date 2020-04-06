@@ -82,7 +82,6 @@ class ListFragment : Fragment() {
                 .navigate(R.id.action_homeViewPagerFragment_to_write1Fragment)
         }
 
-
         viewModel.getProducts().observe(viewLifecycleOwner) { result ->
             adapter.submitList(result)
         }

@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
@@ -88,6 +89,13 @@ class StatFragment : Fragment() {
                 binding.silverprogress.visibility = View.GONE
                 binding.goldNone.visibility = View.VISIBLE
                 binding.silverNone.visibility = View.VISIBLE
+            }
+            if (!products.isNullOrEmpty()){ // List exist
+                binding.statChart.visibility = View.VISIBLE
+                binding.isEmptyLayout.visibility=View.GONE
+            }else{ //Empty
+                binding.statChart.visibility = View.GONE
+                binding.isEmptyLayout.visibility=View.VISIBLE
 
             }
         }
@@ -98,6 +106,12 @@ class StatFragment : Fragment() {
                 if (!switchChart) setChart(context!!, binding, ratio!!) //if (context!=null)
             }
         }, 1800)
+
+        binding.addBtn.setOnClickListener {
+            findNavController()
+                .navigate(R.id.action_homeViewPagerFragment_to_write1Fragment)
+        }
+
 
         return binding.root
     }
@@ -112,10 +126,7 @@ class StatFragment : Fragment() {
         binding: StatFragmentBinding,
         ratio: List<Double>
     ) {
-//        val white = ContextCompat.getColor(context, R.color.white)
-//        val gray = ContextCompat.getColor(context, R.color.colorAccent)
-//        val red = ContextCompat.getColor(context, R.color.red)
-//        val green = ContextCompat.getColor(context, R.color.green)
+
         val chart_goldC = ContextCompat.getColor(context, R.color.chart_goldC)
         val chart_goldB = ContextCompat.getColor(context, R.color.chart_goldB)
         val chart_silverC = ContextCompat.getColor(context, R.color.chart_silverC)
@@ -287,7 +298,7 @@ class StatFragment : Fragment() {
         val total = goldCoin_RealData + goldBar_RealData + silverCoin_RealData + silverBar_RealData
         val total_Pl =
             total - (goldCoin_BuyPrice + goldBar_BuyPrice + silverCoin_BuyPrice + silverBar_BuyPrice)
-        val total_Plper = total_Pl / total * 100
+        val total_Plper = total_Pl / (goldCoin_BuyPrice + goldBar_BuyPrice + silverCoin_BuyPrice + silverBar_BuyPrice) * 100
 
         /*calculate Ratio*/
         goldCoin_Ratio = (goldCoin_RealData / total)
@@ -316,11 +327,11 @@ class StatFragment : Fragment() {
         silverBar_Pl = result_silverBar - result_silverBar_BuyPrice
 
         /*calculate Pl*/
-        goldCoin_PlPer = (result_goldCoin - result_goldCoin_BuyPrice) / result_goldCoin * 100
-        goldBar_PlPer = (result_goldBar - result_goldBar_BuyPrice) / result_goldBar * 100
+        goldCoin_PlPer = (result_goldCoin - result_goldCoin_BuyPrice) / result_goldCoin_BuyPrice * 100
+        goldBar_PlPer = (result_goldBar - result_goldBar_BuyPrice) / result_goldBar_BuyPrice * 100
         silverCoin_PlPer =
-            (result_silverCoin - result_silverCoin_BuyPrice) / result_silverCoin * 100
-        silverBar_PlPer = (result_silverBar - result_silverBar_BuyPrice) / result_silverBar * 100
+            (result_silverCoin - result_silverCoin_BuyPrice) / result_silverCoin_BuyPrice * 100
+        silverBar_PlPer = (result_silverBar - result_silverBar_BuyPrice) / result_silverBar_BuyPrice * 100
 
         /* set Visible Layout */
         viewModel.ratioMetal.value =

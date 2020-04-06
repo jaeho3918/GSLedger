@@ -24,6 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="0.18"
+
             android:orientation="vertical">
 
             <LinearLayout
@@ -61,6 +62,13 @@
                     android:textSize="29sp" />
             </LinearLayout>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:text="Date of Purchase"
+                android:paddingStart="5dp"
+                android:textSize="@dimen/text_large"/>
             <DatePicker
                 android:id="@+id/datePicker1"
                 android:layout_width="match_parent"
@@ -71,7 +79,32 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginBottom="38dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:paddingStart="5dp"
+                    android:text="Year Series"
+                    android:textSize="@dimen/text_large"/>
+
+                <NumberPicker
+                    android:id="@+id/yearSeriesPicker"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="18dp"
+                    android:textAlignment="center"
+                    android:textSize="29sp"
+                    android:layout_weight="1"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="18dp"
+                    android:text="Grade"
+                    android:paddingStart="5dp"
+                    android:textSize="@dimen/text_large"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -83,14 +116,14 @@
                         android:id="@+id/gradeSpinner"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginTop="53dp"
+                        android:layout_marginTop="18dp"
                         android:layout_weight="1" />
 
                     <NumberPicker
                         android:id="@+id/gradePicker"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginTop="53dp"
+                        android:layout_marginTop="18dp"
                         android:textAlignment="center"
                         android:textSize="29sp"
                         android:layout_weight="1" />
@@ -98,14 +131,6 @@
 
                 </LinearLayout>
 
-                <NumberPicker
-                    android:id="@+id/yearSeriesPicker"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="53dp"
-                    android:textAlignment="center"
-                    android:textSize="29sp"
-                    android:layout_weight="1"/>
 
             </LinearLayout>
 

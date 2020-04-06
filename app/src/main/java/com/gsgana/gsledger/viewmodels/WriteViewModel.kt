@@ -21,7 +21,7 @@ class WriteViewModel internal constructor(
 
     val typeField1 = MutableLiveData<Int?>(null)
 
-    val brandField1 = MutableLiveData(0)
+    val brandField1 = MutableLiveData(-1)
 
     val weightField1 = MutableLiveData<String>(null)
 

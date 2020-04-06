@@ -72,33 +72,21 @@
                     android:layout_weight="0.18"
                     android:orientation="horizontal">
 
-                    <com.github.zagum.switchicon.SwitchIconView
-                        android:id="@+id/select1_1"
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/goldCoin"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:padding="8dp"
-                        app:si_animation_duration="500"
-                        app:si_disabled_alpha=".3"
-                        app:si_disabled_color="#b7b7b7"
-                        app:si_enabled="false"
-                        app:si_no_dash="true"
-                        app:si_tint_color="#ff3c00"
-                        app:srcCompat="@drawable/ic_cloud_black_24dp" />
+                        android:src="@drawable/ic_default_goldcoin_none"/>
 
-                    <com.github.zagum.switchicon.SwitchIconView
-                        android:id="@+id/select1_2"
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/goldBar"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:padding="8dp"
-                        app:si_animation_duration="500"
-                        app:si_disabled_alpha=".3"
-                        app:si_disabled_color="#b7b7b7"
-                        app:si_enabled="false"
-                        app:si_no_dash="true"
-                        app:si_tint_color="#ff3c00"
-                        app:srcCompat="@drawable/ic_cloud_black_24dp" />
+                        android:src="@drawable/ic_default_goldbar_none"/>
+
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -107,67 +95,36 @@
                     android:layout_weight="0.18"
                     android:orientation="horizontal">
 
-                    <com.github.zagum.switchicon.SwitchIconView
-                        android:id="@+id/select2_1"
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/silverCoin"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:padding="8dp"
-                        app:si_animation_duration="500"
-                        app:si_disabled_alpha=".3"
-                        app:si_disabled_color="#b7b7b7"
-                        app:si_enabled="false"
-                        app:si_no_dash="true"
-                        app:si_tint_color="#ff3c00"
-                        app:srcCompat="@drawable/ic_cloud_black_24dp" />
+                        android:src="@drawable/ic_default_silvercoin_none"/>
 
-                    <com.github.zagum.switchicon.SwitchIconView
-                        android:id="@+id/select2_2"
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/silverBar"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:padding="8dp"
-                        app:si_animation_duration="500"
-                        app:si_disabled_alpha=".3"
-                        app:si_disabled_color="#b7b7b7"
-                        app:si_enabled="false"
-                        app:si_no_dash="true"
-                        app:si_tint_color="#ff3c00"
-                        app:srcCompat="@drawable/ic_cloud_black_24dp" />
+                        android:src="@drawable/ic_default_silverbar_none"/>
+
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="110dp"
                     android:layout_weight="0.18"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:gravity="center">
 
                     <TextView
-                        android:id="@+id/label1_1"
+                        android:id="@+id/stateLabel"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="GOLD"
                         android:textAlignment="center"
-                        android:textSize="70dp"
-                        android:visibility="gone" />
-
-                    <TextView
-                        android:id="@+id/label1_2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="BAR"
-                        android:textAlignment="center"
-                        android:textSize="70dp"
-                        android:visibility="gone" />
-
-                    <TextView
-                        android:id="@+id/test1"
-                        android:layout_width="match_parent"
-                        android:layout_height="50dp"
-                        android:layout_weight="1"
-                        android:textAlignment="center"
+                        android:text="111111111"
                         android:textSize="70dp" />
 
                 </LinearLayout>

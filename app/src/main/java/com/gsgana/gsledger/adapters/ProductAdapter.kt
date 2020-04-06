@@ -83,7 +83,7 @@ class ProductAdapter(private val context: Context, private val realData: Map<Str
             with(binding) {
                 viewModel = ProductsViewModel(item)
                 binding.product = item
-                val brand = item.brand.toLowerCase().replace(" ", "")
+                var brand = item.brand.toLowerCase()
                 val metal = METAL[item.metal].toLowerCase()
                 val type = TYPE[item.type].toLowerCase()
                 val metalType = METAL[product!!.metal] + " " + TYPE[product!!.type]
@@ -96,7 +96,7 @@ class ProductAdapter(private val context: Context, private val realData: Map<Str
                     metalPrice * (1 + item.reg) * PACKAGENUM[item.packageType] * item.quantity * item.weightr * item.weight
                 val price = item.prePrice / currency
 
-                pl = ((realPrice - price) / realPrice) * 100f
+                pl = ((realPrice - price) / price) * 100f
 
 //                pl = when (item.currency) {
 //                    0 -> {
@@ -162,19 +162,21 @@ class ProductAdapter(private val context: Context, private val realData: Map<Str
                         weight.toString() + WEIGHTUNIT[product!!.weightUnit] + "   " + metalType
                 }
 
+                brand = (brand ?: "default").toLowerCase().replace(" ", "").replace("'", "")
+                    .replace(".", "").replace("-", "")
 
                 val imgId = getResource(
                     "drawable",
-                    "${brand}_${metal}${type}",
+                    "${brand}_${metal[0]}${type[0]}",
                     context
                 )
                 if (imgId == 0) {
                     binding.itemImage.setImageResource(
                         getResource(
                             "drawable",
-                            "default_goldbar",
-                            context
-                        )//"Default_${METAL[item.metal]}${TYPE[item.type]}"
+                            "ic_default_${metal}${type}",
+                            context!!
+                        )
                     )
                 } else {
                     binding.itemImage.setImageResource(imgId)

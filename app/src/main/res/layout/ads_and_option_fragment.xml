@@ -48,7 +48,7 @@
                     android:layout_marginBottom="5dp"
                     android:text="Spot Price"
                     android:textColor="@color/font_silver"
-                    android:textSize="@dimen/text_large"
+                    android:textSize="@dimen/text_medium"
                     app:layout_constraintBottom_toTopOf="@+id/currencyLabel"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -60,7 +60,7 @@
                     android:layout_marginBottom="5dp"
                     android:text="Currency"
                     android:textColor="@color/font_silver"
-                    android:textSize="@dimen/text_large"
+                    android:textSize="@dimen/text_medium"
                     app:layout_constraintBottom_toTopOf="@+id/currencyOption"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="1.0"
@@ -71,7 +71,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:textSize="@dimen/text_large"
+                    android:textSize="@dimen/text_medium"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -92,7 +92,7 @@
                     android:layout_marginBottom="5dp"
                     android:text="Spot Price"
                     android:textColor="@color/font_silver"
-                    android:textSize="@dimen/text_large"
+                    android:textSize="@dimen/text_medium"
                     android:visibility="invisible"
                     app:layout_constraintBottom_toTopOf="@+id/weightLabel"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -106,7 +106,7 @@
                     android:layout_marginBottom="5dp"
                     android:text="Weight Unit"
                     android:textColor="@color/font_silver"
-                    android:textSize="@dimen/text_large"
+                    android:textSize="@dimen/text_medium"
                     app:layout_constraintBottom_toTopOf="@+id/weightUnitOption"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="1.0"
@@ -117,7 +117,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:textSize="@dimen/text_large"
+                    android:textSize="@dimen/text_medium"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -143,7 +143,7 @@
 <!--                    android:paddingHorizontal="8dp"-->
 <!--                    android:text="Currency"-->
 <!--                    android:textColor="@color/font_silver"-->
-<!--                    android:textSize="@dimen/text_large"-->
+<!--                    android:textSize="@dimen/text_midium"-->
 <!--                    app:layout_constraintBottom_toTopOf="@+id/currencyOption1"-->
 <!--                    app:layout_constraintTop_toTopOf="parent" />-->
 
@@ -152,7 +152,7 @@
 <!--                    android:layout_width="match_parent"-->
 <!--                    android:layout_height="wrap_content"-->
 <!--                    android:layout_weight="1"-->
-<!--                    android:textSize="@dimen/text_large"-->
+<!--                    android:textSize="@dimen/text_midium"-->
 <!--                    app:layout_constraintBottom_toBottomOf="parent"-->
 <!--                    app:layout_constraintEnd_toEndOf="parent"-->
 <!--                    app:layout_constraintHorizontal_bias="0.0"-->
@@ -172,7 +172,7 @@
 <!--                    android:paddingHorizontal="8dp"-->
 <!--                    android:text="Language"-->
 <!--                    android:textColor="@color/font_silver"-->
-<!--                    android:textSize="@dimen/text_large"-->
+<!--                    android:textSize="@dimen/text_midium"-->
 <!--                    app:layout_constraintBottom_toTopOf="@+id/LanguageOption1"-->
 <!--                    app:layout_constraintTop_toTopOf="parent" />-->
 
@@ -181,7 +181,7 @@
 <!--                    android:layout_width="match_parent"-->
 <!--                    android:layout_height="wrap_content"-->
 <!--                    android:layout_weight="1"-->
-<!--                    android:textSize="@dimen/text_large"-->
+<!--                    android:textSize="@dimen/text_midium"-->
 <!--                    app:layout_constraintBottom_toBottomOf="parent"-->
 <!--                    app:layout_constraintEnd_toEndOf="parent"-->
 <!--                    app:layout_constraintHorizontal_bias="0.0"-->

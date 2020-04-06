@@ -12,13 +12,13 @@
         <variable
             name="Callback"
             type="com.gsgana.gsledger.StatFragment.Callback" />
+
     </data>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
 
         <androidx.cardview.widget.CardView
             android:id="@+id/tab1_cardview_1"
@@ -38,65 +38,69 @@
                 android:background="@drawable/rounded_border"
                 android:orientation="vertical"
                 android:padding="5dp">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.80"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="50dp"
-                        android:layout_height="wrap_content"
-                        android:text="Total"
-                        android:textSize="@dimen/text_medium"/>
 
                     <LinearLayout
-                        android:id="@+id/totalLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="horizontal">
+                        android:layout_weight="0.80"
+                        android:orientation="vertical">
 
                         <TextView
-                            android:id="@+id/totalCurrency"
-                            android:layout_width="wrap_content"
+                            android:layout_width="50dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="5dp"
-                            android:text="$"
-                            android:textSize="@dimen/text_medium"
-                            android:visibility="visible" />
+                            android:text="Total"
+                            android:textSize="@dimen/text_medium" />
 
-                        <TextView
-                            android:id="@+id/totalPrice"
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:id="@+id/totalLayout"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginRight="5dp"
-                            android:text=""
-                            android:textSize="@dimen/text_medium"
-                            android:visibility="visible" />
+                            android:layout_weight="1"
+                            android:orientation="horizontal">
 
-                        <TextView
-                            android:id="@+id/totalPlper"
+                            <TextView
+                                android:id="@+id/totalCurrency"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="5dp"
+                                android:text="$"
+                                android:textSize="@dimen/text_medium"
+                                android:visibility="visible" />
+
+                            <TextView
+                                android:id="@+id/totalPrice"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="5dp"
+                                android:text=""
+                                android:textSize="@dimen/text_medium"
+                                android:visibility="visible" />
+
+                            <TextView
+                                android:id="@+id/totalPlper"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=""
+                                android:textSize="@dimen/text_medium"
+                                android:visibility="visible" />
+
+                        </LinearLayout>
+
+                        <ProgressBar
+                            android:id="@+id/totalprogress"
+                            style="?android:attr/progressBarStyle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text=""
-                            android:textSize="@dimen/text_medium"
-                            android:visibility="visible" />
+                            android:layout_weight="1"
+                            android:visibility="gone" />
 
                     </LinearLayout>
-                    <ProgressBar
-                        android:id="@+id/totalprogress"
-                        style="?android:attr/progressBarStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:visibility="gone" />
 
-                </LinearLayout>
                     <LinearLayout
                         android:id="@+id/plLayout"
                         android:layout_width="match_parent"
@@ -134,8 +138,7 @@
                                 android:layout_height="wrap_content"
                                 android:text=""
                                 android:textSize="@dimen/text_medium"
-                                android:visibility="visible"
-                                 />
+                                android:visibility="visible" />
 
                         </LinearLayout>
 
@@ -148,12 +151,13 @@
                             android:visibility="gone" />
 
                     </LinearLayout>
-            </LinearLayout>
+                </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="330dp"
-                    android:gravity="center_vertical"
                     android:layout_marginTop="18dp"
+                    android:gravity="center"
                     android:orientation="horizontal">
 
                     <com.github.mikephil.charting.charts.PieChart
@@ -170,6 +174,39 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:visibility="gone" />
+
+                    <LinearLayout
+                        android:id="@+id/isEmptyLayout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone"
+                        android:gravity="center">
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Your List is empty"
+                            android:textSize="@dimen/text_large" />
+
+                        <Button
+                            android:id="@+id/add_Btn"
+                            android:layout_width="180dp"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="13dp"
+                            android:background="@drawable/create_btn"
+                            android:drawableLeft="@drawable/add_button"
+                            android:paddingStart="11dp"
+                            android:text="Add Prodcut"
+                            android:theme="@style/NextButton"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_large"
+                            />
+
+
+                    </LinearLayout>
+
 
                 </LinearLayout>
 
@@ -206,7 +243,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="Coin"
                                 android:textColor="@color/font_gold"
-                                android:textSize="@dimen/text_medium"/>
+                                android:textSize="@dimen/text_medium" />
 
                             <TextView
                                 android:id="@+id/goldCoinCurrency"
@@ -227,15 +264,15 @@
                                 android:textSize="@dimen/text_medium"
                                 android:visibility="visible" />
 
-<!--                            <TextView-->
-<!--                                android:id="@+id/goldCoinPlCurrency"-->
-<!--                                android:layout_width="wrap_content"-->
-<!--                                android:layout_height="wrap_content"-->
-<!--                                android:layout_marginLeft="24dp"-->
-<!--                                android:text=""-->
-<!--                                android:textColor="@color/font_gold"-->
-<!--                                android:textSize="18dp"-->
-<!--                                android:visibility="visible" />-->
+                            <!--                            <TextView-->
+                            <!--                                android:id="@+id/goldCoinPlCurrency"-->
+                            <!--                                android:layout_width="wrap_content"-->
+                            <!--                                android:layout_height="wrap_content"-->
+                            <!--                                android:layout_marginLeft="24dp"-->
+                            <!--                                android:text=""-->
+                            <!--                                android:textColor="@color/font_gold"-->
+                            <!--                                android:textSize="18dp"-->
+                            <!--                                android:visibility="visible" />-->
 
                             <TextView
                                 android:id="@+id/goldCoinPl"
@@ -248,6 +285,7 @@
                                 android:visibility="visible" />
 
                         </LinearLayout>
+
                         <LinearLayout
                             android:id="@+id/goldBarLayout"
                             android:layout_width="match_parent"
@@ -281,17 +319,17 @@
                                 android:text=""
                                 android:textColor="@color/font_gold"
                                 android:textSize="@dimen/text_medium"
-                                android:visibility="visible"/>
+                                android:visibility="visible" />
 
-<!--                            <TextView-->
-<!--                                android:id="@+id/goldBarPlCurrency"-->
-<!--                                android:layout_width="wrap_content"-->
-<!--                                android:layout_height="wrap_content"-->
-<!--                                android:layout_marginLeft="24dp"-->
-<!--                                android:text=""-->
-<!--                                android:textColor="@color/font_gold"-->
-<!--                                android:textSize="18dp"-->
-<!--                                android:visibility="visible" />-->
+                            <!--                            <TextView-->
+                            <!--                                android:id="@+id/goldBarPlCurrency"-->
+                            <!--                                android:layout_width="wrap_content"-->
+                            <!--                                android:layout_height="wrap_content"-->
+                            <!--                                android:layout_marginLeft="24dp"-->
+                            <!--                                android:text=""-->
+                            <!--                                android:textColor="@color/font_gold"-->
+                            <!--                                android:textSize="18dp"-->
+                            <!--                                android:visibility="visible" />-->
 
                             <TextView
                                 android:id="@+id/goldBarPl"
@@ -304,6 +342,7 @@
                                 android:visibility="visible" />
 
                         </LinearLayout>
+
                         <ProgressBar
                             android:id="@+id/goldprogress"
                             style="?android:attr/progressBarStyle"
@@ -318,7 +357,7 @@
                             android:text="-"
                             android:textColor="@color/font_gold"
                             android:textSize="18dp"
-                            android:visibility="gone"/>
+                            android:visibility="gone" />
 
                     </LinearLayout>
                 </LinearLayout>
@@ -354,8 +393,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="Coin"
                                 android:textColor="@color/font_silver"
-                                android:textSize="@dimen/text_medium"
-                                 />
+                                android:textSize="@dimen/text_medium" />
 
                             <TextView
                                 android:id="@+id/silverCoinCurrency"
@@ -365,8 +403,7 @@
                                 android:text="$"
                                 android:textColor="@color/font_silver"
                                 android:textSize="@dimen/text_medium"
-                                android:visibility="visible"
-                                 />
+                                android:visibility="visible" />
 
                             <TextView
                                 android:id="@+id/silverCoinPrice"
@@ -375,18 +412,17 @@
                                 android:text=""
                                 android:textColor="@color/font_silver"
                                 android:textSize="@dimen/text_medium"
-                                android:visibility="visible"
-                                 />
+                                android:visibility="visible" />
 
-<!--                            <TextView-->
-<!--                                android:id="@+id/silverCoinPlCurrency"-->
-<!--                                android:layout_width="wrap_content"-->
-<!--                                android:layout_height="wrap_content"-->
-<!--                                android:layout_marginLeft="24dp"-->
-<!--                                android:text=""-->
-<!--                                android:textColor="@color/font_silver"-->
-<!--                                android:textSize="18dp"-->
-<!--                                android:visibility="visible" />-->
+                            <!--                            <TextView-->
+                            <!--                                android:id="@+id/silverCoinPlCurrency"-->
+                            <!--                                android:layout_width="wrap_content"-->
+                            <!--                                android:layout_height="wrap_content"-->
+                            <!--                                android:layout_marginLeft="24dp"-->
+                            <!--                                android:text=""-->
+                            <!--                                android:textColor="@color/font_silver"-->
+                            <!--                                android:textSize="18dp"-->
+                            <!--                                android:visibility="visible" />-->
 
                             <TextView
                                 android:id="@+id/silverCoinPl"
@@ -396,10 +432,10 @@
                                 android:text=""
                                 android:textColor="@color/font_silver"
                                 android:textSize="@dimen/text_medium"
-                                android:visibility="visible"
-                                 />
+                                android:visibility="visible" />
 
                         </LinearLayout>
+
                         <LinearLayout
                             android:id="@+id/silverBarLayout"
                             android:layout_width="match_parent"
@@ -414,8 +450,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="Bar"
                                 android:textColor="@color/font_silver"
-                                android:textSize="@dimen/text_medium"
-                                 />
+                                android:textSize="@dimen/text_medium" />
 
                             <TextView
                                 android:id="@+id/silverBarCurrency"
@@ -425,8 +460,7 @@
                                 android:text="$"
                                 android:textColor="@color/font_silver"
                                 android:textSize="@dimen/text_medium"
-                                android:visibility="visible"
-                                 />
+                                android:visibility="visible" />
 
                             <TextView
                                 android:id="@+id/silverBarPrice"
@@ -435,18 +469,17 @@
                                 android:text=""
                                 android:textColor="@color/font_silver"
                                 android:textSize="@dimen/text_medium"
-                                android:visibility="visible"
-                                 />
+                                android:visibility="visible" />
 
-<!--                            <TextView-->
-<!--                                android:id="@+id/silverBarPlCurrency"-->
-<!--                                android:layout_width="wrap_content"-->
-<!--                                android:layout_height="wrap_content"-->
-<!--                                android:layout_marginLeft="24dp"-->
-<!--                                android:text=""-->
-<!--                                android:textColor="@color/font_silver"-->
-<!--                                android:textSize="18dp"-->
-<!--                                android:visibility="visible" />-->
+                            <!--                            <TextView-->
+                            <!--                                android:id="@+id/silverBarPlCurrency"-->
+                            <!--                                android:layout_width="wrap_content"-->
+                            <!--                                android:layout_height="wrap_content"-->
+                            <!--                                android:layout_marginLeft="24dp"-->
+                            <!--                                android:text=""-->
+                            <!--                                android:textColor="@color/font_silver"-->
+                            <!--                                android:textSize="18dp"-->
+                            <!--                                android:visibility="visible" />-->
 
                             <TextView
                                 android:id="@+id/silverBarPl"
@@ -456,8 +489,7 @@
                                 android:text=""
                                 android:textColor="@color/font_silver"
                                 android:textSize="@dimen/text_medium"
-                                android:visibility="visible"
-                                 />
+                                android:visibility="visible" />
 
 
                         </LinearLayout>
@@ -467,7 +499,7 @@
                             style="?android:attr/progressBarStyle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"/>
+                            android:layout_weight="1" />
 
                         <TextView
                             android:id="@+id/silverNone"
@@ -476,11 +508,10 @@
                             android:text="-"
                             android:textColor="@color/font_silver"
                             android:textSize="18dp"
-                            android:visibility="gone"/>
+                            android:visibility="gone" />
 
                     </LinearLayout>
                 </LinearLayout>
-
 
 
             </LinearLayout>

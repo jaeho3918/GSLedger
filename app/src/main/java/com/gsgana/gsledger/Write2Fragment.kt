@@ -60,41 +60,7 @@ class Write2Fragment : Fragment() {
                 viewModel.typeField1.value!!
             )
         )
-//        if (viewModel.brandField1.value!! < 0) {
-//            setSpinnerUi(
-//                binding, viewModel, table = selectTable(
-//                    viewModel.metalField1.value!!,
-//                    viewModel.typeField1.value!!
-//                )
-//            )
-//        } else {
-//            setSpinnerUi(binding, viewModel, array = viewModel.write2Array)
-//        }
-//        val brand = "default"
-//        val metal = METAL[viewModel.metalField1.value!!].toLowerCase()
-//        val type = TYPE[viewModel.typeField1.value!!].toLowerCase()
-//
-//        val imgId = getResource(
-//            "drawable",
-//            "${brand}_${metal}${type}",
-//            context!!
-//        )
-//        if (imgId == 0) {
-//            binding.brandImage.setImageResource(
-//                getResource(
-//                    "drawable",
-//                    "default_goldbar",
-//                    context!!
-//                )
-////                        getResource(
-////                        "drawable",
-////                "default_${metal}${type}",
-////                context!!
-////            )//"Default_${METAL[item.metal]}${TYPE[item.type]}"
-//            )
-//        } else {
-//            binding.brandImage.setImageResource(imgId)
-//        }
+
         return binding.root
     }
 

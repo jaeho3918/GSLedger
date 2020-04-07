@@ -1,11 +1,8 @@
 package com.gsgana.gsledger
 
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.os.Handler
 import android.util.TypedValue
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,22 +10,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import androidx.activity.viewModels
 import androidx.fragment.app.viewModels
-import com.firebase.ui.auth.AuthUI
-import com.google.firebase.auth.FirebaseAuth
-import com.gsgana.gsledger.data.Option
 import com.gsgana.gsledger.databinding.AdsAndOptionFragmentBinding
-import com.gsgana.gsledger.databinding.FragmentWrite5Binding
-import com.gsgana.gsledger.databinding.HomeViewPagerFragmentBinding
-import com.gsgana.gsledger.databinding.StatFragmentBinding
 import com.gsgana.gsledger.utilities.CURRENCY
 import com.gsgana.gsledger.utilities.InjectorUtils
-import com.gsgana.gsledger.utilities.LANGUAGE
 import com.gsgana.gsledger.utilities.WEIGHTUNIT
-import com.gsgana.gsledger.viewmodels.AdsAndOptionViewModel
 import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModel
-import com.gsgana.gsledger.viewmodels.WriteViewModel
 
 
 class AdsAndOptionFragment : Fragment() {

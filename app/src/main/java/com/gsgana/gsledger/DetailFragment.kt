@@ -10,7 +10,9 @@ import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -22,10 +24,7 @@ import com.firebase.ui.auth.AuthUI.getApplicationContext
 import com.google.firebase.database.*
 import com.gsgana.gsledger.data.Product
 import com.gsgana.gsledger.databinding.DetailFragmentBinding
-import com.gsgana.gsledger.utilities.InjectorUtils
-import com.gsgana.gsledger.utilities.METAL
-import com.gsgana.gsledger.utilities.TYPE
-import com.gsgana.gsledger.utilities.WEIGHTUNITBRAND
+import com.gsgana.gsledger.utilities.*
 import com.gsgana.gsledger.viewmodels.DetailViewModel
 import kotlinx.android.synthetic.main.detail_fragment.*
 
@@ -43,6 +42,7 @@ class DetailFragment : Fragment() {
     }
 
     private lateinit var binding: DetailFragmentBinding
+    private var data: HashMap<String, Double>? = null
 
     private var pre: Float? = null
 
@@ -79,11 +79,11 @@ class DetailFragment : Fragment() {
             databaseRef.addValueEventListener(object : ValueEventListener {
                 override fun onCancelled(p0: DatabaseError) {}
                 override fun onDataChange(p0: DataSnapshot) {
-                    val data = p0?.value as HashMap<String, Double>
+                    data = p0?.value as HashMap<String, Double>
                     if (product.metal == 0) {
-                        pre = (data["AU"] ?: 0.0).toFloat()
+                        pre = (data!!["AU"] ?: 0.0).toFloat()
                     } else if (product.metal == 1) {
-                        pre = (data["AG"] ?: 0.0).toFloat()
+                        pre = (data!!["AG"] ?: 0.0).toFloat()
                     }
                 }
             })
@@ -134,13 +134,37 @@ class DetailFragment : Fragment() {
 
             Handler().postDelayed(
                 {
-                    val test1 = (pre!! - product.pre)
-                    val test3 = (pre!! - product.pre) / (product.pre)
-                    val test4 = (pre!! - product.pre) / (product.pre) * 100
+                    if (!data.isNullOrEmpty()) {
+                        val product_currency = data!![CURRENCY[product.currency]]
+                        val realData =
+                            data!![METALCODE[product.metal]]!!.toFloat() * (1 + product.reg) * PACKAGENUM[product.packageType] * product.quantity * product.weightr * product.weight
+                        val buyPrice = product.prePrice / product_currency!!
+                        setPriceColor(
+                            context,
+                            (realData * data!![CURRENCY[product.currency]]!!),
+                            "pricefloat",
+                            binding.productItemCurrentPrice
+                        )
+                        setPriceColor(
+                            context,
+                            ((realData - buyPrice) / (buyPrice) * 100),
+                            "pl",
+                            binding.productItemPl
+                        )
 
-                    binding.productItemPl.text =
-                        ((pre!! - product.pre) / (pre?:product.pre) * 100).toString()
-                }, 1300
+                        setPriceColor(
+                            context,
+                            (realData * data!![CURRENCY[product.currency]]!!/ (PACKAGENUM[product.packageType] * product.quantity)),
+                            "pricefloat",
+                            binding.productItemPerprice
+                        )
+
+                        binding.productItemProgress.visibility = View.GONE
+                    }
+
+
+
+                }, 800
             )
 
 
@@ -171,11 +195,6 @@ class DetailFragment : Fragment() {
                     builder.setMessage("AlertDialog Content")
                     builder.setPositiveButton("Delete",
                         DialogInterface.OnClickListener { _, _ ->
-//                            Toast.makeText(
-//                                context,
-//                                "예를 선택했습니다.",
-//                                Toast.LENGTH_LONG
-//                            ).show()
                             detailViewModel.delProduct(args.id)
                             view?.findNavController()?.navigateUp()
                         })
@@ -200,8 +219,6 @@ class DetailFragment : Fragment() {
             dipValue,
             resources.displayMetrics
         )
-
-
     }
 
     private fun getResource(type: String, resName: String, context: Context): Int {
@@ -212,138 +229,73 @@ class DetailFragment : Fragment() {
 
         return id
     }
-//
-//    private fun setSpinnerUi(binding: DetailFragmentBinding, viewModel: DetailViewModel) {
-//        //set Spinner Adapter//
-//        val brand_adapter =
-//            ArrayAdapter(context!!, R.layout.support_simple_spinner_dropdown_item, BRAND_ARRAY)
-//        binding.brandSpinner.adapter = brand_adapter
-//        binding.brandSpinner.dropDownVerticalOffset = dipToPixels(53f).toInt()
-//        binding.brandSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-//            override fun onNothingSelected(parent: AdapterView<*>?) {}
-//            override fun onItemSelected(
-//                parent: AdapterView<*>?,
-//                view: View?,
-//                position: Int,
-//                id: Long
-//            ) {
-////                viewModel.getProduct().value?.brand = position
-//            }
-//        }
-//
-//        val weightUnit_adapter =
-//            ArrayAdapter(context!!, R.layout.support_simple_spinner_dropdown_item, WEIGHTUNIT)
-//        binding.weightUnitSpinner.adapter = weightUnit_adapter
-//        binding.weightUnitSpinner.dropDownVerticalOffset = dipToPixels(53f).toInt()
-//        binding.weightUnitSpinner.onItemSelectedListener =
-//            object : AdapterView.OnItemSelectedListener {
-//                override fun onNothingSelected(parent: AdapterView<*>?) {}
-//                override fun onItemSelected(
-//                    parent: AdapterView<*>?,
-//                    view: View?,
-//                    position: Int,
-//                    id: Long
-//                ) {
-//                    viewModel.getProduct().value?.weightUnit = position
-//                }
-//            }
-//
-//        val packageType_adapter =
-//            ArrayAdapter(context!!, R.layout.support_simple_spinner_dropdown_item, PACKAGETYPE)
-//        binding.packageTypeSpinner.adapter = packageType_adapter
-//        binding.packageTypeSpinner.dropDownVerticalOffset = dipToPixels(53f).toInt()
-//        binding.packageTypeSpinner.onItemSelectedListener =
-//            object : AdapterView.OnItemSelectedListener {
-//                override fun onNothingSelected(parent: AdapterView<*>?) {}
-//                override fun onItemSelected(
-//                    parent: AdapterView<*>?,
-//                    view: View?,
-//                    position: Int,
-//                    id: Long
-//                ) {
-//                    viewModel.getProduct().value?.packageType = position
-//                }
-//            }
-//
-//        val currency_adapter =
-//            ArrayAdapter(context!!, R.layout.support_simple_spinner_dropdown_item, CURRENCY)
-//        binding.currencySpinner.adapter = currency_adapter
-//        binding.currencySpinner.dropDownVerticalOffset = dipToPixels(53f).toInt()
-//        binding.currencySpinner.onItemSelectedListener =
-//            object : AdapterView.OnItemSelectedListener {
-//                override fun onNothingSelected(parent: AdapterView<*>?) {}
-//                override fun onItemSelected(
-//                    parent: AdapterView<*>?,
-//                    view: View?,
-//                    position: Int,
-//                    id: Long
-//                ) {
-//                    viewModel.getProduct().value?.currency = position
-//                }
-//            }
-//    }
-//
-//    private fun setEditTextUi(binding: DetailFragmentBinding, viewModel: DetailViewModel) {
-//        //set EditText Adapter//
-//        binding.weightEditText.addTextChangedListener(object : TextWatcher {
-//            override fun afterTextChanged(s: Editable?) {
-//                if (s.toString() != "") {
-//                    viewModel.getProduct().value?.weight =
-//                        s.toString().toFloat()
-//                } else {
-//                    viewModel.getProduct().value?.weight = 0.0f
-//                }
-//            }
-//
-//            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-//            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-//        }
-//        )
-//        binding.priceEditText.addTextChangedListener(object : TextWatcher {
-//            override fun afterTextChanged(s: Editable?) {
-//                if (s.toString() != "") {
-//                    viewModel.getProduct().value?.price = s.toString().toFloat()
-//                } else {
-//                    viewModel.getProduct().value?.price = 0.0f
-//                }
-//            }
-//
-//            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-//            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-//        }
-//        )
-//
-//        binding.quantityEditText.addTextChangedListener(object : TextWatcher {
-//            override fun afterTextChanged(s: Editable?) {
-//                if (s.toString() != "") {
-//                    viewModel.getProduct().value?.quantity =
-//                        s.toString().toInt()
-//                } else {
-//                    viewModel.getProduct().value?.quantity = 0
-//                }
-//            }
-//
-//            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-//            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-//        }
-//        )
-//    }
-//
-//    private fun setRadioBtnUi(binding: DetailFragmentBinding, viewModel: DetailViewModel) {
-//        binding.metalRadioGroup.setOnCheckedChangeListener { _, checkedId ->
-//            if (checkedId == R.id.metalGold_rbtn) {
-//                viewModel.getProduct().value?.metal = 0
-//            } else if (checkedId == R.id.metalSilver_rbtn) {
-//                viewModel.getProduct().value?.metal = 1
-//            }
-//        }
-//        binding.typeRadioGroup.setOnCheckedChangeListener { _, checkedId ->
-//            if (checkedId == R.id.typeCoin_rbtn) {
-//                viewModel.getProduct().value?.type = 0
-//            } else if (checkedId == R.id.typeBar_rbtn) {
-//                viewModel.getProduct().value?.type = 1
-//            }
-//        }
-//
-//    }
+
+
+    private fun setPriceColor(
+        context: Context,
+        price: Double,
+        type: String,
+        textView: TextView,
+        style: Int = 0,
+        plSwitch: Int = 1
+    ): Int {
+
+        if (plSwitch == 0) {
+            textView.visibility = View.INVISIBLE
+            return 0
+        }
+        val red = ContextCompat.getColor(context, R.color.mu1_data_down)
+        val green = ContextCompat.getColor(context, R.color.mu1_data_up)
+        val blue = ContextCompat.getColor(context, R.color.mu2_data_down)
+
+        val string = when (type) {
+            "priceint" -> {
+                String.format("%,.0f", price)
+            }
+
+            "pricefloat" -> {
+                String.format("%,.2f", price)
+            }
+
+            "pl" -> {
+                when {
+                    price > 0.01 -> {
+                        if (style == 0) textView.setTextColor(green) else textView.setTextColor(
+                            red
+                        )
+                        "(+" + String.format("%,.2f", price) + "%)"
+                    }
+                    price < -0.01 -> {
+                        if (style == 0) textView.setTextColor(red) else textView.setTextColor(
+                            blue
+                        )
+                        "(" + String.format("%,.2f", price) + "%)"
+                    }
+                    else -> "( 0.00%)"
+                }
+            }
+            "pricepl" -> {
+                when {
+                    price > 1 -> {
+                        if (style == 0) textView.setTextColor(green) else textView.setTextColor(
+                            red
+                        )
+                        "+" + String.format("%,.0f", price)
+                    }
+                    price < -1 -> {
+                        if (style == 0) textView.setTextColor(red) else textView.setTextColor(
+                            blue
+                        )
+                        "" + String.format("%,.0f", price)
+                    }
+                    else -> "0"
+                }
+            }
+            else -> {
+                ""
+            }
+        }
+        textView.text = string
+        return 1
+    }
 }

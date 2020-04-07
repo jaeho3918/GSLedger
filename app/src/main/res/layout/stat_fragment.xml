@@ -198,7 +198,7 @@
                             android:background="@drawable/create_btn"
                             android:drawableLeft="@drawable/add_button"
                             android:paddingStart="11dp"
-                            android:text="Add Prodcut"
+                            android:text="Add Product"
                             android:theme="@style/NextButton"
                             android:textColor="@color/white"
                             android:textSize="@dimen/text_large"

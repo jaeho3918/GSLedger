@@ -128,10 +128,15 @@ class Write5Fragment : Fragment() {
                                         Toast.makeText(activity, response.body().toString(), Toast.LENGTH_LONG).show()
 
                                         val splitPrice = response.body()?.price1?.split(".")
-
-                                        viewModel.priceField.value = splitPrice!!.toMutableList()
-                                        binding.priceEditText1.setText(splitPrice!![0])
-                                        binding.priceEditText2.setText(splitPrice!![1])
+                                        if (splitPrice!!.size != 1) {
+                                            viewModel.priceField.value = splitPrice!!.toMutableList()
+                                            binding.priceEditText1.setText(splitPrice!![0])
+                                            binding.priceEditText2.setText(splitPrice!![1])
+                                        } else if (splitPrice!!.size == 1) {
+                                            viewModel.priceField.value = splitPrice!!.toMutableList()
+                                            binding.priceEditText1.setText(splitPrice!![0])
+                                            binding.priceEditText2.setText("00")
+                                        }
 
                                         binding.priceEditText1.visibility = View.VISIBLE
                                         binding.priceEditText2.visibility = View.VISIBLE

@@ -4,27 +4,6 @@ const val TOZ: Float = 31.10347f
 const val KG: Int = 1000
 const val DON: Float = 8.29425f
 
-//val BRAND = hashMapOf(
-//    "USEG" to "American Eagle",
-//    "USBF" to "American Buffalo",
-//    "RCMA" to "Canadian Maple Leaf",
-//    "RCMS" to "Canadian Moose",
-//    "RGBT" to "Great Britain Britannia",
-//    "RGQB" to "Queen's Beasts",
-//    "RGRA" to "Royal Arms",
-//    "RGLN" to "Great Britain Luna",
-//    "PAKR" to "Australian Kangaroo",
-//    "PALN" to "Australian Lunar",
-//    "MAPH" to "Austrian Philharmonic",
-//    "SDBT" to "Barbados Trident",
-//    "GENA" to "Noah's Ark",
-//    "CNPD" to "Panda",
-//    "KMTG" to "Korean Tiger",
-//    "KMZS" to "Korean Zisin",
-//    "BMLB" to "Mexican Libertad",
-//    "SAKR" to "Krugerrand"
-//)
-
 val GCTABLE = arrayOf(
     "Default",
     "American Buffalo",
@@ -37,11 +16,10 @@ val GCTABLE = arrayOf(
     "Great Britain Royal Arm",
     "Australian Kangaroo",
     "Australian Lunar",
-    "Australian Swan",
     "Austrian Philharmonic",
     "South African Krugerrand",
     "Korean Zisin",
-    "Korean Tiger",
+//    "Korean Tiger",
     "Chinese Panda",
     "Mexican Libertad",
     "Armenia Noah's Ark",
@@ -64,24 +42,24 @@ val SCTABLE = arrayOf(
     "South African Krugerrand",
     "Sunshine Round",
     "Sunshine Buffalo",
-    "Korean Zisin",
+//    "Korean Zisin",
     "Korean Tiger",
     "Asahi Buffalo",
     "Mexican Libertad",
     "Armenia Noah's Ark",
     "Scottsdale Barbados Trident",
-    "Pobjoy Pegasus",
-    "Pobjoy Una and the Lion"
+    "Pobjoy Pegasus"
+//    "Pobjoy Una and the Lion"
 )
 
 val GBTABLE = arrayOf(
     "Default",
     "PAMP Fortuna Minted",
     "PAMP Cast",
-    "PAMP Lunar",
-    "PAMP Love",
-    "PAMP Rosa",
-    "PAMP Liberty",
+//    "PAMP Lunar",
+//    "PAMP Love",
+//    "PAMP Rosa",
+//    "PAMP Liberty",
     "Valcambi Minted",
     "Valcambi Cast",
     "Credit Suisse Minted",
@@ -90,32 +68,32 @@ val GBTABLE = arrayOf(
     "RMR Britannia Minted",
     "Perth Mint Minted",
     "Perth Mint Cast",
-    "Austrian Mint Minted",
-    "Austrian Mint Cast",
-    "Geiger Edelmetalle Cast",
+//    "Austrian Mint Minted",
+//    "Austrian Mint Cast",
+    "Muenze Oesterreich Cast",
+    "Muenze Oesterreich Minted",
     "Geiger Edelmetalle Minted",
-    "Sunshine Mint",
+    "Sunshine Minted",
     "LS-Nikko Minted",
     "LS-Nikko Cast",
+//    "KOMSCO Lunar",
+    "KOMSCO Orodt",
     "Asahi Minted",
     "Asahi Cast",
-    "KOMSCO Lunar",
-    "KOMSCO Orodt",
     "Scottsdale Cast",
     "Scottsdale Minted",
     "Scottsdale Marquee",
     "Scottsdale Lunar",
-    "Heraeus Cast",
-    "Heraeus Minted"
+    "Heraeus Cast"
 )
 
 val SBTABLE = arrayOf(
     "Default",
     "PAMP Fortuna Minted",
     "PAMP Cast",
-    "PAMP Lunar",
-    "PAMP Love",
-    "PAMP Rosa",
+//    "PAMP Lunar",
+//    "PAMP Love",
+//    "PAMP Rosa",
     "Valcambi Minted",
     "Valcambi Cast",
     "Credit Suisse Minted",
@@ -127,7 +105,6 @@ val SBTABLE = arrayOf(
     "Asahi Cast",
     "Geiger Edelmetalle Minted",
     "Sunshine Mint",
-    "KOMSCO Cast",
     "Scottsdale Cast",
     "Scottsdale Minted",
     "Heraeus Cast",
@@ -182,7 +159,7 @@ val LANGUAGE = arrayOf(
 
 
 val WEIGHTUNIT = arrayOf(
-    "toz", "g", "kg", "don"
+    "oz", "g", "kg", "don"
 )
 
 val WEIGHTUNITBRAND = arrayOf(

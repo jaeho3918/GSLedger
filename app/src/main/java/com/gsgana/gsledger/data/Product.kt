@@ -30,7 +30,9 @@ data class Product(
     @ColumnInfo(name = "grade") var grade: String = "",
     @ColumnInfo(name = "cert") var cert: String = "",
     @ColumnInfo(name = "pre") var pre: Float = 0.0f,
-    @ColumnInfo(name = "chart") var chart: String = ""
+    @ColumnInfo(name = "chart") var chart: String = "",
+    @ColumnInfo(name = "favorite") var favorite: Boolean = false,
+    @ColumnInfo(name = "ppr") var ppr: Float = 0.0f
 )
 
 

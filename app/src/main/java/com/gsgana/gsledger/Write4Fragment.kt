@@ -47,9 +47,6 @@ class Write4Fragment : Fragment() {
 
         binding.moveTo4.setOnClickListener { findNavController().navigate(R.id.action_write4Fragment_to_write5Fragment) }
 
-        Toast.makeText(activity, viewModel.product.toString(), Toast.LENGTH_LONG).show()
-
-
         setSpinnerUi(binding, viewModel)
         setPickerUi(binding, viewModel)
 

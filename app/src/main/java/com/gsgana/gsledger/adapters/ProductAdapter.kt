@@ -18,7 +18,6 @@ import com.gsgana.gsledger.data.Product
 import com.gsgana.gsledger.databinding.ListItemProductBinding
 import com.gsgana.gsledger.utilities.*
 import com.gsgana.gsledger.viewmodels.ProductsViewModel
-import java.lang.Exception
 
 class ProductAdapter(private val context: Context, private val realData: Map<String, Double>) :
     ListAdapter<Product, ProductAdapter.ViewHolder>(ProductDiffCallback()) {

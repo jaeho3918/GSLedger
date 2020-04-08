@@ -1,18 +1,14 @@
 package com.gsgana.gsledger
 
 import android.os.Bundle
-import android.provider.Contacts.SettingsColumns.KEY
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
 
 import com.gsgana.gsledger.adapters.ProductAdapter
 import com.gsgana.gsledger.data.Product
@@ -20,7 +16,6 @@ import com.gsgana.gsledger.databinding.ListFragmentBinding
 import com.gsgana.gsledger.utilities.InjectorUtils
 import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModel
 import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModelFactory
-import com.gsgana.gsledger.viewmodels.WriteViewModel
 
 
 class ListFragment : Fragment() {
@@ -73,7 +68,6 @@ class ListFragment : Fragment() {
             }
 
             override fun del() {
-                viewModel.deleteProduct()
             }
         }
 

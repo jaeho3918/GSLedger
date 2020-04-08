@@ -15,6 +15,8 @@ class WriteViewModel internal constructor(
 
     var product = Product()
 
+    var priceTest = ""
+
     var write2Array: Array<String>? = null
 
     val metalField1 = MutableLiveData<Int?>(null)

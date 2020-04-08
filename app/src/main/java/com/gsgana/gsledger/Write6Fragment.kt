@@ -74,11 +74,12 @@ class Write6Fragment : Fragment() {
                 product.weightUnit = viewModel.weightUnitField.value ?: 0
                 product.weightr = viewModel.weightUnit.value?.toFloat() ?: 1f
                 product.currency = viewModel.currencyField.value ?: 0
-                product.price = viewModel.price.value?.toFloat() ?: 0f
+                product.price = viewModel.priceTest.toFloat()
                 product.buyDate = viewModel.dateField.value ?: ""
                 product.reg = viewModel.regField.value ?: 0f
                 product.memo = viewModel.memoField.value ?: ""
-                product.prePrice = viewModel.totalPrice.value?.toFloat() ?: 0f
+                product.prePrice = (viewModel.priceTest.toFloat() * (viewModel.quantityField.value?.toFloat()
+                    ?: 1f)* PACKAGENUM[viewModel.packageTypeField.value?:0])
                 product.cur = viewModel.curField.value?.toFloat() ?: 0f
                 product.year = viewModel.yearSeriesField.value ?: 0
                 product.pre = viewModel.pre.value ?: 0f
@@ -96,16 +97,6 @@ class Write6Fragment : Fragment() {
     }
 
     private fun setTextUI(binding: FragmentWrite6Binding, viewModel: WriteViewModel) {
-        binding.write6BrandText.text = viewModel.brand.value
-        binding.write6YearText.text = viewModel.yearSeriesField.value.toString()
-        binding.write6WeightText.text = viewModel.weightMerger.value
-        binding.write6MetalText.text = METAL[viewModel.metalField1.value ?: 0]
-        binding.write6TypeText.text = TYPE[viewModel.typeField1.value ?: 0]
-        binding.write6WeightUnitText.text = WEIGHTUNIT[viewModel.weightUnitField.value ?: 0]
-        binding.write6QuantityText.text = viewModel.quantityField.value.toString()
-        binding.write6PackageText.text = PACKAGETYPE[viewModel.packageTypeField.value ?: 0]
-        binding.write6CurrencyText.text = CURRENCY[viewModel.currencyField.value ?: 0]
-        binding.write6PriceText.text = viewModel.priceMerger.value
         binding.memoEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 viewModel.memoField.value = s.toString()

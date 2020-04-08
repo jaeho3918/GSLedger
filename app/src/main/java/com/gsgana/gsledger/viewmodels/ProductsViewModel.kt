@@ -1,8 +1,6 @@
 package com.gsgana.gsledger.viewmodels
 
-import android.os.Build.BRAND
 import com.gsgana.gsledger.data.Product
-import com.gsgana.gsledger.data.Products
 import com.gsgana.gsledger.utilities.*
 
 class ProductsViewModel(private val product: Product) {

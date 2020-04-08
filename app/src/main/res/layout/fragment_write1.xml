@@ -124,7 +124,6 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:textAlignment="center"
-                        android:text="111111111"
                         android:textSize="70dp" />
 
                 </LinearLayout>

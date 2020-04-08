@@ -43,7 +43,7 @@ object InjectorUtils {
 
         val reg = AppDatabase.getInstance(context.applicationContext, key)
         return ProductRepository.getInstance(
-            reg.productDao(), reg.productImageDao(), reg.optionDao()
+            reg.productDao(), reg.productImageDao()
         )
     }
 

@@ -1,11 +1,8 @@
 package com.gsgana.gsledger
 
-import android.animation.ArgbEvaluator
-import android.animation.ObjectAnimator
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.os.Handler
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,24 +10,20 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.observe
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
-import com.google.android.gms.ads.InterstitialAd
 import com.google.android.gms.ads.MobileAds
 import com.gsgana.gsledger.adapters.PagerAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
-import com.google.firebase.firestore.FirebaseFirestore
 import com.gsgana.gsledger.adapters.PagerAdapter.Companion.ADSANDOPTION_PAGE_INDEX
-import com.gsgana.gsledger.adapters.PagerAdapter.Companion.LIST_PAGE_INDEX
+import com.gsgana.gsledger.adapters.PagerAdapter.Companion.LEDGER_PAGE_INDEX
 import com.gsgana.gsledger.adapters.PagerAdapter.Companion.STAT_PAGE_INDEX
 import com.gsgana.gsledger.databinding.HomeViewPagerFragmentBinding
 import com.gsgana.gsledger.utilities.*
 import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModel
-import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModelFactory
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.HashMap
@@ -238,7 +231,7 @@ class HomeViewPagerFragment : Fragment() {
     private fun getTabTitle(position: Int): String? {
         return when (position) {
             STAT_PAGE_INDEX -> "Stat"
-            LIST_PAGE_INDEX -> "List"
+            LEDGER_PAGE_INDEX -> "Ledger"
             ADSANDOPTION_PAGE_INDEX -> "AdsAndOption"
             else -> null
         }

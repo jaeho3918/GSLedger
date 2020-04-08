@@ -31,4 +31,6 @@ data class DataRequest(var price1 : String,
 
 data class Data(var reg : String,
                 var pre : String,
-                var cur : String)
+                var cur : String,
+                var min : String,
+                var max : String)

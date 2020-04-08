@@ -17,10 +17,10 @@ interface ProductDao {
     suspend fun insertProduct(product: Product)
 
     @Query("DELETE from product")
-    suspend fun deleteProduct()
+    suspend fun deleteProducts()
 
     @Query("DELETE from product WHERE id = :id")
-    suspend fun deleteidProduct(id: Long)
+    suspend fun deleteProduct(id: Long)
 
 }
 

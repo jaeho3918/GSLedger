@@ -51,7 +51,6 @@ class IntroActivity : AppCompatActivity() {
     private lateinit var binding: ActivityIntroBinding
 
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_intro)
@@ -97,14 +96,11 @@ class IntroActivity : AppCompatActivity() {
                                 finish()
 
                             } else {
-                                AuthUI.getInstance().signOut(this)
-                                FirebaseAuth.getInstance().signOut()
-                                Toast.makeText(this, "다시 로그인해주시기바랍니다.", Toast.LENGTH_LONG)
-                                    .show()
-                                //First Signup
-                                binding.introProgressBar.visibility = View.GONE
-                                googleSignInOption(LOG_IN, binding)
+                                googleSignInOption(SIGN_UP, binding)
                             }
+                        }else{
+                            binding.introProgressBar.visibility = View.GONE
+                            googleSignInOption(SIGN_UP, binding)
                         }
                     }
             }
@@ -193,10 +189,20 @@ class IntroActivity : AppCompatActivity() {
                                     finish()
 
                                 } else {
-                                    AuthUI.getInstance().signOut(this)
-                                    FirebaseAuth.getInstance().signOut()
-                                    Toast.makeText(this, "다시 로그인해주시기바랍니다.", Toast.LENGTH_LONG)
-                                        .show()
+                                    rgl_b = arrayListOf()
+                                    var test1 = generateRgl6()
+                                    for (s in test1) {
+                                        this.rgl_b.add(s.toCharArray()[0])
+                                    }
+                                    test1 = mutableListOf()
+                                    rgl = rgl_b.toCharArray()
+                                    rgl_b.clear()
+                                    val intent = Intent(applicationContext, MainActivity::class.java)
+                                    intent.addFlags (Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                                    intent.putExtra(KEY, rgl)
+                                    rgl = charArrayOf()
+                                    startActivity(intent)
+                                    finish()
                                 }
                             }
                             .addOnFailureListener { exception ->
@@ -225,8 +231,8 @@ class IntroActivity : AppCompatActivity() {
             }
 
         } else if (code == 18) {
-            binding.loginBtn.visibility = View.VISIBLE
-            binding.loginBtn.setOnClickListener {
+            binding.signupBtn.visibility = View.VISIBLE
+            binding.signupBtn.setOnClickListener {
                 val signInIntent = googleSigninClient.signInIntent
                 startActivityForResult(signInIntent, RC_SIGN_IN)
             }

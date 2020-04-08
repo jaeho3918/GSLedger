@@ -1,7 +1,6 @@
 package com.gsgana.gsledger.viewmodels
 
 import androidx.lifecycle.*
-import com.gsgana.gsledger.data.Option
 import com.gsgana.gsledger.data.Product
 import com.gsgana.gsledger.data.ProductRepository
 import kotlinx.coroutines.launch
@@ -29,15 +28,10 @@ class HomeViewPagerViewModel internal constructor(
         }
     }
 
-    fun insertOption(option: Option) {
-        viewModelScope.launch {
-            productRepository.createOption(option)
-        }
-    }
 
-    fun deleteProduct() {
+    fun deleteProducts() {
         viewModelScope.launch {
-            productRepository.deleteProduct()
+            productRepository.deleteProducts()
         }
     }
 

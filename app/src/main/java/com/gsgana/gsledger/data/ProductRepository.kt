@@ -2,19 +2,18 @@ package com.gsgana.gsledger.data
 
 class ProductRepository private constructor(
     private val productDao: ProductDao,
-    private val productImageDao: ProductImageDao,
-    private val optionDao: OptionDao
+    private val productImageDao: ProductImageDao
 ) {
 
     suspend fun createProduct(product: Product) {
         productDao.insertProduct(product)
     }
 
-    suspend fun deleteProduct() {
-        productDao.deleteProduct()
+    suspend fun deleteProducts() {
+        productDao.deleteProducts()
     }
-    suspend fun deleteIdProduct(id:Long) {
-        productDao.deleteidProduct(id)
+    suspend fun deleteProduct(id:Long) {
+        productDao.deleteProduct(id)
     }
 
     suspend fun createProductImage(product: ProductImage) {
@@ -25,9 +24,6 @@ class ProductRepository private constructor(
         productImageDao.deleteProductImage()
     }
 
-    suspend fun createOption(product: Option) {
-        optionDao.insertOption(product)
-    }
 
 
 //    suspend fun updateProduct(product : Product) {
@@ -42,7 +38,6 @@ class ProductRepository private constructor(
 
     fun getProductImage(id: String) = productImageDao.getProductImage(id)
 
-    fun getOption() = optionDao.getOption()
 
 
     companion object {
@@ -51,14 +46,12 @@ class ProductRepository private constructor(
 
         fun getInstance(
             productDao: ProductDao,
-            productImageDao: ProductImageDao,
-            optionDao: OptionDao
+            productImageDao: ProductImageDao
         ) =
             instant ?: synchronized(this) {
                 instant ?: ProductRepository(
                     productDao,
-                    productImageDao,
-                    optionDao
+                    productImageDao
                 ).also { instant = it }
             }
     }

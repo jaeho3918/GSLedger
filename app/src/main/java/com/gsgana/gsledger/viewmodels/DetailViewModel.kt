@@ -86,7 +86,7 @@ class DetailViewModel(
 
     fun delProduct(id: Long) {
         viewModelScope.launch {
-            productRepository.deleteIdProduct(id)
+            productRepository.deleteProduct(id)
         }
     }
 

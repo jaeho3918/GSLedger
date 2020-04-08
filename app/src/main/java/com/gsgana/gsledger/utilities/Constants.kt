@@ -101,14 +101,14 @@ val SBTABLE = arrayOf(
     "RMR Cast",
     "RMR Britannia Minted",
     "Perth Mint Cast",
-    "Asahi minted",
+    "Asahi Minted",
     "Asahi Cast",
     "Geiger Edelmetalle Minted",
-    "Sunshine Mint",
+    "Sunshine Minted",
     "Scottsdale Cast",
     "Scottsdale Minted",
-    "Heraeus Cast",
-    "Heraeus Minted"
+    "Scottsdale Stacker",
+    "Heraeus Cast"
 )
 
 val TYPE = arrayOf(

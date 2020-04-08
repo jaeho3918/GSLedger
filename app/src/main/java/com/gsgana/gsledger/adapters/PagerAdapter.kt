@@ -11,13 +11,13 @@ class PagerAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
 
     companion object {
         const val STAT_PAGE_INDEX = 0
-        const val LIST_PAGE_INDEX = 1
+        const val LEDGER_PAGE_INDEX = 1
         const val ADSANDOPTION_PAGE_INDEX = 2 //
     }
 
     private val tabFragmentCreator: Map<Int, () -> Fragment> = mapOf(
         STAT_PAGE_INDEX to { StatFragment() },
-        LIST_PAGE_INDEX to { ListFragment() },
+        LEDGER_PAGE_INDEX to { ListFragment() },
         ADSANDOPTION_PAGE_INDEX to { AdsAndOptionFragment() }
     )
 

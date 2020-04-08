@@ -40,6 +40,7 @@ class MainActivity : AppCompatActivity() {
 
     private val AD_UNIT_ID = "ca-app-pub-3940256099942544/1033173712"
     private lateinit var mInterstitialAd: InterstitialAd
+    private lateinit var mBuilder: AdRequest.Builder
 
     private val viewModel: HomeViewPagerViewModel by viewModels {
         InjectorUtils.provideHomeViewPagerViewModelFactory(this, intent.getCharArrayExtra(KEY))
@@ -47,24 +48,28 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        this.intent.removeExtra(KEY)
         DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
-        intent.removeExtra(KEY)
-
         MobileAds.initialize(this)
         mInterstitialAd = InterstitialAd(this)
         mInterstitialAd.adUnitId = AD_UNIT_ID
-        mInterstitialAd.loadAd(AdRequest.Builder().build())
+        mBuilder = AdRequest.Builder()
+        mInterstitialAd.loadAd(mBuilder.build())
 
         Handler().postDelayed(
             {
-                loading.visibility= View.GONE
+                loading.visibility = View.GONE
                 homeViewPagerFragmentpage.visibility = View.VISIBLE
-            },1500
+            }, 1500
         )
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+    }
+
     override fun finish() {
-        super.finish()
         mInterstitialAd.show()
+        super.finish()
     }
 }

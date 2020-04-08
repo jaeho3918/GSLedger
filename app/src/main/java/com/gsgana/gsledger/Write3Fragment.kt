@@ -59,7 +59,7 @@ class Write3Fragment : Fragment() {
             findNavController().navigate(R.id.action_write3Fragment_to_write4Fragment)
         }
 
-
+        setButtonUi(binding, viewModel)
         setSpinnerUi(binding, viewModel)
         setEditTextUi(binding, viewModel)
 
@@ -72,6 +72,115 @@ class Write3Fragment : Fragment() {
 
 
         return binding.root
+    }
+
+    private fun setButtonUi(
+        binding: FragmentWrite3Binding,
+        viewModel: WriteViewModel,
+        array: Array<String>? = null,
+        table: Array<String>? = null
+    ) {
+        binding.quickBtn120oz.setOnClickListener{
+            binding.weightEditText1.setText("0")
+            binding.weightEditText2.setText("05")
+            binding.weightUnitSpinner1.setSelection(0)
+        }
+        binding.quickBtn110oz.setOnClickListener{
+            binding.weightEditText1.setText("0")
+            binding.weightEditText2.setText("1")
+            binding.weightUnitSpinner1.setSelection(0)
+        }
+        binding.quickBtn14oz.setOnClickListener{
+            binding.weightEditText1.setText("0")
+            binding.weightEditText2.setText("25")
+            binding.weightUnitSpinner1.setSelection(0)
+        }
+        binding.quickBtn12oz.setOnClickListener{
+            binding.weightEditText1.setText("0")
+            binding.weightEditText2.setText("5")
+            binding.weightUnitSpinner1.setSelection(0)
+        }
+        binding.quickBtn1oz.setOnClickListener{
+            binding.weightEditText1.setText("1")
+            binding.weightEditText2.setText("0")
+            binding.weightUnitSpinner1.setSelection(0)
+        }
+        binding.quickBtn2oz.setOnClickListener{
+            binding.weightEditText1.setText("2")
+            binding.weightEditText2.setText("0")
+            binding.weightUnitSpinner1.setSelection(0)
+        }
+        binding.quickBtn5oz.setOnClickListener{
+            binding.weightEditText1.setText("5")
+            binding.weightEditText2.setText("0")
+            binding.weightUnitSpinner1.setSelection(0)
+        }
+        binding.quickBtn10oz.setOnClickListener{
+            binding.weightEditText1.setText("10")
+            binding.weightEditText2.setText("0")
+            binding.weightUnitSpinner1.setSelection(0)
+        }
+        binding.quickBtn100oz.setOnClickListener{
+            binding.weightEditText1.setText("100")
+            binding.weightEditText2.setText("0")
+            binding.weightUnitSpinner1.setSelection(0)
+        }
+        binding.quickBtn400oz.setOnClickListener{
+            binding.weightEditText1.setText("400")
+            binding.weightEditText2.setText("0")
+            binding.weightUnitSpinner1.setSelection(0)
+        }
+        binding.quickBtn10g.setOnClickListener{
+            binding.weightEditText1.setText("10")
+            binding.weightEditText2.setText("0")
+            binding.weightUnitSpinner1.setSelection(1)
+        }
+        binding.quickBtn20g.setOnClickListener{
+            binding.weightEditText1.setText("20")
+            binding.weightEditText2.setText("0")
+            binding.weightUnitSpinner1.setSelection(1)
+        }
+        binding.quickBtn25g.setOnClickListener{
+            binding.weightEditText1.setText("25")
+            binding.weightEditText2.setText("0")
+            binding.weightUnitSpinner1.setSelection(1)
+        }
+        binding.quickBtn50g.setOnClickListener{
+            binding.weightEditText1.setText("50")
+            binding.weightEditText2.setText("0")
+            binding.weightUnitSpinner1.setSelection(1)
+        }
+        binding.quickBtn100g.setOnClickListener{
+            binding.weightEditText1.setText("100")
+            binding.weightEditText2.setText("0")
+            binding.weightUnitSpinner1.setSelection(1)
+        }
+        binding.quickBtn250g.setOnClickListener{
+            binding.weightEditText1.setText("250")
+            binding.weightEditText2.setText("0")
+            binding.weightUnitSpinner1.setSelection(1)
+        }
+        binding.quickBtn500g.setOnClickListener{
+            binding.weightEditText1.setText("500")
+            binding.weightEditText2.setText("0")
+            binding.weightUnitSpinner1.setSelection(1)
+        }
+        binding.quickBtn1kg.setOnClickListener{
+            binding.weightEditText1.setText("1")
+            binding.weightEditText2.setText("0")
+            binding.weightUnitSpinner1.setSelection(2)
+        }
+        binding.quickBtn125kg.setOnClickListener{
+            binding.weightEditText1.setText("12")
+            binding.weightEditText2.setText("5")
+            binding.weightUnitSpinner1.setSelection(2)
+        }
+        binding.quickBtn50kg.setOnClickListener{
+            binding.weightEditText1.setText("50")
+            binding.weightEditText2.setText("0")
+            binding.weightUnitSpinner1.setSelection(2)
+        }
+
     }
 
     private fun setSpinnerUi(

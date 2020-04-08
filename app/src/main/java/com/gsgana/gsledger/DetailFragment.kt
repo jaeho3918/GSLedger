@@ -85,6 +85,7 @@ class DetailFragment : Fragment() {
                     } else if (product.metal == 1) {
                         pre = (data!!["AG"] ?: 0.0).toFloat()
                     }
+                    data!!["USD"] = 1.0
                 }
             })
 
@@ -161,8 +162,6 @@ class DetailFragment : Fragment() {
 
                         binding.productItemProgress.visibility = View.GONE
                     }
-
-
 
                 }, 800
             )

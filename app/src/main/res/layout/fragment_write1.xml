@@ -145,10 +145,10 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="NEXT"
+                android:textColor="@color/white"
                 android:textSize="35dp"
-                android:theme="@style/NextButton"
+                android:background="@color/mu1_data_up"
                 />
-
         </LinearLayout>
 
     </LinearLayout>

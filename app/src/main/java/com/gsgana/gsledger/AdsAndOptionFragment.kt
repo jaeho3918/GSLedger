@@ -77,15 +77,15 @@ class AdsAndOptionFragment : Fragment() {
             builder.setMessage("Delete Your Ledger and User Account")
             builder.setPositiveButton("Degree",
                 DialogInterface.OnClickListener { _, _ ->
+                    del_btn.setText("")
+                    del_btn.isEnabled = false
+                    del_progressBar.visibility = View.VISIBLE
                     viewModel.deleteProducts()
                     mAuth = FirebaseAuth.getInstance()
                     val doc = FirebaseFirestore.getInstance()
                         .collection(USERS_DB_PATH)
                         .document(mAuth.currentUser?.uid!!)
                         .delete()
-                    del_btn.setText("")
-                    del_btn.isEnabled = false
-                    del_progressBar.visibility = View.VISIBLE
                     mAuth = FirebaseAuth.getInstance()
                     mAuth.currentUser!!.delete()
                     gso =
@@ -123,9 +123,6 @@ class AdsAndOptionFragment : Fragment() {
             ArrayAdapter(
                 context!!, R.layout.support_simple_spinner_dropdown_item, CURRENCY
             )
-
-
-
 
         binding.currencyOption.adapter = adapter
         binding.currencyOption.dropDownVerticalOffset = dipToPixels(53f).toInt()

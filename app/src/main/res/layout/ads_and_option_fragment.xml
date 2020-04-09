@@ -10,159 +10,163 @@
             type="com.gsgana.gsledger.AdsAndOptionFragment.Callback" />
     </data>
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/tab1_cardview_1"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="8dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="11dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginBottom="11dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <androidx.cardview.widget.CardView
+            android:id="@+id/tab1_cardview_1"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="11dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="11dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/rounded_border"
-                android:orientation="horizontal"
-                android:paddingTop="13dp">
+                android:orientation="vertical">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="99dp"
-                    android:layout_weight="1">
+                    android:layout_height="match_parent"
+                    android:background="@drawable/rounded_border"
+                    android:orientation="horizontal"
+                    android:paddingTop="13dp">
 
-                    <TextView
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="5dp"
-                        android:paddingHorizontal="8dp"
-                        android:text="Spot Price"
-                        android:textColor="@color/font_silver"
-                        android:textSize="@dimen/text_medium"
-                        app:layout_constraintBottom_toTopOf="@+id/currencyLabel"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        android:layout_height="99dp"
+                        android:layout_weight="1">
 
-                    <TextView
-                        android:id="@+id/currencyLabel"
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:paddingHorizontal="8dp"
+                            android:text="Spot Price"
+                            android:textColor="@color/font_silver"
+                            android:textSize="@dimen/text_medium"
+                            app:layout_constraintBottom_toTopOf="@+id/currencyLabel"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/currencyLabel"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:paddingHorizontal="8dp"
+                            android:text="Currency"
+                            android:textColor="@color/font_silver"
+                            android:textSize="@dimen/text_medium"
+                            app:layout_constraintBottom_toTopOf="@+id/currencyOption"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias="1.0"
+                            card_view:layout_editor_absoluteX="0dp" />
+
+                        <Spinner
+                            android:id="@+id/currencyOption"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textSize="@dimen/text_medium"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="5dp"
-                        android:paddingHorizontal="8dp"
-                        android:text="Currency"
-                        android:textColor="@color/font_silver"
-                        android:textSize="@dimen/text_medium"
-                        app:layout_constraintBottom_toTopOf="@+id/currencyOption"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="1.0"
-                        card_view:layout_editor_absoluteX="0dp" />
-
-                    <Spinner
-                        android:id="@+id/currencyOption"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:textSize="@dimen/text_medium"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="parent" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="99dp"
-                    android:layout_weight="1">
+                        android:layout_height="99dp"
+                        android:layout_weight="1">
 
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="5dp"
-                        android:paddingHorizontal="8dp"
-                        android:text="Spot Price"
-                        android:textColor="@color/font_silver"
-                        android:textSize="@dimen/text_medium"
-                        android:visibility="invisible"
-                        app:layout_constraintBottom_toTopOf="@+id/weightLabel"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:paddingHorizontal="8dp"
+                            android:text="Spot Price"
+                            android:textColor="@color/font_silver"
+                            android:textSize="@dimen/text_medium"
+                            android:visibility="invisible"
+                            app:layout_constraintBottom_toTopOf="@+id/weightLabel"
+                            app:layout_constraintTop_toTopOf="parent" />
 
 
-                    <TextView
-                        android:id="@+id/weightLabel"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="5dp"
-                        android:paddingHorizontal="8dp"
-                        android:text="Weight Unit"
-                        android:textColor="@color/font_silver"
-                        android:textSize="@dimen/text_medium"
-                        app:layout_constraintBottom_toTopOf="@+id/weightUnitOption"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintVertical_bias="1.0"
-                        card_view:layout_editor_absoluteX="0dp" />
+                        <TextView
+                            android:id="@+id/weightLabel"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:paddingHorizontal="8dp"
+                            android:text="Weight Unit"
+                            android:textColor="@color/font_silver"
+                            android:textSize="@dimen/text_medium"
+                            app:layout_constraintBottom_toTopOf="@+id/weightUnitOption"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias="1.0"
+                            card_view:layout_editor_absoluteX="0dp" />
 
-                    <Spinner
-                        android:id="@+id/weightUnitOption"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:textSize="@dimen/text_medium"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="parent" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                        <Spinner
+                            android:id="@+id/weightUnitOption"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:textSize="@dimen/text_medium"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.0"
+                            app:layout_constraintStart_toStartOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </LinearLayout>
 
             </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="bottom">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/mu1_data_down">
+                    <Button
+                        android:id="@+id/del_btn"
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:background="@drawable/delete_btn"
+                        android:text="Delete Your Ledger and User Account"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_large"
+                        android:theme="@style/NextButton" />
+                </LinearLayout>
+
+                <ProgressBar
+                    android:id="@+id/del_progressBar"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone" />
+
+            </RelativeLayout>
 
         </LinearLayout>
-    </androidx.cardview.widget.CardView>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="bottom">
-
-<RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="center">
-
-    <ProgressBar
-        android:id="@+id/del_progressBar"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"/>
-
-        <Button
-            android:id="@+id/del_btn"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:background="@drawable/delete_btn"
-            android:text="Delete Your Ledger and User Account"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_large"
-            android:theme="@style/NextButton" />
-
-</RelativeLayout>
 
     </LinearLayout>
-
-
-
-</LinearLayout>
 
 </layout>

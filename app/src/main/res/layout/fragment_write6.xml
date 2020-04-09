@@ -105,7 +105,8 @@
                 android:text="Summit"
                 android:onClick="@{() -> callback.add()}"
                 android:textSize="35dp"
-                android:theme="@style/NextButton" />
+                android:textColor="@color/white"
+                android:background="@color/mu1_data_up"/>
 
         </LinearLayout>
 

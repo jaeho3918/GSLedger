@@ -192,14 +192,14 @@ class DetailFragment : Fragment() {
                 override fun del() {
 
                     val builder: AlertDialog.Builder = AlertDialog.Builder(context)
-                    builder.setTitle("AlertDialog Title")
-                    builder.setMessage("AlertDialog Content")
-                    builder.setPositiveButton("Delete",
+                    builder.setTitle(resources.getString(R.string.caution))
+                    builder.setMessage(resources.getString(R.string.delProduct))
+                    builder.setPositiveButton(resources.getString(R.string.delete),
                         DialogInterface.OnClickListener { _, _ ->
                             detailViewModel.delProduct(args.id)
                             view?.findNavController()?.navigateUp()
                         })
-                    builder.setNegativeButton("No",
+                    builder.setNegativeButton(resources.getString(R.string.no),
                         DialogInterface.OnClickListener { _, _ ->
                         })
                     builder.show()

@@ -3,6 +3,7 @@ package com.gsgana.gsledger
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.text.util.Linkify
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -26,6 +27,8 @@ import com.gsgana.gsledger.utilities.*
 import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModel
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.regex.Matcher
+import java.util.regex.Pattern
 import kotlin.collections.HashMap
 
 
@@ -53,8 +56,9 @@ class HomeViewPagerFragment : Fragment() {
     private var weight: Double? = null
 
     private lateinit var databaseRef: DatabaseReference
-
     private lateinit var mAdView : AdView
+
+    private lateinit var calendar : TimeZone
 
     private val viewModel: HomeViewPagerViewModel by viewModels {
         InjectorUtils.provideHomeViewPagerViewModelFactory(requireActivity(), null)
@@ -64,6 +68,7 @@ class HomeViewPagerFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        calendar  = Calendar.getInstance().timeZone
 
         option = activity!!.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
         databaseRef = FirebaseDatabase.getInstance().getReference(REAL_DB_PATH)
@@ -93,6 +98,15 @@ class HomeViewPagerFragment : Fragment() {
 
         binding = HomeViewPagerFragmentBinding.inflate(inflater, container, false)
 
+        val mTransform =  Linkify.TransformFilter{ matcher: Matcher, s: String ->
+            "".toString()
+        }
+        val pattern1 = Pattern.compile("Disclaimer")
+
+        Linkify.addLinks(binding.disclaimer, pattern1, "https://gsledger-29cad.firebaseapp.com/disclaimer.html",null,mTransform);
+
+
+
         MobileAds.initialize(context)
         mAdView = binding.adView
         val adRequest = AdRequest.Builder().build()
@@ -111,8 +125,11 @@ class HomeViewPagerFragment : Fragment() {
             val currencyOption = activity?.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
                 ?.getInt(CURR_NAME, 0)
 
-            binding.realUpdatedDate.text = SimpleDateFormat("yyyy/MM/dd HH:mm")
-                .format(Date(realData["DATE"]!!.toLong() * 1000))
+            val simpleDateFormat : SimpleDateFormat = SimpleDateFormat("yyyy/MM/dd HH:mm")
+            simpleDateFormat.timeZone = calendar
+            val date = simpleDateFormat.format(Date(realData["DATE"]!!.toLong() * 1000))
+
+            binding.realUpdatedDate.text = date
 
 
             binding.realGoldCurrency.text = CURRENCYSYMBOL[currencyOption ?: 0]
@@ -128,7 +145,7 @@ class HomeViewPagerFragment : Fragment() {
                 else -> 1.0
             }
 
-            binding.weightUnitLabel.text = "Spot Price (Unit: 1${WEIGHTUNIT[realData["weightUnit"]!!.toInt()]})"
+            binding.weightUnitLabel.text = "(Unit: 1${WEIGHTUNIT[realData["weightUnit"]!!.toInt()]})"
 
             binding.realGoldPrice.text = String.format(
                 "%,.2f",

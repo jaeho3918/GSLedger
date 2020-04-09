@@ -42,15 +42,8 @@ class AdsAndOptionFragment : Fragment() {
     private lateinit var mAuth: FirebaseAuth
     private val USERS_DB_PATH = "qnI4vK2zSUq6GdeT6b"
 
-    private val PL = "18xRWR1PDWW01PjjXI"
-    private val UPDOWN = "17RD79dX7d1DWf0j0I"
-
     private lateinit var option: SharedPreferences
     private lateinit var adapter: ArrayAdapter<String>
-
-//    private val viewModel: HomeViewPagerViewModel by viewModels {
-//        InjectorUtils.provideHomeViewPagerViewModelFactory(requireActivity(), null)
-//    }
 
     private val KEY = "Kd6c26TK65YSmkw6oU"
     private val viewModel: HomeViewPagerViewModel by viewModels {
@@ -73,9 +66,9 @@ class AdsAndOptionFragment : Fragment() {
 
         binding.delBtn.setOnClickListener {
             val builder: AlertDialog.Builder = AlertDialog.Builder(context)
-            builder.setTitle("Caution")
-            builder.setMessage("Delete Your Ledger and User Account")
-            builder.setPositiveButton("Degree",
+            builder.setTitle(resources.getString(R.string.caution))
+            builder.setMessage(resources.getString(R.string.delAgreeCheck))
+            builder.setPositiveButton(resources.getString(R.string.agree),
                 DialogInterface.OnClickListener { _, _ ->
                     del_btn.setText("")
                     del_btn.isEnabled = false
@@ -105,7 +98,7 @@ class AdsAndOptionFragment : Fragment() {
 
 
                 })
-            builder.setNegativeButton("No",
+            builder.setNegativeButton(resources.getString(R.string.no),
                 DialogInterface.OnClickListener { _, _ ->
                 })
             builder.show()

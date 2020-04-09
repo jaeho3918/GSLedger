@@ -17,6 +17,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.SignInButton
 import com.google.android.gms.common.api.ApiException
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
@@ -48,31 +49,44 @@ class IntroActivity : AppCompatActivity() {
     private lateinit var rgl: CharArray
     private lateinit var rgl_b: MutableList<Char>
 
-    private lateinit var rgl_save: CharArray
     private lateinit var mAuth: FirebaseAuth
     private lateinit var googleSigninClient: GoogleSignInClient
     private lateinit var binding: ActivityIntroBinding
-
+    private lateinit var mFirebaseAnalytics: FirebaseAnalytics
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_intro)
         mAuth = FirebaseAuth.getInstance()
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_intro);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_intro)
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         sf = this.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
 
         if (sf.getString(ENCRYPT_NAME, null).isNullOrEmpty()) {
             //First Signup
             binding.introProgressBar.visibility = View.GONE
-            val mTransform =  Linkify.TransformFilter(){ matcher: Matcher, s: String ->
+            val mTransform = Linkify.TransformFilter() { matcher: Matcher, s: String ->
                 ""
             }
             val pattern1 = Pattern.compile("Privacy Policy")
             val pattern2 = Pattern.compile("개인정보보호정책")
 
-            Linkify.addLinks(binding.agreeText, pattern1, "https://gsledger-29cad.firebaseapp.com/privacypolicy.html",null,mTransform);
-            Linkify.addLinks(binding.agreeText, pattern2, "https://gsledger-29cad.firebaseapp.com/privacypolicy.html",null,mTransform);
+            Linkify.addLinks(
+                binding.agreeText,
+                pattern1,
+                "https://gsledger-29cad.firebaseapp.com/privacypolicy.html",
+                null,
+                mTransform
+            );
+            Linkify.addLinks(
+                binding.agreeText,
+                pattern2,
+                "https://gsledger-29cad.firebaseapp.com/privacypolicy.html",
+                null,
+                mTransform
+            );
 
             googleSignInOption(SIGN_UP, binding)
 
@@ -81,14 +95,26 @@ class IntroActivity : AppCompatActivity() {
                 //LOGIN
                 binding.introProgressBar.visibility = View.GONE
                 googleSignInOption(LOG_IN, binding)
-                val mTransform =  Linkify.TransformFilter{ matcher: Matcher, s: String ->
+                val mTransform = Linkify.TransformFilter { matcher: Matcher, s: String ->
                     "".toString()
                 }
                 val pattern1 = Pattern.compile("Privacy Policy")
                 val pattern2 = Pattern.compile("개인정보보호정책")
 
-                Linkify.addLinks(binding.agreeText, pattern1, "https://gsledger-29cad.firebaseapp.com/privacypolicy.html",null,mTransform);
-                Linkify.addLinks(binding.agreeText, pattern2, "https://gsledger-29cad.firebaseapp.com/privacypolicy.html",null,mTransform);
+                Linkify.addLinks(
+                    binding.agreeText,
+                    pattern1,
+                    "https://gsledger-29cad.firebaseapp.com/privacypolicy.html",
+                    null,
+                    mTransform
+                );
+                Linkify.addLinks(
+                    binding.agreeText,
+                    pattern2,
+                    "https://gsledger-29cad.firebaseapp.com/privacypolicy.html",
+                    null,
+                    mTransform
+                );
 
             } else {
                 val doc = FirebaseFirestore.getInstance()
@@ -121,14 +147,27 @@ class IntroActivity : AppCompatActivity() {
                             }
                         } else {
                             binding.introProgressBar.visibility = View.GONE
-                            val mTransform =  Linkify.TransformFilter{ matcher: Matcher, s: String ->
-                                "".toString()
-                            }
+                            val mTransform =
+                                Linkify.TransformFilter { matcher: Matcher, s: String ->
+                                    "".toString()
+                                }
                             val pattern1 = Pattern.compile("Privacy Policy")
                             val pattern2 = Pattern.compile("개인정보보호정책")
 
-                            Linkify.addLinks(binding.agreeText, pattern1, "https://gsledger-29cad.firebaseapp.com/privacypolicy.html",null,mTransform);
-                            Linkify.addLinks(binding.agreeText, pattern2, "https://gsledger-29cad.firebaseapp.com/privacypolicy.html",null,mTransform);
+                            Linkify.addLinks(
+                                binding.agreeText,
+                                pattern1,
+                                "https://gsledger-29cad.firebaseapp.com/privacypolicy.html",
+                                null,
+                                mTransform
+                            );
+                            Linkify.addLinks(
+                                binding.agreeText,
+                                pattern2,
+                                "https://gsledger-29cad.firebaseapp.com/privacypolicy.html",
+                                null,
+                                mTransform
+                            );
                             googleSignInOption(SIGN_UP, binding)
                         }
                     }
@@ -254,28 +293,14 @@ class IntroActivity : AppCompatActivity() {
             .build()
         googleSigninClient = GoogleSignIn.getClient(this, gso)
 
-        if (code == 6) {
-            binding.signupBtn.visibility = View.VISIBLE
-            binding.signupBtn.setOnClickListener {
-                if (!binding.agreeBox.isChecked) {
-//                    Toast.makeText(this, resources.getString(),Toast.LENGTH_LONG).show()"Please read the Privacy Policy and check the box"
-                    Toast.makeText(
-                        this,
-                        "Please read the Privacy Policy and check the box",
-                        Toast.LENGTH_LONG
-                    ).show()
-                } else {
-                    val signInIntent = googleSigninClient.signInIntent
-                    startActivityForResult(signInIntent, RC_SIGN_IN)
-                }
-            }
-
-        } else if (code == 18) {
+        binding.signInCheck.visibility = View.VISIBLE
+        binding.signupBtn.visibility = View.VISIBLE
+        binding.signupBtn.setOnClickListener {
             if (!binding.agreeBox.isChecked) {
 //                    Toast.makeText(this, resources.getString(),Toast.LENGTH_LONG).show()"Please read the Privacy Policy and check the box"
                 Toast.makeText(
                     this,
-                    "Please read the Privacy Policy and check the box",
+                    resources.getString(R.string.checkBox),
                     Toast.LENGTH_LONG
                 ).show()
             } else {
@@ -283,6 +308,8 @@ class IntroActivity : AppCompatActivity() {
                 startActivityForResult(signInIntent, RC_SIGN_IN)
             }
         }
+
+
     }
 
 

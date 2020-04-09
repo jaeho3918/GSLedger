@@ -1,25 +1,22 @@
 package com.gsgana.gsledger
 
-import android.content.Context
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.InterstitialAd
 import com.google.android.gms.ads.MobileAds
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
-import com.google.firebase.firestore.FirebaseFirestore
-import com.gsgana.gsledger.data.AppDatabase
 import com.gsgana.gsledger.databinding.ActivityMainBinding
 import com.gsgana.gsledger.utilities.InjectorUtils
 import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModel
 import kotlinx.android.synthetic.main.activity_main.*
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -41,7 +38,7 @@ class MainActivity : AppCompatActivity() {
     private val AD_UNIT_ID = "ca-app-pub-3940256099942544/1033173712"
     private lateinit var mInterstitialAd: InterstitialAd
     private lateinit var mBuilder: AdRequest.Builder
-
+    private lateinit var mFirebaseAnalytics: FirebaseAnalytics
     private val viewModel: HomeViewPagerViewModel by viewModels {
         InjectorUtils.provideHomeViewPagerViewModelFactory(this, intent.getCharArrayExtra(KEY))
     }
@@ -55,6 +52,8 @@ class MainActivity : AppCompatActivity() {
         mInterstitialAd.adUnitId = AD_UNIT_ID
         mBuilder = AdRequest.Builder()
         mInterstitialAd.loadAd(mBuilder.build())
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
 
         Handler().postDelayed(
             {

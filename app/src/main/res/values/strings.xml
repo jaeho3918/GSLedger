@@ -32,7 +32,8 @@
     <string name="weightUnit">Weight Unit</string>
     <string name="delAccount">Delete Your Ledger and User Account</string>
     <string name="caution">Caution</string>
-    <string name="delAgreeCheck"> Do you agree to delete your ledger and accounts?</string>
+    <string name="delAgreeCheck"> Do you agree to delete your ledger and accounts?
+        (data cannot be recovered)</string>
     <string name="details">Details</string>
     <string name="currentPrice">Current Price</string>
     <string name="totalPrice">Total Price</string>
@@ -56,6 +57,13 @@
     <string name="ledgerEmpty">Your ledger is empty</string>
     <string name="addProduct">Add Product</string>
     <string name="deleteProduct">Total</string>
-
+    <string name="banner_ad_unit_id">ca-app-pub-8453032642509497~4168684141</string>
     <string name="privacyPolicyText">I have read and understand the Privacy Policy</string>
+    <string name="rangePrice">Please enter the price in the above range for accurate calculation</string>
+    <string name="delProduct">Are you sure you want to delete the product?
+    (data cannot be recovered)</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="agree">Agree</string>
+    <string name="checkBox">Please read the Privacy Policy and check the box</string>
 </resources>

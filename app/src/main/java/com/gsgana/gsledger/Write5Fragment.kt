@@ -36,6 +36,7 @@ class Write5Fragment : Fragment() {
 
     private val PREF_NAME = "01504f779d6c77df04"
     private val CURR_NAME = "1w3d4f7w9d2qG2eT36"
+    private val TIME_NAME = "6ck9uUlDuh7o6QKQFZ"
     private var option: Int? = null
     private var price1: Float? = null
     private var price2: Float? = null
@@ -68,113 +69,7 @@ class Write5Fragment : Fragment() {
             findNavController().navigate(R.id.action_write5Fragment_to_homeViewPagerFragment)
             viewModel.initProduct()
         }
-//
-//        binding.moveTo5.setOnClickListener { findNavController().navigate(R.id.action_write5Fragment_to_write6Fragment) }
 
-
-//        binding.callbackRequest = object : CallbackRequest {
-//            override fun click() {
-//                binding.requestButton.isEnabled = false
-//                binding.requestButton.text = ""
-//                binding.requestProgress.visibility = View.VISIBLE
-//
-//                val test = viewModel.dateField.value?.split("/")
-//                var date_buf = if (test.isNullOrEmpty()) {
-//                    val cal = Calendar.getInstance()
-//                    val _year = cal.get(Calendar.YEAR)
-//                    val _month = cal.get(Calendar.MONTH) + 1
-//                    val _date = cal.get(Calendar.DATE)
-//                    viewModel.dateField.value ?: String.format(
-//                        "%04d%02d%02d", _year, _month, _date
-//                    )
-//                } else {
-//                    String.format(
-//                        "%04d%02d%02d", test[0].toInt(), test[1].toInt(), test[2].toInt()
-//                    )
-//                }
-//
-//                val jsonParam = JsonObject().apply {
-//                    addProperty("metal", viewModel.metalField1.value.toString())
-//                    addProperty("type1", viewModel.typeField1.value.toString())
-//                    addProperty("brand", viewModel.brandField1.value)
-//                    addProperty("weight", viewModel.weightCalculator.value)
-//                    addProperty("quantity", viewModel.quantityField.value)
-//                    addProperty("weightr", viewModel.weightUnit.value)
-//                    addProperty("packageType1", viewModel.packageTypeField.value.toString())
-//                    addProperty("grade", viewModel.gradeField.value.toString())
-//                    addProperty("gradeNum", viewModel.gradeNumField.value.toString())
-//                    addProperty("currency", viewModel.currencyField.value.toString())
-//                    addProperty("priceMerger", viewModel.price.value)
-//                    addProperty("date", date_buf)
-//                }
-//                val retrofit = Retrofit.Builder()
-//                    .baseUrl(URL)
-//                    .addConverterFactory(GsonConverterFactory.create()).build()
-//                val service = retrofit.create(ServerRequest::class.java)
-//
-//                val mUser = FirebaseAuth.getInstance().currentUser
-//                mUser?.getIdToken(true)
-//                    ?.addOnCompleteListener { p0 ->
-//                        if (p0.isSuccessful) {
-//                            val idToken = p0.result?.token
-//
-//                            service.postRequest(idToken!!, jsonParam)
-//                                ?.enqueue(object : retrofit2.Callback<DataRequest> {
-//                                    override fun onFailure(call: Call<DataRequest>, t: Throwable) {
-//                                        Toast.makeText(activity, t.toString(), Toast.LENGTH_LONG)
-//                                            .show()
-//                                    }
-//
-//                                    override fun onResponse(
-//                                        call: Call<DataRequest>,
-//                                        response: Response<DataRequest>
-//                                    ) {
-//                                        Toast.makeText(
-//                                            activity,
-//                                            response.body().toString(),
-//                                            Toast.LENGTH_LONG
-//                                        ).show()
-//
-//                                        price1 = response.body()?.price1!!.toFloat()
-//                                        price2 = response.body()?.price2!!.toFloat()
-//                                        priceAvrString =
-//                                            String.format("%,.2f", (price1!! + price2!!) / 2)
-//                                        priceAvrFloat = priceAvrString!!.replace(",", "").toFloat()
-//
-//                                        val splitPrice =
-//                                            priceAvrString!!.replace(",", "").split(".")
-//                                        if (splitPrice!!.size != 1) {
-//                                            viewModel.priceField.value =
-//                                                splitPrice!!.toMutableList()
-//                                            binding.priceEditText1.setText(splitPrice!![0])
-//                                            binding.priceEditText2.setText(splitPrice!![1])
-//                                        } else if (splitPrice!!.size == 1) {
-//                                            viewModel.priceField.value =
-//                                                splitPrice!!.toMutableList()
-//                                            binding.priceEditText1.setText(splitPrice!![0])
-//                                            binding.priceEditText2.setText("00")
-//                                        }
-//
-//                                        binding.priceEditText1.visibility = View.VISIBLE
-//                                        binding.priceEditText2.visibility = View.VISIBLE
-//                                        binding.priceEditText3.visibility = View.VISIBLE
-//                                        binding.requestButton.visibility = View.GONE
-//                                        binding.requestProgress.visibility = View.GONE
-//                                        binding.summitButton.isEnabled = true
-//
-//                                        binding.currencySpinner1.visibility = View.GONE
-//                                        binding.currencyTextView1.visibility = View.VISIBLE
-//                                        binding.currencyTextView1.text =
-//                                            CURRENCY[viewModel.currencyField.value!!]
-//                                    }
-//                                })
-//                        } else {
-//                            p0.exception
-//                            Toast.makeText(activity, "Response?", Toast.LENGTH_LONG).show()
-//                        }
-//                    }
-//            }
-//        }
         binding.callbackSummit = object : CallbackSummit {
             override fun click() {
                 binding.summitProgress.visibility = View.VISIBLE

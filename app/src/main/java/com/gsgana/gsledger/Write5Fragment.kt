@@ -200,7 +200,7 @@ class Write5Fragment : Fragment() {
                 val jsonParam = JsonObject().apply {
                     addProperty("metal", viewModel.metalField1.value.toString())
                     addProperty("type1", viewModel.typeField1.value.toString())
-                    addProperty("brand", viewModel.brandField1.value)
+                    addProperty("brand", viewModel.brand.value.toString())
                     addProperty("weight", viewModel.weightCalculator.value)
                     addProperty("quantity", viewModel.quantityField.value)
                     addProperty("weightr", viewModel.weightUnit.value)

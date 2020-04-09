@@ -69,7 +69,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.3"
-                        android:text="Write Page 5/6"
+                        android:text="Write 5/6"
                         android:textAlignment="center"
                         android:textSize="24sp" />
                 </LinearLayout>
@@ -86,23 +86,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
-
-<!--                        <TextView-->
-<!--                            android:id="@+id/purchasedCurrecny"-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:layout_marginTop="18dp"-->
-<!--                            android:text="Purchased currency"-->
-<!--                            android:visibility="gone"-->
-<!--                            android:textSize="24sp" />-->
-
                         <TextView
                             android:id="@+id/unitPrice"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="18dp"
                             android:layout_marginLeft="5dp"
-                            android:text="Unit Price"
+                            android:text="@string/unitPrice"
                             android:textSize="24sp"
                             />
 
@@ -182,8 +172,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="36dp"
-                            android:text="Price range"
-                            android:textSize="36dp" />
+                            android:text="@string/priceRange"
+                            android:textSize="24dp" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -192,12 +182,20 @@
                             android:orientation="horizontal">
 
                             <TextView
+                                android:id="@+id/priceCur1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="36dp"
+                                android:text=""
+                                android:textSize="24dp" />
+
+                            <TextView
                                 android:id="@+id/priceMin"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginTop="36dp"
                                 android:text="min"
-                                android:textSize="36dp" />
+                                android:textSize="24dp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -206,7 +204,15 @@
                                 android:paddingHorizontal="8dp"
                                 android:text="~"
                                 android:textAlignment="center"
-                                android:textSize="36dp" />
+                                android:textSize="24dp" />
+
+                            <TextView
+                                android:id="@+id/priceCur2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="36dp"
+                                android:text=""
+                                android:textSize="24dp" />
 
                             <TextView
                                 android:id="@+id/priceMax"
@@ -215,7 +221,7 @@
                                 android:layout_marginTop="36dp"
                                 android:text="max"
                                 android:textAlignment="center"
-                                android:textSize="36dp" />
+                                android:textSize="24dp" />
 
 
                         </LinearLayout>
@@ -244,7 +250,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:onClick="@{() -> CallbackSummit.click()}"
-                    android:text="NEXT"
+                    android:text="@string/next"
                     android:textSize="35dp"
                     android:textColor="@color/white"
                     android:background="@color/mu1_data_up"

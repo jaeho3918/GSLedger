@@ -177,7 +177,6 @@ class Write5Fragment : Fragment() {
 //        }
         binding.callbackSummit = object : CallbackSummit {
             override fun click() {
-
                 binding.summitProgress.visibility = View.VISIBLE
                 binding.summitButton.isEnabled = false
                 binding.summitButton.text = ""
@@ -247,17 +246,16 @@ class Write5Fragment : Fragment() {
                                         if ((min!! <= priceCalculate(binding)) &&
                                             (max!! >= priceCalculate(binding))
                                         ) {
-                                            binding.priceEditText1.visibility = View.VISIBLE
-                                            binding.priceEditText2.visibility = View.VISIBLE
-                                            binding.priceEditText2.visibility = View.VISIBLE
                                             findNavController().navigate(R.id.action_write5Fragment_to_write6Fragment)
                                         } else {
+                                            binding.priceCur1.text = CURRENCYSYMBOL[viewModel.currencyField.value?:0]
+                                            binding.priceCur2.text = CURRENCYSYMBOL[viewModel.currencyField.value?:0]
                                             binding.priceRange.visibility = View.VISIBLE
                                             binding.summitButton.text = "NEXT"
                                             binding.summitButton.isEnabled = true
                                             binding.summitProgress.visibility = View.GONE
-                                            binding.priceMin.text = String.format("%,.2f", min)
-                                            binding.priceMax.text = String.format("%,.2f", max)
+                                            binding.priceMin.text = String.format("%,.0f", min)
+                                            binding.priceMax.text = String.format("%,.0f", max)
                                         }
 
                                     }

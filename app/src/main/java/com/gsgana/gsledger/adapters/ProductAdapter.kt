@@ -106,6 +106,8 @@ class ProductAdapter(private val context: Context, private val realData: Map<Str
 //                    }
 //                }
 
+                binding.productItemPlCurrency.text = CURRENCYSYMBOL[item.currency]
+
                 binding.productItemTotalprice.text =
                     CURRENCYSYMBOL[item.currency] + " " + priceToString(
                         (realPrice * currency).toDouble(),

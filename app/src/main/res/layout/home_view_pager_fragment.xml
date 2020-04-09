@@ -43,7 +43,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:text="Gold"
+                        android:text="@string/gold"
                         android:textColor="@color/font_gold"
                         android:textSize="@dimen/text_medium1"
                         android:textStyle="bold" />
@@ -94,7 +94,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:text="Silver"
+                        android:text="@string/silver"
                         android:textColor="@color/font_silver"
                         android:textSize="@dimen/text_medium1"
                         android:textStyle="bold" />
@@ -156,10 +156,15 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:text="Last updated : "
+                        android:text="@string/lastUpdate"
                         android:textColor="@color/font_silver"
                         android:textSize="@dimen/text_small" />
-
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:text=" : "
+                        android:textColor="@color/font_silver"
+                        android:textSize="@dimen/text_small" />
                     <TextView
                         android:id="@+id/realUpdatedDate"
                         android:layout_width="wrap_content"
@@ -178,10 +183,27 @@
                     android:paddingRight="8dp">
 
                     <TextView
-                        android:id="@+id/weightUnitLabel"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:gravity="right"
+                        android:text="@string/spotPrice"
+                        android:textColor="@color/font_silver"
+                        android:textSize="@dimen/text_small" />
+
+                    <TextView
+                        android:id="@+id/weightUnitLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="3dp"
+                        android:gravity="right"
+                        android:textColor="@color/font_silver"
+                        android:textSize="@dimen/text_small" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:text="@string/disclaimer"
                         android:textColor="@color/font_silver"
                         android:textSize="@dimen/text_small" />
 

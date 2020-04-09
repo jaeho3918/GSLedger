@@ -57,7 +57,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.3"
-                    android:text="Write Page 4/6"
+                    android:text="Write 4/6"
                     android:textAlignment="center"
                     android:textSize="29sp" />
             </LinearLayout>
@@ -66,7 +66,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="13dp"
-                android:text="Date of Purchase"
+                android:text="@string/dateOfPurchase"
                 android:paddingStart="5dp"
                 android:textSize="24dp"/>
 
@@ -87,7 +87,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="13dp"
                     android:paddingStart="5dp"
-                    android:text="Year Series"
+                    android:text="@string/yearSeries"
                     android:textSize="24dp"/>
 
                 <NumberPicker
@@ -103,7 +103,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="13dp"
-                    android:text="Grade"
+                    android:text="@string/grade"
                     android:paddingStart="5dp"
                     android:textSize="24dp"/>
 
@@ -149,7 +149,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:text="NEXT"
+                    android:text="@string/next"
                     android:textColor="@color/white"
                     android:textSize="35dp"
                     android:background="@color/mu1_data_up"

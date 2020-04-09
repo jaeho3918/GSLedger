@@ -27,42 +27,68 @@
 
                 />
 
-            <ProgressBar
-                android:id="@+id/introProgressBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/intro_marginTop" />
 
-            <Button
-                android:id="@+id/loginBtn"
-                android:layout_width="240dp"
-                android:layout_height="@dimen/buttom_lagre_height"
-                android:layout_margin="@dimen/intro_marginTop"
-                android:background="@drawable/login_btn"
-                android:text="@string/loginwithgmail"
-                android:textAllCaps="false"
-                android:textColor="@color/red"
-                android:textStyle="bold"
-                android:paddingStart="@dimen/button_image_padding_size"
-                android:drawableLeft="@drawable/googleg_standard_color_18"
-                android:visibility="gone"
-                />
 
-            <Button
-                android:id="@+id/signupBtn"
-                android:layout_width="240dp"
-                android:layout_height="@dimen/buttom_lagre_height"
-                android:layout_margin="@dimen/intro_marginTop"
-                android:background="@drawable/signup_btn"
-                android:text="@string/signupwithgmail"
-                android:textAllCaps="false"
-                android:textColor="@color/green"
-                android:textStyle="bold"
-                android:paddingStart="@dimen/button_image_padding_size"
-                android:drawableLeft="@drawable/googleg_standard_color_18"
-                android:visibility="gone"
-                />
+            <LinearLayout
+                android:id="@+id/signinLayout"
+                android:layout_width="match_parent"
+                android:layout_height="130dp"
+                android:layout_marginTop="@dimen/intro_marginTop"
+                android:gravity="center"
+                android:orientation="vertical">
 
+
+                <ProgressBar
+                    android:id="@+id/introProgressBar"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    >
+                    <CheckBox
+                        android:id="@+id/agreeBox"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:id="@+id/agreeText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/privacyPolicyText"/>
+
+
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/loginBtn"
+                    android:layout_width="240dp"
+                    android:layout_height="@dimen/buttom_lagre_height"
+                    android:layout_margin="@dimen/intro_marginTop"
+                    android:background="@drawable/login_btn"
+                    android:drawableLeft="@drawable/googleg_standard_color_18"
+                    android:paddingStart="@dimen/button_image_padding_size"
+                    android:text="@string/loginwithgmail"
+                    android:textAllCaps="false"
+                    android:textColor="@color/red"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/signupBtn"
+                    android:layout_width="240dp"
+                    android:layout_height="@dimen/buttom_lagre_height"
+                    android:background="@drawable/signup_btn"
+                    android:drawableLeft="@drawable/googleg_standard_color_18"
+                    android:paddingStart="@dimen/button_image_padding_size"
+                    android:text="@string/signupwithgmail"
+                    android:textAllCaps="false"
+                    android:textColor="@color/green"
+                    android:textStyle="bold" />
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 

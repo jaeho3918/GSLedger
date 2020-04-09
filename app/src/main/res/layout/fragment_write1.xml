@@ -61,7 +61,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.3"
-                        android:text="Write Page 1/6"
+                        android:text="Write  1/6"
                         android:textAlignment="center"
                         android:textSize="29sp" />
                 </LinearLayout>
@@ -124,7 +124,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:textAlignment="center"
-                        android:textSize="70dp" />
+                        android:text="Select Type"
+                        android:textSize="60dp" />
 
                 </LinearLayout>
 
@@ -144,9 +145,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="NEXT"
-                android:textColor="@color/white"
+                android:text="@string/next"
+                android:textColor="@color/chart_silverC"
                 android:textSize="35dp"
+                android:enabled="false"
                 android:background="@color/mu1_data_up"
                 android:theme="@style/NextButton"
                 />

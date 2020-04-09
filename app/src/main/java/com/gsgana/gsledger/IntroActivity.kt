@@ -5,6 +5,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.util.Linkify
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -28,6 +29,8 @@ import javax.crypto.KeyGenerator
 import javax.crypto.SecretKey
 import javax.crypto.spec.SecretKeySpec
 import org.bouncycastle.util.encoders.Base64
+import java.util.regex.Matcher
+import java.util.regex.Pattern
 
 
 class IntroActivity : AppCompatActivity() {
@@ -62,6 +65,15 @@ class IntroActivity : AppCompatActivity() {
         if (sf.getString(ENCRYPT_NAME, null).isNullOrEmpty()) {
             //First Signup
             binding.introProgressBar.visibility = View.GONE
+            val mTransform =  Linkify.TransformFilter(){ matcher: Matcher, s: String ->
+                ""
+            }
+            val pattern1 = Pattern.compile("Privacy Policy")
+            val pattern2 = Pattern.compile("개인정보보호정책")
+
+            Linkify.addLinks(binding.agreeText, pattern1, "https://gsledger-29cad.firebaseapp.com/privacypolicy.html",null,mTransform);
+            Linkify.addLinks(binding.agreeText, pattern2, "https://gsledger-29cad.firebaseapp.com/privacypolicy.html",null,mTransform);
+
             googleSignInOption(SIGN_UP, binding)
 
         } else {
@@ -69,6 +81,15 @@ class IntroActivity : AppCompatActivity() {
                 //LOGIN
                 binding.introProgressBar.visibility = View.GONE
                 googleSignInOption(LOG_IN, binding)
+                val mTransform =  Linkify.TransformFilter{ matcher: Matcher, s: String ->
+                    "".toString()
+                }
+                val pattern1 = Pattern.compile("Privacy Policy")
+                val pattern2 = Pattern.compile("개인정보보호정책")
+
+                Linkify.addLinks(binding.agreeText, pattern1, "https://gsledger-29cad.firebaseapp.com/privacypolicy.html",null,mTransform);
+                Linkify.addLinks(binding.agreeText, pattern2, "https://gsledger-29cad.firebaseapp.com/privacypolicy.html",null,mTransform);
+
             } else {
                 val doc = FirebaseFirestore.getInstance()
                     .collection(USERS_DB_PATH)
@@ -89,7 +110,7 @@ class IntroActivity : AppCompatActivity() {
                                 rgl_b.clear()
                                 val intent =
                                     Intent(applicationContext, MainActivity::class.java)
-                                intent.addFlags (Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                                 intent.putExtra(KEY, rgl)
                                 startActivity(intent)
                                 rgl = charArrayOf()
@@ -98,8 +119,16 @@ class IntroActivity : AppCompatActivity() {
                             } else {
                                 googleSignInOption(SIGN_UP, binding)
                             }
-                        }else{
+                        } else {
                             binding.introProgressBar.visibility = View.GONE
+                            val mTransform =  Linkify.TransformFilter{ matcher: Matcher, s: String ->
+                                "".toString()
+                            }
+                            val pattern1 = Pattern.compile("Privacy Policy")
+                            val pattern2 = Pattern.compile("개인정보보호정책")
+
+                            Linkify.addLinks(binding.agreeText, pattern1, "https://gsledger-29cad.firebaseapp.com/privacypolicy.html",null,mTransform);
+                            Linkify.addLinks(binding.agreeText, pattern2, "https://gsledger-29cad.firebaseapp.com/privacypolicy.html",null,mTransform);
                             googleSignInOption(SIGN_UP, binding)
                         }
                     }
@@ -157,7 +186,7 @@ class IntroActivity : AppCompatActivity() {
                         rgl = rgl_b.toCharArray()
                         rgl_b.clear()
                         val intent = Intent(applicationContext, MainActivity::class.java)
-                        intent.addFlags (Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                         intent.putExtra(KEY, rgl)
                         rgl = charArrayOf()
                         startActivity(intent)
@@ -181,8 +210,9 @@ class IntroActivity : AppCompatActivity() {
                                     test1 = mutableListOf()
                                     rgl = rgl_b.toCharArray()
                                     rgl_b.clear()
-                                    val intent = Intent(applicationContext, MainActivity::class.java)
-                                    intent.addFlags (Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                                    val intent =
+                                        Intent(applicationContext, MainActivity::class.java)
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                                     intent.putExtra(KEY, rgl)
                                     rgl = charArrayOf()
                                     startActivity(intent)
@@ -197,8 +227,9 @@ class IntroActivity : AppCompatActivity() {
                                     test1 = mutableListOf()
                                     rgl = rgl_b.toCharArray()
                                     rgl_b.clear()
-                                    val intent = Intent(applicationContext, MainActivity::class.java)
-                                    intent.addFlags (Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                                    val intent =
+                                        Intent(applicationContext, MainActivity::class.java)
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                                     intent.putExtra(KEY, rgl)
                                     rgl = charArrayOf()
                                     startActivity(intent)
@@ -226,13 +257,28 @@ class IntroActivity : AppCompatActivity() {
         if (code == 6) {
             binding.signupBtn.visibility = View.VISIBLE
             binding.signupBtn.setOnClickListener {
-                val signInIntent = googleSigninClient.signInIntent
-                startActivityForResult(signInIntent, RC_SIGN_IN)
+                if (!binding.agreeBox.isChecked) {
+//                    Toast.makeText(this, resources.getString(),Toast.LENGTH_LONG).show()"Please read the Privacy Policy and check the box"
+                    Toast.makeText(
+                        this,
+                        "Please read the Privacy Policy and check the box",
+                        Toast.LENGTH_LONG
+                    ).show()
+                } else {
+                    val signInIntent = googleSigninClient.signInIntent
+                    startActivityForResult(signInIntent, RC_SIGN_IN)
+                }
             }
 
         } else if (code == 18) {
-            binding.signupBtn.visibility = View.VISIBLE
-            binding.signupBtn.setOnClickListener {
+            if (!binding.agreeBox.isChecked) {
+//                    Toast.makeText(this, resources.getString(),Toast.LENGTH_LONG).show()"Please read the Privacy Policy and check the box"
+                Toast.makeText(
+                    this,
+                    "Please read the Privacy Policy and check the box",
+                    Toast.LENGTH_LONG
+                ).show()
+            } else {
                 val signInIntent = googleSigninClient.signInIntent
                 startActivityForResult(signInIntent, RC_SIGN_IN)
             }

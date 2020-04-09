@@ -63,17 +63,17 @@ class StatFragment : Fragment() {
         binding = StatFragmentBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
 
-        viewModel?.realData?.observe(viewLifecycleOwner, Observer { realData ->
-            if (!viewModel?.getProducts().value.isNullOrEmpty()) {
-                val products = viewModel?.getProducts().value!!
+        viewModel.realData.observe(viewLifecycleOwner, Observer { realData ->
+            if (!viewModel.getProducts().value.isNullOrEmpty()) {
+                val products = viewModel.getProducts().value!!
                 ratio = calculateProduct(binding, realData, products)
             }
         }
         )
 
-        viewModel?.getProducts()?.observe(viewLifecycleOwner, Observer { products ->
-            if (!viewModel?.realData.value.isNullOrEmpty()) {
-                val realData = viewModel?.realData?.value!!
+        viewModel.getProducts().observe(viewLifecycleOwner, Observer { products ->
+            if (!viewModel.realData.value.isNullOrEmpty()) {
+                val realData = viewModel.realData.value!!
                 val currencyOption = realData["currency"]!!.toInt()
                 ratio = calculateProduct(binding, realData, products)
                 setChart(context!!, binding, ratio!!)
@@ -178,19 +178,19 @@ class StatFragment : Fragment() {
 
         val yvalues = ArrayList<PieEntry>()
 
-        if (chartData?.get(0) != 0f) yvalues.add(PieEntry(chartData?.get(0) ?: 0f, "Gold Coin"))
-        if (chartData?.get(1) != 0f) yvalues.add(PieEntry(chartData?.get(1) ?: 0f, "Gold Bar"))
-        if (chartData?.get(2) != 0f) yvalues.add(PieEntry(chartData?.get(2) ?: 0f, "Silver Coin"))
-        if (chartData?.get(3) != 0f) yvalues.add(PieEntry(chartData?.get(3) ?: 0f, "Silver Bar"))
+        if (chartData.get(0) != 0f) yvalues.add(PieEntry(chartData.get(0) ?: 0f, "Gold Coin"))
+        if (chartData.get(1) != 0f) yvalues.add(PieEntry(chartData.get(1) ?: 0f, "Gold Bar"))
+        if (chartData.get(2) != 0f) yvalues.add(PieEntry(chartData.get(2) ?: 0f, "Silver Coin"))
+        if (chartData.get(3) != 0f) yvalues.add(PieEntry(chartData.get(3) ?: 0f, "Silver Bar"))
 
         val dataSet = PieDataSet(yvalues, "")
 
         // add a lot of colors
         val colors = mutableListOf<Int>()
-        if (chartData?.get(0) != 0f) colors.add(chart_goldC)
-        if (chartData?.get(1) != 0f) colors.add(chart_goldB)
-        if (chartData?.get(2) != 0f) colors.add(chart_silverC)
-        if (chartData?.get(3) != 0f) colors.add(chart_silverB)
+        if (chartData.get(0) != 0f) colors.add(chart_goldC)
+        if (chartData.get(1) != 0f) colors.add(chart_goldB)
+        if (chartData.get(2) != 0f) colors.add(chart_silverC)
+        if (chartData.get(3) != 0f) colors.add(chart_silverB)
 
         dataSet.colors = colors
 

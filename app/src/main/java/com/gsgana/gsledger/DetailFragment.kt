@@ -140,6 +140,7 @@ class DetailFragment : Fragment() {
                         val realData =
                             data!![METALCODE[product.metal]]!!.toFloat() * (1 + product.reg) * PACKAGENUM[product.packageType] * product.quantity * product.weightr * product.weight
                         val buyPrice = product.prePrice / product_currency!!
+
                         setPriceColor(
                             context,
                             (realData * data!![CURRENCY[product.currency]]!!),
@@ -159,7 +160,8 @@ class DetailFragment : Fragment() {
                             "pricefloat",
                             binding.productItemPerprice
                         )
-
+                        binding.productItemPlCurrency1.text = CURRENCYSYMBOL[product.currency]
+                        binding.productItemPlCurrency2.text = CURRENCYSYMBOL[product.currency]
                         binding.productItemProgress.visibility = View.GONE
                     }
 

@@ -32,6 +32,8 @@ class Write1Fragment : Fragment() {
     private var goldTextColor = 0
     private var silverTextColor = 0
 
+    private var white :Int?= null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -41,8 +43,14 @@ class Write1Fragment : Fragment() {
             R.color.font_gold,
             null
         )
+
         silverTextColor = resources.getColor(
             R.color.font_silver,
+            null
+        )
+
+        white = resources.getColor(
+            R.color.white,
             null
         )
 
@@ -71,16 +79,14 @@ class Write1Fragment : Fragment() {
         }
 
         binding.moveTo1.setOnClickListener {
-            if (!(viewModel.metalField1.value == null || viewModel.typeField1.value == null)) {
-                viewModel.product.metal = viewModel.metalField1.value!!
-                viewModel.product.type = viewModel.typeField1.value!!
-                findNavController().navigate(R.id.action_write1Fragment_to_write2Fragment)
+            viewModel.product.metal = viewModel.metalField1.value!!
+            viewModel.product.type = viewModel.typeField1.value!!
+            findNavController().navigate(R.id.action_write1Fragment_to_write2Fragment)
 
-            } else if (viewModel.metalField1.value == null) {
-                Toast.makeText(context, "종류을 선택해주세요.", Toast.LENGTH_LONG).show()
-            }
         }
         binding.goldCoin.setOnClickListener {
+            binding.moveTo1.setTextColor(white!!)
+            binding.moveTo1.isEnabled=true
             goldCoinSwitch = true
             viewModel.metalField1.value = 0
             viewModel.typeField1.value = 0
@@ -120,6 +126,8 @@ class Write1Fragment : Fragment() {
         }
 
         binding.goldBar.setOnClickListener {
+            binding.moveTo1.setTextColor(white!!)
+            binding.moveTo1.isEnabled=true
             goldBarSwitch = true
             viewModel.metalField1.value = 0
             viewModel.typeField1.value = 1
@@ -157,6 +165,8 @@ class Write1Fragment : Fragment() {
         }
 
         binding.silverCoin.setOnClickListener {
+            binding.moveTo1.setTextColor(white!!)
+            binding.moveTo1.isEnabled=true
             silverCoinSwitch = true
             viewModel.metalField1.value = 1
             viewModel.typeField1.value = 0
@@ -195,6 +205,8 @@ class Write1Fragment : Fragment() {
         }
 
         binding.silverBar.setOnClickListener {
+            binding.moveTo1.setTextColor(white!!)
+            binding.moveTo1.isEnabled=true
             silverBarSwitch = true
             viewModel.metalField1.value = 1
             viewModel.typeField1.value = 1

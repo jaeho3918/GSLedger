@@ -20,10 +20,6 @@ import kotlinx.android.synthetic.main.fragment_write1.*
 class Write1Fragment : Fragment() {
 
     private lateinit var binding: FragmentWrite1Binding
-    //    private val key = null
-//    private val viewModel: WriteViewModel by viewModels {
-//        InjectorUtils.provideWriteViewModelFactory(requireContext(), key)
-//    }
     private var goldCoinSwitch = false
     private var goldBarSwitch = false
     private var silverCoinSwitch = false

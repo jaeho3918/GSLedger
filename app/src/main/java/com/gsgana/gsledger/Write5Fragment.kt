@@ -152,12 +152,6 @@ class Write5Fragment : Fragment() {
                                         val min = response.body()?.min?.toFloat()
                                         val max = response.body()?.max?.toFloat()
 
-                                        Toast.makeText(
-                                            context,
-                                            response.body().toString(),
-                                            Toast.LENGTH_LONG
-                                        ).show()
-
                                         if ((min!! <= priceCalculate(binding)) &&
                                             (max!! >= priceCalculate(binding))
                                         ) {
@@ -179,7 +173,6 @@ class Write5Fragment : Fragment() {
                                 })
                         } else {
                             p0.exception
-                            Toast.makeText(activity, "Response?", Toast.LENGTH_LONG).show()
                         }
                     }
             }
@@ -187,73 +180,10 @@ class Write5Fragment : Fragment() {
 
         setSpinnerUi(binding, viewModel)
 
-//        setEditTextUi(binding, viewModel)
-
-
-//        viewModel.price.observe(viewLifecycleOwner) {
-//            binding.totalCurrency.text = CURRENCYSYMBOL[viewModel.currencyField.value ?: 0]
-//            binding.totalPrice.text =
-//                (it.toFloat() * (viewModel.quantityField.value
-//                    ?: "0").toFloat() * viewModel.packageType.value!!
-//                        ).toString()
-//            viewModel.totalPrice.value = (it.toFloat() * (viewModel.quantityField.value
-//                ?: "0").toFloat() * viewModel.packageType.value!!
-//                    ).toString()
-//        }
 
         return binding.root
     }
 
-//    private fun setEditTextUi(
-//        binding: FragmentWrite5Binding,
-//        viewModel: WriteViewModel,
-//        array: Array<String>? = null,
-//        table: Array<String>? = null
-//    ) {
-//
-//        binding.priceEditText1.setText(viewModel.priceField1.value ?: "")
-//        binding.priceEditText2.setText(viewModel.priceField2.value ?: "")
-//
-//        binding.priceEditText1.addTextChangedListener(object : TextWatcher {
-//            override fun afterTextChanged(s: Editable?) {
-//                var buf = viewModel.priceField.value
-//
-//                if (s.toString() != "") {
-//                    viewModel.priceField1.value = s.toString()
-//                    buf?.set(0, s.toString())
-//                } else {
-//                    viewModel.priceField1.value = ""
-//                    buf?.set(0, null)
-//                }
-//                viewModel.priceField.value = buf
-//                buf = null
-//            }
-//
-//            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-//            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-//        }
-//        )
-//
-//        binding.priceEditText2.addTextChangedListener(object : TextWatcher {
-//            override fun afterTextChanged(s: Editable?) {
-//                var buf = viewModel.priceField.value
-//
-//                if (s.toString() != "") {
-//                    viewModel.priceField2.value = s.toString()
-//                    buf?.set(1, s.toString())
-//                } else {
-//                    viewModel.priceField2.value = ""
-//                    buf?.set(1, null)
-//                }
-//                viewModel.priceField.value = buf
-//                buf = null
-//            }
-//
-//            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-//            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-//        }
-//        )
-//    }
 
     private fun setSpinnerUi(
         binding: FragmentWrite5Binding,

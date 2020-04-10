@@ -12,14 +12,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
-import com.gsgana.gsledger.data.Product
-import com.gsgana.gsledger.databinding.FragmentWrite2Binding
 import com.gsgana.gsledger.databinding.FragmentWrite3Binding
 import com.gsgana.gsledger.utilities.InjectorUtils
 import com.gsgana.gsledger.utilities.PACKAGETYPE

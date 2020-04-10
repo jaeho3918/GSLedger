@@ -133,6 +133,54 @@
                             android:orientation="vertical">
 
                             <LinearLayout
+                                android:id="@+id/gradeLayout"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:visibility="gone">
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="11dp"
+                                    android:gravity="left"
+                                    android:text="@string/grade"
+                                    android:textAppearance="?attr/textAppearanceListItem"
+                                    android:textSize="@dimen/text_medium" />
+
+                                <TextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="11dp"
+                                    android:gravity="left"
+                                    android:text=" : "
+                                    android:textAppearance="?attr/textAppearanceListItem"
+                                    android:textSize="@dimen/text_medium" />
+
+                                <TextView
+                                    android:id="@+id/product_item_grade"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="11dp"
+                                    android:gravity="left"
+                                    android:text="@{viewModel.grade}"
+                                    android:textAppearance="?attr/textAppearanceListItem"
+                                    android:textSize="@dimen/text_medium" />
+
+                                <TextView
+                                    android:id="@+id/product_item_gradeNum"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="11dp"
+                                    android:layout_marginLeft="5dp"
+                                    android:gravity="left"
+                                    android:text="@{viewModel.gradeNum}"
+                                    android:textAppearance="?attr/textAppearanceListItem"
+                                    android:textSize="@dimen/text_medium" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content">
 
@@ -384,50 +432,7 @@
 
                             </LinearLayout>
 
-                            <LinearLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:orientation="horizontal">
 
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="11dp"
-                                    android:gravity="left"
-                                    android:text="@string/grade"
-                                    android:textAppearance="?attr/textAppearanceListItem"
-                                    android:textSize="@dimen/text_medium" />
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="11dp"
-                                    android:gravity="left"
-                                    android:text=" : "
-                                    android:textAppearance="?attr/textAppearanceListItem"
-                                    android:textSize="@dimen/text_medium" />
-
-                                <TextView
-                                    android:id="@+id/product_item_grade"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="11dp"
-                                    android:gravity="left"
-                                    android:text="@{viewModel.grade}"
-                                    android:textAppearance="?attr/textAppearanceListItem"
-                                    android:textSize="@dimen/text_medium" />
-
-                                <TextView
-                                    android:id="@+id/product_item_gradeNum"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="11dp"
-                                    android:layout_marginLeft="5dp"
-                                    android:gravity="left"
-                                    android:text="@{viewModel.gradeNum}"
-                                    android:textAppearance="?attr/textAppearanceListItem"
-                                    android:textSize="@dimen/text_medium" />
-
-                            </LinearLayout>
 
                             <LinearLayout
                                 android:layout_width="match_parent"

@@ -133,6 +133,8 @@ class DetailFragment : Fragment() {
                 binding.itemImage.setImageResource(imgId)
             }
 
+            if (product.grade != "None") binding.gradeLayout.visibility = View.VISIBLE
+
             Handler().postDelayed(
                 {
                     if (!data.isNullOrEmpty()) {
@@ -156,10 +158,13 @@ class DetailFragment : Fragment() {
 
                         setPriceColor(
                             context,
-                            (realData * data!![CURRENCY[product.currency]]!!/ (PACKAGENUM[product.packageType] * product.quantity)),
+                            (realData * data!![CURRENCY[product.currency]]!! / (PACKAGENUM[product.packageType] * product.quantity)),
                             "pricefloat",
                             binding.productItemPerprice
                         )
+
+
+
                         binding.productItemPlCurrency1.text = CURRENCYSYMBOL[product.currency]
                         binding.productItemPlCurrency2.text = CURRENCYSYMBOL[product.currency]
                         binding.productItemProgress.visibility = View.GONE

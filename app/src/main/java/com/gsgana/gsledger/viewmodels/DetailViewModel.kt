@@ -78,7 +78,7 @@ class DetailViewModel(
         get() = product.value!!.grade
 
     val gradeNum
-        get() = product.value!!.gradeNum
+        get() = product.value!!.gradeNum.toString()
 
     fun addProduct(product: Product) {
         viewModelScope.launch {

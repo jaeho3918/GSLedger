@@ -75,6 +75,8 @@ class Write6Fragment : Fragment() {
                 product.weightr = viewModel.weightUnit.value?.toFloat() ?: 1f
                 product.currency = viewModel.currencyField.value ?: 0
                 product.price = viewModel.priceTest.toFloat()
+                product.grade = GRADE[viewModel.gradeField.value?:0]
+                product.gradeNum = viewModel.gradeNumField.value ?:0
                 product.buyDate = viewModel.dateField.value ?: ""
                 product.reg = viewModel.regField.value ?: 0f
                 product.memo = viewModel.memoField.value ?: ""
@@ -84,7 +86,6 @@ class Write6Fragment : Fragment() {
                 product.year = viewModel.yearSeriesField.value ?: 0
                 product.pre = viewModel.pre.value ?: 0f
                 viewModel.addProduct(product)
-
                 viewModel.initProduct()
                 findNavController().navigate(R.id.action_write6Fragment_to_homeViewPagerFragment)
             }

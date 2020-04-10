@@ -281,8 +281,6 @@ class IntroActivity : AppCompatActivity() {
 
                     }
                 }
-
-
             }
     }
 

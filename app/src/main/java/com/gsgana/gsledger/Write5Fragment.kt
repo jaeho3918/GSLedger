@@ -38,8 +38,8 @@ class Write5Fragment : Fragment() {
     private val CURR_NAME = "1w3d4f7w9d2qG2eT36"
     private val TIME_NAME = "6ck9uUlDuh7o6QKQFZ"
     private var option: Int? = null
-    private var price1: Float? = null
-    private var price2: Float? = null
+    private var price1: String? = null
+    private var price2: String? = null
     private var priceAvrString: String? = null
     private var priceAvrFloat: Float? = null
 
@@ -86,7 +86,6 @@ class Write5Fragment : Fragment() {
                         "%04d%02d%02d", _year, _month, _date
                     )
                 } else {
-
                     String.format(
                         "%04d%02d%02d", test[0].toInt(), test[1].toInt(), test[2].toInt()
                     )
@@ -103,10 +102,25 @@ class Write5Fragment : Fragment() {
                     addProperty("grade", viewModel.gradeField.value.toString())
                     addProperty("gradeNum", viewModel.gradeNumField.value.toString())
                     addProperty("currency", viewModel.currencyField.value.toString())
+                    addProperty("year", viewModel.yearSeriesField.value.toString())
+
+
+                    price1 = if ("${binding.priceEditText1.text}" == "") {
+                        "0"
+                    }else {
+                        binding.priceEditText1.text.toString()
+                    }
+
+                    price2 = if ("${binding.priceEditText2.text}" == "") {
+                        "0"
+                    }else{
+                        binding.priceEditText2.text.toString()
+                    }
                     addProperty(
                         "priceMerger",
-                        "${binding.priceEditText1.text}.${(binding.priceEditText2.text ?: 0)}"
+                        "${price1}.${(price2)}"
                     )
+
                     addProperty("price", viewModel.price.value)
                     addProperty("date", date_buf)
                 }
@@ -138,13 +152,21 @@ class Write5Fragment : Fragment() {
                                         val min = response.body()?.min?.toFloat()
                                         val max = response.body()?.max?.toFloat()
 
+                                        Toast.makeText(
+                                            context,
+                                            response.body().toString(),
+                                            Toast.LENGTH_LONG
+                                        ).show()
+
                                         if ((min!! <= priceCalculate(binding)) &&
                                             (max!! >= priceCalculate(binding))
                                         ) {
                                             findNavController().navigate(R.id.action_write5Fragment_to_write6Fragment)
                                         } else {
-                                            binding.priceCur1.text = CURRENCYSYMBOL[viewModel.currencyField.value?:0]
-                                            binding.priceCur2.text = CURRENCYSYMBOL[viewModel.currencyField.value?:0]
+                                            binding.priceCur1.text =
+                                                CURRENCYSYMBOL[viewModel.currencyField.value ?: 0]
+                                            binding.priceCur2.text =
+                                                CURRENCYSYMBOL[viewModel.currencyField.value ?: 0]
                                             binding.priceRange.visibility = View.VISIBLE
                                             binding.summitButton.text = "NEXT"
                                             binding.summitButton.isEnabled = true

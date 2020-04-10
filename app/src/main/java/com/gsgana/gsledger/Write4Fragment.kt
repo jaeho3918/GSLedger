@@ -85,7 +85,10 @@ class Write4Fragment : Fragment() {
                             4 -> VISIBLE
                             else -> INVISIBLE
                         }
-
+                    if (position != 0) {
+                        viewModel.gradeNumField.value = 70
+                        binding.gradePicker.value = 70
+                    }
                 }
             }
         binding.gradeSpinner.setSelection(viewModel.gradeField.value ?: 0)

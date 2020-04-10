@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var database: FirebaseDatabase
     //    private lateinit var viewModel: HomeViewPagerViewModel
 
-    private val AD_UNIT_ID = "ca-app-pub-3940256099942544/1033173712"
+    private val AD_UNIT_ID = "ca-app-pub-8453032642509497/3082833180"
     private lateinit var mInterstitialAd: InterstitialAd
     private lateinit var mBuilder: AdRequest.Builder
     private lateinit var mFirebaseAnalytics: FirebaseAnalytics

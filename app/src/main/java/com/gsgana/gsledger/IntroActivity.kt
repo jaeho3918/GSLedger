@@ -75,7 +75,6 @@ class IntroActivity : AppCompatActivity() {
 
         billingClient.processToPurchase()
 
-
         setContentView(R.layout.activity_intro)
         mAuth = FirebaseAuth.getInstance()
         binding = DataBindingUtil.setContentView(this, R.layout.activity_intro)

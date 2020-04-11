@@ -1,10 +1,10 @@
 <resources>
     <string name="app_name">GSLedger</string>
     <string name="priceperitem">품목당 가격</string>
-    <string name="gold">금</string>
-    <string name="silver">은</string>
-    <string name="bar">괴</string>
-    <string name="coin">화</string>
+    <string name="gold">Gold</string>
+    <string name="silver">Silver</string>
+    <string name="bar">Bar</string>
+    <string name="coin">Coin</string>
     <string name="delete">삭제</string>
     <string name="summit">제출</string>
     <string name="provide">provided by investing.com</string>
@@ -41,7 +41,7 @@
     <string name="disclaimer">면책조항</string>
     <string name="total">합계</string>
     <string name="Profit">이익</string>
-    <string name="ledgerEmpty">귀하의 장부가 비었습니다.</string>
+    <string name="ledgerEmpty">리스트가 비었습니다.</string>
     <string name="addProduct">품목 추가</string>
     <string name="deleteProduct">합계</string>
     <string name="banner_ad_unit_id">ca-app-pub-8453032642509497~4168684141</string>
@@ -51,15 +51,15 @@
     <string name="loginwithgmail">Gmail로 로그인</string>
     <string name="signupwithgmail">Gmail로 가입</string>
     <string name="quantity">갯수</string>
-    <string name="delAccount">계정 및 장부 삭제</string>
-    <string name="delAgreeCheck">귀하의 계정과 장부를 삭제하는것에 동의합니까? (데이터 복구 불가능)</string>
+    <string name="delAccount">계정 및 리스트 삭제</string>
+    <string name="delAgreeCheck">귀하의 계정과 리스트를 삭제하는것에 동의합니까? (데이터 복구 불가능)</string>
     <string name="details">상세사항</string>
     <string name="totalPrice">총 가격</string>
     <string name="write">작성</string>
     <string name="no">아니오</string>
     <string name="agree">동의</string>
     <string name="checkBox">개인정보보호정책과 이용약관에 동의하고 박스에 체크해주시기 바랍니다.</string>
-    <string name="rangePriceNotice">위 가격 범위는 오직 정확한 계산을 위한것이지 품목의 가격을 의미하지 않습니다.</string>
-    <string name="privacyPolicyText">나는 개인정보보호정책과 이용약관을 읽었으며 이에 동의하였습니다.</string>
+    <string name="rangePriceNotice">정확한 계산을 위한 가격 범위입니다.&#10;(품목의 가격이 아닙니다.)</string>
+    <string name="privacyPolicyText">나는 개인정보보호정책과 이용약관을&#10;읽었으며 이에 동의합니다.</string>
     <string name="notice">알림</string>
 </resources>

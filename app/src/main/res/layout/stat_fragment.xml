@@ -217,7 +217,7 @@
                     <TextView
                         android:layout_width="48dp"
                         android:layout_height="wrap_content"
-                        android:text="gold"
+                        android:text="@string/gold"
                         android:textColor="@color/font_gold"
                         android:textSize="@dimen/text_medium" />
 

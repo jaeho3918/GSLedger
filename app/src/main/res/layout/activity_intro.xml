@@ -53,12 +53,14 @@
                     <CheckBox
                         android:id="@+id/agreeBox"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:gravity="center" />
 
                     <TextView
                         android:id="@+id/agreeText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:gravity="center"
                         android:text="@string/privacyPolicyText" />
 
 

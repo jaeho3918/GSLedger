@@ -73,7 +73,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="18dp"
                     android:paddingStart="8dp"
-                    android:text="Product"
+                    android:text="@string/Product"
                     android:textSize="24sp" />
 
                 <Spinner

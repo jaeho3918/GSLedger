@@ -165,8 +165,8 @@ class Write5Fragment : Fragment() {
                                             binding.summitButton.text = "NEXT"
                                             binding.summitButton.isEnabled = true
                                             binding.summitProgress.visibility = View.GONE
-                                            binding.priceMin.text = String.format("%,.0f", min)
-                                            binding.priceMax.text = String.format("%,.0f", max)
+                                            binding.priceMin.text = String.format("%,.1f", min)
+                                            binding.priceMax.text = String.format("%,.1f", max)
                                         }
 
                                     }

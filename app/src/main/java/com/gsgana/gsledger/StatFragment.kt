@@ -223,13 +223,6 @@ class StatFragment : Fragment() {
         pieChart.animateY(1100, Easing.EaseInOutQuad)
     }
 
-    private fun setData(viewModel: HomeViewPagerViewModel?, binding: StatFragmentBinding) {
-//        val realData = viewModel?.realData?.value!!
-//        val products = viewModel?.products.value!!
-//        val currencyOption = realData["currency"]!!.toInt()
-//        calculateProduct(binding, realData, products, currencyOption)
-    }
-
 
     private fun calculateProduct(
         binding: StatFragmentBinding,

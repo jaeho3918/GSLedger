@@ -71,7 +71,6 @@
                 </LinearLayout>
 
 
-
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -86,7 +85,7 @@
                     android:layout_height="match_parent"
                     android:textAlignment="center"
                     android:layout_margin="5dp"
-                    android:hint="@string/contents"/>
+                    android:hint="@string/contents" />
             </LinearLayout>
 
         </LinearLayout>
@@ -107,7 +106,7 @@
                 android:textSize="35dp"
                 android:textColor="@color/white"
                 android:background="@color/mu1_data_up"
-                android:theme="@style/NextButton"/>
+                android:theme="@style/NextButton" />
 
         </LinearLayout>
 

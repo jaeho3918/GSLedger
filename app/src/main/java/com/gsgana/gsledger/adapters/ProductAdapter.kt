@@ -47,7 +47,7 @@ class ProductAdapter(private val context: Context, private val realData: Map<Str
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(context, getItem(position), realData,plSwitch,plStlye)
+        holder.bind(context, getItem(position), realData, plSwitch, plStlye)
     }
 
     class ViewHolder(
@@ -95,16 +95,13 @@ class ProductAdapter(private val context: Context, private val realData: Map<Str
                     metalPrice * (1 + item.reg) * PACKAGENUM[item.packageType] * item.quantity * item.weightr * item.weight
                 val price = item.prePrice / currency
 
-                pl = ((realPrice - price) / price) * 100f
+                val brandName = if (product!!.brand == "Default") {
+                    ""
+                } else {
+                    product!!.brand
+                }
 
-//                pl = when (item.currency) {
-//                    0 -> {
-//                        (price / (metalPrice) - 1) * 100f
-//                    }
-//                    else -> {
-//                        (price / (metalPrice * currency) - 1) * 100f
-//                    }
-//                }
+                pl = ((realPrice - price) / price) * 100f
 
                 binding.productItemPlCurrency.text = CURRENCYSYMBOL[item.currency]
 
@@ -114,10 +111,15 @@ class ProductAdapter(private val context: Context, private val realData: Map<Str
                         "PriceInt"
                     )
 
-                setPriceColor(context,pl.toDouble(),"pl",binding.productItemPl,plSwitch,plStlye)
+                setPriceColor(
+                    context,
+                    pl.toDouble(),
+                    "pl",
+                    binding.productItemPl,
+                    plSwitch,
+                    plStlye
+                )
                 pl = 0f
-
-
 
                 when (item.weight) {
                     1.0f -> {
@@ -157,10 +159,10 @@ class ProductAdapter(private val context: Context, private val realData: Map<Str
 
                 if (weight == 0) {
                     binding.productItemType.text =
-                        item.weight.toString() + WEIGHTUNIT[product!!.weightUnit] + "   " + metalType
+                        item.weight.toString() + WEIGHTUNIT[product!!.weightUnit] + " " + metalType
                 } else {
                     binding.productItemType.text =
-                        weight.toString() + WEIGHTUNIT[product!!.weightUnit] + "   " + metalType
+                        product!!.year.toString() +" "+ weight.toString() + WEIGHTUNIT[product!!.weightUnit] + " " + METAL[product!!.metal] + " " + brandName + " " + TYPE[product!!.type]
                 }
 
                 brand = (brand ?: "default").toLowerCase().replace(" ", "").replace("'", "")

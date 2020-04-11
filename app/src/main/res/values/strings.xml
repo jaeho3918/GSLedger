@@ -11,11 +11,6 @@
     <string name="summit">Summit</string>
     <string name="provide">provided by investing.com</string>
     <string name="currency">Currency</string>
-    <string name="Language">language</string>
-    <string name="english">English</string>
-    <string name="korean">Korean</string>
-    <string name="japanese">Japanese</string>
-    <string name="chinese">Chinese</string>
     <string name="edit">edit</string>
     <string name="quantity">Quantity</string>
     <string name="profit">Profit</string>
@@ -38,6 +33,7 @@
     <string name="currentPrice">Current Price</string>
     <string name="totalPrice">Total Price</string>
     <string name="unitPrice">Unit Price</string>
+    <string name="oneUnitPrice">One Unit Price</string>
     <string name="memo">Memo</string>
     <string name="modify">Modify</string>
     <string name="selectType">Select Type</string>
@@ -58,12 +54,13 @@
     <string name="addProduct">Add Product</string>
     <string name="deleteProduct">Total</string>
     <string name="banner_ad_unit_id">ca-app-pub-8453032642509497~4168684141</string>
-    <string name="privacyPolicyText">I have read and understand the Privacy Policy</string>
+    <string name="privacyPolicyText">I have read and agree to the terms of use and privacy policy</string>
     <string name="rangePrice">Please enter the price in the above range for accurate calculation</string>
-    <string name="delProduct">Are you sure you want to delete the product?
-    (data cannot be recovered)</string>
+    <string name="rangePriceNotice">The above price range is for accurate calculation only, &#10;not the price of product.</string>
+    <string name="delProduct">Do you agree to delete the product?&#10;(data cannot be recovered)</string>
+    <string name="notice">Notice</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="agree">Agree</string>
-    <string name="checkBox">Please read the Privacy Policy and check the box</string>
+    <string name="checkBox">Please read and agree to the terms of use and privacy policy and check the box</string>
 </resources>

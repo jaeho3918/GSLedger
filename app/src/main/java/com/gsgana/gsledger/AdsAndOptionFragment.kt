@@ -70,7 +70,7 @@ class AdsAndOptionFragment : Fragment() {
             builder.setMessage(resources.getString(R.string.delAgreeCheck))
             builder.setPositiveButton(resources.getString(R.string.agree),
                 DialogInterface.OnClickListener { _, _ ->
-                    del_btn.setText("")
+                    del_btn.text = ""
                     del_btn.isEnabled = false
                     del_progressBar.visibility = View.VISIBLE
                     viewModel.deleteProducts()
@@ -89,11 +89,9 @@ class AdsAndOptionFragment : Fragment() {
                     option.edit()
                         .clear()
                         .apply()
+
                     Handler().postDelayed({
-                        val intent =
-                            Intent(activity, IntroActivity::class.java)
-                        startActivity(intent)
-                        activity?.finish()
+                        activity!!.finish()
                     }, 1800)
 
 

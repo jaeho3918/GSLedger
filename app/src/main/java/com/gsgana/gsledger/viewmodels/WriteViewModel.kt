@@ -203,7 +203,7 @@ class WriteViewModel internal constructor(
         this.gradeNumField.value = null
         this.yearSeriesField.value = null
         this.dateField.value = null
-        this.gradeField.value = null
+        this.gradeNumField.value = null
         this.gradeNumField.value = null
         this.yearSeriesField.value = null
         this.dateField.value = null
@@ -212,6 +212,7 @@ class WriteViewModel internal constructor(
         this.priceField2.value = null
         this.priceField.value = listOf(null, null).toMutableList()
         this.totalPrice.value = null
+        this.memoField.value = null
     }
 
     fun addProduct(product: Product) {

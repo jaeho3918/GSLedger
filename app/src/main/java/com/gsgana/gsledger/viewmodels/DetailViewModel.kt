@@ -30,7 +30,7 @@ class DetailViewModel(
                 0.5f -> "1/2"
                 else -> "1"
             }
-            product.value!!.year.toString() + " " + buf_weight + WEIGHTUNITBRAND[product.value!!.weightUnit] + " " + METAL[product.value!!.metal] + " " + TYPE[product.value!!.type] + product.value!!.brand //
+            product.value!!.year.toString() + " " + buf_weight + WEIGHTUNIT[product.value!!.weightUnit] + " " + METAL[product.value!!.metal] + " " + TYPE[product.value!!.type] + product.value!!.brand //
         }
 
     val img

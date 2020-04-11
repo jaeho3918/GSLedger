@@ -102,8 +102,10 @@ class HomeViewPagerFragment : Fragment() {
             "".toString()
         }
         val pattern1 = Pattern.compile("Disclaimer")
+        val pattern2 = Pattern.compile("면책조항")
 
         Linkify.addLinks(binding.disclaimer, pattern1, "https://gsledger-29cad.firebaseapp.com/disclaimer.html",null,mTransform);
+        Linkify.addLinks(binding.disclaimer, pattern2, "https://gsledger-29cad.firebaseapp.com/disclaimer_kr.html",null,mTransform);
 
 
 

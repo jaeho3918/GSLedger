@@ -199,8 +199,7 @@
                             android:text="@string/addProduct"
                             android:theme="@style/NextButton"
                             android:textColor="@color/white"
-                            android:textSize="@dimen/text_large"
-                            />
+                            android:textSize="@dimen/text_large" />
 
 
                     </LinearLayout>

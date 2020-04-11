@@ -13,7 +13,7 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="floatingButton"  parent="Widget.MaterialComponents.Button.OutlinedButton.Icon">
+    <style name="floatingButton" parent="Widget.MaterialComponents.Button.OutlinedButton.Icon">
         <item name="android:paddingLeft">@dimen/mtrl_btn_icon_btn_padding_left</item>
 
     </style>

@@ -68,7 +68,7 @@
                 android:layout_marginTop="13dp"
                 android:text="@string/dateOfPurchase"
                 android:paddingStart="5dp"
-                android:textSize="24dp"/>
+                android:textSize="24dp" />
 
             <DatePicker
                 android:id="@+id/datePicker1"
@@ -82,13 +82,14 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:layout_marginBottom="29dp">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="13dp"
                     android:paddingStart="5dp"
                     android:text="@string/yearSeries"
-                    android:textSize="24dp"/>
+                    android:textSize="24dp" />
 
                 <NumberPicker
                     android:id="@+id/yearSeriesPicker"
@@ -97,7 +98,7 @@
                     android:layout_marginTop="13dp"
                     android:textAlignment="center"
                     android:textSize="29sp"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -105,7 +106,7 @@
                     android:layout_marginTop="13dp"
                     android:text="@string/grade"
                     android:paddingStart="5dp"
-                    android:textSize="24dp"/>
+                    android:textSize="24dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -144,17 +145,16 @@
             android:layout_weight="1.3"
             android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/moveTo4"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:text="@string/next"
-                    android:textColor="@color/white"
-                    android:textSize="35dp"
-                    android:background="@color/mu1_data_up"
-                    android:theme="@style/NextButton"
-                    />
+            <Button
+                android:id="@+id/moveTo4"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@string/next"
+                android:textColor="@color/white"
+                android:textSize="35dp"
+                android:background="@color/mu1_data_up"
+                android:theme="@style/NextButton" />
         </LinearLayout>
 
     </LinearLayout>

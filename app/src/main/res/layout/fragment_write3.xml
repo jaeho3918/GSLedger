@@ -143,8 +143,7 @@
                             android:layout_margin="3dp"
                             android:textAllCaps="false"
                             android:background="@drawable/quick_btn"
-                            android:color="@color/font_silver"
-                            />
+                            android:color="@color/font_silver" />
 
                         <Button
                             android:id="@+id/quickBtn110oz"
@@ -156,8 +155,8 @@
                             android:layout_margin="3dp"
                             android:textAllCaps="false"
                             android:background="@drawable/quick_btn"
-                            android:color="@color/font_silver"
-                            />
+                            android:color="@color/font_silver" />
+
                         <Button
                             android:id="@+id/quickBtn14oz"
                             android:layout_width="match_parent"
@@ -168,8 +167,8 @@
                             android:layout_margin="3dp"
                             android:textAllCaps="false"
                             android:background="@drawable/quick_btn"
-                            android:color="@color/font_silver"
-                            />
+                            android:color="@color/font_silver" />
+
                         <Button
                             android:id="@+id/quickBtn12oz"
                             android:layout_width="match_parent"
@@ -180,8 +179,8 @@
                             android:layout_margin="3dp"
                             android:textAllCaps="false"
                             android:background="@drawable/quick_btn"
-                            android:color="@color/font_silver"
-                            />
+                            android:color="@color/font_silver" />
+
                         <Button
                             android:id="@+id/quickBtn1oz"
                             android:layout_width="match_parent"
@@ -192,8 +191,7 @@
                             android:layout_margin="3dp"
                             android:textAllCaps="false"
                             android:background="@drawable/quick_btn"
-                            android:color="@color/font_silver"
-                            />
+                            android:color="@color/font_silver" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -211,8 +209,7 @@
                             android:layout_margin="3dp"
                             android:textAllCaps="false"
                             android:background="@drawable/quick_btn"
-                            android:color="@color/font_silver"
-                            />
+                            android:color="@color/font_silver" />
 
                         <Button
                             android:id="@+id/quickBtn5oz"
@@ -224,8 +221,8 @@
                             android:layout_margin="3dp"
                             android:textAllCaps="false"
                             android:background="@drawable/quick_btn"
-                            android:color="@color/font_silver"
-                            />
+                            android:color="@color/font_silver" />
+
                         <Button
                             android:id="@+id/quickBtn10oz"
                             android:layout_width="match_parent"
@@ -236,8 +233,8 @@
                             android:layout_margin="3dp"
                             android:textAllCaps="false"
                             android:background="@drawable/quick_btn"
-                            android:color="@color/font_silver"
-                            />
+                            android:color="@color/font_silver" />
+
                         <Button
                             android:id="@+id/quickBtn100oz"
                             android:layout_width="match_parent"
@@ -248,8 +245,8 @@
                             android:layout_margin="3dp"
                             android:textAllCaps="false"
                             android:background="@drawable/quick_btn"
-                            android:color="@color/font_silver"
-                            />
+                            android:color="@color/font_silver" />
+
                         <Button
                             android:id="@+id/quickBtn400oz"
                             android:layout_width="match_parent"
@@ -260,8 +257,7 @@
                             android:layout_margin="3dp"
                             android:textAllCaps="false"
                             android:background="@drawable/quick_btn"
-                            android:color="@color/font_silver"
-                            />
+                            android:color="@color/font_silver" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -279,8 +275,7 @@
                             android:layout_margin="3dp"
                             android:textAllCaps="false"
                             android:background="@drawable/quick_btn"
-                            android:color="@color/font_silver"
-                            />
+                            android:color="@color/font_silver" />
 
                         <Button
                             android:id="@+id/quickBtn20g"
@@ -292,8 +287,7 @@
                             android:layout_margin="3dp"
                             android:textAllCaps="false"
                             android:background="@drawable/quick_btn"
-                            android:color="@color/font_silver"
-                            />
+                            android:color="@color/font_silver" />
 
                         <Button
                             android:id="@+id/quickBtn50g"
@@ -305,8 +299,7 @@
                             android:layout_margin="3dp"
                             android:textAllCaps="false"
                             android:background="@drawable/quick_btn"
-                            android:color="@color/font_silver"
-                            />
+                            android:color="@color/font_silver" />
 
                         <Button
                             android:id="@+id/quickBtn100g"
@@ -318,8 +311,7 @@
                             android:layout_margin="3dp"
                             android:textAllCaps="false"
                             android:background="@drawable/quick_btn"
-                            android:color="@color/font_silver"
-                            />
+                            android:color="@color/font_silver" />
 
                         <Button
                             android:id="@+id/quickBtn250g"
@@ -351,8 +343,7 @@
                             android:layout_margin="3dp"
                             android:textAllCaps="false"
                             android:background="@drawable/quick_btn"
-                            android:color="@color/font_silver"
-                            />
+                            android:color="@color/font_silver" />
 
                         <Button
                             android:id="@+id/quickBtn1kg"
@@ -364,8 +355,7 @@
                             android:layout_margin="3dp"
                             android:textAllCaps="false"
                             android:background="@drawable/quick_btn"
-                            android:color="@color/font_silver"
-                            />
+                            android:color="@color/font_silver" />
 
                         <Button
                             android:id="@+id/quickBtn5kg"
@@ -389,8 +379,8 @@
                             android:layout_margin="3dp"
                             android:textAllCaps="false"
                             android:background="@drawable/quick_btn"
-                            android:color="@color/font_silver"
-                            />
+                            android:color="@color/font_silver" />
+
                         <Button
                             android:id="@+id/quickBtn50kg"
                             android:layout_width="match_parent"
@@ -401,8 +391,7 @@
                             android:layout_margin="3dp"
                             android:textAllCaps="false"
                             android:background="@drawable/quick_btn"
-                            android:color="@color/font_silver"
-                            />
+                            android:color="@color/font_silver" />
 
 
                     </LinearLayout>
@@ -499,17 +488,16 @@
             android:layout_weight="1.3"
             android:orientation="horizontal">
 
-                <Button
-                    android:id="@+id/moveTo3"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:text="@string/next"
-                    android:textColor="@color/white"
-                    android:textSize="35dp"
-                    android:background="@color/mu1_data_up"
-                    android:theme="@style/NextButton"
-                    />
+            <Button
+                android:id="@+id/moveTo3"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@string/next"
+                android:textColor="@color/white"
+                android:textSize="35dp"
+                android:background="@color/mu1_data_up"
+                android:theme="@style/NextButton" />
         </LinearLayout>
     </LinearLayout>
 

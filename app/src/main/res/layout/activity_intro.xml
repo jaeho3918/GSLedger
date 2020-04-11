@@ -28,7 +28,6 @@
                 />
 
 
-
             <LinearLayout
                 android:id="@+id/signinLayout"
                 android:layout_width="match_parent"
@@ -49,8 +48,8 @@
                     android:layout_height="50dp"
                     android:orientation="horizontal"
                     android:gravity="center"
-                    android:visibility="gone"
-                    >
+                    android:visibility="gone">
+
                     <CheckBox
                         android:id="@+id/agreeBox"
                         android:layout_width="wrap_content"
@@ -60,7 +59,7 @@
                         android:id="@+id/agreeText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/privacyPolicyText"/>
+                        android:text="@string/privacyPolicyText" />
 
 
                 </LinearLayout>

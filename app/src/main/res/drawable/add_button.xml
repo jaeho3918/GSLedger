@@ -3,5 +3,5 @@
     <item
         android:drawable="@drawable/ic_create_white"
         android:width="21dp"
-        android:height="21dp"/>
+        android:height="21dp" />
 </layer-list>

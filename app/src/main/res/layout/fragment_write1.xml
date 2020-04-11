@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
 
@@ -77,14 +75,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:src="@drawable/ic_default_goldcoin_none"/>
+                        android:src="@drawable/ic_default_goldcoin_none" />
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/goldBar"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:src="@drawable/ic_default_goldbar_none"/>
+                        android:src="@drawable/ic_default_goldbar_none" />
 
 
                 </LinearLayout>
@@ -100,14 +98,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:src="@drawable/ic_default_silvercoin_none"/>
+                        android:src="@drawable/ic_default_silvercoin_none" />
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/silverBar"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:src="@drawable/ic_default_silverbar_none"/>
+                        android:src="@drawable/ic_default_silverbar_none" />
 
                 </LinearLayout>
 
@@ -150,8 +148,7 @@
                 android:textSize="35dp"
                 android:enabled="false"
                 android:background="@color/mu1_data_up"
-                android:theme="@style/NextButton"
-                />
+                android:theme="@style/NextButton" />
         </LinearLayout>
 
     </LinearLayout>

@@ -164,10 +164,6 @@ val WEIGHTUNIT = arrayOf(
     "oz", "g", "kg", "don"
 )
 
-val WEIGHTUNITBRAND = arrayOf(
-    " oz", " g", " kg", " don"
-)
-
 fun weightUnitTable(index: Int) = when (index) {
     0 -> WEIGHTUNIT[0]
     1 -> WEIGHTUNIT[1]

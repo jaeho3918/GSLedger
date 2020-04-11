@@ -10,7 +10,14 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import com.android.billingclient.api.AcknowledgePurchaseParams
+import com.android.billingclient.api.BillingClient
+import com.android.billingclient.api.Purchase
 import com.firebase.ui.auth.AuthUI
+import com.google.android.gms.ads.AdListener
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.InterstitialAd
+import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -22,6 +29,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import com.gsgana.gsledger.databinding.ActivityIntroBinding
+import kotlinx.coroutines.Dispatchers
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import java.security.Security
 import java.util.*
@@ -38,24 +46,36 @@ class IntroActivity : AppCompatActivity() {
     private val RC_SIGN_IN = 9001
     private val LOG_IN = 18
     private val SIGN_UP = 6
-    private val PREF_NAME = "01504f779d6c77df04"
     private val ENCRYPT_NAME = "a345f2f713ie8bd261"
     private val UID_NAME = "7e19f667a8a1c7075f"
     private val USERS_DB_PATH = "qnI4vK2zSUq6GdeT6b"
-    private val REAL_DB_PATH = "sYTVBn6F18VT6Ykw6L"
-    private val LAST_DB_PATH = "OGn6sgTK6umHojW6QV"
     private val KEY = "Kd6c26TK65YSmkw6oU"
+    private val PREF_NAME = "01504f779d6c77df04"
     private lateinit var sf: SharedPreferences
     private lateinit var rgl: CharArray
     private lateinit var rgl_b: MutableList<Char>
+    private lateinit var gso: GoogleSignInOptions
 
     private lateinit var mAuth: FirebaseAuth
     private lateinit var googleSigninClient: GoogleSignInClient
     private lateinit var binding: ActivityIntroBinding
     private lateinit var mFirebaseAnalytics: FirebaseAnalytics
 
+    private lateinit var pattern1: Pattern
+    private lateinit var pattern2: Pattern
+    private lateinit var pattern3: Pattern
+    private lateinit var pattern4: Pattern
+
+    private lateinit var billingClient: BillingManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        billingClient = BillingManager(this)
+
+        billingClient.processToPurchase()
+
+
         setContentView(R.layout.activity_intro)
         mAuth = FirebaseAuth.getInstance()
         binding = DataBindingUtil.setContentView(this, R.layout.activity_intro)
@@ -70,8 +90,10 @@ class IntroActivity : AppCompatActivity() {
             val mTransform = Linkify.TransformFilter() { matcher: Matcher, s: String ->
                 ""
             }
-            val pattern1 = Pattern.compile("Privacy Policy")
-            val pattern2 = Pattern.compile("개인정보보호정책")
+            pattern1 = Pattern.compile("Privacy Policy")
+            pattern2 = Pattern.compile("개인정보보호정책")
+            pattern3 = Pattern.compile("Terms and Conditions")
+            pattern4 = Pattern.compile("이용약관")
 
             Linkify.addLinks(
                 binding.agreeText,
@@ -83,10 +105,30 @@ class IntroActivity : AppCompatActivity() {
             Linkify.addLinks(
                 binding.agreeText,
                 pattern2,
-                "https://gsledger-29cad.firebaseapp.com/privacypolicy.html",
+                "https://gsledger-29cad.firebaseapp.com/privacypolicy_kr.html",
                 null,
                 mTransform
             );
+            Linkify.addLinks(
+                binding.agreeText,
+                pattern3,
+                "https://gsledger-29cad.firebaseapp.com/termsandconditions.html",
+                null,
+                mTransform
+            );
+            Linkify.addLinks(
+                binding.agreeText,
+                pattern4,
+                "https://gsledger-29cad.firebaseapp.com/termsandconditions_kr.html",
+                null,
+                mTransform
+            );
+
+            mAuth.signOut()
+            gso =
+                GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()
+            googleSigninClient = GoogleSignIn.getClient(this, gso)
+            googleSigninClient.signOut()
 
             googleSignInOption(SIGN_UP, binding)
 
@@ -98,8 +140,8 @@ class IntroActivity : AppCompatActivity() {
                 val mTransform = Linkify.TransformFilter { matcher: Matcher, s: String ->
                     "".toString()
                 }
-                val pattern1 = Pattern.compile("Privacy Policy")
-                val pattern2 = Pattern.compile("개인정보보호정책")
+                pattern1 = Pattern.compile("Privacy Policy")
+                pattern2 = Pattern.compile("개인정보보호정책")
 
                 Linkify.addLinks(
                     binding.agreeText,
@@ -115,12 +157,17 @@ class IntroActivity : AppCompatActivity() {
                     null,
                     mTransform
                 );
+                gso =
+                    GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()
+                googleSigninClient = GoogleSignIn.getClient(this, gso)
+                googleSigninClient.signOut()
 
             } else {
                 val doc = FirebaseFirestore.getInstance()
                     .collection(USERS_DB_PATH)
                     .document(mAuth.currentUser?.uid!!)
-                    .get().addOnSuccessListener { document ->
+                    .get()
+                    .addOnSuccessListener { document ->
                         if (document.exists()) {
                             //if
                             if (decrypt(sf.getString(UID_NAME, null)) ==
@@ -141,9 +188,19 @@ class IntroActivity : AppCompatActivity() {
                                 startActivity(intent)
                                 rgl = charArrayOf()
                                 finish()
-
-                            } else {
-                                googleSignInOption(SIGN_UP, binding)
+                            } else { //one per one
+                                gso =
+                                    GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                                        .build()
+                                googleSigninClient = GoogleSignIn.getClient(this, gso)
+                                googleSigninClient.signOut()
+                                binding.introProgressBar.visibility = View.GONE
+                                Toast.makeText(
+                                    this, "One account is allowed per gmail. \n" +
+                                            "Please sign up with another gmail.", Toast.LENGTH_LONG
+                                ).show()
+                                sf.edit().putString(UID_NAME, null).apply()
+                                googleSignInOption(SIGN_UP, binding) /////////////////
                             }
                         } else {
                             binding.introProgressBar.visibility = View.GONE
@@ -151,8 +208,8 @@ class IntroActivity : AppCompatActivity() {
                                 Linkify.TransformFilter { matcher: Matcher, s: String ->
                                     "".toString()
                                 }
-                            val pattern1 = Pattern.compile("Privacy Policy")
-                            val pattern2 = Pattern.compile("개인정보보호정책")
+                             pattern1 = Pattern.compile("Privacy Policy")
+                             pattern2 = Pattern.compile("개인정보보호정책")
 
                             Linkify.addLinks(
                                 binding.agreeText,
@@ -195,52 +252,45 @@ class IntroActivity : AppCompatActivity() {
         mAuth.signInWithCredential(credential)
             .addOnCompleteListener(this) {
                 if (it.isSuccessful) {
-//                    // Write a message to the firestore
-                    if (sf.getString(ENCRYPT_NAME, null).isNullOrBlank()) {
-                        // signup and generate key
-                        sf.edit().putString(ENCRYPT_NAME, generateRgl(32))
-                            .commit()
-                        sf.edit().putString(UID_NAME, encrypt(mAuth.currentUser?.uid!!))
-                            .commit()
-                        val docRef = FirebaseFirestore.getInstance()
-                            .collection(USERS_DB_PATH)
-                            .document(mAuth.currentUser?.uid!!)
-                        docRef.get().addOnSuccessListener { document ->
-                            if (document.data?.get("Col3") == null) {
-                                docRef
-                                    .set(
-                                        hashMapOf(
-                                            "Rgl" to generateRgl6(),
-                                            "Col3" to mAuth.currentUser?.uid!!
-                                        )
-                                    )
-                            }
-                        }
-                        rgl_b = arrayListOf()
-                        var test1 = generateRgl6()
-                        for (s in test1) {
-                            this.rgl_b.add(s.toCharArray()[0])
-                        }
-                        test1 = mutableListOf()
-                        rgl = rgl_b.toCharArray()
-                        rgl_b.clear()
-                        val intent = Intent(applicationContext, MainActivity::class.java)
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                        intent.putExtra(KEY, rgl)
-                        rgl = charArrayOf()
-                        startActivity(intent)
-                        finish()
-
-                    } else {
-
-                        mAuth = FirebaseAuth.getInstance()
-                        val db = FirebaseFirestore.getInstance()
-                        val docRef = db.collection(USERS_DB_PATH).document(mAuth.currentUser?.uid!!)
-                        docRef.get()
-                            .addOnSuccessListener { document ->
-                                if (decrypt(sf.getString(UID_NAME, null)) ==
-                                    document.data?.get("Col3")
-                                ) {
+                    val doc = FirebaseFirestore.getInstance()
+                        .collection(USERS_DB_PATH)
+                        .document(mAuth.currentUser?.uid!!)
+                        .get()
+                        .addOnSuccessListener { document ->
+                            if (document.exists()) {
+                                mAuth.signOut()
+                                gso =
+                                    GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                                        .build()
+                                googleSigninClient = GoogleSignIn.getClient(this, gso)
+                                googleSigninClient.signOut()
+                                binding.introProgressBar.visibility = View.GONE
+                                Toast.makeText(
+                                    this, "One account is allowed per gmail. \n" +
+                                            "Please sign up with another gmail.", Toast.LENGTH_LONG
+                                ).show()
+                            } else {
+                                //                    // Write a message to the firestore
+                                if (sf.getString(ENCRYPT_NAME, null).isNullOrBlank()) {
+                                    // signup and generate key
+                                    sf.edit().putString(ENCRYPT_NAME, generateRgl(32))
+                                        .commit()
+                                    sf.edit().putString(UID_NAME, encrypt(mAuth.currentUser?.uid!!))
+                                        .commit()
+                                    val docRef = FirebaseFirestore.getInstance()
+                                        .collection(USERS_DB_PATH)
+                                        .document(mAuth.currentUser?.uid!!)
+                                    docRef.get().addOnSuccessListener { document ->
+                                        if (document.data?.get("Col3") == null) {
+                                            docRef
+                                                .set(
+                                                    hashMapOf(
+                                                        "Rgl" to generateRgl6(),
+                                                        "Col3" to mAuth.currentUser?.uid!!
+                                                    )
+                                                )
+                                        }
+                                    }
                                     rgl_b = arrayListOf()
                                     var test1 = generateRgl6()
                                     for (s in test1) {
@@ -258,28 +308,66 @@ class IntroActivity : AppCompatActivity() {
                                     finish()
 
                                 } else {
-                                    rgl_b = arrayListOf()
-                                    var test1 = generateRgl6()
-                                    for (s in test1) {
-                                        this.rgl_b.add(s.toCharArray()[0])
-                                    }
-                                    test1 = mutableListOf()
-                                    rgl = rgl_b.toCharArray()
-                                    rgl_b.clear()
-                                    val intent =
-                                        Intent(applicationContext, MainActivity::class.java)
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                                    intent.putExtra(KEY, rgl)
-                                    rgl = charArrayOf()
-                                    startActivity(intent)
-                                    finish()
+
+                                    mAuth = FirebaseAuth.getInstance()
+                                    val db = FirebaseFirestore.getInstance()
+                                    val docRef = db.collection(USERS_DB_PATH)
+                                        .document(mAuth.currentUser?.uid!!)
+                                    docRef.get()
+                                        .addOnSuccessListener { document ->
+                                            if (decrypt(sf.getString(UID_NAME, null)) ==
+                                                document.data?.get("Col3")
+                                            ) {
+                                                rgl_b = arrayListOf()
+                                                var test1 = generateRgl6()
+                                                for (s in test1) {
+                                                    this.rgl_b.add(s.toCharArray()[0])
+                                                }
+                                                test1 = mutableListOf()
+                                                rgl = rgl_b.toCharArray()
+                                                rgl_b.clear()
+                                                val intent =
+                                                    Intent(
+                                                        applicationContext,
+                                                        MainActivity::class.java
+                                                    )
+                                                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                                                intent.putExtra(KEY, rgl)
+                                                rgl = charArrayOf()
+                                                startActivity(intent)
+                                                finish()
+
+                                            } else {
+                                                rgl_b = arrayListOf()
+                                                var test1 = generateRgl6()
+                                                for (s in test1) {
+                                                    this.rgl_b.add(s.toCharArray()[0])
+                                                }
+                                                test1 = mutableListOf()
+                                                rgl = rgl_b.toCharArray()
+                                                rgl_b.clear()
+                                                val intent =
+                                                    Intent(
+                                                        applicationContext,
+                                                        MainActivity::class.java
+                                                    )
+                                                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                                                intent.putExtra(KEY, rgl)
+                                                rgl = charArrayOf()
+                                                startActivity(intent)
+                                                finish()
+                                            }
+                                        }
+                                        .addOnFailureListener { exception ->
+                                            Log.d("GSNOTE", "get failed with ", exception)
+                                        }
+
                                 }
                             }
-                            .addOnFailureListener { exception ->
-                                Log.d("GSNOTE", "get failed with ", exception)
-                            }
 
-                    }
+                        }
+
+
                 }
             }
     }
@@ -310,7 +398,6 @@ class IntroActivity : AppCompatActivity() {
 
     }
 
-
     private fun generateRgl(length: Int = 18): String {
         val ALLOWED_CHARACTERS = "013567890123456789ABCDEFGHIJKLMNOPQRSTUWXYZ"
         val random = Random()
@@ -328,23 +415,6 @@ class IntroActivity : AppCompatActivity() {
             sb.add(ALLOWED_CHARACTERS[random.nextInt(ALLOWED_CHARACTERS.length)].toString())
         return sb
     }
-
-
-    private fun getBytes(context: Context): ByteArray? {
-        val prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-        val str = prefs.getString(ENCRYPT_NAME, null)
-        return if (!str.isNullOrEmpty()) str.toByteArray(Charsets.ISO_8859_1)
-        else
-            null
-    }
-
-    private fun setBytes(context: Context, byteArray: ByteArray) {
-        val prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-        val e = prefs.edit()
-        e.putString(ENCRYPT_NAME, String(byteArray, Charsets.ISO_8859_1))
-            .commit()
-    }
-
 
     private fun encrypt(strToEncrypt: String): String? {
         Security.addProvider(BouncyCastleProvider())
@@ -400,4 +470,5 @@ class IntroActivity : AppCompatActivity() {
             return null
         }
     }
+
 }

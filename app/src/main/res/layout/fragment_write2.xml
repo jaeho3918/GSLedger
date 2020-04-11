@@ -54,7 +54,7 @@
                             android:layout_height="match_parent"
                             android:orientation="horizontal"
                             android:clickable="true"
-                            android:background="@drawable/ic_arrow_back_black_24dp"/>
+                            android:background="@drawable/ic_arrow_back_black_24dp" />
 
 
                     </LinearLayout>
@@ -81,13 +81,13 @@
                     android:layout_marginTop="18dp"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:layout_marginBottom="24dp"/>
+                    android:layout_marginBottom="24dp" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/brand_image"
                     android:layout_width="match_parent"
                     android:layout_height="240dp"
-                    android:layout_marginBottom="24dp"/>
+                    android:layout_marginBottom="24dp" />
 
                 <TextView
                     android:id="@+id/brand_title"
@@ -109,17 +109,16 @@
             android:orientation="horizontal">
 
 
-                <Button
-                    android:id="@+id/moveTo2"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:text="@string/next"
-                    android:textColor="@color/white"
-                    android:textSize="35dp"
-                    android:background="@color/mu1_data_up"
-                    android:theme="@style/NextButton"
-                    />
+            <Button
+                android:id="@+id/moveTo2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@string/next"
+                android:textColor="@color/white"
+                android:textSize="35dp"
+                android:background="@color/mu1_data_up"
+                android:theme="@style/NextButton" />
 
         </LinearLayout>
 

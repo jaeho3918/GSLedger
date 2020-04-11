@@ -33,6 +33,7 @@ class DetailFragment : Fragment() {
 
     private val args: DetailFragmentArgs by navArgs()
 
+    private val PREF_NAME = "01504f779d6c77df04"
     private val REAL_DB_PATH = "sYTVBn6F18VT6Ykw6L"
     private val databaseRef = FirebaseDatabase.getInstance().getReference(REAL_DB_PATH)
 
@@ -45,6 +46,12 @@ class DetailFragment : Fragment() {
     private var data: HashMap<String, Double>? = null
 
     private var pre: Float? = null
+
+    private var preValue: Product? = null
+    private var brand: String? = null
+    private var buf_brand: String? = null
+    private var buf_weight: String? = null
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -89,19 +96,20 @@ class DetailFragment : Fragment() {
                 }
             })
 
-            val preValue = product
 
-            var brand = product.brand.toLowerCase()
+
+            preValue = product
+            brand = product.brand.toLowerCase()
             val metal = METAL[product.metal].toLowerCase()
             val type = TYPE[product.type].toLowerCase()
 
-            val buf_brand = if (product.brand == "Default") {
+            buf_brand = if (product.brand == "Default") {
                 ""
             } else {
                 product.brand
             }
 
-            val buf_weight = when (product.weight) {
+            buf_weight = when (product.weight) {
                 1f -> "1"
                 0.05f -> "1/20"
                 0.1f -> "1/10"
@@ -111,7 +119,7 @@ class DetailFragment : Fragment() {
             }
             //
             product_item_brand.text =
-                product.year.toString() + " " + buf_weight + WEIGHTUNITBRAND[product.weightUnit] + " " + METAL[product.metal] + TYPE[product.type] + " " + buf_brand
+                product!!.year.toString() + " " + buf_weight + WEIGHTUNIT[product!!.weightUnit] + " " + METAL[product.metal] + TYPE[product.type] + " " + buf_brand
 
             brand = (brand ?: "default").toLowerCase().replace(" ", "").replace("'", "")
                 .replace(".", "").replace("-", "")
@@ -178,17 +186,17 @@ class DetailFragment : Fragment() {
             binding.callback = object : Callback {
                 override fun add() {
                     val newproduct = viewModel.getProduct().value!!
-                    newproduct.brand = preValue.brand
-                    newproduct.metal = preValue.metal
-                    newproduct.type = preValue.type
-                    newproduct.packageType = preValue.packageType
-                    newproduct.quantity = preValue.quantity
-                    newproduct.weight = preValue.weight
-                    newproduct.weightUnit = preValue.weightUnit
-                    newproduct.currency = preValue.currency
-                    newproduct.price = preValue.price
-                    newproduct.buyDate = preValue.buyDate
-                    newproduct.editDate = preValue.editDate
+                    newproduct.brand = preValue!!.brand
+                    newproduct.metal = preValue!!.metal
+                    newproduct.type = preValue!!.type
+                    newproduct.packageType = preValue!!.packageType
+                    newproduct.quantity = preValue!!.quantity
+                    newproduct.weight = preValue!!.weight
+                    newproduct.weightUnit = preValue!!.weightUnit
+                    newproduct.currency = preValue!!.currency
+                    newproduct.price = preValue!!.price
+                    newproduct.buyDate = preValue!!.buyDate
+                    newproduct.editDate = preValue!!.editDate
                     newproduct.memo = binding.productItemMemo.text.toString()
                     detailViewModel.addProduct(newproduct)
                     view?.findNavController()?.navigateUp()
@@ -253,7 +261,6 @@ class DetailFragment : Fragment() {
         val red = ContextCompat.getColor(context, R.color.mu1_data_down)
         val green = ContextCompat.getColor(context, R.color.mu1_data_up)
         val blue = ContextCompat.getColor(context, R.color.mu2_data_down)
-
         val string = when (type) {
             "priceint" -> {
                 String.format("%,.0f", price)

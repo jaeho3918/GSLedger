@@ -161,13 +161,6 @@ class Write3Fragment : Fragment() {
 
             viewModel.weightUnitField.value = 1
         }
-        binding.quickBtn25g.setOnClickListener{
-            binding.weightEditText1.setText("25")
-            binding.weightEditText2.setText("0")
-            binding.weightUnitSpinner1.setSelection(1)
-
-            viewModel.weightUnitField.value = 1
-        }
         binding.quickBtn50g.setOnClickListener{
             binding.weightEditText1.setText("50")
             binding.weightEditText2.setText("0")
@@ -198,6 +191,13 @@ class Write3Fragment : Fragment() {
         }
         binding.quickBtn1kg.setOnClickListener{
             binding.weightEditText1.setText("1")
+            binding.weightEditText2.setText("0")
+            binding.weightUnitSpinner1.setSelection(2)
+
+            viewModel.weightUnitField.value = 2
+        }
+        binding.quickBtn5kg.setOnClickListener{
+            binding.weightEditText1.setText("5")
             binding.weightEditText2.setText("0")
             binding.weightUnitSpinner1.setSelection(2)
 

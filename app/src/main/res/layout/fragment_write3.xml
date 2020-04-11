@@ -294,18 +294,7 @@
                             android:background="@drawable/quick_btn"
                             android:color="@color/font_silver"
                             />
-                        <Button
-                            android:id="@+id/quickBtn25g"
-                            android:layout_width="match_parent"
-                            android:layout_height="36dp"
-                            android:layout_weight="1"
-                            android:text="25 g"
-                            android:textSize="15sp"
-                            android:layout_margin="3dp"
-                            android:textAllCaps="false"
-                            android:background="@drawable/quick_btn"
-                            android:color="@color/font_silver"
-                            />
+
                         <Button
                             android:id="@+id/quickBtn50g"
                             android:layout_width="match_parent"
@@ -318,6 +307,7 @@
                             android:background="@drawable/quick_btn"
                             android:color="@color/font_silver"
                             />
+
                         <Button
                             android:id="@+id/quickBtn100g"
                             android:layout_width="match_parent"
@@ -331,6 +321,18 @@
                             android:color="@color/font_silver"
                             />
 
+                        <Button
+                            android:id="@+id/quickBtn250g"
+                            android:layout_width="match_parent"
+                            android:layout_height="36dp"
+                            android:layout_margin="3dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/quick_btn"
+                            android:color="@color/font_silver"
+                            android:text="250 g"
+                            android:textAllCaps="false"
+                            android:textSize="15sp" />
+
 
                     </LinearLayout>
 
@@ -338,18 +340,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
-                        <Button
-                            android:id="@+id/quickBtn250g"
-                            android:layout_width="match_parent"
-                            android:layout_height="36dp"
-                            android:layout_weight="1"
-                            android:text="250 g"
-                            android:textSize="15sp"
-                            android:layout_margin="3dp"
-                            android:textAllCaps="false"
-                            android:background="@drawable/quick_btn"
-                            android:color="@color/font_silver"
-                            />
+
                         <Button
                             android:id="@+id/quickBtn500g"
                             android:layout_width="match_parent"
@@ -375,6 +366,18 @@
                             android:background="@drawable/quick_btn"
                             android:color="@color/font_silver"
                             />
+
+                        <Button
+                            android:id="@+id/quickBtn5kg"
+                            android:layout_width="match_parent"
+                            android:layout_height="36dp"
+                            android:layout_margin="3dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/quick_btn"
+                            android:color="@color/font_silver"
+                            android:text="5 kg"
+                            android:textAllCaps="false"
+                            android:textSize="15sp" />
 
                         <Button
                             android:id="@+id/quickBtn125kg"

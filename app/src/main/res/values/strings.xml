@@ -25,10 +25,9 @@
     <string name="year">Year</string>
     <string name="spotPrice">Spot Price</string>
     <string name="weightUnit">Weight Unit</string>
-    <string name="delAccount">Delete Your Ledger and User Account</string>
+    <string name="delAccount">Delete Your List and User Account</string>
     <string name="caution">Caution</string>
-    <string name="delAgreeCheck"> Do you agree to delete your ledger and accounts?
-        (data cannot be recovered)</string>
+    <string name="delAgreeCheck"> Do you agree to delete your list and accounts?(Data cannot be recovered and you can not use the data of device that is sign up with the same gmail.)</string>
     <string name="details">Details</string>
     <string name="currentPrice">Current Price</string>
     <string name="totalPrice">Total Price</string>
@@ -50,7 +49,7 @@
     <string name="disclaimer">Disclaimer</string>
     <string name="total">Total</string>
     <string name="Profit">profit</string>
-    <string name="ledgerEmpty">Your ledger is empty</string>
+    <string name="ledgerEmpty">Your list is empty</string>
     <string name="addProduct">Add Product</string>
     <string name="deleteProduct">Total</string>
     <string name="banner_ad_unit_id">ca-app-pub-8453032642509497~4168684141</string>

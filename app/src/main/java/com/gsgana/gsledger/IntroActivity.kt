@@ -63,17 +63,12 @@ class IntroActivity : AppCompatActivity() {
         setContentView(R.layout.activity_intro)
         mAuth = FirebaseAuth.getInstance()
         binding = DataBindingUtil.setContentView(this, R.layout.activity_intro)
-
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
-        sf = this.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-
-        if (sf.getString(ENCRYPT_NAME, null).isNullOrEmpty()) {
+        if (mAuth.currentUser == null) {
             //First Signup
             binding.introProgressBar.visibility = View.GONE
-            val mTransform = Linkify.TransformFilter() { _: Matcher, s: String ->
-                ""
-            }
+            val mTransform = Linkify.TransformFilter { _: Matcher, _: String -> "" }
             pattern1 = Pattern.compile("Privacy Policy")
             pattern2 = Pattern.compile("개인정보보호정책")
             pattern3 = Pattern.compile("Terms and Conditions")
@@ -108,7 +103,6 @@ class IntroActivity : AppCompatActivity() {
                 mTransform
             )
 
-            mAuth.signOut()
             gso =
                 GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()
             googleSigninClient = GoogleSignIn.getClient(this, gso)
@@ -117,125 +111,71 @@ class IntroActivity : AppCompatActivity() {
             googleSignInOption(binding)
 
         } else {
-            if (mAuth.currentUser == null) {
-                //LOGIN
-                binding.introProgressBar.visibility = View.GONE
-                googleSignInOption(binding)
-                val mTransform = Linkify.TransformFilter { _: Matcher, _: String ->
-                    ""
-                }
-                pattern1 = Pattern.compile("Privacy Policy")
-                pattern2 = Pattern.compile("개인정보보호정책")
-                pattern3 = Pattern.compile("Terms and Conditions")
-                pattern4 = Pattern.compile("이용약관")
+            //access current id
+            FirebaseFirestore.getInstance()
+                .collection(USERS_DB_PATH)
+                .document(mAuth.currentUser?.uid!!)
+                .get()
+                .addOnSuccessListener { document ->
+                    if (document.exists()) {
+                        //if
 
-                Linkify.addLinks(
-                    binding.agreeText,
-                    pattern1,
-                    "https://gsledger-29cad.firebaseapp.com/privacypolicy.html",
-                    null,
-                    mTransform
-                )
-                Linkify.addLinks(
-                    binding.agreeText,
-                    pattern2,
-                    "https://gsledger-29cad.firebaseapp.com/privacypolicy_kr.html",
-                    null,
-                    mTransform
-                )
-                Linkify.addLinks(
-                    binding.agreeText,
-                    pattern3,
-                    "https://gsledger-29cad.firebaseapp.com/termsandconditions.html",
-                    null,
-                    mTransform
-                )
-                Linkify.addLinks(
-                    binding.agreeText,
-                    pattern4,
-                    "https://gsledger-29cad.firebaseapp.com/termsandconditions_kr.html",
-                    null,
-                    mTransform
-                )
-
-                gso =
-                    GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()
-                googleSigninClient = GoogleSignIn.getClient(this, gso)
-                googleSigninClient.signOut()
-                Handler().postDelayed(
-                    {
-                        this.finish()
-                    }
-                    , 500
-                )
-
-            } else {
-                FirebaseFirestore.getInstance()
-                    .collection(USERS_DB_PATH)
-                    .document(mAuth.currentUser?.uid!!)
-                    .get()
-                    .addOnSuccessListener { document ->
-                        if (document.exists()) {
-                            //if
-                            if (decrypt(sf.getString(UID_NAME, null)) ==
-                                document.data?.get("Col3")
-                            ) {
-                                rgl_b = arrayListOf()
-                                val test = document.data?.get("Rgl") as ArrayList<String>
-                                for (s in test) {
-                                    this.rgl_b.add(s.toCharArray()[0])
-                                }
-                                test.clear()
-                                rgl = rgl_b.toCharArray()
-                                rgl_b.clear()
-                                val intent =
-                                    Intent(applicationContext, MainActivity::class.java)
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                                intent.putExtra(KEY, rgl)
-                                startActivity(intent)
-                                rgl = charArrayOf()
-                                finish()
-                            } else { //one per one
-                                gso =
-                                    GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                                        .build()
-                                googleSigninClient = GoogleSignIn.getClient(this, gso)
-                                googleSigninClient.signOut()
-                                binding.introProgressBar.visibility = View.GONE
-                                Toast.makeText(
-                                    this, "One account is allowed per gmail. \n" +
-                                            "Please sign up with another gmail.", Toast.LENGTH_LONG
-                                ).show()
-                                sf.edit().putString(UID_NAME, null).apply()
-                                googleSignInOption(binding) /////////////////
-                            }
-                        } else {
-                            binding.introProgressBar.visibility = View.GONE
-                            val mTransform: Linkify.TransformFilter =
-                                Linkify.TransformFilter { matcher: Matcher, s: String ->
-                                    ""
-                                }
-                            pattern1 = Pattern.compile("Privacy Policy")
-                            pattern2 = Pattern.compile("개인정보보호정책")
-
-                            Linkify.addLinks(
-                                binding.agreeText,
-                                pattern1,
-                                "https://gsledger-29cad.firebaseapp.com/privacypolicy.html",
-                                null,
-                                mTransform
-                            )
-                            Linkify.addLinks(
-                                binding.agreeText,
-                                pattern2,
-                                "https://gsledger-29cad.firebaseapp.com/privacypolicy.html",
-                                null,
-                                mTransform
-                            )
-                            googleSignInOption(binding)
+                        rgl_b = arrayListOf()
+                        val test = document.data?.get("Rgl") as ArrayList<String>
+                        for (s in test) {
+                            this.rgl_b.add(s.toCharArray()[0])
                         }
+                        test.clear()
+                        rgl = rgl_b.toCharArray()
+                        rgl_b.clear()
+                        val intent =
+                            Intent(applicationContext, MainActivity::class.java)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                        intent.putExtra(KEY, rgl)
+                        startActivity(intent)
+                        rgl = charArrayOf()
+                        finish()
+//                        } else { //one per one
+//                            gso =
+//                                GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+//                                    .build()
+//                            googleSigninClient = GoogleSignIn.getClient(this, gso)
+//                            googleSigninClient.signOut()
+//                            binding.introProgressBar.visibility = View.GONE
+//                            Toast.makeText(
+//                                this, "One account is allowed per gmail. \n" +
+//                                        "Please sign up with another gmail.", Toast.LENGTH_LONG
+//                            ).show()
+//                            sf.edit().putString(UID_NAME, null).apply()
+//                            googleSignInOption(binding) /////////////////
+//                        }
+//                    } else {
+//                        binding.introProgressBar.visibility = View.GONE
+//                        val mTransform: Linkify.TransformFilter =
+//                            Linkify.TransformFilter { _: Matcher, _: String ->
+//                                ""
+//                            }
+//                        pattern1 = Pattern.compile("Privacy Policy")
+//                        pattern2 = Pattern.compile("개인정보보호정책")
+//
+//                        Linkify.addLinks(
+//                            binding.agreeText,
+//                            pattern1,
+//                            "https://gsledger-29cad.firebaseapp.com/privacypolicy.html",
+//                            null,
+//                            mTransform
+//                        )
+//                        Linkify.addLinks(
+//                            binding.agreeText,
+//                            pattern2,
+//                            "https://gsledger-29cad.firebaseapp.com/privacypolicy.html",
+//                            null,
+//                            mTransform
+//                        )
+//                        googleSignInOption(binding)
                     }
-            }
+                }
+
         }
     }
 
@@ -290,7 +230,8 @@ class IntroActivity : AppCompatActivity() {
                                     if (sf.getString(ENCRYPT_NAME, null).isNullOrBlank()) {
                                         // signup and generate key
                                         sf.edit().putString(ENCRYPT_NAME, 32.generateRgl()).apply()
-                                        sf.edit().putString(UID_NAME, encrypt(mAuth.currentUser?.uid!!))
+                                        sf.edit()
+                                            .putString(UID_NAME, encrypt(mAuth.currentUser?.uid!!))
                                             .apply()
                                         val docRef = FirebaseFirestore.getInstance()
                                             .collection(USERS_DB_PATH)

@@ -252,7 +252,7 @@ class HomeViewPagerFragment : Fragment() {
     private fun getTabTitle(position: Int): String? {
         return when (position) {
             STAT_PAGE_INDEX -> "Stat"
-            LEDGER_PAGE_INDEX -> "Ledger"
+            LEDGER_PAGE_INDEX -> "List"
             ADSANDOPTION_PAGE_INDEX -> "AdsAndOption"
             else -> null
         }

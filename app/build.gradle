@@ -21,7 +21,7 @@ android {
         minSdkVersion 23
         targetSdkVersion 29
         versionCode 2
-        versionName "1.1"
+        versionName "1.0.0.2"
         multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -63,6 +63,7 @@ android {
         implementation "androidx.navigation:navigation-ui-ktx:$rootProject.navigationVersion"
         implementation "androidx.recyclerview:recyclerview:$rootProject.recyclerViewVersion"
         implementation "androidx.room:room-runtime:$rootProject.roomVersion"
+        kapt "androidx.room:room-compiler:$rootProject.roomVersion"
         implementation "androidx.room:room-ktx:$rootProject.roomVersion"
         implementation "androidx.viewpager2:viewpager2:$rootProject.viewPagerVersion"
         implementation "androidx.work:work-runtime-ktx:$rootProject.workVersion"
@@ -82,6 +83,7 @@ android {
         // be sure to also include the core dependency
         implementation 'com.android.billingclient:billing:2.1.0'
         implementation 'com.android.billingclient:billing-ktx:2.1.0'
+
 
 
 //        implementation 'com.github.warkiz.widget:indicatorseekbar:2.1.2'

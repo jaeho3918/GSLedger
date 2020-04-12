@@ -1,20 +1,19 @@
+@file:Suppress("DEPRECATION")
+
 package com.gsgana.gsledger
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.gsgana.gsledger.databinding.FragmentWrite1Binding
 import com.gsgana.gsledger.utilities.InjectorUtils
-import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModel
 import com.gsgana.gsledger.viewmodels.WriteViewModel
-import kotlinx.android.synthetic.main.fragment_write1.*
 
 
 class Write1Fragment : Fragment() {
@@ -30,6 +29,7 @@ class Write1Fragment : Fragment() {
 
     private var white :Int?= null
 
+    @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

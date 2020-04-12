@@ -1,51 +1,40 @@
 package com.gsgana.gsledger
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.text.util.Linkify
 import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import com.android.billingclient.api.AcknowledgePurchaseParams
-import com.android.billingclient.api.BillingClient
-import com.android.billingclient.api.Purchase
-import com.firebase.ui.auth.AuthUI
-import com.google.android.gms.ads.AdListener
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.InterstitialAd
-import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.SignInButton
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import com.gsgana.gsledger.databinding.ActivityIntroBinding
-import kotlinx.coroutines.Dispatchers
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import java.security.Security
 import java.util.*
 import javax.crypto.Cipher
-import javax.crypto.KeyGenerator
-import javax.crypto.SecretKey
 import javax.crypto.spec.SecretKeySpec
 import org.bouncycastle.util.encoders.Base64
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
 
+@Suppress("NAME_SHADOWING", "DEPRECATED_IDENTITY_EQUALS", "UNCHECKED_CAST")
 class IntroActivity : AppCompatActivity() {
     private val RC_SIGN_IN = 9001
-    private val LOG_IN = 18
-    private val SIGN_UP = 6
     private val ENCRYPT_NAME = "a345f2f713ie8bd261"
     private val UID_NAME = "7e19f667a8a1c7075f"
     private val USERS_DB_PATH = "qnI4vK2zSUq6GdeT6b"
@@ -66,27 +55,22 @@ class IntroActivity : AppCompatActivity() {
     private lateinit var pattern3: Pattern
     private lateinit var pattern4: Pattern
 
-    private lateinit var billingClient: BillingManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        billingClient = BillingManager(this)
-
-        billingClient.processToPurchase()
 
         setContentView(R.layout.activity_intro)
         mAuth = FirebaseAuth.getInstance()
         binding = DataBindingUtil.setContentView(this, R.layout.activity_intro)
 
-        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
         sf = this.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
 
         if (sf.getString(ENCRYPT_NAME, null).isNullOrEmpty()) {
             //First Signup
             binding.introProgressBar.visibility = View.GONE
-            val mTransform = Linkify.TransformFilter() { matcher: Matcher, s: String ->
+            val mTransform = Linkify.TransformFilter() { _: Matcher, s: String ->
                 ""
             }
             pattern1 = Pattern.compile("Privacy Policy")
@@ -100,28 +84,28 @@ class IntroActivity : AppCompatActivity() {
                 "https://gsledger-29cad.firebaseapp.com/privacypolicy.html",
                 null,
                 mTransform
-            );
+            )
             Linkify.addLinks(
                 binding.agreeText,
                 pattern2,
                 "https://gsledger-29cad.firebaseapp.com/privacypolicy_kr.html",
                 null,
                 mTransform
-            );
+            )
             Linkify.addLinks(
                 binding.agreeText,
                 pattern3,
                 "https://gsledger-29cad.firebaseapp.com/termsandconditions.html",
                 null,
                 mTransform
-            );
+            )
             Linkify.addLinks(
                 binding.agreeText,
                 pattern4,
                 "https://gsledger-29cad.firebaseapp.com/termsandconditions_kr.html",
                 null,
                 mTransform
-            );
+            )
 
             mAuth.signOut()
             gso =
@@ -129,18 +113,20 @@ class IntroActivity : AppCompatActivity() {
             googleSigninClient = GoogleSignIn.getClient(this, gso)
             googleSigninClient.signOut()
 
-            googleSignInOption(SIGN_UP, binding)
+            googleSignInOption(binding)
 
         } else {
             if (mAuth.currentUser == null) {
                 //LOGIN
                 binding.introProgressBar.visibility = View.GONE
-                googleSignInOption(LOG_IN, binding)
-                val mTransform = Linkify.TransformFilter { matcher: Matcher, s: String ->
-                    "".toString()
+                googleSignInOption(binding)
+                val mTransform = Linkify.TransformFilter { _: Matcher, _: String ->
+                    ""
                 }
                 pattern1 = Pattern.compile("Privacy Policy")
                 pattern2 = Pattern.compile("개인정보보호정책")
+                pattern3 = Pattern.compile("Terms and Conditions")
+                pattern4 = Pattern.compile("이용약관")
 
                 Linkify.addLinks(
                     binding.agreeText,
@@ -148,21 +134,42 @@ class IntroActivity : AppCompatActivity() {
                     "https://gsledger-29cad.firebaseapp.com/privacypolicy.html",
                     null,
                     mTransform
-                );
+                )
                 Linkify.addLinks(
                     binding.agreeText,
                     pattern2,
-                    "https://gsledger-29cad.firebaseapp.com/privacypolicy.html",
+                    "https://gsledger-29cad.firebaseapp.com/privacypolicy_kr.html",
                     null,
                     mTransform
-                );
+                )
+                Linkify.addLinks(
+                    binding.agreeText,
+                    pattern3,
+                    "https://gsledger-29cad.firebaseapp.com/termsandconditions.html",
+                    null,
+                    mTransform
+                )
+                Linkify.addLinks(
+                    binding.agreeText,
+                    pattern4,
+                    "https://gsledger-29cad.firebaseapp.com/termsandconditions_kr.html",
+                    null,
+                    mTransform
+                )
+
                 gso =
                     GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()
                 googleSigninClient = GoogleSignIn.getClient(this, gso)
                 googleSigninClient.signOut()
+                Handler().postDelayed(
+                    {
+                        this.finish()
+                    }
+                    , 500
+                )
 
             } else {
-                val doc = FirebaseFirestore.getInstance()
+                FirebaseFirestore.getInstance()
                     .collection(USERS_DB_PATH)
                     .document(mAuth.currentUser?.uid!!)
                     .get()
@@ -199,16 +206,16 @@ class IntroActivity : AppCompatActivity() {
                                             "Please sign up with another gmail.", Toast.LENGTH_LONG
                                 ).show()
                                 sf.edit().putString(UID_NAME, null).apply()
-                                googleSignInOption(SIGN_UP, binding) /////////////////
+                                googleSignInOption(binding) /////////////////
                             }
                         } else {
                             binding.introProgressBar.visibility = View.GONE
-                            val mTransform =
+                            val mTransform: Linkify.TransformFilter =
                                 Linkify.TransformFilter { matcher: Matcher, s: String ->
-                                    "".toString()
+                                    ""
                                 }
-                             pattern1 = Pattern.compile("Privacy Policy")
-                             pattern2 = Pattern.compile("개인정보보호정책")
+                            pattern1 = Pattern.compile("Privacy Policy")
+                            pattern2 = Pattern.compile("개인정보보호정책")
 
                             Linkify.addLinks(
                                 binding.agreeText,
@@ -216,21 +223,22 @@ class IntroActivity : AppCompatActivity() {
                                 "https://gsledger-29cad.firebaseapp.com/privacypolicy.html",
                                 null,
                                 mTransform
-                            );
+                            )
                             Linkify.addLinks(
                                 binding.agreeText,
                                 pattern2,
                                 "https://gsledger-29cad.firebaseapp.com/privacypolicy.html",
                                 null,
                                 mTransform
-                            );
-                            googleSignInOption(SIGN_UP, binding)
+                            )
+                            googleSignInOption(binding)
                         }
                     }
             }
         }
     }
 
+    @SuppressLint("ShowToast")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         val sf = this.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE) //option
@@ -251,7 +259,7 @@ class IntroActivity : AppCompatActivity() {
         mAuth.signInWithCredential(credential)
             .addOnCompleteListener(this) {
                 if (it.isSuccessful) {
-                    val doc = FirebaseFirestore.getInstance()
+                    FirebaseFirestore.getInstance()
                         .collection(USERS_DB_PATH)
                         .document(mAuth.currentUser?.uid!!)
                         .get()
@@ -265,17 +273,16 @@ class IntroActivity : AppCompatActivity() {
                                 googleSigninClient.signOut()
                                 binding.introProgressBar.visibility = View.GONE
                                 Toast.makeText(
-                                    this, "One account is allowed per gmail. \n" +
-                                            "Please sign up with another gmail.", Toast.LENGTH_LONG
+                                    this,
+                                    resources.getString(R.string.oneperaccount),
+                                    Toast.LENGTH_LONG
                                 ).show()
                             } else {
                                 //                    // Write a message to the firestore
                                 if (sf.getString(ENCRYPT_NAME, null).isNullOrBlank()) {
                                     // signup and generate key
-                                    sf.edit().putString(ENCRYPT_NAME, generateRgl(32))
-                                        .commit()
-                                    sf.edit().putString(UID_NAME, encrypt(mAuth.currentUser?.uid!!))
-                                        .commit()
+                                    sf.edit().putString(ENCRYPT_NAME, 32.generateRgl()).apply()
+                                    sf.edit().putString(UID_NAME, encrypt(mAuth.currentUser?.uid!!)).apply()
                                     val docRef = FirebaseFirestore.getInstance()
                                         .collection(USERS_DB_PATH)
                                         .document(mAuth.currentUser?.uid!!)
@@ -291,11 +298,10 @@ class IntroActivity : AppCompatActivity() {
                                         }
                                     }
                                     rgl_b = arrayListOf()
-                                    var test1 = generateRgl6()
+                                    val test1 = generateRgl6()
                                     for (s in test1) {
                                         this.rgl_b.add(s.toCharArray()[0])
                                     }
-                                    test1 = mutableListOf()
                                     rgl = rgl_b.toCharArray()
                                     rgl_b.clear()
                                     val intent =
@@ -318,11 +324,10 @@ class IntroActivity : AppCompatActivity() {
                                                 document.data?.get("Col3")
                                             ) {
                                                 rgl_b = arrayListOf()
-                                                var test1 = generateRgl6()
+                                                val test1 = generateRgl6()
                                                 for (s in test1) {
                                                     this.rgl_b.add(s.toCharArray()[0])
                                                 }
-                                                test1 = mutableListOf()
                                                 rgl = rgl_b.toCharArray()
                                                 rgl_b.clear()
                                                 val intent =
@@ -338,11 +343,10 @@ class IntroActivity : AppCompatActivity() {
 
                                             } else {
                                                 rgl_b = arrayListOf()
-                                                var test1 = generateRgl6()
+                                                val test1 = generateRgl6()
                                                 for (s in test1) {
                                                     this.rgl_b.add(s.toCharArray()[0])
                                                 }
-                                                test1 = mutableListOf()
                                                 rgl = rgl_b.toCharArray()
                                                 rgl_b.clear()
                                                 val intent =
@@ -371,7 +375,7 @@ class IntroActivity : AppCompatActivity() {
             }
     }
 
-    private fun googleSignInOption(code: Int, binding: ActivityIntroBinding) {
+    private fun googleSignInOption(binding: ActivityIntroBinding) {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
@@ -382,7 +386,6 @@ class IntroActivity : AppCompatActivity() {
         binding.signupBtn.visibility = View.VISIBLE
         binding.signupBtn.setOnClickListener {
             if (!binding.agreeBox.isChecked) {
-//                    Toast.makeText(this, resources.getString(),Toast.LENGTH_LONG).show()"Please read the Privacy Policy and check the box"
                 Toast.makeText(
                     this,
                     resources.getString(R.string.checkBox),
@@ -397,11 +400,11 @@ class IntroActivity : AppCompatActivity() {
 
     }
 
-    private fun generateRgl(length: Int = 18): String {
+    private fun Int.generateRgl(): String {
         val ALLOWED_CHARACTERS = "013567890123456789ABCDEFGHIJKLMNOPQRSTUWXYZ"
         val random = Random()
-        val sb = StringBuilder(length)
-        for (i in 0 until length)
+        val sb = StringBuilder(this)
+        for (i in 0 until this)
             sb.append(ALLOWED_CHARACTERS[random.nextInt(ALLOWED_CHARACTERS.length)])
         return sb.toString()
     }
@@ -415,9 +418,10 @@ class IntroActivity : AppCompatActivity() {
         return sb
     }
 
+    @SuppressLint("GetInstance")
     private fun encrypt(strToEncrypt: String): String? {
         Security.addProvider(BouncyCastleProvider())
-        var keyBytes: ByteArray
+        val keyBytes: ByteArray
         try {
             keyBytes = sf.getString(ENCRYPT_NAME, null)!!.toByteArray(charset("UTF8"))
             val skey = SecretKeySpec(keyBytes, "AES")
@@ -444,14 +448,15 @@ class IntroActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("GetInstance")
     private fun decrypt(strToDecrypt: String?): String? {
         Security.addProvider(BouncyCastleProvider())
-        var keyBytes: ByteArray
+        val keyBytes: ByteArray
 
         try {
             keyBytes = sf.getString(ENCRYPT_NAME, null)!!.toByteArray(charset("UTF8"))
             val skey = SecretKeySpec(keyBytes, "AES")
-            val input = org.bouncycastle.util.encoders.Base64
+            val input = Base64
                 .decode(strToDecrypt?.trim { it <= ' ' }?.toByteArray(charset("UTF8")))
 
             synchronized(Cipher::class.java) {

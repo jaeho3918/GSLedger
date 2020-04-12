@@ -14,10 +14,6 @@
             type="com.gsgana.gsledger.viewmodels.DetailViewModel" />
 
         <variable
-            name="CallbackRequest"
-            type="com.gsgana.gsledger.Write5Fragment.CallbackRequest" />
-
-        <variable
             name="CallbackSummit"
             type="com.gsgana.gsledger.Write5Fragment.CallbackSummit" />
 

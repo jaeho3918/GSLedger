@@ -1,5 +1,6 @@
 package com.gsgana.gsledger
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
@@ -11,7 +12,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -20,7 +20,6 @@ import androidx.lifecycle.observe
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.firebase.ui.auth.AuthUI.getApplicationContext
 import com.google.firebase.database.*
 import com.gsgana.gsledger.data.Product
 import com.gsgana.gsledger.databinding.DetailFragmentBinding
@@ -29,11 +28,11 @@ import com.gsgana.gsledger.viewmodels.DetailViewModel
 import kotlinx.android.synthetic.main.detail_fragment.*
 
 
+@Suppress("UNCHECKED_CAST")
 class DetailFragment : Fragment() {
 
     private val args: DetailFragmentArgs by navArgs()
 
-    private val PREF_NAME = "01504f779d6c77df04"
     private val REAL_DB_PATH = "sYTVBn6F18VT6Ykw6L"
     private val databaseRef = FirebaseDatabase.getInstance().getReference(REAL_DB_PATH)
 
@@ -72,6 +71,7 @@ class DetailFragment : Fragment() {
         return binding.root
     }
 
+    @SuppressLint("DefaultLocale", "SetTextI18n")
     private fun subscribeUi(
         binding: DetailFragmentBinding,
         viewModel: DetailViewModel,
@@ -86,7 +86,7 @@ class DetailFragment : Fragment() {
             databaseRef.addValueEventListener(object : ValueEventListener {
                 override fun onCancelled(p0: DatabaseError) {}
                 override fun onDataChange(p0: DataSnapshot) {
-                    data = p0?.value as HashMap<String, Double>
+                    data = p0.value as HashMap<String, Double>
                     if (product.metal == 0) {
                         pre = (data!!["AU"] ?: 0.0).toFloat()
                     } else if (product.metal == 1) {
@@ -119,22 +119,20 @@ class DetailFragment : Fragment() {
             }
             //
             product_item_brand.text =
-                product!!.year.toString() + " " + buf_weight + WEIGHTUNIT[product!!.weightUnit] + " " + METAL[product.metal] + TYPE[product.type] + " " + buf_brand
+                "${product.year} $buf_weight${WEIGHTUNIT[product.weightUnit]} ${METAL[product.metal]}${TYPE[product.type]} $buf_brand"
 
             brand = (brand ?: "default").toLowerCase().replace(" ", "").replace("'", "")
                 .replace(".", "").replace("-", "")
 
-            val imgId = getResource(
-                "drawable",
+            val imgId = "drawable".getResource(
                 "${brand}_${metal[0]}${type[0]}",
                 context
             )
             if (imgId == 0) {
                 binding.itemImage.setImageResource(
-                    getResource(
-                        "drawable",
+                    "drawable".getResource(
                         "ic_default_${metal}${type}",
-                        context!!
+                        context
                     )
                 )
             } else {
@@ -207,14 +205,14 @@ class DetailFragment : Fragment() {
                     val builder: AlertDialog.Builder = AlertDialog.Builder(context)
                     builder.setTitle(resources.getString(R.string.caution))
                     builder.setMessage(resources.getString(R.string.delProduct))
-                    builder.setPositiveButton(resources.getString(R.string.delete),
-                        DialogInterface.OnClickListener { _, _ ->
-                            detailViewModel.delProduct(args.id)
-                            view?.findNavController()?.navigateUp()
-                        })
-                    builder.setNegativeButton(resources.getString(R.string.no),
-                        DialogInterface.OnClickListener { _, _ ->
-                        })
+                    builder.setPositiveButton(resources.getString(R.string.delete)
+                    ) { _, _ ->
+                        detailViewModel.delProduct(args.id)
+                        view?.findNavController()?.navigateUp()
+                    }
+                    builder.setNegativeButton(resources.getString(R.string.no)
+                    ) { _, _ ->
+                    }
                     builder.show()
 
                 }
@@ -235,11 +233,11 @@ class DetailFragment : Fragment() {
         )
     }
 
-    private fun getResource(type: String, resName: String, context: Context): Int {
+    private fun String.getResource(resName: String, context: Context): Int {
 
         val resContext: Context = context.createPackageContext(context.packageName, 0)
         val res: Resources = resContext.resources
-        val id: Int = res.getIdentifier(resName, type, context.packageName)
+        val id: Int = res.getIdentifier(resName, this, context.packageName)
 
         return id
     }

@@ -1,6 +1,5 @@
 package com.gsgana.gsledger.viewmodels
 
-import android.os.Build.BRAND
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

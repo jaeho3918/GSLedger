@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.gsgana.gsledger
 
 import android.os.Bundle
@@ -56,16 +58,14 @@ class Write4Fragment : Fragment() {
 
     private fun setSpinnerUi(
         binding: FragmentWrite4Binding,
-        viewModel: WriteViewModel,
-        array: Array<String>? = null,
-        table: Array<String>? = null
+        viewModel: WriteViewModel
     ) {
-        var adapter =
+        val adapter =
             ArrayAdapter(
                 context!!, R.layout.support_simple_spinner_dropdown_item, GRADE
             )
         binding.gradeSpinner.adapter = adapter
-        binding.gradeSpinner.dropDownVerticalOffset = dipToPixels(53f).toInt()
+        binding.gradeSpinner.dropDownVerticalOffset = 53f.dipToPixels().toInt()
         binding.gradeSpinner.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onNothingSelected(parent: AdapterView<*>?) {}
@@ -100,7 +100,7 @@ class Write4Fragment : Fragment() {
         binding: FragmentWrite4Binding,
         viewModel: WriteViewModel
     ) {
-        var cal = Calendar.getInstance()
+        val cal = Calendar.getInstance()
         val _year = cal.get(Calendar.YEAR)
         val _month = cal.get(Calendar.MONTH)
         val _date = cal.get(Calendar.DATE)
@@ -119,7 +119,7 @@ class Write4Fragment : Fragment() {
         val date = viewModel.dateField.value?.split("/")
         if (!date.isNullOrEmpty()) {
             binding.datePicker1.init(
-                date?.get(0)!!.toInt(), (date?.get(1)!!.toInt() - 1), date?.get(2)!!.toInt()
+                date[0].toInt(), (date[1].toInt() - 1), date[2].toInt()
             ) { _: DatePicker, i: Int, i1: Int, i2: Int ->
                 viewModel.dateField.value = "$i/${i1 + 1}/$i2"
                 binding.yearSeriesPicker.value = i
@@ -152,10 +152,10 @@ class Write4Fragment : Fragment() {
 
     }
 
-    private fun dipToPixels(dipValue: Float): Float {
+    private fun Float.dipToPixels(): Float {
         return TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP,
-            dipValue,
+            this,
             resources.displayMetrics
         )
     }

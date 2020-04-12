@@ -1,5 +1,6 @@
 package com.gsgana.gsledger.adapters
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Resources
 import android.view.LayoutInflater
@@ -24,7 +25,6 @@ class ProductAdapter(private val context: Context, private val realData: Map<Str
     private lateinit var brand: String
     private lateinit var metal: String
     private lateinit var type: String
-    private lateinit var metalType: String
     private lateinit var weight: String
 
     private val PREF_NAME = "01504f779d6c77df04"
@@ -72,6 +72,7 @@ class ProductAdapter(private val context: Context, private val realData: Map<Str
             it.findNavController().navigate(direction)
         }
 
+        @SuppressLint("DefaultLocale", "SetTextI18n")
         fun bind(
             context: Context,
             item: Product,
@@ -88,7 +89,7 @@ class ProductAdapter(private val context: Context, private val realData: Map<Str
                 val metalType = METAL[product!!.metal] + " " + TYPE[product!!.type]
                 var weight = 0
                 val metalPrice = realData[METALCODE[item.metal]]!!.toFloat()
-                var pl = 0f
+                val pl: Float
                 val currency = realData[CURRENCY[item.currency]]!!.toFloat()
                 val memo = item.memo.replace("\n", " ")
                 val realPrice =
@@ -106,10 +107,7 @@ class ProductAdapter(private val context: Context, private val realData: Map<Str
                 binding.productItemPlCurrency.text = CURRENCYSYMBOL[item.currency]
 
                 binding.productItemTotalprice.text =
-                    CURRENCYSYMBOL[item.currency] + " " + priceToString(
-                        (realPrice * currency).toDouble(),
-                        "PriceInt"
-                    )
+                    CURRENCYSYMBOL[item.currency] + " " + priceToString((realPrice * currency).toDouble(), "PriceInt")
 
                 setPriceColor(
                     context,
@@ -119,7 +117,7 @@ class ProductAdapter(private val context: Context, private val realData: Map<Str
                     plSwitch,
                     plStlye
                 )
-                pl = 0f
+
 
                 when (item.weight) {
                     1.0f -> {
@@ -165,7 +163,7 @@ class ProductAdapter(private val context: Context, private val realData: Map<Str
                         product!!.year.toString() +" "+ weight.toString() + WEIGHTUNIT[product!!.weightUnit] + " " + METAL[product!!.metal] + " " + brandName + " " + TYPE[product!!.type]
                 }
 
-                brand = (brand ?: "default").toLowerCase().replace(" ", "").replace("'", "")
+                brand = brand.toLowerCase().replace(" ", "").replace("'", "")
                     .replace(".", "").replace("-", "")
 
                 val imgId = getResource(
@@ -178,7 +176,7 @@ class ProductAdapter(private val context: Context, private val realData: Map<Str
                         getResource(
                             "drawable",
                             "ic_default_${metal}${type}",
-                            context!!
+                            context
                         )
                     )
                 } else {

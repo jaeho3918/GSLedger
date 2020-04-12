@@ -9,13 +9,13 @@ import retrofit2.http.Header
 
 const val URL = "https://us-central1-gsledger-29cad.cloudfunctions.net/"
 
-interface ServerRequest {
-    @POST("/testpost")
-    fun postRequest(
-        @Header("token") token: String,
-        @Body params:JsonObject
-    ) : Call<DataRequest>
-}
+//interface ServerRequest {
+//    @POST("/testpost")
+//    fun postRequest(
+//        @Header("token") token: String,
+//        @Body params:JsonObject
+//    ) : Call<DataRequest>
+//}
 
 interface ServerSummit {
     @POST("/summitData")
@@ -25,8 +25,8 @@ interface ServerSummit {
     ) : Call<Data>
 }
 
-data class DataRequest(var price1 : String,
-                       var price2 : String)
+//data class DataRequest(var price1 : String,
+//                       var price2 : String)
 
 
 data class Data(var reg : String,

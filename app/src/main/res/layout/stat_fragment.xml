@@ -9,10 +9,6 @@
             name="viewModel"
             type="com.gsgana.gsledger.viewmodels.HomeViewPagerViewModel" />
 
-        <variable
-            name="Callback"
-            type="com.gsgana.gsledger.StatFragment.Callback" />
-
     </data>
 
     <androidx.core.widget.NestedScrollView
@@ -42,7 +38,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:baselineAligned="false">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -61,7 +58,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            card_view:ignore="NestedWeights">
 
                             <TextView
                                 android:id="@+id/totalCurrency"
@@ -200,8 +198,6 @@
                             android:theme="@style/NextButton"
                             android:textColor="@color/white"
                             android:textSize="@dimen/text_large" />
-
-
                     </LinearLayout>
 
 
@@ -236,7 +232,7 @@
                             android:visibility="gone">
 
                             <TextView
-                                android:layout_width="52dp"
+                                android:layout_width="39dp"
                                 android:layout_height="wrap_content"
                                 android:text="@string/coin"
                                 android:textColor="@color/font_gold"
@@ -283,7 +279,7 @@
 
 
                             <TextView
-                                android:layout_width="52dp"
+                                android:layout_width="39dp"
                                 android:layout_height="wrap_content"
                                 android:text="@string/bar"
                                 android:textColor="@color/font_gold"

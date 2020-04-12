@@ -1,7 +1,6 @@
 package com.gsgana.gsledger.utilities
 
 import android.content.Context
-import com.google.firebase.database.FirebaseDatabase
 import com.gsgana.gsledger.data.AppDatabase
 import com.gsgana.gsledger.data.ProductRepository
 import com.gsgana.gsledger.viewmodels.DetailViewModelFactory
@@ -43,7 +42,7 @@ object InjectorUtils {
 
         val reg = AppDatabase.getInstance(context.applicationContext, key)
         return ProductRepository.getInstance(
-            reg.productDao(), reg.productImageDao()
+            reg.productDao()
         )
     }
 

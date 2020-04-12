@@ -26,9 +26,6 @@ class ProductsViewModel(private val product: Product) {
     val quantity
         get() = (product.quantity * PACKAGENUM[product.packageType]).toString()
 
-    val quantityDetail
-        get() = "("+product.quantity.toString() + " x " + PACKAGETYPE[product.packageType] +")"
-
     val totalPrice
         get() = CURRENCYSYMBOL[product.currency] +String.format("%,.2f", product.prePrice)
 

@@ -3,8 +3,6 @@ package com.gsgana.gsledger.viewmodels
 import androidx.lifecycle.*
 import com.gsgana.gsledger.data.Product
 import com.gsgana.gsledger.data.ProductRepository
-import com.gsgana.gsledger.utilities.CURRENCY
-import com.gsgana.gsledger.utilities.PACKAGETYPE
 import kotlinx.coroutines.launch
 
 
@@ -85,27 +83,27 @@ class WriteViewModel internal constructor(
 //        }
 //    }
 
-    val priceMerger = MediatorLiveData<String>()
-        .apply {
-            addSource(priceField1) {
-                var test1 = priceField1.value ?: "1"
-                val test2 = priceField2.value ?: "00"
-                if (test1 == "") {
-                    test1 = "0"
-                }
-                val test3 = "${test1}.${test2}"
-                value = test3
-            }
-            addSource(priceField2) {
-                var test1 = priceField1.value ?: "1"
-                val test2 = priceField2.value ?: "00"
-                if (test1 == "") {
-                    test1 = "0"
-                }
-                val test3 = "${test1}.${test2}"
-                value = test3
-            }
-        }
+//    val priceMerger = MediatorLiveData<String>()
+//        .apply {
+//            addSource(priceField1) {
+//                var test1 = priceField1.value ?: "1"
+//                val test2 = priceField2.value ?: "00"
+//                if (test1 == "") {
+//                    test1 = "0"
+//                }
+//                val test3 = "${test1}.${test2}"
+//                value = test3
+//            }
+//            addSource(priceField2) {
+//                var test1 = priceField1.value ?: "1"
+//                val test2 = priceField2.value ?: "00"
+//                if (test1 == "") {
+//                    test1 = "0"
+//                }
+//                val test3 = "${test1}.${test2}"
+//                value = test3
+//            }
+//        }
 
 
     val weightUnit = MediatorLiveData<Float>()

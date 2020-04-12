@@ -1,8 +1,8 @@
 package com.gsgana.gsledger.data
 
 class ProductRepository private constructor(
-    private val productDao: ProductDao,
-    private val productImageDao: ProductImageDao
+    private val productDao: ProductDao
+//    private val productImageDao: ProductImageDao
 ) {
 
     suspend fun createProduct(product: Product) {
@@ -16,27 +16,24 @@ class ProductRepository private constructor(
         productDao.deleteProduct(id)
     }
 
-    suspend fun createProductImage(product: ProductImage) {
-        productImageDao.insertProductImage(product)
-    }
-
-    suspend fun deleteProductImage() {
-        productImageDao.deleteProductImage()
-    }
-
-
-
-//    suspend fun updateProduct(product : Product) {
-//        productDao.insertProduct(product)
+//    suspend fun createProductImage(product: ProductImage) {
+//        productImageDao.insertProductImage(product)
 //    }
+//
+//    suspend fun deleteProductImage() {
+//        productImageDao.deleteProductImage()
+//    }
+
+
+
 
     fun getProducts() = productDao.getProducts()
 
     fun getProduct(id: Long) = productDao.getProduct(id)
-
-    fun getProductImages() = productImageDao.getProductImages()
-
-    fun getProductImage(id: String) = productImageDao.getProductImage(id)
+//
+//    fun getProductImages() = productImageDao.getProductImages()
+//
+//    fun getProductImage(id: String) = productImageDao.getProductImage(id)
 
 
 
@@ -45,13 +42,13 @@ class ProductRepository private constructor(
         private var instant: ProductRepository? = null
 
         fun getInstance(
-            productDao: ProductDao,
-            productImageDao: ProductImageDao
+            productDao: ProductDao
+//            productImageDao: ProductImageDao
         ) =
             instant ?: synchronized(this) {
                 instant ?: ProductRepository(
-                    productDao,
-                    productImageDao
+                    productDao
+//                    productImageDao
                 ).also { instant = it }
             }
     }

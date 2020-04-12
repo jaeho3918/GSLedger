@@ -222,7 +222,7 @@
             android:id="@+id/viewPager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"></androidx.viewpager2.widget.ViewPager2>
+            android:layout_weight="1" />
 
         <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
             android:id="@+id/adView"
@@ -231,8 +231,8 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             ads:adSize="SMART_BANNER"
-            ads:adUnitId="ca-app-pub-8453032642509497/2664030780" />
-        <!--     ca-app-pub-3940256099942544/6300978111   -->
+            ads:adUnitId="ca-app-pub-3940256099942544/6300978111" />
+        <!--     ca-app-pub-8453032642509497/2664030780    -->
 
     </LinearLayout>
 

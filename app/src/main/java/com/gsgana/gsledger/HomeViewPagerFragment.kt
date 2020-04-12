@@ -1,5 +1,6 @@
 package com.gsgana.gsledger
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -17,7 +18,6 @@ import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
 import com.gsgana.gsledger.adapters.PagerAdapter
 import com.google.android.material.tabs.TabLayoutMediator
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
 import com.gsgana.gsledger.adapters.PagerAdapter.Companion.ADSANDOPTION_PAGE_INDEX
 import com.gsgana.gsledger.adapters.PagerAdapter.Companion.LEDGER_PAGE_INDEX
@@ -32,21 +32,22 @@ import java.util.regex.Pattern
 import kotlin.collections.HashMap
 
 
+@Suppress("UNCHECKED_CAST")
 class HomeViewPagerFragment : Fragment() {
     private lateinit var binding: HomeViewPagerFragmentBinding
     private val REAL_DB_PATH = "sYTVBn6F18VT6Ykw6L"
-    private val LAST_DB_PATH = "OGn6sgTK6umHojW6QV"
-    private val REAL_NAME = "sYTVBn2FO8VNT9Ykw90L"
+//    private val LAST_DB_PATH = "OGn6sgTK6umHojW6QV"
+//    private val REAL_NAME = "sYTVBn2FO8VNT9Ykw90L"
 
     private val PREF_NAME = "01504f779d6c77df04"
     private val CURR_NAME = "1w3d4f7w9d2qG2eT36"
     private val WEIGHT_NAME = "f79604050dfc500715"
-
-    private lateinit var mAuth: FirebaseAuth
-    private val USERS_DB_PATH = "qnI4vK2zSUq6GdeT6b"
-    private lateinit var rgl: CharArray
-    private lateinit var rgl_b: MutableList<Char>
-    private lateinit var database: FirebaseDatabase
+//
+//    private lateinit var mAuth: FirebaseAuth
+//    private val USERS_DB_PATH = "qnI4vK2zSUq6GdeT6b"
+//    private lateinit var rgl: CharArray
+//    private lateinit var rgl_b: MutableList<Char>
+//    private lateinit var database: FirebaseDatabase
 
     private lateinit var option: SharedPreferences
 
@@ -64,6 +65,7 @@ class HomeViewPagerFragment : Fragment() {
         InjectorUtils.provideHomeViewPagerViewModelFactory(requireActivity(), null)
     }
 
+    @SuppressLint("SimpleDateFormat", "SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -77,7 +79,7 @@ class HomeViewPagerFragment : Fragment() {
             override fun onCancelled(p0: DatabaseError) {}
             override fun onDataChange(p0: DataSnapshot) {
 
-                val data = p0?.value as HashMap<String, Double>
+                val data = p0.value as HashMap<String, Double>
                 currencyOption = option.getInt(CURR_NAME, 0)
                 weightOption = option.getInt(WEIGHT_NAME, 0)
 
@@ -98,14 +100,14 @@ class HomeViewPagerFragment : Fragment() {
 
         binding = HomeViewPagerFragmentBinding.inflate(inflater, container, false)
 
-        val mTransform =  Linkify.TransformFilter{ matcher: Matcher, s: String ->
-            "".toString()
+        val mTransform =  Linkify.TransformFilter{ _: Matcher, _: String ->
+            ""
         }
         val pattern1 = Pattern.compile("Disclaimer")
         val pattern2 = Pattern.compile("면책조항")
 
-        Linkify.addLinks(binding.disclaimer, pattern1, "https://gsledger-29cad.firebaseapp.com/disclaimer.html",null,mTransform);
-        Linkify.addLinks(binding.disclaimer, pattern2, "https://gsledger-29cad.firebaseapp.com/disclaimer_kr.html",null,mTransform);
+        Linkify.addLinks(binding.disclaimer, pattern1, "https://gsledger-29cad.firebaseapp.com/disclaimer.html",null,mTransform)
+        Linkify.addLinks(binding.disclaimer, pattern2, "https://gsledger-29cad.firebaseapp.com/disclaimer_kr.html",null,mTransform)
 
 
 
@@ -127,7 +129,7 @@ class HomeViewPagerFragment : Fragment() {
             val currencyOption = activity?.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
                 ?.getInt(CURR_NAME, 0)
 
-            val simpleDateFormat : SimpleDateFormat = SimpleDateFormat("yyyy/MM/dd HH:mm")
+            val simpleDateFormat = SimpleDateFormat("yyyy/MM/dd HH:mm")
             simpleDateFormat.timeZone = calendar
             val date = simpleDateFormat.format(Date(realData["DATE"]!!.toLong() * 1000))
 
@@ -147,17 +149,17 @@ class HomeViewPagerFragment : Fragment() {
                 else -> 1.0
             }
 
-            binding.weightUnitLabel.text = "(Unit: 1${WEIGHTUNIT[realData["weightUnit"]!!.toInt()]})"
+            binding.weightUnitLabel.text = "(Unit: 1" + WEIGHTUNIT[realData.getValue("weightUnit").toInt()] + ")"
 
             binding.realGoldPrice.text = String.format(
                 "%,.2f",
-                (realData["AU"]!! * realData[CURRENCY[currencyOption!!]]!! * weight!!
+                (realData["AU"]!! * realData.getValue(CURRENCY[currencyOption!!]) * weight!!
 
                         )
             )
             binding.realSilverPrice.text = String.format(
                 "%,.2f",
-                (realData["AG"]!! * realData[CURRENCY[currencyOption!!]]!! * weight!!)
+                (realData["AG"]!! * realData.getValue(CURRENCY[currencyOption]) * weight!!)
             )
 
 

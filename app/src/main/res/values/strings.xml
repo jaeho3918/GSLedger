@@ -54,13 +54,13 @@
     <string name="addProduct">Add Product</string>
     <string name="deleteProduct">Total</string>
     <string name="banner_ad_unit_id">ca-app-pub-8453032642509497~4168684141</string>
-    <string name="privacyPolicyText">I have read and agree to the terms of use and privacy policy</string>
+    <string name="privacyPolicyText">I have read and agree to the Terms and Conditions and Privacy Policy</string>
     <string name="rangePrice">Please enter the price in the above range for accurate calculation</string>
     <string name="rangePriceNotice">The above price range is for accurate calculation only, &#10;not the price of product.</string>
     <string name="delProduct">Do you agree to delete the product?&#10;(data cannot be recovered)</string>
     <string name="notice">Notice</string>
-    <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="oneperaccount">One account is allowed per gmail,&#10;Please sign up with another gmail.</string>
     <string name="agree">Agree</string>
-    <string name="checkBox">Please read and agree to the terms of use and privacy policy and check the box</string>
+    <string name="checkBox">Please read and agree to the Terms and Conditions and Privacy Policy and check the box</string>
 </resources>

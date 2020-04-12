@@ -1,11 +1,11 @@
+@file:Suppress("DEPRECATION")
+
 package com.gsgana.gsledger
 
+import android.annotation.SuppressLint
 import android.content.Context
-import android.content.SharedPreferences
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.TypedValue
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -15,13 +15,9 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.gson.JsonObject
-import com.gsgana.gsledger.databinding.FragmentWrite3Binding
-import com.gsgana.gsledger.databinding.FragmentWrite4Binding
 import com.gsgana.gsledger.databinding.FragmentWrite5Binding
 import com.gsgana.gsledger.utilities.*
 import com.gsgana.gsledger.viewmodels.WriteViewModel
@@ -32,17 +28,16 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.*
 
 
+@Suppress("DEPRECATION")
 class Write5Fragment : Fragment() {
 
     private val PREF_NAME = "01504f779d6c77df04"
     private val CURR_NAME = "1w3d4f7w9d2qG2eT36"
-    private val TIME_NAME = "6ck9uUlDuh7o6QKQFZ"
+
+    //    private val TIME_NAME = "6ck9uUlDuh7o6QKQFZ"
     private var option: Int? = null
     private var price1: String? = null
     private var price2: String? = null
-    private var priceAvrString: String? = null
-    private var priceAvrFloat: Float? = null
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,9 +45,9 @@ class Write5Fragment : Fragment() {
     ): View? {
         val viewModel =
             ViewModelProviders.of(
-                activity!!,
-                InjectorUtils.provideWriteViewModelFactory(activity!!, null)
-            )
+                    activity!!,
+                    InjectorUtils.provideWriteViewModelFactory(activity!!, null)
+                )
                 .get(WriteViewModel::class.java)
 
         option =
@@ -77,7 +72,7 @@ class Write5Fragment : Fragment() {
                 binding.summitButton.text = ""
 
                 val test = viewModel.dateField.value?.split("/")
-                var date_buf = if (test.isNullOrEmpty()) {
+                val date_buf = if (test.isNullOrEmpty()) {
                     val cal = Calendar.getInstance()
                     val _year = cal.get(Calendar.YEAR)
                     val _month = cal.get(Calendar.MONTH) + 1
@@ -107,13 +102,13 @@ class Write5Fragment : Fragment() {
 
                     price1 = if ("${binding.priceEditText1.text}" == "") {
                         "0"
-                    }else {
+                    } else {
                         binding.priceEditText1.text.toString()
                     }
 
                     price2 = if ("${binding.priceEditText2.text}" == "") {
                         "0"
-                    }else{
+                    } else {
                         binding.priceEditText2.text.toString()
                     }
                     addProperty(
@@ -135,12 +130,13 @@ class Write5Fragment : Fragment() {
                         if (p0.isSuccessful) {
                             val idToken = p0.result?.token
                             service.postRequest(idToken!!, jsonParam)
-                                ?.enqueue(object : retrofit2.Callback<Data> {
+                                .enqueue(object : retrofit2.Callback<Data> {
                                     override fun onFailure(call: Call<Data>, t: Throwable) {
                                         Toast.makeText(activity, t.toString(), Toast.LENGTH_LONG)
                                             .show()
                                     }
 
+                                    @SuppressLint("SetTextI18n")
                                     override fun onResponse(
                                         call: Call<Data>,
                                         response: Response<Data>
@@ -189,12 +185,12 @@ class Write5Fragment : Fragment() {
         binding: FragmentWrite5Binding,
         viewModel: WriteViewModel
     ) {
-        var adapter =
+        val adapter =
             ArrayAdapter(
                 context!!, R.layout.support_simple_spinner_dropdown_item, CURRENCY
             )
         binding.currencySpinner1.adapter = adapter
-        binding.currencySpinner1.dropDownVerticalOffset = dipToPixels(53f).toInt()
+        binding.currencySpinner1.dropDownVerticalOffset = 53f.dipToPixels().toInt()
         binding.currencySpinner1.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onNothingSelected(parent: AdapterView<*>?) {}
@@ -211,10 +207,10 @@ class Write5Fragment : Fragment() {
     }
 
 
-    private fun dipToPixels(dipValue: Float): Float {
+    private fun Float.dipToPixels(): Float {
         return TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP,
-            dipValue,
+            this,
             resources.displayMetrics
         )
     }
@@ -229,10 +225,6 @@ class Write5Fragment : Fragment() {
         return "${text1}.${text2}".toFloat()
     }
 
-    interface CallbackRequest {
-        fun click()
-
-    }
 
     interface CallbackSummit {
         fun click()

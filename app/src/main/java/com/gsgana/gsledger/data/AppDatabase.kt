@@ -8,11 +8,10 @@ import androidx.room.RoomDatabase
 import com.commonsware.cwac.saferoom.SafeHelperFactory
 
 
-@Database( entities = [Product::class, ProductImage::class], version = 1, exportSchema = false)
+@Database( entities = [Product::class], version = 1, exportSchema = false)
 
 abstract class AppDatabase : RoomDatabase() {
     abstract fun productDao(): ProductDao
-    abstract fun productImageDao(): ProductImageDao
 
     companion object {
         // For Singleton instantiation
@@ -34,7 +33,6 @@ abstract class AppDatabase : RoomDatabase() {
         ): AppDatabase {
             val factory = SafeHelperFactory(key)
             return Room.databaseBuilder(context, AppDatabase::class.java, "product")
-//                .addMigrations(MIGRATION_1_2)
                 .openHelperFactory(factory)
                 .build()
         }

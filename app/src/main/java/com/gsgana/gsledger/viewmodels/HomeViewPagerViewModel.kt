@@ -16,7 +16,6 @@ class HomeViewPagerViewModel internal constructor(
 
     val realData = MutableLiveData<Map<String, Double>>()
 
-    val realTime = MutableLiveData<String>()
 
     fun getProducts() : LiveData<List<Product>>  {
         return products

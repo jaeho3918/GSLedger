@@ -1,7 +1,9 @@
+@file:Suppress("DEPRECATION")
+
 package com.gsgana.gsledger
 
+import android.annotation.SuppressLint
 import android.content.Context
-import android.content.Intent
 import android.content.res.Resources
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
@@ -13,19 +15,16 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.google.firebase.firestore.FirebaseFirestore
 import com.gsgana.gsledger.databinding.FragmentWrite2Binding
 import com.gsgana.gsledger.utilities.*
 import com.gsgana.gsledger.viewmodels.WriteViewModel
+import java.util.*
 
 
 class Write2Fragment : Fragment() {
 
     private lateinit var binding: FragmentWrite2Binding
-
-    private val key = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -86,9 +85,10 @@ class Write2Fragment : Fragment() {
                 context!!, R.layout.support_simple_spinner_dropdown_item, write2Array ?: arrayOf("")
             )
         binding.brandSpn.adapter = brand_adpater
-        binding.brandSpn.dropDownVerticalOffset = dipToPixels(53f).toInt()
+        binding.brandSpn.dropDownVerticalOffset = 53f.dipToPixels().toInt()
         binding.brandSpn.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onNothingSelected(parent: AdapterView<*>?) {}
+            @SuppressLint("SetTextI18n", "DefaultLocale")
             override fun onItemSelected(
                 parent: AdapterView<*>?,
                 view: View?,
@@ -98,24 +98,22 @@ class Write2Fragment : Fragment() {
                 viewModel.brand.value = write2Array?.get(position)
                 viewModel.brandField1.value = position
                 var brand = write2Array?.get(position)
-                val metal = METAL[viewModel.metalField1.value!!].toLowerCase()
-                val type = TYPE[viewModel.typeField1.value!!].toLowerCase()
+                val metal = METAL[viewModel.metalField1.value!!].toLowerCase(Locale.getDefault())
+                val type = TYPE[viewModel.typeField1.value!!].toLowerCase(Locale.getDefault())
 
                 binding.brandTitle.text =
                     "${write2Array?.get(position)} ${metal.capitalize()} ${type.capitalize()} "
 
-                brand = (brand ?: "default").toLowerCase().replace(" ", "").replace("'", "")
+                brand = (brand ?: "default").toLowerCase(Locale.getDefault()).replace(" ", "").replace("'", "")
                     .replace(".", "").replace("-", "")
-                val test = "${brand}_${metal[0]}${type[0]}"
-                val imgId = getResource(
-                    "drawable",
+
+                val imgId = "drawable".getResource(
                     "${brand}_${metal[0]}${type[0]}",
                     context!!
                 )
                 if (imgId == 0) {
                     binding.brandImage.setImageResource(
-                        getResource(
-                            "drawable",
+                        "drawable".getResource(
                             "ic_default_${metal}${type}",
                             context!!
                         )
@@ -133,19 +131,19 @@ class Write2Fragment : Fragment() {
         }
     }
 
-    private fun dipToPixels(dipValue: Float): Float {
+    private fun Float.dipToPixels(): Float {
         return TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP,
-            dipValue,
+            this,
             resources.displayMetrics
         )
     }
 
-    private fun getResource(type: String, resName: String, context: Context): Int {
+    private fun String.getResource(resName: String, context: Context): Int {
 
         val resContext: Context = context.createPackageContext(context.packageName, 0)
         val res: Resources = resContext.resources
-        val id: Int = res.getIdentifier(resName, type, context.packageName)
+        val id: Int = res.getIdentifier(resName, this, context.packageName)
 
         return id
     }

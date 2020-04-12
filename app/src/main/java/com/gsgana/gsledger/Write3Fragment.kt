@@ -1,11 +1,13 @@
+@file:Suppress("DEPRECATION")
+
 package com.gsgana.gsledger
 
+import android.annotation.SuppressLint
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.TypedValue
-import android.view.KeyEvent
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,8 +15,6 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import com.gsgana.gsledger.databinding.FragmentWrite3Binding
@@ -71,11 +71,10 @@ class Write3Fragment : Fragment() {
         return binding.root
     }
 
+    @SuppressLint("SetTextI18n")
     private fun setButtonUi(
         binding: FragmentWrite3Binding,
-        viewModel: WriteViewModel,
-        array: Array<String>? = null,
-        table: Array<String>? = null
+        viewModel: WriteViewModel
     ) {
         binding.quickBtn120oz.setOnClickListener{
             binding.weightEditText1.setText("0")
@@ -194,6 +193,7 @@ class Write3Fragment : Fragment() {
             binding.weightEditText2.setText("0")
             binding.weightUnitSpinner1.setSelection(2)
 
+
             viewModel.weightUnitField.value = 2
         }
         binding.quickBtn5kg.setOnClickListener{
@@ -222,9 +222,7 @@ class Write3Fragment : Fragment() {
 
     private fun setSpinnerUi(
         binding: FragmentWrite3Binding,
-        viewModel: WriteViewModel,
-        array: Array<String>? = null,
-        table: Array<String>? = null
+        viewModel: WriteViewModel
     ) {
         if (viewModel.weightUnit.value != null) {
             if (viewModel.weightUnit.value!! > 0) {
@@ -241,7 +239,7 @@ class Write3Fragment : Fragment() {
                 context!!, R.layout.support_simple_spinner_dropdown_item, WEIGHTUNIT
             )
         binding.weightUnitSpinner1.adapter = adapter
-        binding.weightUnitSpinner1.dropDownVerticalOffset = dipToPixels(53f).toInt()
+        binding.weightUnitSpinner1.dropDownVerticalOffset = 53f.dipToPixels().toInt()
         binding.weightUnitSpinner1.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onNothingSelected(parent: AdapterView<*>?) {}
@@ -264,7 +262,7 @@ class Write3Fragment : Fragment() {
             )
 
         binding.packageTypeSpinner1.adapter = adapter
-        binding.packageTypeSpinner1.dropDownVerticalOffset = dipToPixels(53f).toInt()
+        binding.packageTypeSpinner1.dropDownVerticalOffset = 53f.dipToPixels().toInt()
         binding.packageTypeSpinner1.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
                 override fun onNothingSelected(parent: AdapterView<*>?) {}
@@ -285,9 +283,7 @@ class Write3Fragment : Fragment() {
 
     private fun setEditTextUi(
         binding: FragmentWrite3Binding,
-        viewModel: WriteViewModel,
-        array: Array<String>? = null,
-        table: Array<String>? = null
+        viewModel: WriteViewModel
     ) {
         binding.quantityEditText1.setText(viewModel.quantityField.value ?: "1")
 
@@ -336,10 +332,10 @@ class Write3Fragment : Fragment() {
         binding.weightEditText2.setText(viewModel.weightField2.value ?: "")
     }
 
-    private fun dipToPixels(dipValue: Float): Float {
+    private fun Float.dipToPixels(): Float {
         return TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP,
-            dipValue,
+            this,
             resources.displayMetrics
         )
     }

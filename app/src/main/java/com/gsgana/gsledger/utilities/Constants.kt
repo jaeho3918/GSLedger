@@ -1,8 +1,5 @@
 package com.gsgana.gsledger.utilities
 
-const val TOZ: Float = 31.10347f
-const val KG: Int = 1000
-const val DON: Float = 8.29425f
 
 val GCTABLE = arrayOf(
     "Default",
@@ -118,11 +115,11 @@ val TYPE = arrayOf(
     "Bar"
 )
 
-fun typeTable(index: Int) = when (index) {
-    0 -> TYPE[0]
-    1 -> TYPE[1]
-    else -> TYPE[0] //Coin
-}
+//fun typeTable(index: Int) = when (index) {
+//    0 -> TYPE[0]
+//    1 -> TYPE[1]
+//    else -> TYPE[0] //Coin
+//}
 
 val METAL = arrayOf(
     "Gold",
@@ -136,12 +133,12 @@ val METALCODE = arrayOf(
     "PA"
 )
 
-fun metalTable(index: Int) = when (index) {
-    0 -> METAL[0]
-    1 -> METAL[1]
-    2 -> METAL[2]
-    else -> METAL[0] //Gold
-}
+//fun metalTable(index: Int) = when (index) {
+//    0 -> METAL[0]
+//    1 -> METAL[1]
+//    2 -> METAL[2]
+//    else -> METAL[0] //Gold
+//}
 
 val CURRENCY = arrayOf(
     "USD", "GBP", "EUR", "JPY", "CNY", "KRW", "CAD", "AUD", "INR"
@@ -151,9 +148,9 @@ val CURRENCYSYMBOL = arrayOf(
     "$", "￡", "€", "¥", "¥", "₩", "$", "$", "₹"
 )
 
-val LANGUAGE = arrayOf(
-    "English", "Japanese", "Chinese", "Korean"
-)
+//val LANGUAGE = arrayOf(
+//    "English", "Japanese", "Chinese", "Korean"
+//)
 
 //val CURRENCYSYMBOL = arrayOf(
 //    "$", "￡", "€", "¥", "Ұ", "₩", "C$", "A$", "₹"

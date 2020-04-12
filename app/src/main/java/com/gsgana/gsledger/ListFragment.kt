@@ -8,26 +8,24 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
-import com.google.firebase.auth.FirebaseAuth
 
 import com.gsgana.gsledger.adapters.ProductAdapter
 import com.gsgana.gsledger.data.Product
 import com.gsgana.gsledger.databinding.ListFragmentBinding
 import com.gsgana.gsledger.utilities.InjectorUtils
 import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModel
-import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModelFactory
 
 
 class ListFragment : Fragment() {
 
     private lateinit var product: Product
     private lateinit var binding: ListFragmentBinding
-    private val KEY = "Kd6c26TK65YSmkw6oU"
-
-    private lateinit var mAuth: FirebaseAuth
-    private val USERS_DB_PATH = "qnI4vK2zSUq6GdeT6b"
-    private lateinit var viewModelFactory: HomeViewPagerViewModelFactory
-    private lateinit var rgl: MutableList<Char>
+//    private val KEY = "Kd6c26TK65YSmkw6oU"
+//
+//    private lateinit var mAuth: FirebaseAuth
+//    private val USERS_DB_PATH = "qnI4vK2zSUq6GdeT6b"
+//    private lateinit var viewModelFactory: HomeViewPagerViewModelFactory
+//    private lateinit var rgl: MutableList<Char>
 
     private val viewModel: HomeViewPagerViewModel by viewModels {
         InjectorUtils.provideHomeViewPagerViewModelFactory(requireActivity(), null)

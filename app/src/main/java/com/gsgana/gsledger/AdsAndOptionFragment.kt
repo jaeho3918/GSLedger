@@ -3,7 +3,6 @@ package com.gsgana.gsledger
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
-import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
@@ -14,15 +13,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import androidx.activity.viewModels
 import androidx.fragment.app.viewModels
-import androidx.navigation.findNavController
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.GoogleApiClient
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import com.gsgana.gsledger.databinding.AdsAndOptionFragmentBinding
 import com.gsgana.gsledger.utilities.CURRENCY
@@ -68,37 +63,35 @@ class AdsAndOptionFragment : Fragment() {
             val builder: AlertDialog.Builder = AlertDialog.Builder(context)
             builder.setTitle(resources.getString(R.string.caution))
             builder.setMessage(resources.getString(R.string.delAgreeCheck))
-            builder.setPositiveButton(resources.getString(R.string.agree),
-                DialogInterface.OnClickListener { _, _ ->
-                    del_btn.text = ""
-                    del_btn.isEnabled = false
-                    del_progressBar.visibility = View.VISIBLE
-                    viewModel.deleteProducts()
-                    mAuth = FirebaseAuth.getInstance()
-                    val doc = FirebaseFirestore.getInstance()
-                        .collection(USERS_DB_PATH)
-                        .document(mAuth.currentUser?.uid!!)
-                        .delete()
-                    mAuth = FirebaseAuth.getInstance()
-                    mAuth.currentUser!!.delete()
-                    gso =
-                        GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()
-                    googleSigninClient = GoogleSignIn.getClient(activity!!, gso)
-                    googleSigninClient.signOut()
-                    option = activity!!.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-                    option.edit()
-                        .clear()
-                        .apply()
+            builder.setPositiveButton(resources.getString(R.string.agree)
+            ) { _, _ ->
+                del_btn.text = ""
+                del_btn.isEnabled = false
+                del_progressBar.visibility = View.VISIBLE
+                viewModel.deleteProducts()
+                mAuth = FirebaseAuth.getInstance()
+                FirebaseFirestore.getInstance()
+                    .collection(USERS_DB_PATH)
+                    .document(mAuth.currentUser?.uid!!)
+                    .delete()
+                mAuth = FirebaseAuth.getInstance()
+                mAuth.currentUser!!.delete()
+                gso =
+                    GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()
+                googleSigninClient = GoogleSignIn.getClient(activity!!, gso)
+                googleSigninClient.signOut()
+                option = activity!!.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+                option.edit()
+                    .clear()
+                    .apply()
 
-                    Handler().postDelayed({
-                        activity!!.finish()
-                    }, 1800)
+                Handler().postDelayed({
+                    activity!!.finish()
+                }, 1800)
 
 
-                })
-            builder.setNegativeButton(resources.getString(R.string.no),
-                DialogInterface.OnClickListener { _, _ ->
-                })
+            }
+
             builder.show()
         }
 

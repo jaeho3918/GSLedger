@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
@@ -24,7 +25,6 @@
             android:id="@+id/realTimeLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tabLayout"
             android:layout_marginBottom="5dp"
             android:orientation="vertical"
             android:paddingTop="8dp"
@@ -32,7 +32,8 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:baselineAligned="false">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -52,7 +53,7 @@
                         android:id="@+id/realGoldCurrency"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="5dp"
+                        android:layout_marginStart="5dp"
                         android:text="$"
                         android:textColor="@color/font_gold"
                         android:textSize="@dimen/text_medium1"
@@ -103,7 +104,7 @@
                         android:id="@+id/realSilverCurrency"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="5dp"
+                        android:layout_marginStart="5dp"
                         android:text="$"
                         android:textColor="@color/font_silver"
                         android:textSize="@dimen/text_medium1"
@@ -127,7 +128,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:gravity="bottom"
-                            android:paddingStart="3dp"
+                            android:layout_marginStart="3dp"
                             android:paddingBottom="3dp"
                             android:text="(+0.00%)"
                             android:textColor="@color/font_silver"
@@ -145,7 +146,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingTop="3dp">
+                android:paddingTop="3dp"
+                android:baselineAligned="false">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -182,7 +184,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1.105"
-                    android:paddingRight="8dp">
+                    android:paddingEnd="8dp">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -222,14 +224,13 @@
             android:id="@+id/viewPager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            tools:ignore="InefficientWeight" />
 
         <com.google.android.gms.ads.AdView xmlns:ads="http://schemas.android.com/apk/res-auto"
             android:id="@+id/adView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
             ads:adSize="SMART_BANNER"
             ads:adUnitId="ca-app-pub-3940256099942544/6300978111" />
         <!--     ca-app-pub-8453032642509497/2664030780    -->

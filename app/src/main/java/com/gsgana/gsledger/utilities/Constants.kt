@@ -145,7 +145,7 @@ val CURRENCY = arrayOf(
 )
 
 val CURRENCYSYMBOL = arrayOf(
-    "$", "￡", "€", "¥", "¥", "₩", "$", "$", "₹"
+    "$", "￡", "€", "¥", "Ұ", "₩", "$", "$", "₹"
 )
 
 //val LANGUAGE = arrayOf(

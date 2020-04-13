@@ -14,10 +14,10 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.github.mikephil.charting.animation.Easing
-import com.github.mikephil.charting.data.LineDataSet
-import com.github.mikephil.charting.data.PieData
-import com.github.mikephil.charting.data.PieDataSet
-import com.github.mikephil.charting.data.PieEntry
+import com.github.mikephil.charting.components.XAxis
+import com.github.mikephil.charting.components.YAxis
+import com.github.mikephil.charting.data.*
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.formatter.PercentFormatter
 import com.google.firebase.auth.FirebaseAuth
 import com.gsgana.gsledger.data.Product
@@ -27,8 +27,7 @@ import com.gsgana.gsledger.utilities.CURRENCYSYMBOL
 import com.gsgana.gsledger.utilities.InjectorUtils
 import com.gsgana.gsledger.utilities.PACKAGENUM
 import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModel
-import java.util.*
-import kotlin.collections.ArrayList
+
 
 class StatFragment : Fragment() {
     private lateinit var binding: StatFragmentBinding
@@ -96,11 +95,67 @@ class StatFragment : Fragment() {
         }
         )
 
+        val list1 = listOf<Float>(
+            321386.0f,
+            316279.0f,
+            300740.0f,
+            344709.0f,
+            343791.0f,
+            368166.0f,
+            386592.0f,
+            393136.0f,
+            415565.0f,
+            407112.0f,
+            472422.0f,
+            462777.0f,
+            459997.0f,
+            440277.0f,
+            433119.0f,
+            493098.0f,
+            539812.0f,
+            621672.0f,
+            577607.0f,
+            623822.0f,
+            670383.0f,
+            880014.0f,
+            922649.0f,
+            1214453.0f,
+            1185725.0f,
+            1192379.0f,
+            1303124.0f,
+            1545649.0f,
+            1505712.0f,
+            1577093.0f,
+            1773164.0f,
+            1856614.0f,
+            1826469.0f,
+            1951372.0f,
+            1772516.0f,
+            1435832.0f,
+            1317464.0f,
+            1371267.0f,
+            1306834.0f,
+            1381955.0f,
+            1311315.0f,
+            1315183.0f,
+            1484457.0f,
+            1497402.0f,
+            1347457.0f,
+            1391865.0f,
+            1472266.0f,
+            1425448.0f,
+            1384784.0f,
+            1383482.0f,
+            1488812.0f,
+            1866962.0f,
+            1810542.0f
+        )
         Handler().postDelayed({
             if (!ratio.isNullOrEmpty()) {
                 if (!switchChart) setChart(context!!, binding, ratio!!) //if (context!=null)
+                setLineChart(context!!, binding, arrayListOf("1","2","3","4"), list1)
             }
-        }, 1800)
+        }, 2400)
 
         binding.addBtn.setOnClickListener {
             findNavController()
@@ -215,7 +270,8 @@ class StatFragment : Fragment() {
     private fun setLineChart(
         context: Context,
         binding: StatFragmentBinding,
-        ratio: List<Double>
+        date: ArrayList<String>,
+        value: List<Float>
     ) {
 
         val chart_goldC = ContextCompat.getColor(context, R.color.chart_goldC)
@@ -225,26 +281,79 @@ class StatFragment : Fragment() {
         val backGround = ContextCompat.getColor(context, R.color.border_background)
 
 
-        val pieChart = binding.goldChart
-        pieChart.description.isEnabled = false
+        val chart = binding.goldChart
+        chart.setViewPortOffsets(0f, 0f, 0f, 0f)
+        chart.setBackgroundColor(backGround)
 
-        pieChart.dragDecelerationFrictionCoef = 0.95f
+        val entries = arrayListOf<Entry>()
 
-        // enable rotation of the pieChart by touch
-        pieChart.isHighlightPerTapEnabled = false
+        value.forEachIndexed { index, fl -> entries.add(Entry(index.toFloat(), fl)) }
 
-        // add a selection listener
-        pieChart.animateXY(1100, 1100)
+        val dataSet = LineDataSet(entries, "")
+            .apply {
+                setDrawFilled(true)
+                setDrawValues(false)
+                fillColor = chart_goldC
+                color = chart_goldC
+                setCircleColor(chart_goldB)
+                mode = LineDataSet.Mode.CUBIC_BEZIER
+            }
 
-        val yvalues = ArrayList<PieEntry>()
+        chart.xAxis.valueFormatter = IndexAxisValueFormatter(date)
+
+        val data = LineData(dataSet)
+
+        chart.data = data
+
+        chart.setDrawMarkers(true)
+
+//        chart.setOnChartValueSelectedListener()
+
+        chart.getDescription()
+
+        chart.setEnabled(false)
+
+        chart.setDrawMarkers(false)
+
+        // enable touch gestures
+
+        // enable touch gestures
+        chart.setTouchEnabled(true)
+
+        // enable scaling and dragging
+
+        // enable scaling and dragging
+        chart.setDragEnabled(true)
+        chart.setScaleEnabled(true)
+
+        // if disabled, scaling can be done on x- and y-axis separately
+
+        // if disabled, scaling can be done on x- and y-axis separately
+        chart.setPinchZoom(false)
+
+        chart.setDrawGridBackground(false)
+        chart.maxHighlightDistance = 300f
+
+        val x: XAxis = chart.xAxis
+        x.isEnabled = false
+
+        val y: YAxis = chart.axisLeft
+        y.setLabelCount(6, false)
+        y.textColor = ContextCompat.getColor(context, R.color.font_silver)
+        y.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART)
+        y.setDrawGridLines(false)
+        y.axisLineColor = backGround
+
+        chart.getAxisRight().setEnabled(false)
 
 
-        val dataSet = PieDataSet(yvalues, "")
+        chart.getLegend().setEnabled(false)
 
+        chart.animateXY(2000, 2000)
 
-        pieChart.invalidate()
+        chart.invalidate()
 
-        pieChart.animateY(1100, Easing.EaseInOutQuad)
+        chart.animateY(1100, Easing.EaseInOutQuad)
     }
 
 

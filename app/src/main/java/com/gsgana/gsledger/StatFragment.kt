@@ -224,7 +224,6 @@ class StatFragment : Fragment() {
         val chart_silverB = ContextCompat.getColor(context, R.color.chart_silverB)
         val backGround = ContextCompat.getColor(context, R.color.border_background)
 
-        val dataSet : LineDataSet = LineDataSet(entry)
 
         val pieChart = binding.goldChart
         pieChart.description.isEnabled = false

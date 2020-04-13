@@ -14,6 +14,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.github.mikephil.charting.animation.Easing
+import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.data.PieData
 import com.github.mikephil.charting.data.PieDataSet
 import com.github.mikephil.charting.data.PieEntry
@@ -27,6 +28,7 @@ import com.gsgana.gsledger.utilities.InjectorUtils
 import com.gsgana.gsledger.utilities.PACKAGENUM
 import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModel
 import java.util.*
+import kotlin.collections.ArrayList
 
 class StatFragment : Fragment() {
     private lateinit var binding: StatFragmentBinding
@@ -204,6 +206,42 @@ class StatFragment : Fragment() {
 
 //        pieChart.visibility = View.VISIBLE
 //        binding.chartprogress.visibility = View.GONE
+
+        pieChart.invalidate()
+
+        pieChart.animateY(1100, Easing.EaseInOutQuad)
+    }
+
+    private fun setLineChart(
+        context: Context,
+        binding: StatFragmentBinding,
+        ratio: List<Double>
+    ) {
+
+        val chart_goldC = ContextCompat.getColor(context, R.color.chart_goldC)
+        val chart_goldB = ContextCompat.getColor(context, R.color.chart_goldB)
+        val chart_silverC = ContextCompat.getColor(context, R.color.chart_silverC)
+        val chart_silverB = ContextCompat.getColor(context, R.color.chart_silverB)
+        val backGround = ContextCompat.getColor(context, R.color.border_background)
+
+        val dataSet : LineDataSet = LineDataSet(entry)
+
+        val pieChart = binding.goldChart
+        pieChart.description.isEnabled = false
+
+        pieChart.dragDecelerationFrictionCoef = 0.95f
+
+        // enable rotation of the pieChart by touch
+        pieChart.isHighlightPerTapEnabled = false
+
+        // add a selection listener
+        pieChart.animateXY(1100, 1100)
+
+        val yvalues = ArrayList<PieEntry>()
+
+
+        val dataSet = PieDataSet(yvalues, "")
+
 
         pieChart.invalidate()
 

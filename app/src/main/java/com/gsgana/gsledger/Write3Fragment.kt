@@ -3,6 +3,7 @@
 package com.gsgana.gsledger
 
 import android.annotation.SuppressLint
+import android.content.Context
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.text.Editable
@@ -12,6 +13,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
@@ -53,6 +55,8 @@ class Write3Fragment : Fragment() {
         }
 
         binding.moveTo3.setOnClickListener {
+            val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view!!.windowToken, 0)
             findNavController().navigate(R.id.action_write3Fragment_to_write4Fragment)
         }
 

@@ -2,6 +2,7 @@
 
 package com.gsgana.gsledger
 
+import android.content.Context
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.LayoutInflater
@@ -9,6 +10,7 @@ import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -47,7 +49,10 @@ class Write4Fragment : Fragment() {
             viewModel.initProduct()
         }
 
-        binding.moveTo4.setOnClickListener { findNavController().navigate(R.id.action_write4Fragment_to_write5Fragment) }
+        binding.moveTo4.setOnClickListener {
+            val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view!!.windowToken, 0)
+            findNavController().navigate(R.id.action_write4Fragment_to_write5Fragment) }
 
         setSpinnerUi(binding, viewModel)
         setPickerUi(binding, viewModel)

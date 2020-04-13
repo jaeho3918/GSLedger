@@ -37,7 +37,7 @@
     <string name="modify">Modify</string>
     <string name="selectType">Select Type</string>
     <string name="next">Next</string>
-    <string name="Product">Product</string>
+    <string name="Product">Product Name</string>
     <string name="totalWeight">Total weight</string>
     <string name="dateOfPurchase">Date of Purchase</string>
     <string name="yearSeries">Year Series</string>
@@ -48,6 +48,8 @@
     <string name="lastUpdate">Last updated</string>
     <string name="disclaimer">Disclaimer</string>
     <string name="total">Total</string>
+    <string name="goldChart">Gold Chart</string>
+    <string name="silverChart">Silver Chart</string>
     <string name="Profit">profit</string>
     <string name="ledgerEmpty">Your list is empty</string>
     <string name="addProduct">Add Product</string>

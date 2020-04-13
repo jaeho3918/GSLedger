@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
@@ -176,6 +177,8 @@ class Write5Fragment : Fragment() {
                                             if ((min <= priceCalculate(binding)) &&
                                                 (max >= priceCalculate(binding))
                                             ) {
+                                                val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                                                imm.hideSoftInputFromWindow(view!!.windowToken, 0)
                                                 findNavController().navigate(R.id.action_write5Fragment_to_write6Fragment)
                                             } else {
                                                 binding.priceCur1.text =
@@ -292,6 +295,9 @@ class Write5Fragment : Fragment() {
                                                 if ((min <= priceCalculate(binding)) &&
                                                     (max >= priceCalculate(binding))
                                                 ) {
+
+                                                    val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                                                    imm.hideSoftInputFromWindow(view!!.windowToken, 0)
                                                     findNavController().navigate(R.id.action_write5Fragment_to_write6Fragment)
                                                 } else {
                                                     binding.priceCur1.text =

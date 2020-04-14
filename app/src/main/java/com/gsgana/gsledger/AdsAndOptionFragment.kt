@@ -70,11 +70,6 @@ class AdsAndOptionFragment : Fragment() {
                 del_progressBar.visibility = View.VISIBLE
                 viewModel.deleteProducts()
                 mAuth = FirebaseAuth.getInstance()
-                FirebaseFirestore.getInstance()
-                    .collection(USERS_DB_PATH)
-                    .document(mAuth.currentUser?.uid!!)
-                    .delete()
-                mAuth = FirebaseAuth.getInstance()
                 mAuth.currentUser!!.delete()
                 gso =
                     GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()

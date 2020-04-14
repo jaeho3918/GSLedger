@@ -7,7 +7,6 @@ import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
 import android.text.util.Linkify
 import android.util.Log
 import android.view.View
@@ -36,11 +35,14 @@ import java.util.regex.Pattern
 @Suppress("NAME_SHADOWING", "DEPRECATED_IDENTITY_EQUALS", "UNCHECKED_CAST")
 class IntroActivity : AppCompatActivity() {
     private val RC_SIGN_IN = 9001
-    private val ENCRYPT_NAME = "a345f2f713ie8bd261"
+    private val ENCRYPT_NAME = "a345f2f713ie8bd261"  //waiECtOFcBCylMcgjf7I
+    private val ENCRYPT_NAME1 = "cBywaiEtOFlMg6jf7I"
+    private val ENCRYPT_NAME6 = "JHv6DQ6loOBd6lLRrk"
     private val UID_NAME = "7e19f667a8a1c7075f"
-    private val USERS_DB_PATH = "qnI4vK2zSUq6GdeT6b"
+    private val USERS_DB_PATH = "qnI4vK2zSUq6GdeT6b" //FuWKuAiLI5Q4suD4ciBv
     private val KEY = "Kd6c26TK65YSmkw6oU"
     private val PREF_NAME = "01504f779d6c77df04"
+
     private lateinit var sf: SharedPreferences
     private lateinit var rgl: CharArray
     private lateinit var rgl_b: MutableList<Char>
@@ -59,7 +61,7 @@ class IntroActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        val sf = this.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
         setContentView(R.layout.activity_intro)
         mAuth = FirebaseAuth.getInstance()
         binding = DataBindingUtil.setContentView(this, R.layout.activity_intro)
@@ -103,25 +105,27 @@ class IntroActivity : AppCompatActivity() {
                 mTransform
             )
 
-            gso =
-                GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()
-            googleSigninClient = GoogleSignIn.getClient(this, gso)
-            googleSigninClient.signOut()
-
             googleSignInOption(binding)
 
         } else {
-            //access current id
-            FirebaseFirestore.getInstance()
+            //currentUser exist id
+
+
+            FirebaseFirestore
+                .getInstance()
                 .collection(USERS_DB_PATH)
+                .document(sf.getString(ENCRYPT_NAME, "null")!!) //(mAuth.currentUser?.uid!!)
+                .collection(sf.getString(ENCRYPT_NAME1, "null")!!)
                 .document(mAuth.currentUser?.uid!!)
                 .get()
                 .addOnSuccessListener { document ->
                     if (document.exists()) {
                         //if
-
                         rgl_b = arrayListOf()
-                        val test = document.data?.get("Rgl") as ArrayList<String>
+                        val test = document.data?.get(
+                            sf.getString(ENCRYPT_NAME6, "null")
+                        ) as ArrayList<String>
+
                         for (s in test) {
                             this.rgl_b.add(s.toCharArray()[0])
                         }
@@ -175,6 +179,9 @@ class IntroActivity : AppCompatActivity() {
 //                        googleSignInOption(binding)
                     }
                 }
+                .addOnFailureListener {
+                    Toast.makeText(this, it.toString(), Toast.LENGTH_LONG).show()
+                }
 
         }
     }
@@ -200,130 +207,66 @@ class IntroActivity : AppCompatActivity() {
         account: GoogleSignInAccount,
         sf: SharedPreferences
     ) {
-        if (account.idToken == null) {
-            activity.finish()
-        } else {
-            val credential = GoogleAuthProvider.getCredential(account.idToken, null)
-            mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this) {
-                    if (it.isSuccessful) {
-                        FirebaseFirestore.getInstance()
-                            .collection(USERS_DB_PATH)
-                            .document(mAuth.currentUser?.uid!!)
-                            .get()
-                            .addOnSuccessListener { document ->
-                                if (document.exists()) {
-                                    mAuth.signOut()
-                                    gso =
-                                        GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                                            .build()
-                                    googleSigninClient = GoogleSignIn.getClient(this, gso)
-                                    googleSigninClient.signOut()
-                                    binding.introProgressBar.visibility = View.GONE
-                                    Toast.makeText(
-                                        this,
-                                        resources.getString(R.string.oneperaccount),
-                                        Toast.LENGTH_LONG
-                                    ).show()
-                                } else {
-                                    //                    // Write a message to the firestore
-                                    if (sf.getString(ENCRYPT_NAME, null).isNullOrBlank()) {
-                                        // signup and generate key
-                                        sf.edit().putString(ENCRYPT_NAME, 32.generateRgl()).apply()
-                                        sf.edit()
-                                            .putString(UID_NAME, encrypt(mAuth.currentUser?.uid!!))
-                                            .apply()
-                                        val docRef = FirebaseFirestore.getInstance()
-                                            .collection(USERS_DB_PATH)
-                                            .document(mAuth.currentUser?.uid!!)
-                                        docRef.get().addOnSuccessListener { document ->
-                                            if (document.data?.get("Col3") == null) {
-                                                docRef
-                                                    .set(
-                                                        hashMapOf(
-                                                            "Rgl" to generateRgl6(),
-                                                            "Col3" to mAuth.currentUser?.uid!!
-                                                        )
-                                                    )
-                                            }
-                                        }
-                                        rgl_b = arrayListOf()
-                                        val test1 = generateRgl6()
-                                        for (s in test1) {
-                                            this.rgl_b.add(s.toCharArray()[0])
-                                        }
-                                        rgl = rgl_b.toCharArray()
-                                        rgl_b.clear()
-                                        val intent =
-                                            Intent(applicationContext, MainActivity::class.java)
-                                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                                        intent.putExtra(KEY, rgl)
-                                        rgl = charArrayOf()
-                                        startActivity(intent)
-                                        finish()
 
-                                    } else {
+        val credential = GoogleAuthProvider.getCredential(account.idToken, null)
 
-                                        mAuth = FirebaseAuth.getInstance()
-                                        val db = FirebaseFirestore.getInstance()
-                                        val docRef = db.collection(USERS_DB_PATH)
-                                            .document(mAuth.currentUser?.uid!!)
-                                        docRef.get()
-                                            .addOnSuccessListener { document ->
-                                                if (decrypt(sf.getString(UID_NAME, null)) ==
-                                                    document.data?.get("Col3")
-                                                ) {
-                                                    rgl_b = arrayListOf()
-                                                    val test1 = generateRgl6()
-                                                    for (s in test1) {
-                                                        this.rgl_b.add(s.toCharArray()[0])
-                                                    }
-                                                    rgl = rgl_b.toCharArray()
-                                                    rgl_b.clear()
-                                                    val intent =
-                                                        Intent(
-                                                            applicationContext,
-                                                            MainActivity::class.java
-                                                        )
-                                                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                                                    intent.putExtra(KEY, rgl)
-                                                    rgl = charArrayOf()
-                                                    startActivity(intent)
-                                                    finish()
-
-                                                } else {
-                                                    rgl_b = arrayListOf()
-                                                    val test1 = generateRgl6()
-                                                    for (s in test1) {
-                                                        this.rgl_b.add(s.toCharArray()[0])
-                                                    }
-                                                    rgl = rgl_b.toCharArray()
-                                                    rgl_b.clear()
-                                                    val intent =
-                                                        Intent(
-                                                            applicationContext,
-                                                            MainActivity::class.java
-                                                        )
-                                                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                                                    intent.putExtra(KEY, rgl)
-                                                    rgl = charArrayOf()
-                                                    startActivity(intent)
-                                                    finish()
-                                                }
-                                            }
-                                            .addOnFailureListener { exception ->
-                                                Log.d("GSNOTE", "get failed with ", exception)
-                                            }
-
-                                    }
-                                }
-
+        mAuth.signInWithCredential(credential)
+            .addOnCompleteListener(this) {
+                if (it.isSuccessful) {
+                    if (sf.getString(ENCRYPT_NAME, null).isNullOrEmpty()) {
+                        sf.edit()
+                            .apply {
+                                putString(ENCRYPT_NAME, "F6uWK6uAiLIBC5Q4suDci6Bv")
+                                putString(ENCRYPT_NAME1, "hmqDA6f1tlYS18RV6qRHI6EV")
+                                putString(ENCRYPT_NAME6, 32.generateRgl())
+                                commit()
                             }
-
-
                     }
+
+                    val docRef = FirebaseFirestore
+                        .getInstance()
+                        .collection(USERS_DB_PATH)
+                        .document(sf.getString(ENCRYPT_NAME, "null")!!) //(mAuth.currentUser?.uid!!)
+                        .collection(sf.getString(ENCRYPT_NAME1, "null")!!)
+                        .document(mAuth.currentUser?.uid!!)
+                        .apply {
+                            update(
+                                mapOf(
+                                    sf.getString(
+                                        ENCRYPT_NAME6,
+                                        "null"
+                                    ) to generateRgl6()
+                                )
+                            ).addOnFailureListener { exception ->
+                                Toast.makeText(
+                                    applicationContext,
+                                    exception.toString(),
+                                    Toast.LENGTH_LONG
+                                ).show()
+                            }
+                        }
+
+                    docRef
+                        .get()
+                        .addOnSuccessListener {
+                            rgl_b = arrayListOf()
+                            val test1 = generateRgl6()
+                            for (s in test1) {
+                                this.rgl_b.add(s.toCharArray()[0])
+                            }
+                            rgl = rgl_b.toCharArray()
+                            rgl_b.clear()
+                            val intent =
+                                Intent(applicationContext, MainActivity::class.java)
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                            intent.putExtra(KEY, rgl)
+                            rgl = charArrayOf()
+                            startActivity(intent)
+                            finish()
+                        }
                 }
-        }
+            }
+
     }
 
     private fun googleSignInOption(binding: ActivityIntroBinding) {

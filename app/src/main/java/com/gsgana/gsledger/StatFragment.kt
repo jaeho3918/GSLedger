@@ -396,7 +396,7 @@ class StatFragment : Fragment() {
         y.setDrawGridLines(false)
         y.axisLineColor = backGround
 
-        chart.setVisibleYRange(dataSet.yMax + 100f, dataSet.yMax + 100f, y.axisDependency)
+        chart.setVisibleYRange(dataSet.yMax + 100000f, dataSet.yMax + 100000f, y.axisDependency)
 
         chart.setPinchZoom(true)
 
@@ -671,7 +671,7 @@ class StatFragment : Fragment() {
         }
     }
 
-    private open class ChartAxisValueFormatter : ValueFormatter() {
+    private class ChartAxisValueFormatter : ValueFormatter() {
 
         private lateinit var mValues: ArrayList<String>
 
@@ -684,7 +684,7 @@ class StatFragment : Fragment() {
         }
     }
 
-    private open class CustomMarkerView(context: Context, layoutResource: Int) : MarkerView(
+    private class CustomMarkerView(context: Context, layoutResource: Int) : MarkerView(
         context,
         layoutResource
     ) {
@@ -706,7 +706,7 @@ class StatFragment : Fragment() {
 
         override fun getOffset(): MPPointF {
             super.getOffset().x = -(width / 2).toFloat()
-            super.getOffset().y = -(height.toFloat() - 6f)
+            super.getOffset().y = -(height.toFloat() + 11f)
             return super.getOffset()
         }
 //        override fun getX(): Float {

@@ -5,31 +5,36 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.text.util.Linkify
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
+import com.github.mikephil.charting.components.MarkerView
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.highlight.Highlight
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
-import com.gsgana.gsledger.adapters.PagerAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.database.*
+import com.gsgana.gsledger.adapters.PagerAdapter
 import com.gsgana.gsledger.adapters.PagerAdapter.Companion.ADSANDOPTION_PAGE_INDEX
 import com.gsgana.gsledger.adapters.PagerAdapter.Companion.LEDGER_PAGE_INDEX
 import com.gsgana.gsledger.adapters.PagerAdapter.Companion.STAT_PAGE_INDEX
 import com.gsgana.gsledger.databinding.HomeViewPagerFragmentBinding
-import com.gsgana.gsledger.utilities.*
+import com.gsgana.gsledger.utilities.CURRENCY
+import com.gsgana.gsledger.utilities.CURRENCYSYMBOL
+import com.gsgana.gsledger.utilities.InjectorUtils
+import com.gsgana.gsledger.utilities.WEIGHTUNIT
 import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Matcher
 import java.util.regex.Pattern
-import kotlin.collections.HashMap
 
 
 @Suppress("UNCHECKED_CAST")
@@ -57,9 +62,9 @@ class HomeViewPagerFragment : Fragment() {
     private var weight: Double? = null
 
     private lateinit var databaseRef: DatabaseReference
-    private lateinit var mAdView : AdView
+    private lateinit var mAdView: AdView
 
-    private lateinit var calendar : TimeZone
+    private lateinit var calendar: TimeZone
 
     private val viewModel: HomeViewPagerViewModel by viewModels {
         InjectorUtils.provideHomeViewPagerViewModelFactory(requireActivity(), null)
@@ -70,7 +75,7 @@ class HomeViewPagerFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        calendar  = Calendar.getInstance().timeZone
+        calendar = Calendar.getInstance().timeZone
 
         option = activity!!.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
         databaseRef = FirebaseDatabase.getInstance().getReference(REAL_DB_PATH)
@@ -100,16 +105,26 @@ class HomeViewPagerFragment : Fragment() {
 
         binding = HomeViewPagerFragmentBinding.inflate(inflater, container, false)
 
-        val mTransform =  Linkify.TransformFilter{ _: Matcher, _: String ->
+        val mTransform = Linkify.TransformFilter { _: Matcher, _: String ->
             ""
         }
         val pattern1 = Pattern.compile("Disclaimer")
         val pattern2 = Pattern.compile("면책조항")
 
-        Linkify.addLinks(binding.disclaimer, pattern1, "https://gsledger-29cad.firebaseapp.com/disclaimer.html",null,mTransform)
-        Linkify.addLinks(binding.disclaimer, pattern2, "https://gsledger-29cad.firebaseapp.com/disclaimer_kr.html",null,mTransform)
-
-
+        Linkify.addLinks(
+            binding.disclaimer,
+            pattern1,
+            "https://gsledger-29cad.firebaseapp.com/disclaimer.html",
+            null,
+            mTransform
+        )
+        Linkify.addLinks(
+            binding.disclaimer,
+            pattern2,
+            "https://gsledger-29cad.firebaseapp.com/disclaimer_kr.html",
+            null,
+            mTransform
+        )
 
         MobileAds.initialize(context)
         mAdView = binding.adView
@@ -122,7 +137,7 @@ class HomeViewPagerFragment : Fragment() {
         viewPager.adapter = PagerAdapter(this)
 
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-            tab.text = getTabTitle(position)
+            tab.text = getTabTitle(context, position)
         }.attach()
 
         viewModel.realData.observe(viewLifecycleOwner) { realData ->
@@ -149,7 +164,8 @@ class HomeViewPagerFragment : Fragment() {
                 else -> 1.0
             }
 
-            binding.weightUnitLabel.text = "(Unit: 1" + WEIGHTUNIT[realData.getValue("weightUnit").toInt()] + ")"
+            binding.weightUnitLabel.text =
+                "(Unit: 1" + WEIGHTUNIT[realData.getValue("weightUnit").toInt()] + ")"
 
             binding.realGoldPrice.text = String.format(
                 "%,.2f",
@@ -161,7 +177,6 @@ class HomeViewPagerFragment : Fragment() {
                 "%,.2f",
                 (realData["AG"]!! * realData.getValue(CURRENCY[currencyOption]) * weight!!)
             )
-
 
             /////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -248,13 +263,40 @@ class HomeViewPagerFragment : Fragment() {
         return 1
     }
 
-
-    private fun getTabTitle(position: Int): String? {
+    private fun getTabTitle(context: Context?, position: Int): String? {
         return when (position) {
-            STAT_PAGE_INDEX -> "Stat"
-            LEDGER_PAGE_INDEX -> "List"
-            ADSANDOPTION_PAGE_INDEX -> "AdsAndOption"
+            STAT_PAGE_INDEX -> context?.resources?.getString(R.string.overview)
+            LEDGER_PAGE_INDEX -> context?.resources?.getString(R.string.list)
+            ADSANDOPTION_PAGE_INDEX -> context?.resources?.getString(R.string.option)
             else -> null
         }
     }
+
+    class CustomMarkerView(context: Context, layoutResource: Int) : MarkerView(context,
+        layoutResource
+    ) {
+        private val tvContent: TextView = findViewById<View>(R.id.tvContent) as TextView
+
+        override fun refreshContent(e: Entry?, highlight: Highlight?) {
+            tvContent.text = "" + e.toString() // set the entry-value as the display text
+            super.refreshContent(e, highlight)
+        }
+
+        override fun getX(): Float {
+            return -(super.getWidth()/2).toFloat()
+        }
+
+        override fun getY(): Float {
+            return -super.getHeight().toFloat()
+        }
+
+//        fun getYOffset(xpos: Float): Int { // this will center the marker-view horizontally
+//            return -(width / 2)
+//        }
+//
+//        fun getYOffset(ypos: Float): Int { // this will cause the marker-view to be above the selected value
+//            return -height
+//        }
+    }
+
 }

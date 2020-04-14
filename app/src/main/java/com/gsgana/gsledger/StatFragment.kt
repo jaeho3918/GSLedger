@@ -1,24 +1,27 @@
 package com.gsgana.gsledger
 
-
 import android.content.Context
+import android.graphics.Canvas
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.github.mikephil.charting.animation.Easing
+import com.github.mikephil.charting.components.MarkerView
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.*
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.formatter.PercentFormatter
+import com.github.mikephil.charting.formatter.ValueFormatter
+import com.github.mikephil.charting.highlight.Highlight
+import com.github.mikephil.charting.utils.MPPointF
 import com.google.firebase.auth.FirebaseAuth
 import com.gsgana.gsledger.data.Product
 import com.gsgana.gsledger.databinding.StatFragmentBinding
@@ -95,7 +98,7 @@ class StatFragment : Fragment() {
         }
         )
 
-        val list1 = listOf<Float>(
+        val list1 = arrayListOf(
             321386.0f,
             316279.0f,
             300740.0f,
@@ -150,10 +153,66 @@ class StatFragment : Fragment() {
             1866962.0f,
             1810542.0f
         )
+        val dates = arrayListOf(
+            "20000120",
+            "20000614",
+            "20001101",
+            "20010322",
+            "20010809",
+            "20011227",
+            "20020517",
+            "20021004",
+            "20030224",
+            "20030715",
+            "20031202",
+            "20040421",
+            "20040908",
+            "20050126",
+            "20050615",
+            "20051102",
+            "20060322",
+            "20060809",
+            "20061227",
+            "20070517",
+            "20071004",
+            "20080221",
+            "20080710",
+            "20081127",
+            "20090416",
+            "20090903",
+            "20100121",
+            "20100610",
+            "20101028",
+            "20110318",
+            "20110805",
+            "20111223",
+            "20120511",
+            "20120928",
+            "20130215",
+            "20130708",
+            "20131125",
+            "20140414",
+            "20140901",
+            "20150119",
+            "20150608",
+            "20151026",
+            "20160314",
+            "20160801",
+            "20161219",
+            "20170508",
+            "20170925",
+            "20180212",
+            "20180703",
+            "20181120",
+            "20190409",
+            "20190828",
+            "20200110"
+        )
+
         Handler().postDelayed({
             if (!ratio.isNullOrEmpty()) {
                 if (!switchChart) setChart(context!!, binding, ratio!!) //if (context!=null)
-                setLineChart(context!!, binding, arrayListOf("1","2","3","4"), list1)
+                setLineChart(context!!, binding, dates, list1)
             }
         }, 2400)
 
@@ -172,11 +231,11 @@ class StatFragment : Fragment() {
         ratio: List<Double>
     ) {
 
-        val chart_goldC = ContextCompat.getColor(context, R.color.chart_goldC)
-        val chart_goldB = ContextCompat.getColor(context, R.color.chart_goldB)
-        val chart_silverC = ContextCompat.getColor(context, R.color.chart_silverC)
-        val chart_silverB = ContextCompat.getColor(context, R.color.chart_silverB)
-        val backGround = ContextCompat.getColor(context, R.color.border_background)
+        val chart_goldC = context.resources.getColor(R.color.chart_goldC, null)
+        val chart_goldB = context.resources.getColor(R.color.chart_goldB, null)
+        val chart_silverC = context.resources.getColor(R.color.chart_silverC, null)
+        val chart_silverB = context.resources.getColor(R.color.chart_silverB, null)
+        val backGround = context.resources.getColor(R.color.border_background, null)
 
         val chartData = mutableListOf(0f, 0f, 0f, 0f)
         ratio.forEachIndexed { idx, value ->
@@ -194,7 +253,6 @@ class StatFragment : Fragment() {
         pieChart.isDrawHoleEnabled = true
         pieChart.setHoleColor(backGround)
 //
-//        pieChart.setTransparentCircleColor(com.gsgana.gsledger.fragment.FirstFragment.gray)
         pieChart.setTransparentCircleAlpha(110)
         pieChart.setCenterTextSize(18f)
 
@@ -205,18 +263,12 @@ class StatFragment : Fragment() {
 
         pieChart.rotationAngle = 0f
 
-        // enable rotation of the pieChart by touch
-        // enable rotation of the pieChart by touch
         pieChart.isRotationEnabled = false
         pieChart.isHighlightPerTapEnabled = false
 
         // add a selection listener
-
-        // add a selection listener
         pieChart.animateXY(1100, 1100)
 
-        // entry label styling
-        // entry label styling
 //        pieChart.setEntryLabelColor(com.gsgana.gsledger.fragment.FirstFragment.gray)
         pieChart.setEntryLabelTextSize(15f)
 
@@ -274,17 +326,16 @@ class StatFragment : Fragment() {
         value: List<Float>
     ) {
 
-        val chart_goldC = ContextCompat.getColor(context, R.color.chart_goldC)
-        val chart_goldB = ContextCompat.getColor(context, R.color.chart_goldB)
-        val chart_silverC = ContextCompat.getColor(context, R.color.chart_silverC)
-        val chart_silverB = ContextCompat.getColor(context, R.color.chart_silverB)
-        val backGround = ContextCompat.getColor(context, R.color.border_background)
+        val chart_goldC = context.resources.getColor(R.color.chart_goldC, null)
+        val chart_goldB = context.resources.getColor(R.color.chart_goldB, null)
+        val chart_silverC = context.resources.getColor(R.color.chart_silverC, null)
+        val chart_silverB = context.resources.getColor(R.color.chart_silverB, null)
+        val backGround = context.resources.getColor(R.color.border_background, null)
 
-
-        val chart = binding.goldChart
-        chart.setViewPortOffsets(0f, 0f, 0f, 0f)
-        chart.setBackgroundColor(backGround)
-
+        val chart = binding.goldChart.apply {
+            setViewPortOffsets(0f, 0f, 0f, 0f)
+            setBackgroundColor(backGround)
+        }
         val entries = arrayListOf<Entry>()
 
         value.forEachIndexed { index, fl -> entries.add(Entry(index.toFloat(), fl)) }
@@ -297,9 +348,8 @@ class StatFragment : Fragment() {
                 color = chart_goldC
                 setCircleColor(chart_goldB)
                 mode = LineDataSet.Mode.CUBIC_BEZIER
+                isHighlightEnabled = true
             }
-
-        chart.xAxis.valueFormatter = IndexAxisValueFormatter(date)
 
         val data = LineData(dataSet)
 
@@ -307,53 +357,71 @@ class StatFragment : Fragment() {
 
         chart.setDrawMarkers(true)
 
-//        chart.setOnChartValueSelectedListener()
 
-        chart.getDescription()
+//        chart.setOnApplyWindowInsetsListener(this)
 
-        chart.setEnabled(false)
-
-        chart.setDrawMarkers(false)
+        chart.isEnabled = true
 
         // enable touch gestures
 
         // enable touch gestures
         chart.setTouchEnabled(true)
-
-        // enable scaling and dragging
-
-        // enable scaling and dragging
-        chart.setDragEnabled(true)
+        chart.isDragEnabled = true
         chart.setScaleEnabled(true)
 
         // if disabled, scaling can be done on x- and y-axis separately
 
-        // if disabled, scaling can be done on x- and y-axis separately
-        chart.setPinchZoom(false)
-
         chart.setDrawGridBackground(false)
         chart.maxHighlightDistance = 300f
 
-        val x: XAxis = chart.xAxis
-        x.isEnabled = false
+        val xAxis = chart.xAxis
+
+        val valueFormatter = ChartAxisValueFormatter().apply {
+            setValue(date)
+        }
+
+        xAxis.valueFormatter = valueFormatter
+        xAxis.isEnabled = true
+        xAxis.textColor = context.resources.getColor(R.color.chart_font, null)
+        xAxis.position = XAxis.XAxisPosition.BOTTOM_INSIDE
+        xAxis.setDrawGridLines(false)
+        xAxis.setLabelCount(6, true) //X축의 데이터를 최대 몇개 까지 나타낼지에 대한 설정 5개 force가 true 이면 반드시 보여줌
+        xAxis.spaceMax = 18f
+
 
         val y: YAxis = chart.axisLeft
         y.setLabelCount(6, false)
-        y.textColor = ContextCompat.getColor(context, R.color.font_silver)
-        y.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART)
+        y.textColor = resources.getColor(R.color.chart_font, null)
+        y.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART)
         y.setDrawGridLines(false)
         y.axisLineColor = backGround
 
-        chart.getAxisRight().setEnabled(false)
+        chart.setVisibleYRange(dataSet.yMax, dataSet.yMax, y.axisDependency)
 
+        chart.setPinchZoom(true)
 
-        chart.getLegend().setEnabled(false)
+        val mv =
+            CustomMarkerView(
+                context,
+                R.layout.marker_view
+            )
+                .apply{ chartView = chart }
 
-        chart.animateXY(2000, 2000)
+        chart.marker = mv
+
+        chart.setDrawMarkers(true)
+
+        chart.isHighlightPerTapEnabled = true
+
+        chart.axisRight.isEnabled = false
+
+        chart.legend.isEnabled = false
+
+//        chart.animateXY(2000, 2000)
 
         chart.invalidate()
 
-        chart.animateY(1100, Easing.EaseInOutQuad)
+//        chart.animateY(1100, Easing.EaseInOutQuad)
     }
 
 
@@ -601,6 +669,60 @@ class StatFragment : Fragment() {
                 ""
             }
         }
+    }
+
+    private open class ChartAxisValueFormatter : ValueFormatter() {
+
+        private lateinit var mValues: ArrayList<String>
+
+        fun setValue(mValues: ArrayList<String>) {
+            this.mValues = mValues
+        }
+
+        override fun getFormattedValue(value: Float): String {
+            return mValues[value.toInt()]
+        }
+    }
+
+    private open class CustomMarkerView(context: Context, layoutResource: Int) : MarkerView(
+        context,
+        layoutResource
+    ) {
+        private val tvContent: TextView = findViewById<View>(R.id.tvContent) as TextView
+
+        override fun refreshContent(e: Entry?, highlight: Highlight?) {
+            tvContent.text = String.format("%,.0f", e?.y) // set the entry-value as the display text
+            super.refreshContent(e, highlight)
+        }
+        override fun draw(
+            canvas: Canvas?,
+            posX: Float,
+            posY: Float
+        ) {
+            super.draw(canvas, posX, posY)
+            getOffsetForDrawingAtPoint(posX, posY)
+        }
+
+        override fun getOffset(): MPPointF {
+            super.getOffset().x = -(width / 2).toFloat()
+            super.getOffset().y = -(height.toFloat() - 6f)
+            return super.getOffset()
+        }
+//        override fun getX(): Float {
+//            return -(super.getWidth() / 2).toFloat()
+//        }
+//
+//        override fun getY(): Float {
+//            return super.getHeight().toFloat()
+//        }
+
+//        fun getYOffset(xpos: Float): Int { // this will center the marker-view horizontally
+//            return -(width / 2)
+//        }
+//
+//        fun getYOffset(ypos: Float): Int { // this will cause the marker-view to be above the selected value
+//            return -height
+//        }
     }
 }
 

@@ -5,6 +5,8 @@
     <color name="colorAccent">#929292</color>
 
     <color name="font_silver">#606060</color>
+    <color name="chart_font">#333333</color>
+
     <color name="font_gold">#f5b500</color>
 
     <color name="border_background">#f6f6f6</color>

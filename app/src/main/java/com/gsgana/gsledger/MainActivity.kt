@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity() {
             override fun onAdLoaded() {
                 if (mInterstitialAd.isLoaded) {
                     if (doneOnce) {
-                        mInterstitialAd.show()
+//                        mInterstitialAd.show()
                         doneOnce = false
                     }
                 }

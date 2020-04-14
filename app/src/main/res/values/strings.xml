@@ -48,6 +48,9 @@
     <string name="lastUpdate">Last updated</string>
     <string name="disclaimer">Disclaimer</string>
     <string name="total">Total</string>
+    <string name="overview">Overview</string>
+    <string name="list">List</string>
+    <string name="option">option</string>
     <string name="goldChart">Gold Chart</string>
     <string name="silverChart">Silver Chart</string>
     <string name="Profit">profit</string>

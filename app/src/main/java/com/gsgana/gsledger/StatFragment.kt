@@ -392,11 +392,11 @@ class StatFragment : Fragment() {
         val y: YAxis = chart.axisLeft
         y.setLabelCount(6, false)
         y.textColor = resources.getColor(R.color.chart_font, null)
-        y.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART)
+        y.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART)
         y.setDrawGridLines(false)
         y.axisLineColor = backGround
 
-        chart.setVisibleYRange(dataSet.yMax, dataSet.yMax, y.axisDependency)
+        chart.setVisibleYRange(dataSet.yMax + 100f, dataSet.yMax + 100f, y.axisDependency)
 
         chart.setPinchZoom(true)
 
@@ -405,7 +405,7 @@ class StatFragment : Fragment() {
                 context,
                 R.layout.marker_view
             )
-                .apply{ chartView = chart }
+                .apply { chartView = chart }
 
         chart.marker = mv
 
@@ -694,6 +694,7 @@ class StatFragment : Fragment() {
             tvContent.text = String.format("%,.0f", e?.y) // set the entry-value as the display text
             super.refreshContent(e, highlight)
         }
+
         override fun draw(
             canvas: Canvas?,
             posX: Float,

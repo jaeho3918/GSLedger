@@ -31,7 +31,6 @@ import com.gsgana.gsledger.utilities.InjectorUtils
 import com.gsgana.gsledger.utilities.PACKAGENUM
 import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModel
 
-
 class StatFragment : Fragment() {
     private lateinit var binding: StatFragmentBinding
 
@@ -44,7 +43,38 @@ class StatFragment : Fragment() {
     private var ratio: List<Double>? = null
 
     private val viewModel: HomeViewPagerViewModel by viewModels {
-        InjectorUtils.provideHomeViewPagerViewModelFactory(requireActivity(), null)
+        InjectorUtils.provideHomeViewPagerViewModelFactory(
+            requireActivity(),
+            charArrayOf(
+                "q"[0],
+                "X"[0],
+                "0"[0],
+                "J"[0],
+                "2"[0],
+                "Y"[0],
+                "3"[0],
+                "E"[0],
+                "y"[0],
+                "3"[0],
+                "C"[0],
+                "j"[0],
+                "Q"[0],
+                "o"[0],
+                "1"[0],
+                "n"[0],
+                "j"[0],
+                "P"[0],
+                "m"[0],
+                "s"[0],
+                "h"[0],
+                "E"[0],
+                "D"[0],
+                "Y"[0],
+                "B"[0],
+                "J"[0],
+                "E"[0]
+            )
+        )
     }
 
     override fun onCreateView(
@@ -211,10 +241,15 @@ class StatFragment : Fragment() {
 
         Handler().postDelayed({
             if (!ratio.isNullOrEmpty()) {
-                if (!switchChart) setChart(context!!, binding, ratio!!) //if (context!=null)
-                setLineChart(context!!, binding, dates, list1)
+                if (!switchChart) setChart(requireContext(), binding, ratio!!) //if (context!=null)
+                if (context != null) setLineChart(context!!, binding, dates, list1)
             }
         }, 2400)
+
+        Handler().postDelayed({
+            if (context != null) setLineChart(context!!, binding, dates, list1)
+        }, 5000)
+
 
         binding.addBtn.setOnClickListener {
             findNavController()
@@ -356,8 +391,6 @@ class StatFragment : Fragment() {
         chart.data = data
 
         chart.setDrawMarkers(true)
-
-
 //        chart.setOnApplyWindowInsetsListener(this)
 
         chart.isEnabled = true
@@ -671,7 +704,7 @@ class StatFragment : Fragment() {
         }
     }
 
-    private class ChartAxisValueFormatter : ValueFormatter() {
+    private open class ChartAxisValueFormatter : ValueFormatter() {
 
         private lateinit var mValues: ArrayList<String>
 
@@ -684,7 +717,7 @@ class StatFragment : Fragment() {
         }
     }
 
-    private class CustomMarkerView(context: Context, layoutResource: Int) : MarkerView(
+    private open class CustomMarkerView(context: Context, layoutResource: Int) : MarkerView(
         context,
         layoutResource
     ) {
@@ -706,7 +739,7 @@ class StatFragment : Fragment() {
 
         override fun getOffset(): MPPointF {
             super.getOffset().x = -(width / 2).toFloat()
-            super.getOffset().y = -(height.toFloat() + 11f)
+            super.getOffset().y = -(height.toFloat() + 18f)
             return super.getOffset()
         }
 //        override fun getX(): Float {

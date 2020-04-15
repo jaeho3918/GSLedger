@@ -70,13 +70,11 @@ class Write6Fragment : Fragment() {
 
         binding.layout6.setOnClickListener {
             viewModel.initProduct()
-            fm.popBackStack()
             findNavController().navigate(R.id.action_write6Fragment_to_homeViewPagerFragment)
         }
 
         binding.layout6r.setOnClickListener {
             viewModel.initProduct()
-            fm.popBackStack()
             findNavController().navigate(R.id.action_write6Fragment_to_homeViewPagerFragment)
         }
 
@@ -116,7 +114,6 @@ class Write6Fragment : Fragment() {
                 viewModel.addProduct(product)
                 viewModel.initProduct()
 
-                fm.popBackStack()
                 findNavController().navigate(R.id.action_write6Fragment_to_homeViewPagerFragment)
 
             }

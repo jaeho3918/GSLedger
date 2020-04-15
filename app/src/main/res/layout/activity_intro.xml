@@ -31,11 +31,11 @@
             <LinearLayout
                 android:id="@+id/signinLayout"
                 android:layout_width="match_parent"
-                android:paddingHorizontal="30dp"
                 android:layout_height="130dp"
                 android:layout_marginTop="@dimen/intro_marginTop"
                 android:gravity="center"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingHorizontal="30dp">
 
 
                 <ProgressBar
@@ -47,8 +47,8 @@
                     android:id="@+id/signInCheck"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:orientation="horizontal"
                     android:gravity="center"
+                    android:orientation="horizontal"
                     android:visibility="gone">
 
                     <CheckBox
@@ -67,32 +67,43 @@
 
                 </LinearLayout>
 
-                <Button
-                    android:id="@+id/loginBtn"
-                    android:layout_width="240dp"
-                    android:layout_height="@dimen/buttom_lagre_height"
-                    android:layout_margin="@dimen/intro_marginTop"
-                    android:background="@drawable/login_btn"
-                    android:drawableLeft="@drawable/googleg_standard_color_18"
-                    android:paddingStart="@dimen/button_image_padding_size"
-                    android:text="@string/loginwithgmail"
-                    android:textAllCaps="false"
-                    android:textColor="@color/red"
-                    android:textStyle="bold"
-                    android:visibility="gone" />
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
 
-                <Button
-                    android:id="@+id/signupBtn"
-                    android:layout_width="240dp"
-                    android:layout_height="@dimen/buttom_lagre_height"
-                    android:background="@drawable/signup_btn"
-                    android:drawableLeft="@drawable/googleg_standard_color_18"
-                    android:paddingStart="@dimen/button_image_padding_size"
-                    android:text="@string/signupwithgmail"
-                    android:textAllCaps="false"
-                    android:textColor="@color/green"
-                    android:visibility="gone"
-                    android:textStyle="bold" />
+                    <Button
+                        android:id="@+id/loginBtn"
+                        android:layout_width="240dp"
+                        android:layout_height="@dimen/buttom_lagre_height"
+                        android:layout_margin="@dimen/intro_marginTop"
+                        android:background="@drawable/login_btn"
+                        android:drawableLeft="@drawable/googleg_standard_color_18"
+                        android:paddingStart="@dimen/button_image_padding_size"
+                        android:text="@string/loginwithgmail"
+                        android:textAllCaps="false"
+                        android:textColor="@color/red"
+                        android:textStyle="bold"
+                        android:visibility="gone" />
+
+                    <Button
+                        android:id="@+id/signupBtn"
+                        android:layout_width="240dp"
+                        android:layout_height="@dimen/buttom_lagre_height"
+                        android:background="@drawable/signup_btn"
+                        android:drawableLeft="@drawable/googleg_standard_color_18"
+                        android:paddingStart="@dimen/button_image_padding_size"
+                        android:text="@string/signupwithgmail"
+                        android:textAllCaps="false"
+                        android:textColor="@color/green"
+                        android:textStyle="bold"
+                        android:visibility="gone" />
+
+                    <ProgressBar
+                        android:id="@+id/signupProgress"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

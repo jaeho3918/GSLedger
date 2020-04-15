@@ -193,7 +193,13 @@ class IntroActivity : AppCompatActivity() {
                                                     "null"
                                                 )!! to generateRgl6()
                                             )
-                                        )
+                                        ).addOnFailureListener {
+                                            Toast.makeText(
+                                                applicationContext,
+                                                it.toString(),
+                                                Toast.LENGTH_LONG
+                                            ).show()
+                                        }
                                     } else {
                                         set(
                                             hashMapOf(
@@ -238,7 +244,7 @@ class IntroActivity : AppCompatActivity() {
                             rgl = charArrayOf()
                             finish()
                         }
-                }, 800)
+                }, 5000)
 
 
             }
@@ -263,6 +269,8 @@ private fun googleSignInOption(binding: ActivityIntroBinding) {
             ).show()
         } else {
             val signInIntent = googleSigninClient.signInIntent
+            binding.signupBtn.visibility = View.GONE
+            binding.signupProgress.visibility = View.VISIBLE
             startActivityForResult(signInIntent, RC_SIGN_IN)
         }
     }

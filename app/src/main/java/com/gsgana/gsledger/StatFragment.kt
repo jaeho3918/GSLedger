@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
@@ -22,7 +23,9 @@ import com.github.mikephil.charting.formatter.PercentFormatter
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.utils.MPPointF
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.functions.FirebaseFunctions
 import com.gsgana.gsledger.data.Product
 import com.gsgana.gsledger.databinding.StatFragmentBinding
 import com.gsgana.gsledger.utilities.CURRENCY
@@ -31,6 +34,8 @@ import com.gsgana.gsledger.utilities.InjectorUtils
 import com.gsgana.gsledger.utilities.PACKAGENUM
 import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModel
 
+
+@Suppress("UNCHECKED_CAST")
 class StatFragment : Fragment() {
     private lateinit var binding: StatFragmentBinding
 
@@ -44,56 +49,24 @@ class StatFragment : Fragment() {
 
     private val KEY = "Kd6c26TK65YSmkw6oU"
     private val viewModel: HomeViewPagerViewModel by viewModels {
-        InjectorUtils.provideHomeViewPagerViewModelFactory(activity!!, null) //(activity!!, activity!!.intent.getCharArrayExtra(KEY))
+        InjectorUtils.provideHomeViewPagerViewModelFactory(
+            activity!!,
+            activity!!.intent.getCharArrayExtra(KEY)
+        ) //(activity!!, activity!!.intent.getCharArrayExtra(KEY))
     }
-
-//    private val viewModel: HomeViewPagerViewModel by viewModels {
-//        InjectorUtils.provideHomeViewPagerViewModelFactory(
-//            requireActivity(),
-//            charArrayOf(
-//                "q"[0],
-//                "X"[0],
-//                "0"[0],
-//                "J"[0],
-//                "2"[0],
-//                "Y"[0],
-//                "3"[0],
-//                "E"[0],
-//                "y"[0],
-//                "3"[0],
-//                "C"[0],
-//                "j"[0],
-//                "Q"[0],
-//                "o"[0],
-//                "1"[0],
-//                "n"[0],
-//                "j"[0],
-//                "P"[0],
-//                "m"[0],
-//                "s"[0],
-//                "h"[0],
-//                "E"[0],
-//                "D"[0],
-//                "Y"[0],
-//                "B"[0],
-//                "J"[0],
-//                "E"[0]
-//            )
-//        )
-//    }
+    private lateinit var functions: FirebaseFunctions// ...
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
-        val test = activity!!.intent.getCharArrayExtra(KEY)
-
         rgl = mutableListOf()
         mAuth = FirebaseAuth.getInstance()
         fm = childFragmentManager
         fm.popBackStack()
 
+        functions = FirebaseFunctions.getInstance()
 
         binding = StatFragmentBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
@@ -135,127 +108,23 @@ class StatFragment : Fragment() {
         }
         )
 
-        val list1 = arrayListOf(
-            321386.0f,
-            316279.0f,
-            300740.0f,
-            344709.0f,
-            343791.0f,
-            368166.0f,
-            386592.0f,
-            393136.0f,
-            415565.0f,
-            407112.0f,
-            472422.0f,
-            462777.0f,
-            459997.0f,
-            440277.0f,
-            433119.0f,
-            493098.0f,
-            539812.0f,
-            621672.0f,
-            577607.0f,
-            623822.0f,
-            670383.0f,
-            880014.0f,
-            922649.0f,
-            1214453.0f,
-            1185725.0f,
-            1192379.0f,
-            1303124.0f,
-            1545649.0f,
-            1505712.0f,
-            1577093.0f,
-            1773164.0f,
-            1856614.0f,
-            1826469.0f,
-            1951372.0f,
-            1772516.0f,
-            1435832.0f,
-            1317464.0f,
-            1371267.0f,
-            1306834.0f,
-            1381955.0f,
-            1311315.0f,
-            1315183.0f,
-            1484457.0f,
-            1497402.0f,
-            1347457.0f,
-            1391865.0f,
-            1472266.0f,
-            1425448.0f,
-            1384784.0f,
-            1383482.0f,
-            1488812.0f,
-            1866962.0f,
-            1810542.0f
-        )
-        val dates = arrayListOf(
-            "20000120",
-            "20000614",
-            "20001101",
-            "20010322",
-            "20010809",
-            "20011227",
-            "20020517",
-            "20021004",
-            "20030224",
-            "20030715",
-            "20031202",
-            "20040421",
-            "20040908",
-            "20050126",
-            "20050615",
-            "20051102",
-            "20060322",
-            "20060809",
-            "20061227",
-            "20070517",
-            "20071004",
-            "20080221",
-            "20080710",
-            "20081127",
-            "20090416",
-            "20090903",
-            "20100121",
-            "20100610",
-            "20101028",
-            "20110318",
-            "20110805",
-            "20111223",
-            "20120511",
-            "20120928",
-            "20130215",
-            "20130708",
-            "20131125",
-            "20140414",
-            "20140901",
-            "20150119",
-            "20150608",
-            "20151026",
-            "20160314",
-            "20160801",
-            "20161219",
-            "20170508",
-            "20170925",
-            "20180212",
-            "20180703",
-            "20181120",
-            "20190409",
-            "20190828",
-            "20200110"
-        )
+
+        getChart().addOnCompleteListener { data ->
+            val list1 = data.result?.get("value_AU") as ArrayList<Float>
+            val list2 = data.result?.get("value_AG") as ArrayList<Float>
+            val dates = data.result?.get("date") as ArrayList<String>
+            if (context != null) setLineChart(context!!, binding, dates, list1)
+            if (context != null) setLineChart1(context!!, binding, dates, list2)
+            list1.clear()
+            list2.clear()
+            dates.clear()
+        }
 
         Handler().postDelayed({
             if (!ratio.isNullOrEmpty()) {
                 if (!switchChart) setChart(requireContext(), binding, ratio!!) //if (context!=null)
             }
         }, 2400)
-
-        Handler().postDelayed({
-            if (context != null) setLineChart(context!!, binding, dates, list1)
-        }, 3000)
-
 
         binding.addBtn.setOnClickListener {
             findNavController()
@@ -390,6 +259,7 @@ class StatFragment : Fragment() {
                 setCircleColor(chart_goldB)
                 mode = LineDataSet.Mode.CUBIC_BEZIER
                 isHighlightEnabled = true
+                setDrawCircles(false)
             }
 
         val data = LineData(dataSet)
@@ -397,13 +267,12 @@ class StatFragment : Fragment() {
         chart.data = data
 
         chart.setDrawMarkers(true)
-//        chart.setOnApplyWindowInsetsListener(this)
+
+        chart.description.isEnabled = false
+        chart.setViewPortOffsets(80f, 0f, 80f, 0f)
 
         chart.isEnabled = true
 
-        // enable touch gestures
-
-        // enable touch gestures
         chart.setTouchEnabled(true)
         chart.isDragEnabled = true
         chart.setScaleEnabled(true)
@@ -424,18 +293,22 @@ class StatFragment : Fragment() {
         xAxis.textColor = context.resources.getColor(R.color.chart_font, null)
         xAxis.position = XAxis.XAxisPosition.BOTTOM_INSIDE
         xAxis.setDrawGridLines(false)
-        xAxis.setLabelCount(6, true) //X축의 데이터를 최대 몇개 까지 나타낼지에 대한 설정 5개 force가 true 이면 반드시 보여줌
+        xAxis.setLabelCount(5, true) //X축의 데이터를 최대 몇개 까지 나타낼지에 대한 설정 5개 force가 true 이면 반드시 보여줌
         xAxis.spaceMax = 18f
 
 
         val y: YAxis = chart.axisLeft
         y.setLabelCount(6, false)
         y.textColor = resources.getColor(R.color.chart_font, null)
-        y.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART)
+        y.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART)
         y.setDrawGridLines(false)
         y.axisLineColor = backGround
 
-        chart.setVisibleYRange(dataSet.yMax + 100000f, dataSet.yMax + 100000f, y.axisDependency)
+        chart.setVisibleYRange(
+            dataSet.yMax + dataSet.yMax / 10,
+            dataSet.yMax + dataSet.yMax / 10,
+            y.axisDependency
+        )
 
         chart.setPinchZoom(true)
 
@@ -447,19 +320,107 @@ class StatFragment : Fragment() {
                 .apply { chartView = chart }
 
         chart.marker = mv
-
         chart.setDrawMarkers(true)
-
         chart.isHighlightPerTapEnabled = true
-
         chart.axisRight.isEnabled = false
-
         chart.legend.isEnabled = false
-
         chart.invalidate()
-
     }
 
+    private fun setLineChart1(
+        context: Context,
+        binding: StatFragmentBinding,
+        date: ArrayList<String>,
+        value: List<Float>
+    ) {
+        val chart_silverC = context.resources.getColor(R.color.chart_silverC, null)
+        val chart_silverB = context.resources.getColor(R.color.chart_silverB, null)
+        val backGround = context.resources.getColor(R.color.border_background, null)
+
+        val chart = binding.silverChart.apply {
+            setViewPortOffsets(0f, 0f, 0f, 0f)
+            setBackgroundColor(backGround)
+        }
+        val entries = arrayListOf<Entry>()
+
+        value.forEachIndexed { index, fl -> entries.add(Entry(index.toFloat(), fl)) }
+
+        val dataSet = LineDataSet(entries, "")
+            .apply {
+                setDrawFilled(true)
+                setDrawValues(false)
+                fillColor = chart_silverC
+                color = chart_silverC
+                setCircleColor(chart_silverB)
+                mode = LineDataSet.Mode.CUBIC_BEZIER
+                isHighlightEnabled = true
+                setDrawCircles(false)
+            }
+
+        val data = LineData(dataSet)
+
+        chart.data = data
+
+        chart.setDrawMarkers(true)
+        chart.description.isEnabled = false
+
+        chart.setViewPortOffsets(80f, 0f, 80f, 0f)
+
+        chart.isEnabled = true
+
+        chart.setTouchEnabled(true)
+        chart.isDragEnabled = true
+        chart.setScaleEnabled(true)
+
+        // if disabled, scaling can be done on x- and y-axis separately
+
+        chart.setDrawGridBackground(false)
+        chart.maxHighlightDistance = 300f
+
+        val xAxis = chart.xAxis
+
+        val valueFormatter = ChartAxisValueFormatter().apply {
+            setValue(date)
+        }
+
+        xAxis.valueFormatter = valueFormatter
+        xAxis.isEnabled = true
+        xAxis.textColor = context.resources.getColor(R.color.chart_font, null)
+        xAxis.position = XAxis.XAxisPosition.BOTTOM_INSIDE
+        xAxis.setDrawGridLines(false)
+        xAxis.setLabelCount(5, true) //X축의 데이터를 최대 몇개 까지 나타낼지에 대한 설정 5개 force가 true 이면 반드시 보여줌
+        xAxis.spaceMax = 18f
+
+
+        val y: YAxis = chart.axisLeft
+        y.setLabelCount(6, false)
+        y.textColor = resources.getColor(R.color.chart_font, null)
+        y.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART)
+        y.setDrawGridLines(false)
+        y.axisLineColor = backGround
+
+        chart.setVisibleYRange(
+            dataSet.yMax + dataSet.yMax / 10,
+            dataSet.yMax + dataSet.yMax / 10,
+            y.axisDependency
+        )
+
+        chart.setPinchZoom(true)
+
+        val mv =
+            CustomMarkerView(
+                context,
+                R.layout.marker_view1
+            )
+                .apply { chartView = chart }
+
+        chart.marker = mv
+        chart.setDrawMarkers(true)
+        chart.isHighlightPerTapEnabled = true
+        chart.axisRight.isEnabled = false
+        chart.legend.isEnabled = false
+        chart.invalidate()
+    }
 
     private fun calculateProduct(
         binding: StatFragmentBinding,
@@ -716,13 +677,17 @@ class StatFragment : Fragment() {
         }
 
         override fun getFormattedValue(value: Float): String {
-            return if (value <= (mValues.size - 1)) {
-                mValues[value.toInt()]
-            } else {
-                mValues[mValues.size - 1]
+            if (mValues.size != 0) {
+                return if (value <= (mValues.size - 1)) {
+                    mValues[value.toInt()]
+                } else {
+                    mValues[mValues.size - 1]
+                }
             }
+            return ""
         }
     }
+
     private class CustomMarkerView(context: Context, layoutResource: Int) : MarkerView(
         context,
         layoutResource
@@ -731,7 +696,7 @@ class StatFragment : Fragment() {
 
         override fun refreshContent(e: Entry?, highlight: Highlight?) {
             tvContent.text =
-                String.format("%,.0f", e?.y) // set the entry-value as the display text
+                String.format("%,.2f", e?.y) // set the entry-value as the display text
             super.refreshContent(e, highlight)
         }
 
@@ -750,5 +715,26 @@ class StatFragment : Fragment() {
             return super.getOffset()
         }
     }
-}
 
+    private fun getChart(): Task<Map<*, ArrayList<*>>> {
+
+        // Create the arguments to the callable function.
+
+        val data = hashMapOf(
+            "date" to listOf<String>(),
+            "value_AU" to listOf<Float>(),
+            "value_AG" to listOf<Float>()
+        )
+        return functions
+            .getHttpsCallable("getChart")
+            .call(data)
+            .continueWith { task ->
+                // This continuation runs on either success or failure, but if the task
+                // has failed then result will throw an Exception which will be
+                // propagated down.
+
+                val result = task.result?.data as Map<*, ArrayList<*>>
+                result
+            }
+    }
+}

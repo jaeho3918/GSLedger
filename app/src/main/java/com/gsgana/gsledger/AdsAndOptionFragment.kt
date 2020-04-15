@@ -42,7 +42,7 @@ class AdsAndOptionFragment : Fragment() {
 
     private val KEY = "Kd6c26TK65YSmkw6oU"
     private val viewModel: HomeViewPagerViewModel by viewModels {
-        InjectorUtils.provideHomeViewPagerViewModelFactory(activity!!, null) //(activity!!, activity!!.intent.getCharArrayExtra(KEY))
+        InjectorUtils.provideHomeViewPagerViewModelFactory(activity!!, activity!!.intent.getCharArrayExtra(KEY)) //(activity!!, activity!!.intent.getCharArrayExtra(KEY))
     }
 
 

@@ -42,45 +42,52 @@ class StatFragment : Fragment() {
 
     private var ratio: List<Double>? = null
 
+    private val KEY = "Kd6c26TK65YSmkw6oU"
     private val viewModel: HomeViewPagerViewModel by viewModels {
-        InjectorUtils.provideHomeViewPagerViewModelFactory(
-            requireActivity(),
-            charArrayOf(
-                "q"[0],
-                "X"[0],
-                "0"[0],
-                "J"[0],
-                "2"[0],
-                "Y"[0],
-                "3"[0],
-                "E"[0],
-                "y"[0],
-                "3"[0],
-                "C"[0],
-                "j"[0],
-                "Q"[0],
-                "o"[0],
-                "1"[0],
-                "n"[0],
-                "j"[0],
-                "P"[0],
-                "m"[0],
-                "s"[0],
-                "h"[0],
-                "E"[0],
-                "D"[0],
-                "Y"[0],
-                "B"[0],
-                "J"[0],
-                "E"[0]
-            )
-        )
+        InjectorUtils.provideHomeViewPagerViewModelFactory(activity!!, null) //(activity!!, activity!!.intent.getCharArrayExtra(KEY))
     }
+
+//    private val viewModel: HomeViewPagerViewModel by viewModels {
+//        InjectorUtils.provideHomeViewPagerViewModelFactory(
+//            requireActivity(),
+//            charArrayOf(
+//                "q"[0],
+//                "X"[0],
+//                "0"[0],
+//                "J"[0],
+//                "2"[0],
+//                "Y"[0],
+//                "3"[0],
+//                "E"[0],
+//                "y"[0],
+//                "3"[0],
+//                "C"[0],
+//                "j"[0],
+//                "Q"[0],
+//                "o"[0],
+//                "1"[0],
+//                "n"[0],
+//                "j"[0],
+//                "P"[0],
+//                "m"[0],
+//                "s"[0],
+//                "h"[0],
+//                "E"[0],
+//                "D"[0],
+//                "Y"[0],
+//                "B"[0],
+//                "J"[0],
+//                "E"[0]
+//            )
+//        )
+//    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        val test = activity!!.intent.getCharArrayExtra(KEY)
 
         rgl = mutableListOf()
         mAuth = FirebaseAuth.getInstance()
@@ -242,13 +249,12 @@ class StatFragment : Fragment() {
         Handler().postDelayed({
             if (!ratio.isNullOrEmpty()) {
                 if (!switchChart) setChart(requireContext(), binding, ratio!!) //if (context!=null)
-                if (context != null) setLineChart(context!!, binding, dates, list1)
             }
         }, 2400)
 
         Handler().postDelayed({
             if (context != null) setLineChart(context!!, binding, dates, list1)
-        }, 5000)
+        }, 3000)
 
 
         binding.addBtn.setOnClickListener {
@@ -450,11 +456,8 @@ class StatFragment : Fragment() {
 
         chart.legend.isEnabled = false
 
-//        chart.animateXY(2000, 2000)
-
         chart.invalidate()
 
-//        chart.animateY(1100, Easing.EaseInOutQuad)
     }
 
 
@@ -464,9 +467,9 @@ class StatFragment : Fragment() {
         products: List<Product>
     ): List<Double> {
 
-        val currency = realData[CURRENCY[realData["currency"]!!.toInt()]]!!
+        val currency = realData.getValue(CURRENCY[realData.getValue("currency").toInt()])
 
-        val currencyOption = realData["currency"]!!.toInt()
+        val currencyOption = realData.getValue("currency").toInt()
 
         var goldCoin_RealData = 0.0
         var goldBar_RealData = 0.0
@@ -704,7 +707,7 @@ class StatFragment : Fragment() {
         }
     }
 
-    private open class ChartAxisValueFormatter : ValueFormatter() {
+    private class ChartAxisValueFormatter : ValueFormatter() {
 
         private lateinit var mValues: ArrayList<String>
 
@@ -713,18 +716,22 @@ class StatFragment : Fragment() {
         }
 
         override fun getFormattedValue(value: Float): String {
-            return mValues[value.toInt()]
+            return if (value <= (mValues.size - 1)) {
+                mValues[value.toInt()]
+            } else {
+                mValues[mValues.size - 1]
+            }
         }
     }
-
-    private open class CustomMarkerView(context: Context, layoutResource: Int) : MarkerView(
+    private class CustomMarkerView(context: Context, layoutResource: Int) : MarkerView(
         context,
         layoutResource
     ) {
         private val tvContent: TextView = findViewById<View>(R.id.tvContent) as TextView
 
         override fun refreshContent(e: Entry?, highlight: Highlight?) {
-            tvContent.text = String.format("%,.0f", e?.y) // set the entry-value as the display text
+            tvContent.text =
+                String.format("%,.0f", e?.y) // set the entry-value as the display text
             super.refreshContent(e, highlight)
         }
 
@@ -742,22 +749,6 @@ class StatFragment : Fragment() {
             super.getOffset().y = -(height.toFloat() + 18f)
             return super.getOffset()
         }
-//        override fun getX(): Float {
-//            return -(super.getWidth() / 2).toFloat()
-//        }
-//
-//        override fun getY(): Float {
-//            return super.getHeight().toFloat()
-//        }
-
-//        fun getYOffset(xpos: Float): Int { // this will center the marker-view horizontally
-//            return -(width / 2)
-//        }
-//
-//        fun getYOffset(ypos: Float): Int { // this will cause the marker-view to be above the selected value
-//            return -height
-//        }
     }
 }
-
 

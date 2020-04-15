@@ -8,6 +8,7 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.viewModels
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.InterstitialAd
@@ -34,43 +35,47 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mFirebaseAnalytics: FirebaseAnalytics
     private var doneOnce = true
 
-    private val viewModel: HomeViewPagerViewModel by viewModels {
-        InjectorUtils.provideHomeViewPagerViewModelFactory(this, charArrayOf(
-            "q"[0],
-            "0"[0],
-            "J"[0],
-            "2"[0],
-            "3"[0],
-            "o"[0],
-            "1"[0],
-            "m"[0],
-            "D"[0],
-            "E"[0],
-            "Y"[0],
-            "y"[0],
-            "X"[0],
-            "j"[0],
-            "3"[0],
-            "Q"[0],
-            "s"[0],
-            "h"[0],
-            "E"[0],
-            "l"[0],
-            "8"[0],
-            "n"[0],
-            "j"[0],
-            "Y"[0],
-            "B"[0],
-            "P"[0],
-            "J"[0],
-            "C"[0],
-            "E"[0]
-        ))
-    }
+//    private val viewModel: HomeViewPagerViewModel by viewModels {
+//        InjectorUtils.provideHomeViewPagerViewModelFactory(this, this.intent.getCharArrayExtra(KEY))
+//    }
+//
+//    private val viewModel: HomeViewPagerViewModel by viewModels {
+//        InjectorUtils.provideHomeViewPagerViewModelFactory(this, charArrayOf(
+//            "q"[0],
+//            "0"[0],
+//            "J"[0],
+//            "2"[0],
+//            "3"[0],
+//            "o"[0],
+//            "1"[0],
+//            "m"[0],
+//            "D"[0],
+//            "E"[0],
+//            "Y"[0],
+//            "y"[0],
+//            "X"[0],
+//            "j"[0],
+//            "3"[0],
+//            "Q"[0],
+//            "s"[0],
+//            "h"[0],
+//            "E"[0],
+//            "l"[0],
+//            "8"[0],
+//            "n"[0],
+//            "j"[0],
+//            "Y"[0],
+//            "B"[0],
+//            "P"[0],
+//            "J"[0],
+//            "C"[0],
+//            "E"[0]
+//        ))
+//    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        this.intent.removeExtra(KEY)
+//        this.intent.removeExtra(KEY)
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
         DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)

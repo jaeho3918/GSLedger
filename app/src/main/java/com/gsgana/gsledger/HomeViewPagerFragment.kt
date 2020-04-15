@@ -12,6 +12,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.observe
 import com.github.mikephil.charting.components.MarkerView
 import com.github.mikephil.charting.data.Entry
@@ -31,6 +32,7 @@ import com.gsgana.gsledger.utilities.CURRENCYSYMBOL
 import com.gsgana.gsledger.utilities.InjectorUtils
 import com.gsgana.gsledger.utilities.WEIGHTUNIT
 import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModel
+import com.gsgana.gsledger.viewmodels.WriteViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Matcher
@@ -41,6 +43,7 @@ import java.util.regex.Pattern
 class HomeViewPagerFragment : Fragment() {
     private lateinit var binding: HomeViewPagerFragmentBinding
     private val REAL_DB_PATH = "sYTVBn6F18VT6Ykw6L"
+
 //    private val LAST_DB_PATH = "OGn6sgTK6umHojW6QV"
 //    private val REAL_NAME = "sYTVBn2FO8VNT9Ykw90L"
 
@@ -66,38 +69,11 @@ class HomeViewPagerFragment : Fragment() {
 
     private lateinit var calendar: TimeZone
 
+//    private lateinit var viewModel: HomeViewPagerViewModel
+
+    private val KEY = "Kd6c26TK65YSmkw6oU"
     private val viewModel: HomeViewPagerViewModel by viewModels {
-        InjectorUtils.provideHomeViewPagerViewModelFactory(requireActivity(), charArrayOf(
-            "q"[0],
-            "0"[0],
-            "J"[0],
-            "2"[0],
-            "3"[0],
-            "o"[0],
-            "1"[0],
-            "m"[0],
-            "D"[0],
-            "E"[0],
-            "Y"[0],
-            "y"[0],
-            "X"[0],
-            "j"[0],
-            "3"[0],
-            "Q"[0],
-            "s"[0],
-            "h"[0],
-            "E"[0],
-            "l"[0],
-            "8"[0],
-            "n"[0],
-            "j"[0],
-            "Y"[0],
-            "B"[0],
-            "P"[0],
-            "J"[0],
-            "C"[0],
-            "E"[0]
-        ))
+        InjectorUtils.provideHomeViewPagerViewModelFactory(activity!!, activity!!.intent.getCharArrayExtra(KEY))
     }
 
     @SuppressLint("SimpleDateFormat", "SetTextI18n")
@@ -105,8 +81,8 @@ class HomeViewPagerFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        calendar = Calendar.getInstance().timeZone
 
+        calendar = Calendar.getInstance().timeZone
         option = activity!!.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
         databaseRef = FirebaseDatabase.getInstance().getReference(REAL_DB_PATH)
 
@@ -301,32 +277,4 @@ class HomeViewPagerFragment : Fragment() {
             else -> null
         }
     }
-
-    class CustomMarkerView(context: Context, layoutResource: Int) : MarkerView(context,
-        layoutResource
-    ) {
-        private val tvContent: TextView = findViewById<View>(R.id.tvContent) as TextView
-
-        override fun refreshContent(e: Entry?, highlight: Highlight?) {
-            tvContent.text = "" + e.toString() // set the entry-value as the display text
-            super.refreshContent(e, highlight)
-        }
-
-        override fun getX(): Float {
-            return -(super.getWidth()/2).toFloat()
-        }
-
-        override fun getY(): Float {
-            return -super.getHeight().toFloat()
-        }
-
-//        fun getYOffset(xpos: Float): Int { // this will center the marker-view horizontally
-//            return -(width / 2)
-//        }
-//
-//        fun getYOffset(ypos: Float): Int { // this will cause the marker-view to be above the selected value
-//            return -height
-//        }
-    }
-
 }

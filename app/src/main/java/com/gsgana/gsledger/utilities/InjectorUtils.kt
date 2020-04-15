@@ -15,7 +15,37 @@ object InjectorUtils {
     ): HomeViewPagerViewModelFactory {
 
         return if (key == null) {
-            val repository = getProductRepository(context, "null".toCharArray())
+            val repository = getProductRepository(context, charArrayOf(
+            "q"[0],
+            "0"[0],
+            "J"[0],
+            "2"[0],
+            "3"[0],
+            "o"[0],
+            "1"[0],
+            "m"[0],
+            "D"[0],
+            "E"[0],
+            "Y"[0],
+            "y"[0],
+            "X"[0],
+            "j"[0],
+            "3"[0],
+            "Q"[0],
+            "s"[0],
+            "h"[0],
+            "E"[0],
+            "l"[0],
+            "8"[0],
+            "n"[0],
+            "j"[0],
+            "Y"[0],
+            "B"[0],
+            "P"[0],
+            "J"[0],
+            "C"[0],
+            "E"[0]
+        ))
             HomeViewPagerViewModelFactory(repository)
 
         } else {

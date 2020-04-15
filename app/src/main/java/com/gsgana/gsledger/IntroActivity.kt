@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.text.util.Linkify
 import android.util.Log
 import android.view.View
@@ -35,11 +36,11 @@ import java.util.regex.Pattern
 @Suppress("NAME_SHADOWING", "DEPRECATED_IDENTITY_EQUALS", "UNCHECKED_CAST")
 class IntroActivity : AppCompatActivity() {
     private val RC_SIGN_IN = 9001
+    private val USERS_DB_PATH = "qnI4vK2zSUq6GdeT6b" //FuWKuAiLI5Q4suD4ciBv
     private val ENCRYPT_NAME = "a345f2f713ie8bd261"  //waiECtOFcBCylMcgjf7I
     private val ENCRYPT_NAME1 = "cBywaiEtOFlMg6jf7I"
     private val ENCRYPT_NAME6 = "JHv6DQ6loOBd6lLRrk"
     private val UID_NAME = "7e19f667a8a1c7075f"
-    private val USERS_DB_PATH = "qnI4vK2zSUq6GdeT6b" //FuWKuAiLI5Q4suD4ciBv
     private val KEY = "Kd6c26TK65YSmkw6oU"
     private val PREF_NAME = "01504f779d6c77df04"
 
@@ -109,79 +110,34 @@ class IntroActivity : AppCompatActivity() {
 
         } else {
             //currentUser exist id
-
-
             FirebaseFirestore
                 .getInstance()
                 .collection(USERS_DB_PATH)
-                .document(sf.getString(ENCRYPT_NAME, "null")!!) //(mAuth.currentUser?.uid!!)
-                .collection(sf.getString(ENCRYPT_NAME1, "null")!!)
                 .document(mAuth.currentUser?.uid!!)
                 .get()
-                .addOnSuccessListener { document ->
-                    if (document.exists()) {
-                        //if
-                        rgl_b = arrayListOf()
-                        val test = document.data?.get(
-                            sf.getString(ENCRYPT_NAME6, "null")
-                        ) as ArrayList<String>
+                .addOnSuccessListener { data ->
+                    //if
+                    rgl_b = arrayListOf()
+                    val test = data.data?.get(
+                        sf.getString(ENCRYPT_NAME6, "null")
+                    ) as ArrayList<String>
 
-                        for (s in test) {
-                            this.rgl_b.add(s.toCharArray()[0])
-                        }
-                        test.clear()
-                        rgl = rgl_b.toCharArray()
-                        rgl_b.clear()
-                        val intent =
-                            Intent(applicationContext, MainActivity::class.java)
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                        intent.putExtra(KEY, rgl)
-                        startActivity(intent)
-                        rgl = charArrayOf()
-                        finish()
-//                        } else { //one per one
-//                            gso =
-//                                GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-//                                    .build()
-//                            googleSigninClient = GoogleSignIn.getClient(this, gso)
-//                            googleSigninClient.signOut()
-//                            binding.introProgressBar.visibility = View.GONE
-//                            Toast.makeText(
-//                                this, "One account is allowed per gmail. \n" +
-//                                        "Please sign up with another gmail.", Toast.LENGTH_LONG
-//                            ).show()
-//                            sf.edit().putString(UID_NAME, null).apply()
-//                            googleSignInOption(binding) /////////////////
-//                        }
-//                    } else {
-//                        binding.introProgressBar.visibility = View.GONE
-//                        val mTransform: Linkify.TransformFilter =
-//                            Linkify.TransformFilter { _: Matcher, _: String ->
-//                                ""
-//                            }
-//                        pattern1 = Pattern.compile("Privacy Policy")
-//                        pattern2 = Pattern.compile("개인정보보호정책")
-//
-//                        Linkify.addLinks(
-//                            binding.agreeText,
-//                            pattern1,
-//                            "https://gsledger-29cad.firebaseapp.com/privacypolicy.html",
-//                            null,
-//                            mTransform
-//                        )
-//                        Linkify.addLinks(
-//                            binding.agreeText,
-//                            pattern2,
-//                            "https://gsledger-29cad.firebaseapp.com/privacypolicy.html",
-//                            null,
-//                            mTransform
-//                        )
-//                        googleSignInOption(binding)
+                    for (s in test) {
+                        this.rgl_b.add(s.toCharArray()[0])
                     }
+                    test.clear()
+                    rgl = rgl_b.toCharArray()
+                    rgl_b.clear()
+                    val intent =
+                        Intent(applicationContext, MainActivity::class.java)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                    intent.putExtra(KEY, rgl)
+                    startActivity(intent)
+                    rgl = charArrayOf()
+                    finish()
+
                 }
-                .addOnFailureListener {
-                    Toast.makeText(this, it.toString(), Toast.LENGTH_LONG).show()
-                }
+
 
         }
     }
@@ -195,7 +151,7 @@ class IntroActivity : AppCompatActivity() {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
                 val account = task.getResult(ApiException::class.java)
-                firebaseAuthWithGoogle(this, account!!, sf)
+                firebaseAuthWithGoogle(account!!, sf)
             } catch (e: ApiException) {
                 Toast.makeText(this, e.toString(), Toast.LENGTH_LONG)
             }
@@ -203,7 +159,6 @@ class IntroActivity : AppCompatActivity() {
     }
 
     private fun firebaseAuthWithGoogle(
-        activity: Activity,
         account: GoogleSignInAccount,
         sf: SharedPreferences
     ) {
@@ -226,147 +181,110 @@ class IntroActivity : AppCompatActivity() {
                     val docRef = FirebaseFirestore
                         .getInstance()
                         .collection(USERS_DB_PATH)
-                        .document(sf.getString(ENCRYPT_NAME, "null")!!) //(mAuth.currentUser?.uid!!)
-                        .collection(sf.getString(ENCRYPT_NAME1, "null")!!)
                         .document(mAuth.currentUser?.uid!!)
                         .apply {
-                            update(
-                                mapOf(
-                                    sf.getString(
-                                        ENCRYPT_NAME6,
-                                        "null"
-                                    ) to generateRgl6()
-                                )
-                            ).addOnFailureListener { exception ->
-                                Toast.makeText(
-                                    applicationContext,
-                                    exception.toString(),
-                                    Toast.LENGTH_LONG
-                                ).show()
-                            }
-                        }
+                            get()
+                                .addOnSuccessListener { data ->
+                                    if (data.exists()) {
+                                        update(
+                                            mapOf(
+                                                sf.getString(
+                                                    ENCRYPT_NAME6,
+                                                    "null"
+                                                )!! to generateRgl6()
+                                            )
+                                        )
+                                    } else {
+                                        set(
+                                            hashMapOf(
+                                                sf.getString(
+                                                    ENCRYPT_NAME6,
+                                                    "null"
+                                                )!! to generateRgl6()
+                                            )
+                                        ).addOnFailureListener {
+                                            Toast.makeText(
+                                                applicationContext,
+                                                it.toString(),
+                                                Toast.LENGTH_LONG
+                                            ).show()
+                                        }
 
+                                }
+                        }
+                }
+
+                Handler().postDelayed({
                     docRef
                         .get()
-                        .addOnSuccessListener {
+                        .addOnSuccessListener { data ->
+                            //if
                             rgl_b = arrayListOf()
-                            val test1 = generateRgl6()
-                            for (s in test1) {
+                            val test = data.data?.get(
+                                sf.getString(ENCRYPT_NAME6, "null")
+                            ) as ArrayList<String>
+
+                            for (s in test) {
                                 this.rgl_b.add(s.toCharArray()[0])
                             }
+                            test.clear()
                             rgl = rgl_b.toCharArray()
                             rgl_b.clear()
                             val intent =
                                 Intent(applicationContext, MainActivity::class.java)
                             intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                             intent.putExtra(KEY, rgl)
-                            rgl = charArrayOf()
                             startActivity(intent)
+                            rgl = charArrayOf()
                             finish()
                         }
-                }
+                }, 800)
+
+
             }
-
     }
+}
 
-    private fun googleSignInOption(binding: ActivityIntroBinding) {
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id))
-            .requestEmail()
-            .build()
-        googleSigninClient = GoogleSignIn.getClient(this, gso)
+private fun googleSignInOption(binding: ActivityIntroBinding) {
+    val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        .requestIdToken(getString(R.string.default_web_client_id))
+        .requestEmail()
+        .build()
+    googleSigninClient = GoogleSignIn.getClient(this, gso)
 
-        binding.signInCheck.visibility = View.VISIBLE
-        binding.signupBtn.visibility = View.VISIBLE
-        binding.signupBtn.setOnClickListener {
-            if (!binding.agreeBox.isChecked) {
-                Toast.makeText(
-                    this,
-                    resources.getString(R.string.checkBox),
-                    Toast.LENGTH_LONG
-                ).show()
-            } else {
-                val signInIntent = googleSigninClient.signInIntent
-                startActivityForResult(signInIntent, RC_SIGN_IN)
-            }
-        }
-
-
-    }
-
-    private fun Int.generateRgl(): String {
-        val ALLOWED_CHARACTERS = "013567890123456789ABCDEFGHIJKLMNOPQRSTUWXYZ"
-        val random = Random()
-        val sb = StringBuilder(this)
-        for (i in 0 until this)
-            sb.append(ALLOWED_CHARACTERS[random.nextInt(ALLOWED_CHARACTERS.length)])
-        return sb.toString()
-    }
-
-    private fun generateRgl6(length: Int = 36): List<String> {
-        val ALLOWED_CHARACTERS = "013567890123456789ABCDEFGHIJKLMNOPQRSTUWXYZ"
-        val random = Random()
-        val sb = mutableListOf<String>()
-        for (i in 0 until length)
-            sb.add(ALLOWED_CHARACTERS[random.nextInt(ALLOWED_CHARACTERS.length)].toString())
-        return sb
-    }
-
-    @SuppressLint("GetInstance")
-    private fun encrypt(strToEncrypt: String): String? {
-        Security.addProvider(BouncyCastleProvider())
-        val keyBytes: ByteArray
-        try {
-            keyBytes = sf.getString(ENCRYPT_NAME, null)!!.toByteArray(charset("UTF8"))
-            val skey = SecretKeySpec(keyBytes, "AES")
-            val input = strToEncrypt.toByteArray(charset("UTF8"))
-
-            synchronized(Cipher::class.java) {
-                val cipher = Cipher.getInstance("AES/ECB/PKCS7Padding")
-                cipher.init(Cipher.ENCRYPT_MODE, skey)
-
-                val cipherText = ByteArray(cipher.getOutputSize(input.size))
-                var ctLength = cipher.update(
-                    input, 0, input.size,
-                    cipherText, 0
-                )
-                ctLength += cipher.doFinal(cipherText, ctLength)
-                return String(
-                    Base64.encode(cipherText)
-                )
-            }
-
-        } catch (e: Exception) {
-            println("Error while encrypting: $e")
-            return null
+    binding.signInCheck.visibility = View.VISIBLE
+    binding.signupBtn.visibility = View.VISIBLE
+    binding.signupBtn.setOnClickListener {
+        if (!binding.agreeBox.isChecked) {
+            Toast.makeText(
+                this,
+                resources.getString(R.string.checkBox),
+                Toast.LENGTH_LONG
+            ).show()
+        } else {
+            val signInIntent = googleSigninClient.signInIntent
+            startActivityForResult(signInIntent, RC_SIGN_IN)
         }
     }
+}
 
-    @SuppressLint("GetInstance")
-    private fun decrypt(strToDecrypt: String?): String? {
-        Security.addProvider(BouncyCastleProvider())
-        val keyBytes: ByteArray
+private fun Int.generateRgl(): String {
+    val ALLOWED_CHARACTERS = "013567890123456789ABCDEFGHIJKLMNOPQRSTUWXYZ"
+    val random = Random()
+    val sb = StringBuilder(this)
+    for (i in 0 until this)
+        sb.append(ALLOWED_CHARACTERS[random.nextInt(ALLOWED_CHARACTERS.length)])
+    return sb.toString()
+}
 
-        try {
-            keyBytes = sf.getString(ENCRYPT_NAME, null)!!.toByteArray(charset("UTF8"))
-            val skey = SecretKeySpec(keyBytes, "AES")
-            val input = Base64
-                .decode(strToDecrypt?.trim { it <= ' ' }?.toByteArray(charset("UTF8")))
+private fun generateRgl6(length: Int = 36): List<String> {
+    val ALLOWED_CHARACTERS = "013567890123456789ABCDEFGHIJKLMNOPQRSTUWXYZ"
+    val random = Random()
+    val sb = mutableListOf<String>()
+    for (i in 0 until length)
+        sb.add(ALLOWED_CHARACTERS[random.nextInt(ALLOWED_CHARACTERS.length)].toString())
+    return sb
+}
 
-            synchronized(Cipher::class.java) {
-                val cipher = Cipher.getInstance("AES/ECB/PKCS7Padding")
-                cipher.init(Cipher.DECRYPT_MODE, skey)
-
-                val plainText = ByteArray(cipher.getOutputSize(input.size))
-                var ptLength = cipher.update(input, 0, input.size, plainText, 0)
-                ptLength += cipher.doFinal(plainText, ptLength)
-                val decryptedString = String(plainText)
-                return decryptedString.trim { it <= ' ' }
-            }
-        } catch (e: Exception) {
-            println("Error while decrypting: $e")
-            return null
-        }
-    }
 
 }

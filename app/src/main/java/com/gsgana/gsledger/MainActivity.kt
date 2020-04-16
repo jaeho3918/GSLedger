@@ -68,7 +68,7 @@ class MainActivity : AppCompatActivity() {
             {
                 loading.visibility = View.GONE
                 homeViewPagerFragmentpage.visibility = View.VISIBLE
-            }, 1500
+            }, 2100
         )
     }
 }

@@ -32,8 +32,6 @@ class ListFragment : Fragment() {
         InjectorUtils.provideHomeViewPagerViewModelFactory(activity!!, activity!!.intent.getCharArrayExtra(KEY))
     }
 
-
-
     private lateinit var realData: Map<String, Double>
     private lateinit var adapter: ProductAdapter
 
@@ -78,6 +76,7 @@ class ListFragment : Fragment() {
         }
 
         viewModel.getProducts().observe(viewLifecycleOwner) { result ->
+            binding.getNum.text = result.size.toString()
             adapter.submitList(result)
         }
         return binding.root

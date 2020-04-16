@@ -14,12 +14,15 @@ class HomeViewPagerViewModel internal constructor(
 
     private val products: LiveData<List<Product>> = productRepository.getProducts()
 
+
+
     val realData = MutableLiveData<Map<String, Double>>()
 
-
-    fun getProducts() : LiveData<List<Product>>  {
+    fun getProducts(): LiveData<List<Product>> {
         return products
     }
+
+//    fun productNum() = products.value?.size ?: 0
 
     fun addProduct(product: Product) {
         viewModelScope.launch {
@@ -27,18 +30,19 @@ class HomeViewPagerViewModel internal constructor(
         }
     }
 
-
     fun deleteProducts() {
         viewModelScope.launch {
             productRepository.deleteProducts()
         }
     }
 
-    companion object{
+
+    companion object {
         private lateinit var sInstant: HomeViewPagerViewModel
 
-        fun get(productRepository: ProductRepository): HomeViewPagerViewModel{
-            sInstant = if (::sInstant.isInitialized) sInstant else HomeViewPagerViewModel(productRepository)
+        fun get(productRepository: ProductRepository): HomeViewPagerViewModel {
+            sInstant =
+                if (::sInstant.isInitialized) sInstant else HomeViewPagerViewModel(productRepository)
             return sInstant
         }
     }
@@ -48,10 +52,10 @@ class HomeViewPagerViewModel internal constructor(
 
 private class RealData() : LiveData<Map<String, Double>>() {
 
-    companion object{
-        private lateinit var sInstant:RealData
+    companion object {
+        private lateinit var sInstant: RealData
 
-        fun get(): RealData{
+        fun get(): RealData {
             sInstant = if (::sInstant.isInitialized) sInstant else RealData()
             return sInstant
         }

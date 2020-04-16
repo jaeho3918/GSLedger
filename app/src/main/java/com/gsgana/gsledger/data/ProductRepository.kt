@@ -16,24 +16,9 @@ class ProductRepository private constructor(
         productDao.deleteProduct(id)
     }
 
-//    suspend fun createProductImage(product: ProductImage) {
-//        productImageDao.insertProductImage(product)
-//    }
-//
-//    suspend fun deleteProductImage() {
-//        productImageDao.deleteProductImage()
-//    }
-
-
-
-
     fun getProducts() = productDao.getProducts()
 
     fun getProduct(id: Long) = productDao.getProduct(id)
-//
-//    fun getProductImages() = productImageDao.getProductImages()
-//
-//    fun getProductImage(id: String) = productImageDao.getProductImage(id)
 
 
 

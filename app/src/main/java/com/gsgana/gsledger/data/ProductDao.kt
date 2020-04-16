@@ -10,6 +10,9 @@ interface ProductDao {
     @Query("SELECT * FROM product")
     fun getProducts(): LiveData<List<Product>>
 
+    @Query("SELECT COUNT (*) FROM product")
+    fun getNum(): Int
+
     @Query("SELECT * FROM product WHERE id = :id")
     fun getProduct(id: Long): LiveData<Product>
 

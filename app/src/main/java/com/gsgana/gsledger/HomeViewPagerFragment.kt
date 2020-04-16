@@ -12,11 +12,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.observe
-import com.github.mikephil.charting.components.MarkerView
-import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.highlight.Highlight
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
@@ -24,6 +20,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.database.*
 import com.gsgana.gsledger.adapters.PagerAdapter
 import com.gsgana.gsledger.adapters.PagerAdapter.Companion.ADSANDOPTION_PAGE_INDEX
+import com.gsgana.gsledger.adapters.PagerAdapter.Companion.CHART_PAGE_INDEX
 import com.gsgana.gsledger.adapters.PagerAdapter.Companion.LEDGER_PAGE_INDEX
 import com.gsgana.gsledger.adapters.PagerAdapter.Companion.STAT_PAGE_INDEX
 import com.gsgana.gsledger.databinding.HomeViewPagerFragmentBinding
@@ -32,7 +29,6 @@ import com.gsgana.gsledger.utilities.CURRENCYSYMBOL
 import com.gsgana.gsledger.utilities.InjectorUtils
 import com.gsgana.gsledger.utilities.WEIGHTUNIT
 import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModel
-import com.gsgana.gsledger.viewmodels.WriteViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Matcher
@@ -274,6 +270,7 @@ class HomeViewPagerFragment : Fragment() {
             STAT_PAGE_INDEX -> context?.resources?.getString(R.string.overview)
             LEDGER_PAGE_INDEX -> context?.resources?.getString(R.string.list)
             ADSANDOPTION_PAGE_INDEX -> context?.resources?.getString(R.string.option)
+            CHART_PAGE_INDEX -> context?.resources?.getString(R.string.chart)
             else -> null
         }
     }

@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
@@ -19,8 +18,8 @@ import com.github.mikephil.charting.components.MarkerView
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.*
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.formatter.PercentFormatter
-import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.utils.MPPointF
 import com.google.android.gms.tasks.Task
@@ -33,6 +32,7 @@ import com.gsgana.gsledger.utilities.CURRENCYSYMBOL
 import com.gsgana.gsledger.utilities.InjectorUtils
 import com.gsgana.gsledger.utilities.PACKAGENUM
 import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModel
+import kotlinx.android.synthetic.main.marker_view.view.*
 
 
 @Suppress("UNCHECKED_CAST")
@@ -52,7 +52,7 @@ class StatFragment : Fragment() {
         InjectorUtils.provideHomeViewPagerViewModelFactory(
             activity!!,
             activity!!.intent.getCharArrayExtra(KEY)
-        ) //(activity!!, activity!!.intent.getCharArrayExtra(KEY))
+        )
     }
     private lateinit var functions: FirebaseFunctions// ...
 
@@ -113,8 +113,10 @@ class StatFragment : Fragment() {
             val list1 = data.result?.get("value_AU") as ArrayList<Float>
             val list2 = data.result?.get("value_AG") as ArrayList<Float>
             val dates = data.result?.get("date") as ArrayList<String>
+
             if (context != null) setLineChart(context!!, binding, dates, list1)
-            if (context != null) setLineChart1(context!!, binding, dates, list2)
+
+//            if (context != null) setLineChart1(context!!, binding, dates, list2)
             list1.clear()
             list2.clear()
             dates.clear()
@@ -238,14 +240,8 @@ class StatFragment : Fragment() {
 
         val chart_goldC = context.resources.getColor(R.color.chart_goldC, null)
         val chart_goldB = context.resources.getColor(R.color.chart_goldB, null)
-        val chart_silverC = context.resources.getColor(R.color.chart_silverC, null)
-        val chart_silverB = context.resources.getColor(R.color.chart_silverB, null)
         val backGround = context.resources.getColor(R.color.border_background, null)
 
-        val chart = binding.goldChart.apply {
-            setViewPortOffsets(0f, 0f, 0f, 0f)
-            setBackgroundColor(backGround)
-        }
         val entries = arrayListOf<Entry>()
 
         value.forEachIndexed { index, fl -> entries.add(Entry(index.toFloat(), fl)) }
@@ -264,163 +260,140 @@ class StatFragment : Fragment() {
 
         val data = LineData(dataSet)
 
-        chart.data = data
-
-        chart.setDrawMarkers(true)
-
-        chart.description.isEnabled = false
-        chart.setViewPortOffsets(80f, 0f, 80f, 0f)
-
-        chart.isEnabled = true
-
-        chart.setTouchEnabled(true)
-        chart.isDragEnabled = true
-        chart.setScaleEnabled(true)
-
-        // if disabled, scaling can be done on x- and y-axis separately
-
-        chart.setDrawGridBackground(false)
-        chart.maxHighlightDistance = 300f
-
-        val xAxis = chart.xAxis
-
-        val valueFormatter = ChartAxisValueFormatter().apply {
-            setValue(date)
-        }
-
-        xAxis.valueFormatter = valueFormatter
-        xAxis.isEnabled = true
-        xAxis.textColor = context.resources.getColor(R.color.chart_font, null)
-        xAxis.position = XAxis.XAxisPosition.BOTTOM_INSIDE
-        xAxis.setDrawGridLines(false)
-        xAxis.setLabelCount(5, true) //X축의 데이터를 최대 몇개 까지 나타낼지에 대한 설정 5개 force가 true 이면 반드시 보여줌
-        xAxis.spaceMax = 18f
-
-
-        val y: YAxis = chart.axisLeft
-        y.setLabelCount(6, false)
-        y.textColor = resources.getColor(R.color.chart_font, null)
-        y.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART)
-        y.setDrawGridLines(false)
-        y.axisLineColor = backGround
-
-        chart.setVisibleYRange(
-            dataSet.yMax + dataSet.yMax / 10,
-            dataSet.yMax + dataSet.yMax / 10,
-            y.axisDependency
-        )
-
-        chart.setPinchZoom(true)
-
-        val mv =
-            CustomMarkerView(
-                context,
-                R.layout.marker_view
-            )
-                .apply { chartView = chart }
-
-        chart.marker = mv
-        chart.setDrawMarkers(true)
-        chart.isHighlightPerTapEnabled = true
-        chart.axisRight.isEnabled = false
-        chart.legend.isEnabled = false
-        chart.invalidate()
-    }
-
-    private fun setLineChart1(
-        context: Context,
-        binding: StatFragmentBinding,
-        date: ArrayList<String>,
-        value: List<Float>
-    ) {
-        val chart_silverC = context.resources.getColor(R.color.chart_silverC, null)
-        val chart_silverB = context.resources.getColor(R.color.chart_silverB, null)
-        val backGround = context.resources.getColor(R.color.border_background, null)
-
-        val chart = binding.silverChart.apply {
-            setViewPortOffsets(0f, 0f, 0f, 0f)
+        val chart = binding.goldChart.apply {
+            isEnabled = true
+            setData(data)
+            setViewPortOffsets(85f, 30f, 80f, 50f)
             setBackgroundColor(backGround)
+            isDoubleTapToZoomEnabled = false
+            setDrawMarkers(true)
+            description.isEnabled = false
+            setTouchEnabled(true)
+            isDragEnabled = true
+            setScaleEnabled(false)
+            setDrawGridBackground(false)
+            maxHighlightDistance = 300f
+            setPinchZoom(false)
+            setDrawMarkers(true)
+            isHighlightPerTapEnabled = true
+            axisRight.isEnabled = false
+            legend.isEnabled = true
+            fitScreen()
         }
-        val entries = arrayListOf<Entry>()
 
-        value.forEachIndexed { index, fl -> entries.add(Entry(index.toFloat(), fl)) }
+        val valueFormatter = IndexAxisValueFormatter(date)
 
-        val dataSet = LineDataSet(entries, "")
+        chart.xAxis
             .apply {
-                setDrawFilled(true)
-                setDrawValues(false)
-                fillColor = chart_silverC
-                color = chart_silverC
-                setCircleColor(chart_silverB)
-                mode = LineDataSet.Mode.CUBIC_BEZIER
-                isHighlightEnabled = true
-                setDrawCircles(false)
+                setValueFormatter(valueFormatter)
+                isEnabled = true
+                gridColor = resources.getColor(R.color.chart_goldB, null)
+                textColor = context.resources.getColor(R.color.chart_font, null)
+                position = XAxis.XAxisPosition.BOTTOM
+                setLabelCount(5, true)
+                setDrawGridLines(true)
+                spaceMax = 18f
             }
 
-        val data = LineData(dataSet)
-
-        chart.data = data
-
-        chart.setDrawMarkers(true)
-        chart.description.isEnabled = false
-
-        chart.setViewPortOffsets(80f, 0f, 80f, 0f)
-
-        chart.isEnabled = true
-
-        chart.setTouchEnabled(true)
-        chart.isDragEnabled = true
-        chart.setScaleEnabled(true)
-
-        // if disabled, scaling can be done on x- and y-axis separately
-
-        chart.setDrawGridBackground(false)
-        chart.maxHighlightDistance = 300f
-
-        val xAxis = chart.xAxis
-
-        val valueFormatter = ChartAxisValueFormatter().apply {
-            setValue(date)
-        }
-
-        xAxis.valueFormatter = valueFormatter
-        xAxis.isEnabled = true
-        xAxis.textColor = context.resources.getColor(R.color.chart_font, null)
-        xAxis.position = XAxis.XAxisPosition.BOTTOM_INSIDE
-        xAxis.setDrawGridLines(false)
-        xAxis.setLabelCount(5, true) //X축의 데이터를 최대 몇개 까지 나타낼지에 대한 설정 5개 force가 true 이면 반드시 보여줌
-        xAxis.spaceMax = 18f
-
-
-        val y: YAxis = chart.axisLeft
-        y.setLabelCount(6, false)
-        y.textColor = resources.getColor(R.color.chart_font, null)
-        y.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART)
-        y.setDrawGridLines(false)
-        y.axisLineColor = backGround
-
-        chart.setVisibleYRange(
-            dataSet.yMax + dataSet.yMax / 10,
-            dataSet.yMax + dataSet.yMax / 10,
-            y.axisDependency
-        )
-
-        chart.setPinchZoom(true)
+        chart.axisLeft
+            .apply {
+                textColor = resources.getColor(R.color.chart_font, null)
+                gridColor = resources.getColor(R.color.chart_goldB, null)
+                setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART)
+                setDrawGridLines(true)
+                setLabelCount(5, true)
+                axisMaximum = dataSet.yMax + dataSet.yMax / 13
+                axisMinimum = dataSet.yMin - dataSet.yMin / 13
+                axisLineColor = backGround
+            }
 
         val mv =
-            CustomMarkerView(
-                context,
-                R.layout.marker_view1
-            )
-                .apply { chartView = chart }
+            CustomMarkerView(context, viewModel, R.layout.marker_view).apply { chartView = chart }
 
         chart.marker = mv
-        chart.setDrawMarkers(true)
-        chart.isHighlightPerTapEnabled = true
-        chart.axisRight.isEnabled = false
-        chart.legend.isEnabled = false
         chart.invalidate()
     }
+
+//    private fun setLineChart1(
+//        context: Context,
+//        binding: StatFragmentBinding,
+//        date: ArrayList<String>,
+//        value: List<Float>
+//    ) {
+//        val chart_silverC = context.resources.getColor(R.color.chart_silverC, null)
+//        val chart_silverB = context.resources.getColor(R.color.chart_silverB, null)
+//        val backGround = context.resources.getColor(R.color.border_background, null)
+//        val entries = arrayListOf<Entry>()
+//
+//        value.forEachIndexed { index, fl -> entries.add(Entry(index.toFloat(), fl)) }
+//
+//        val dataSet = LineDataSet(entries, "")
+//            .apply {
+//                setDrawFilled(true)
+//                setDrawValues(false)
+//                fillColor = chart_silverC
+//                color = chart_silverC
+//                setCircleColor(chart_silverB)
+//                mode = LineDataSet.Mode.CUBIC_BEZIER
+//                isHighlightEnabled = true
+//                setDrawCircles(false)
+//            }
+//
+//        val data = LineData(dataSet)
+//
+//        val chart = binding.silverChart.apply {
+//            isEnabled = true
+//            setData(data)
+//            setViewPortOffsets(80f, 30f, 80f, 50f)
+//            setBackgroundColor(backGround)
+//            isDoubleTapToZoomEnabled = false
+//            setDrawMarkers(true)
+//            description.isEnabled = false
+//            setTouchEnabled(true)
+//            isDragEnabled = true
+//            setScaleEnabled(false)
+//            setDrawGridBackground(false)
+//            maxHighlightDistance = 300f
+//            setPinchZoom(true)
+//            setDrawMarkers(true)
+//            isHighlightPerTapEnabled = true
+//            axisRight.isEnabled = false
+//            legend.isEnabled = true
+//            fitScreen()
+//        }
+//
+//        val valueFormatter = IndexAxisValueFormatter(date)
+//
+//        chart.xAxis
+//            .apply {
+//                setValueFormatter(valueFormatter)
+//                isEnabled = true
+//                gridColor = resources.getColor(R.color.chart_silverB, null)
+//                textColor = context.resources.getColor(R.color.chart_font, null)
+//                position = XAxis.XAxisPosition.BOTTOM
+//                setDrawGridLines(true)
+//                setLabelCount(5, true)
+//                spaceMax = 18f
+//            }
+//
+//        chart.axisLeft
+//            .apply {
+//                textColor = resources.getColor(R.color.chart_font, null)
+//                gridColor = resources.getColor(R.color.chart_silverB, null)
+//                setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART)
+//                setDrawGridLines(true)
+//                setLabelCount(5, true)
+//                axisMaximum = dataSet.yMax + dataSet.yMax / 13
+//                axisMinimum = dataSet.yMin - dataSet.yMin / 13
+//                axisLineColor = backGround
+//            }
+//
+//        val mv =
+//            CustomMarkerView(context, R.layout.marker_view1).apply { chartView = chart }
+//
+//        chart.marker = mv
+//        chart.invalidate()
+//    }
 
     private fun calculateProduct(
         binding: StatFragmentBinding,
@@ -628,7 +601,6 @@ class StatFragment : Fragment() {
     }
 
     private fun priceToString(price: Double, type: String): String {
-
         return when (type) {
             "PriceInt" -> {
                 String.format("%,.0f", price)
@@ -668,35 +640,22 @@ class StatFragment : Fragment() {
         }
     }
 
-    private class ChartAxisValueFormatter : ValueFormatter() {
-
-        private lateinit var mValues: ArrayList<String>
-
-        fun setValue(mValues: ArrayList<String>) {
-            this.mValues = mValues
-        }
-
-        override fun getFormattedValue(value: Float): String {
-            if (mValues.size != 0) {
-                return if (value <= (mValues.size - 1)) {
-                    mValues[value.toInt()]
-                } else {
-                    mValues[mValues.size - 1]
-                }
-            }
-            return ""
-        }
-    }
-
-    private class CustomMarkerView(context: Context, layoutResource: Int) : MarkerView(
+    private class CustomMarkerView(
+        context: Context,
+        viewModel: HomeViewPagerViewModel,
+        layoutResource: Int
+    ) : MarkerView(
         context,
         layoutResource
     ) {
         private val tvContent: TextView = findViewById<View>(R.id.tvContent) as TextView
+        private val viewModel: HomeViewPagerViewModel = viewModel
 
         override fun refreshContent(e: Entry?, highlight: Highlight?) {
             tvContent.text =
                 String.format("%,.2f", e?.y) // set the entry-value as the display text
+            tvCurrency.text = CURRENCYSYMBOL[viewModel.realData.value?.get("currency")?.toInt()?: 0]
+
             super.refreshContent(e, highlight)
         }
 

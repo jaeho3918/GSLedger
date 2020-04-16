@@ -1,7 +1,7 @@
-@file:Suppress("DEPRECATION")
-
 package com.gsgana.gsledger
 
+import android.content.Context
+import android.content.SharedPreferences
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.text.Editable
@@ -17,8 +17,10 @@ import com.gsgana.gsledger.data.Product
 import com.gsgana.gsledger.databinding.FragmentWrite6Binding
 import com.gsgana.gsledger.utilities.*
 import com.gsgana.gsledger.viewmodels.WriteViewModel
+import java.text.SimpleDateFormat
 
 
+@Suppress("DEPRECATION")
 class Write6Fragment : Fragment() {
 
     private lateinit var binding: FragmentWrite6Binding
@@ -26,42 +28,27 @@ class Write6Fragment : Fragment() {
     private lateinit var fm: FragmentManager
     private lateinit var product: Product
 
-//    private val AD_UNIT_ID =
-//        "ca-app-pub-3940256099942544/8691691433" //"ca-app-pub-8453032642509497/3082833180"
-//    private lateinit var mInterstitialAd: InterstitialAd
-//    private lateinit var mBuilder: AdRequest.Builder
-//    private lateinit var mFirebaseAnalytics: FirebaseAnalytics
-//    private var doneOnce = true
-
+//    private lateinit var sharedPreferences: SharedPreferences
+//    private val PREF_NAME = "01504f779d6c77df04"
+//    private val BUY_NAME = "IYe6CjFgpBKVHdcXkC"
+//    private lateinit var mformat: SimpleDateFormat
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
-//        MobileAds.initialize(activity)
-//        mInterstitialAd = InterstitialAd(activity)
-//        mInterstitialAd.adUnitId = AD_UNIT_ID
-//        mBuilder = AdRequest.Builder()
-//        mInterstitialAd.loadAd(mBuilder.build())
-//        mInterstitialAd.adListener = object : AdListener() {
-//            override fun onAdLoaded() {
-//                if (mInterstitialAd.isLoaded) {
-//                    if (doneOnce) {
-//                        mInterstitialAd.show()
-//                        doneOnce = false
-//                    }
-//                }
-//            }
-//        }
+//        sharedPreferences = activity!!.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+//
+//        mformat = SimpleDateFormat("yyyy/MM/dd")
 
         fm = parentFragmentManager
 
         val viewModel =
             ViewModelProviders.of(
-                activity!!,
-                InjectorUtils.provideWriteViewModelFactory(activity!!, null)
-            )
+                    activity!!,
+                    InjectorUtils.provideWriteViewModelFactory(activity!!, null)
+                )
                 .get(WriteViewModel::class.java)
 
         val binding = DataBindingUtil.inflate<FragmentWrite6Binding>(
@@ -77,13 +64,6 @@ class Write6Fragment : Fragment() {
             viewModel.initProduct()
             findNavController().navigate(R.id.action_write6Fragment_to_homeViewPagerFragment)
         }
-
-//        binding.moveTo6.setOnClickListener {
-//            viewModel.initProduct()
-//            fm.popBackStack()
-//            findNavController().navigate(R.id.action_write6Fragment_to_homeViewPagerFragment)
-//        }
-
 
         setTextUI(binding, viewModel)
 
@@ -111,6 +91,20 @@ class Write6Fragment : Fragment() {
                 product.cur = viewModel.curField.value?.toFloat() ?: 0f
                 product.year = viewModel.yearSeriesField.value ?: 0
                 product.pre = viewModel.pre.value ?: 0f
+
+//                if (sharedPreferences.getString(BUY_NAME, null).isNullOrEmpty()) {
+//                    sharedPreferences.edit()
+//                        .putString(BUY_NAME, viewModel.dateField.value)
+//                        .apply()
+//                } else if (mformat.parse(viewModel.dateField.value) < mformat.parse(
+//                        sharedPreferences.getString(BUY_NAME, null)
+//                    )
+//                ) {
+//                    sharedPreferences.edit()
+//                        .putString(BUY_NAME, viewModel.dateField.value)
+//                        .apply()
+//                }
+
                 viewModel.addProduct(product)
                 viewModel.initProduct()
 

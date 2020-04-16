@@ -1,6 +1,7 @@
 package com.gsgana.gsledger
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.graphics.Canvas
 import android.os.Bundle
 import android.os.Handler
@@ -47,6 +48,13 @@ class StatFragment : Fragment() {
 
     private var ratio: List<Double>? = null
 
+    private val holder_AG = mutableListOf<Float>()
+    private val holder_AU = mutableListOf<Float>()
+
+//    private val PREF_NAME = "01504f779d6c77df04"
+//    private val BUY_NAME = "IYe6CjFgpBKVHdcXkC"
+//    private lateinit var sharedPreferences: SharedPreferences
+
     private val KEY = "Kd6c26TK65YSmkw6oU"
     private val viewModel: HomeViewPagerViewModel by viewModels {
         InjectorUtils.provideHomeViewPagerViewModelFactory(
@@ -60,6 +68,11 @@ class StatFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        for (i in 0..60) {
+            holder_AG.add(0f)
+            holder_AU.add(0f)
+        }
 
         rgl = mutableListOf()
         mAuth = FirebaseAuth.getInstance()
@@ -103,24 +116,65 @@ class StatFragment : Fragment() {
             } else { //Empty
                 binding.statChart.visibility = View.GONE
                 binding.isEmptyLayout.visibility = View.VISIBLE
+            }
+            if(!products.isNullOrEmpty()) {
+                getChart().addOnCompleteListener { data ->
+                    val list1 = data.result?.get("value_AU") as ArrayList<Float>
+                    val list2 = data.result?.get("value_AG") as ArrayList<Float>
+                    val dates = data.result?.get("date") as ArrayList<String>
+                    val result = mutableListOf<Float>()
+                    products.forEach { product ->
+                        if (!dates.contains(product.buyDate)) { // BuyDate not exist in dates
+                            if (product.metal == 0) { //Gold
+                                list1.forEachIndexed { index, price ->
+                                    holder_AU[index] += price * (1 + product.reg) * PACKAGENUM[product.packageType] * product.quantity * product.weightr * product.weight
+                                }
+                            } else { //Silver
+                                list2.forEachIndexed { index, price ->
+                                    holder_AG[index] += price * (1 + product.reg) * PACKAGENUM[product.packageType] * product.quantity * product.weightr * product.weight
+                                }
+                            }
+                        } else { // BuyDate exist in dates
+                            if (product.metal == 0) { //Gold
+                                val searchDate = dates.indexOf(product.buyDate)
+                                for (idx in searchDate until dates.size) {
+                                    holder_AU[idx] += list1[idx] * (1 + product.reg) * PACKAGENUM[product.packageType] * product.quantity * product.weightr * product.weight
+                                }
+                            } else { //Silver
+                                val searchDate = dates.indexOf(product.buyDate)
+                                for (idx in searchDate until dates.size) {
+                                    holder_AG[idx] += list2[idx] * (1 + product.reg) * PACKAGENUM[product.packageType] * product.quantity * product.weightr * product.weight
+                                }
+                            }
+                        }
+                    }
 
+                    for (idx in 0 until list1.size) {
+                        result.add(
+                            (holder_AU[idx] + holder_AG[idx]) * (viewModel.realData.value?.get(
+                                "currency"
+                            ) ?: 1.0).toFloat()
+                        )
+                    }
+
+                    if (context != null) setLineChart(context!!, binding, dates, result)
+
+                    binding.goldChart.visibility = View.VISIBLE
+                    binding.goldChartProgress.visibility = View.GONE
+
+                    list1.clear()
+                    list2.clear()
+                    dates.clear()
+                }
+                binding.chartCardView.visibility = View.VISIBLE
+            } else{
+                binding.chartCardView.visibility = View.GONE
             }
         }
         )
 
 
-        getChart().addOnCompleteListener { data ->
-            val list1 = data.result?.get("value_AU") as ArrayList<Float>
-            val list2 = data.result?.get("value_AG") as ArrayList<Float>
-            val dates = data.result?.get("date") as ArrayList<String>
 
-            if (context != null) setLineChart(context!!, binding, dates, list1)
-
-//            if (context != null) setLineChart1(context!!, binding, dates, list2)
-            list1.clear()
-            list2.clear()
-            dates.clear()
-        }
 
         Handler().postDelayed({
             if (!ratio.isNullOrEmpty()) {
@@ -181,7 +235,6 @@ class StatFragment : Fragment() {
         // add a selection listener
         pieChart.animateXY(1100, 1100)
 
-//        pieChart.setEntryLabelColor(com.gsgana.gsledger.fragment.FirstFragment.gray)
         pieChart.setEntryLabelTextSize(15f)
 
         val yvalues = ArrayList<PieEntry>()
@@ -222,9 +275,6 @@ class StatFragment : Fragment() {
             pieChart.visibility = View.GONE
             binding.chartprogress.visibility = View.VISIBLE
         }
-
-//        pieChart.visibility = View.VISIBLE
-//        binding.chartprogress.visibility = View.GONE
 
         pieChart.invalidate()
 
@@ -314,86 +364,6 @@ class StatFragment : Fragment() {
         chart.invalidate()
     }
 
-//    private fun setLineChart1(
-//        context: Context,
-//        binding: StatFragmentBinding,
-//        date: ArrayList<String>,
-//        value: List<Float>
-//    ) {
-//        val chart_silverC = context.resources.getColor(R.color.chart_silverC, null)
-//        val chart_silverB = context.resources.getColor(R.color.chart_silverB, null)
-//        val backGround = context.resources.getColor(R.color.border_background, null)
-//        val entries = arrayListOf<Entry>()
-//
-//        value.forEachIndexed { index, fl -> entries.add(Entry(index.toFloat(), fl)) }
-//
-//        val dataSet = LineDataSet(entries, "")
-//            .apply {
-//                setDrawFilled(true)
-//                setDrawValues(false)
-//                fillColor = chart_silverC
-//                color = chart_silverC
-//                setCircleColor(chart_silverB)
-//                mode = LineDataSet.Mode.CUBIC_BEZIER
-//                isHighlightEnabled = true
-//                setDrawCircles(false)
-//            }
-//
-//        val data = LineData(dataSet)
-//
-//        val chart = binding.silverChart.apply {
-//            isEnabled = true
-//            setData(data)
-//            setViewPortOffsets(80f, 30f, 80f, 50f)
-//            setBackgroundColor(backGround)
-//            isDoubleTapToZoomEnabled = false
-//            setDrawMarkers(true)
-//            description.isEnabled = false
-//            setTouchEnabled(true)
-//            isDragEnabled = true
-//            setScaleEnabled(false)
-//            setDrawGridBackground(false)
-//            maxHighlightDistance = 300f
-//            setPinchZoom(true)
-//            setDrawMarkers(true)
-//            isHighlightPerTapEnabled = true
-//            axisRight.isEnabled = false
-//            legend.isEnabled = true
-//            fitScreen()
-//        }
-//
-//        val valueFormatter = IndexAxisValueFormatter(date)
-//
-//        chart.xAxis
-//            .apply {
-//                setValueFormatter(valueFormatter)
-//                isEnabled = true
-//                gridColor = resources.getColor(R.color.chart_silverB, null)
-//                textColor = context.resources.getColor(R.color.chart_font, null)
-//                position = XAxis.XAxisPosition.BOTTOM
-//                setDrawGridLines(true)
-//                setLabelCount(5, true)
-//                spaceMax = 18f
-//            }
-//
-//        chart.axisLeft
-//            .apply {
-//                textColor = resources.getColor(R.color.chart_font, null)
-//                gridColor = resources.getColor(R.color.chart_silverB, null)
-//                setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART)
-//                setDrawGridLines(true)
-//                setLabelCount(5, true)
-//                axisMaximum = dataSet.yMax + dataSet.yMax / 13
-//                axisMinimum = dataSet.yMin - dataSet.yMin / 13
-//                axisLineColor = backGround
-//            }
-//
-//        val mv =
-//            CustomMarkerView(context, R.layout.marker_view1).apply { chartView = chart }
-//
-//        chart.marker = mv
-//        chart.invalidate()
-//    }
 
     private fun calculateProduct(
         binding: StatFragmentBinding,
@@ -642,19 +612,20 @@ class StatFragment : Fragment() {
 
     private class CustomMarkerView(
         context: Context,
-        viewModel: HomeViewPagerViewModel,
+        private val viewModel: HomeViewPagerViewModel,
         layoutResource: Int
     ) : MarkerView(
         context,
         layoutResource
     ) {
-        private val tvContent: TextView = findViewById<View>(R.id.tvContent) as TextView
-        private val viewModel: HomeViewPagerViewModel = viewModel
+        private val tvContent: TextView
+            get() = findViewById<View>(R.id.tvContent) as TextView
 
         override fun refreshContent(e: Entry?, highlight: Highlight?) {
             tvContent.text =
                 String.format("%,.2f", e?.y) // set the entry-value as the display text
-            tvCurrency.text = CURRENCYSYMBOL[viewModel.realData.value?.get("currency")?.toInt()?: 0]
+            tvCurrency.text =
+                CURRENCYSYMBOL[viewModel.realData.value?.get("currency")?.toInt() ?: 0]
 
             super.refreshContent(e, highlight)
         }
@@ -685,7 +656,7 @@ class StatFragment : Fragment() {
             "value_AG" to listOf<Float>()
         )
         return functions
-            .getHttpsCallable("getChart")
+            .getHttpsCallable("getShortChart")
             .call(data)
             .continueWith { task ->
                 // This continuation runs on either success or failure, but if the task

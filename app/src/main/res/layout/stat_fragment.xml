@@ -475,6 +475,7 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/chartCardView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginHorizontal="8dp"
@@ -494,14 +495,27 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/goldChart"
+                        android:text="@string/chart"
                         android:textSize="@dimen/text_medium" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ProgressBar
+                        android:id="@+id/goldChartProgress"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
 
                     <com.github.mikephil.charting.charts.LineChart
                         android:id="@+id/goldChart"
                         android:layout_width="match_parent"
                         android:layout_height="250dp"
-                        android:layout_marginVertical="8dp" />
+                        android:layout_marginVertical="8dp"
+                        android:visibility="gone"/>
+
+                </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
         </LinearLayout>

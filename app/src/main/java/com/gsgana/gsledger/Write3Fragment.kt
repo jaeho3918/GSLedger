@@ -85,112 +85,112 @@ class Write3Fragment : Fragment() {
             binding.weightEditText2.setText("05")
             binding.weightUnitSpinner1.setSelection(0)
 
-            viewModel.weightUnitField.value = 0
+            viewModel.setweightUnitField(0)
         }
         binding.quickBtn110oz.setOnClickListener{
             binding.weightEditText1.setText("0")
             binding.weightEditText2.setText("1")
             binding.weightUnitSpinner1.setSelection(0)
 
-            viewModel.weightUnitField.value = 0
+            viewModel.setweightUnitField(0)
         }
         binding.quickBtn14oz.setOnClickListener{
             binding.weightEditText1.setText("0")
             binding.weightEditText2.setText("25")
             binding.weightUnitSpinner1.setSelection(0)
 
-            viewModel.weightUnitField.value = 0
+            viewModel.setweightUnitField(0)
         }
         binding.quickBtn12oz.setOnClickListener{
             binding.weightEditText1.setText("0")
             binding.weightEditText2.setText("5")
             binding.weightUnitSpinner1.setSelection(0)
 
-            viewModel.weightUnitField.value = 0
+            viewModel.setweightUnitField(0)
         }
         binding.quickBtn1oz.setOnClickListener{
             binding.weightEditText1.setText("1")
             binding.weightEditText2.setText("0")
             binding.weightUnitSpinner1.setSelection(0)
 
-            viewModel.weightUnitField.value = 0
+            viewModel.setweightUnitField(0)
         }
         binding.quickBtn2oz.setOnClickListener{
             binding.weightEditText1.setText("2")
             binding.weightEditText2.setText("0")
             binding.weightUnitSpinner1.setSelection(0)
 
-            viewModel.weightUnitField.value = 0
+            viewModel.setweightUnitField(0)
         }
         binding.quickBtn5oz.setOnClickListener{
             binding.weightEditText1.setText("5")
             binding.weightEditText2.setText("0")
             binding.weightUnitSpinner1.setSelection(0)
 
-            viewModel.weightUnitField.value = 0
+            viewModel.setweightUnitField(0)
         }
         binding.quickBtn10oz.setOnClickListener{
             binding.weightEditText1.setText("10")
             binding.weightEditText2.setText("0")
             binding.weightUnitSpinner1.setSelection(0)
 
-            viewModel.weightUnitField.value = 0
+            viewModel.setweightUnitField(0)
         }
         binding.quickBtn100oz.setOnClickListener{
             binding.weightEditText1.setText("100")
             binding.weightEditText2.setText("0")
             binding.weightUnitSpinner1.setSelection(0)
 
-            viewModel.weightUnitField.value = 0
+            viewModel.setweightUnitField(0)
         }
         binding.quickBtn400oz.setOnClickListener{
             binding.weightEditText1.setText("400")
             binding.weightEditText2.setText("0")
             binding.weightUnitSpinner1.setSelection(0)
 
-            viewModel.weightUnitField.value = 0
+            viewModel.setweightUnitField(0)
         }
         binding.quickBtn10g.setOnClickListener{
             binding.weightEditText1.setText("10")
             binding.weightEditText2.setText("0")
             binding.weightUnitSpinner1.setSelection(1)
 
-            viewModel.weightUnitField.value = 1
+            viewModel.setweightUnitField(1)
         }
         binding.quickBtn20g.setOnClickListener{
             binding.weightEditText1.setText("20")
             binding.weightEditText2.setText("0")
             binding.weightUnitSpinner1.setSelection(1)
 
-            viewModel.weightUnitField.value = 1
+            viewModel.setweightUnitField(1)
         }
         binding.quickBtn50g.setOnClickListener{
             binding.weightEditText1.setText("50")
             binding.weightEditText2.setText("0")
             binding.weightUnitSpinner1.setSelection(1)
 
-            viewModel.weightUnitField.value = 1
+            viewModel.setweightUnitField(1)
         }
         binding.quickBtn100g.setOnClickListener{
             binding.weightEditText1.setText("100")
             binding.weightEditText2.setText("0")
             binding.weightUnitSpinner1.setSelection(1)
 
-            viewModel.weightUnitField.value = 1
+            viewModel.setweightUnitField(1)
         }
         binding.quickBtn250g.setOnClickListener{
             binding.weightEditText1.setText("250")
             binding.weightEditText2.setText("0")
             binding.weightUnitSpinner1.setSelection(1)
 
-            viewModel.weightUnitField.value = 1
+            viewModel.setweightUnitField(1)
         }
         binding.quickBtn500g.setOnClickListener{
             binding.weightEditText1.setText("500")
             binding.weightEditText2.setText("0")
             binding.weightUnitSpinner1.setSelection(1)
 
-            viewModel.weightUnitField.value = 1
+            viewModel.setweightUnitField(1)
         }
         binding.quickBtn1kg.setOnClickListener{
             binding.weightEditText1.setText("1")
@@ -198,28 +198,28 @@ class Write3Fragment : Fragment() {
             binding.weightUnitSpinner1.setSelection(2)
 
 
-            viewModel.weightUnitField.value = 2
+            viewModel.setweightUnitField(2)
         }
         binding.quickBtn5kg.setOnClickListener{
             binding.weightEditText1.setText("5")
             binding.weightEditText2.setText("0")
             binding.weightUnitSpinner1.setSelection(2)
 
-            viewModel.weightUnitField.value = 2
+            viewModel.setweightUnitField(2)
         }
         binding.quickBtn125kg.setOnClickListener{
             binding.weightEditText1.setText("12")
             binding.weightEditText2.setText("5")
             binding.weightUnitSpinner1.setSelection(2)
 
-            viewModel.weightUnitField.value = 2
+            viewModel.setweightUnitField(2)
         }
         binding.quickBtn50kg.setOnClickListener{
             binding.weightEditText1.setText("50")
             binding.weightEditText2.setText("0")
             binding.weightUnitSpinner1.setSelection(2)
 
-            viewModel.weightUnitField.value = 2
+            viewModel.setweightUnitField(2)
         }
 
     }
@@ -253,12 +253,12 @@ class Write3Fragment : Fragment() {
                     position: Int,
                     id: Long
                 ) {
-                    viewModel.weightUnitField.value = position
+                    viewModel.setweightUnitField(position)
                     binding.weightUnit.text = WEIGHTUNIT[position]
                 }
             }
-        if (viewModel.weightUnitField.value!! > 0) {
-            binding.weightUnitSpinner1.setSelection(viewModel.weightUnitField.value!!)
+        if (viewModel.getweightUnitField()!! > 0) {
+            binding.weightUnitSpinner1.setSelection(viewModel.getweightUnitField()?:0)
         }
         adapter =
             ArrayAdapter(
@@ -276,12 +276,12 @@ class Write3Fragment : Fragment() {
                     position: Int,
                     id: Long
                 ) {
-                    viewModel.product.packageType = position
-                    viewModel.packageTypeField.value = position
+                    viewModel.getProduct().packageType = position
+                    viewModel.setpackageTypeField(position)
                 }
             }
-        if (viewModel.packageTypeField.value!! > 0) {
-            binding.packageTypeSpinner1.setSelection(viewModel.packageTypeField.value!!)
+        if (viewModel.getpackageTypeField()!! > 0) {
+            binding.packageTypeSpinner1.setSelection(viewModel.getpackageTypeField()!!)
         }
     }
 
@@ -289,14 +289,14 @@ class Write3Fragment : Fragment() {
         binding: FragmentWrite3Binding,
         viewModel: WriteViewModel
     ) {
-        binding.quantityEditText1.setText(viewModel.quantityField.value ?: "1")
+        binding.quantityEditText1.setText(viewModel.getquantityField()?: "1")
 
         binding.weightEditText1.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 if (s.toString() != "") {
-                    viewModel.weightField1.value = s.toString()
+                    viewModel.setweightField1(s.toString())
                 } else {
-                    viewModel.weightField1.value = ""
+                    viewModel.setweightField1("")
                 }
             }
 
@@ -307,9 +307,9 @@ class Write3Fragment : Fragment() {
         binding.weightEditText2.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 if (s.toString() != "") {
-                    viewModel.weightField2.value = s.toString()
+                    viewModel.setweightField2(s.toString())
                 } else {
-                    viewModel.weightField2.value = ""
+                    viewModel.setweightField2("")
                 }
             }
 
@@ -320,10 +320,10 @@ class Write3Fragment : Fragment() {
         binding.quantityEditText1.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
                 if (s.toString() != "") {
-                    viewModel.quantityField.value = s.toString()
+                    viewModel.setquantityField(s.toString())
 
                 } else {
-                    viewModel.quantityField.value = "1"
+                    viewModel.setquantityField("1")
                 }
             }
 
@@ -332,8 +332,8 @@ class Write3Fragment : Fragment() {
         }
         )
 
-        binding.weightEditText1.setText(viewModel.weightField1.value ?: "1")
-        binding.weightEditText2.setText(viewModel.weightField2.value ?: "")
+        binding.weightEditText1.setText(viewModel.getweightField1() ?: "1")
+        binding.weightEditText2.setText(viewModel.getweightField2() ?: "")
     }
 
     private fun Float.dipToPixels(): Float {

@@ -9,6 +9,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
+import com.android.billingclient.api.*
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.InterstitialAd
@@ -18,6 +19,8 @@ import com.gsgana.gsledger.databinding.ActivityMainBinding
 import com.gsgana.gsledger.utilities.InjectorUtils
 import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModel
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 
 class MainActivity : AppCompatActivity() {
@@ -35,13 +38,63 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mFirebaseAnalytics: FirebaseAnalytics
     private var doneOnce = true
 
+    private lateinit var skuDetails1800 : SkuDetails
+
+    private val skuID1800 = "gsledger_subscribe"
+    private val skuID3600 = "adfree_unlimited_entry"
+
+
 //    private val viewModel: HomeViewPagerViewModel by viewModels {
 //        InjectorUtils.provideHomeViewPagerViewModelFactory(this, this.intent.getCharArrayExtra(KEY))
 //    }
 
+    private lateinit var billingClient: BillingClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+
+
+
+
+
+
+
+
+
+
+//        billingClient = BillingClient.newBuilder(this).build()
+//        billingClient.startConnection(object : BillingClientStateListener {
+//            override fun onBillingSetupFinished(billingResult: BillingResult) {
+//                if (billingResult.responseCode ==  BillingClient.BillingResponseCode.OK) {
+//                    // The BillingClient is ready. You can query purchases here.
+//                }
+//            }
+//            override fun onBillingServiceDisconnected() {
+//                // Try to restart the connection on the next request to
+//                // Google Play by calling the startConnection() method.
+//            }
+//        })
+//
+//        // Retrieve a value for "skuDetails" by calling querySkuDetailsAsync().
+//        val flowParams = BillingFlowParams.newBuilder()
+//            .setSkuDetails(skuDetails)
+//            .build()
+//
+//        val responseCode = billingClient.launchBillingFlow(this, flowParams)
+//        suspend fun acknowledgePurchase() {
+//            val acknowledgePurchaseParams =
+//                AcknowledgePurchaseParams.newBuilder()
+//                    .setPurchaseToken(/* token */)
+//                    .setDeveloperPayload(/* payload */)
+//                    .build()
+//            val ackPurchaseResult = withContext(Dispatchers.IO) {
+//                billingClient.acknowledgePurchase(acknowledgePurchaseParams)
+//            }
+//        }
+
+
+
 //        this.intent.removeExtra(KEY)
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
 

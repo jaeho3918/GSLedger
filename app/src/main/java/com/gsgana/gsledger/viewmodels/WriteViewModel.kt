@@ -11,55 +11,100 @@ class WriteViewModel internal constructor(
 ) :
     ViewModel() {
 
-    var product = Product()
+    private var product = Product()
+    fun getProduct() = product
 
-    var priceTest = ""
+    private var priceTest = ""
+    fun getPriceTest() = priceTest
+    fun setPriceTest(input : String){ priceTest = input }
 
-    var write2Array: Array<String>? = null
+    private var write2Array: Array<String>? = null
+    fun getwrite2Array() = write2Array
+    fun setwrite2Array(input : Array<String>) {write2Array = input}
 
-    val metalField1 = MutableLiveData<Int?>(null)
+    private val metalField1 = MutableLiveData<Int?>(null)
+    fun getmetalField1():Int?{return metalField1.value}
+    fun setmetalField1(input : Int?) {metalField1.value = input}
 
-    val typeField1 = MutableLiveData<Int?>(null)
+    private val typeField1 = MutableLiveData<Int?>(null)
+    fun gettypeField1():Int?{return typeField1.value}
+    fun settypeField1(input : Int?) {typeField1.value = input}
 
-    val brandField1 = MutableLiveData(-1)
+    private val brandField1 = MutableLiveData(-1)
+    fun getbrandField1():Int?{return brandField1.value}
+    fun setbrandField1(input : Int?) {brandField1.value = input}
 
-    val weightField1 = MutableLiveData<String>(null)
+    private val weightField1 = MutableLiveData<String?>(null)
+    fun getweightField1():String?{return weightField1.value}
+    fun setweightField1(input : String?) {weightField1.value = input}
 
-    val weightField2 = MutableLiveData<String>(null)
+    private val weightField2 = MutableLiveData<String?>(null)
+    fun getweightField2():String?{return weightField2.value}
+    fun setweightField2(input : String?) {weightField2.value = input}
 
-    val weightUnitField = MutableLiveData(0)
+    private val weightUnitField = MutableLiveData(0)
+    fun getweightUnitField():Int?{return weightUnitField.value}
+    fun setweightUnitField(input : Int?) {weightUnitField.value = input}
 
-    val weightr = MutableLiveData(1f)
+    private val quantityField = MutableLiveData<String>("1")
+    fun getquantityField():String?{return quantityField.value}
+    fun setquantityField(input : String?) {quantityField.value = input}
 
-    val quantityField = MutableLiveData<String>("1")
+    private val packageTypeField = MutableLiveData(0)
+    fun getpackageTypeField():Int?{return packageTypeField.value}
+    fun setpackageTypeField(input : Int?) {packageTypeField.value = input}
 
-    val packageTypeField = MutableLiveData(0)
+    private val regField = MutableLiveData<Float>(0f)
+    fun getregField():Float?{return regField.value}
+    fun setregField(input : Float?) {regField.value = input}
 
-    val regField = MutableLiveData<Float>(0f)
+    private val curField = MutableLiveData<Float>(0f)
+    fun getcurField():Float?{return curField.value}
+    fun setcurField(input : Float?) {curField.value = input}
 
-    val curField = MutableLiveData<Float>(0f)
+    private val gradeField = MutableLiveData<Int?>(null)
+    fun getgradeField():Int?{return gradeField.value}
+    fun setgradeField(input : Int?) {gradeField.value = input}
 
-    val gradeField = MutableLiveData<Int?>(null)
+    private val gradeNumField = MutableLiveData<Int?>(null)
+    fun getgradeNumField():Int?{return gradeNumField.value}
+    fun setgradeNumField(input : Int?) {gradeNumField.value = input}
 
-    val gradeNumField = MutableLiveData<Int?>(null)
+    private val yearSeriesField = MutableLiveData<Int>(null)
+    fun getyearSeriesField():Int?{return yearSeriesField.value}
+    fun setyearSeriesField(input : Int?) {yearSeriesField.value = input}
 
-    val yearSeriesField = MutableLiveData<Int>(null)
+    private val dateField = MutableLiveData<String>(null)
+    fun getdateField():String?{return dateField.value}
+    fun setdateField(input : String?) {dateField.value = input}
 
-    val dateField = MutableLiveData<String>(null)
+    private val currencyField = MutableLiveData<Int?>(null)
+    fun getcurrencyField():Int?{return currencyField.value}
+    fun setcurrencyField(input : Int?) {currencyField.value = input}
 
-    val currencyField = MutableLiveData<Int?>(null)
+    private val priceField = MutableLiveData<MutableList<String?>>(listOf(null, null).toMutableList())
+//    fun getpriceField():MutableList<String?>?{return priceField.value}
+//    fun setpriceField(input : MutableList<String?>?) {priceField.value = input}
 
-    val priceField = MutableLiveData<MutableList<String?>>(listOf(null, null).toMutableList())
+    private val priceField1 = MutableLiveData<String>(null)
+//    fun getpriceField1():String?{return priceField1.value}
+//    fun setpriceField1(input : String?) {priceField1.value = input}
 
-    val priceField1 = MutableLiveData<String>(null)
+    private val priceField2 = MutableLiveData<String>(null)
+//    fun getpriceField2():String?{return priceField2.value}
+//    fun setpriceField2(input : String?) {priceField2.value = input}
 
-    val priceField2 = MutableLiveData<String>(null)
+    private val memoField = MutableLiveData<String>(null)
+    fun getmemoField():String?{return memoField.value}
+    fun setmemoField(input : String?) {memoField.value = input}
 
-    val memoField = MutableLiveData<String>(null)
+    private val totalPrice = MutableLiveData<String>(null)
+//    fun gettotalPrice():String?{return totalPrice.value}
+//    fun settotalPrice(input : String?) {totalPrice.value = input}
 
-    val totalPrice = MutableLiveData<String>(null)
-
-    val pre = MutableLiveData<Float>(null)
+    private val pre = MutableLiveData<Float>(null)
+    fun getpre():Float?{return pre.value}
+    fun setpre(input : Float?) {pre.value = input}
 
     val price: LiveData<String> = Transformations.map(priceField) {
         "${it[0] ?: "0"}.${it[1] ?: "00"}"
@@ -67,44 +112,9 @@ class WriteViewModel internal constructor(
 
     val brand = MediatorLiveData<String>().apply {
         addSource(brandField1) {
-            value = write2Array?.get(it)
+            value = getwrite2Array()?.get(it)
         }
     }
-
-//    val currency = MediatorLiveData<String>().apply {
-//        addSource(currencyField) {
-//            value = CURRENCY.get(it ?:0)
-//        }
-//    }
-//
-//    val packageTypeString = MediatorLiveData<String>().apply {
-//        addSource(packageTypeField) {
-//            value = PACKAGETYPE[it]
-//        }
-//    }
-
-//    val priceMerger = MediatorLiveData<String>()
-//        .apply {
-//            addSource(priceField1) {
-//                var test1 = priceField1.value ?: "1"
-//                val test2 = priceField2.value ?: "00"
-//                if (test1 == "") {
-//                    test1 = "0"
-//                }
-//                val test3 = "${test1}.${test2}"
-//                value = test3
-//            }
-//            addSource(priceField2) {
-//                var test1 = priceField1.value ?: "1"
-//                val test2 = priceField2.value ?: "00"
-//                if (test1 == "") {
-//                    test1 = "0"
-//                }
-//                val test3 = "${test1}.${test2}"
-//                value = test3
-//            }
-//        }
-
 
     val weightUnit = MediatorLiveData<Float>()
         .apply {

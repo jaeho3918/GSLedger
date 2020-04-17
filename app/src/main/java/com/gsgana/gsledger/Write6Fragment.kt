@@ -1,7 +1,7 @@
+@file:Suppress("DEPRECATION")
+
 package com.gsgana.gsledger
 
-import android.content.Context
-import android.content.SharedPreferences
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.text.Editable
@@ -17,7 +17,6 @@ import com.gsgana.gsledger.data.Product
 import com.gsgana.gsledger.databinding.FragmentWrite6Binding
 import com.gsgana.gsledger.utilities.*
 import com.gsgana.gsledger.viewmodels.WriteViewModel
-import java.text.SimpleDateFormat
 
 
 @Suppress("DEPRECATION")
@@ -31,7 +30,6 @@ class Write6Fragment : Fragment() {
 //    private lateinit var sharedPreferences: SharedPreferences
 //    private val PREF_NAME = "01504f779d6c77df04"
 //    private val BUY_NAME = "IYe6CjFgpBKVHdcXkC"
-//    private lateinit var mformat: SimpleDateFormat
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,9 +44,9 @@ class Write6Fragment : Fragment() {
 
         val viewModel =
             ViewModelProviders.of(
-                    activity!!,
-                    InjectorUtils.provideWriteViewModelFactory(activity!!, null)
-                )
+                activity!!,
+                InjectorUtils.provideWriteViewModelFactory(activity!!, null)
+            )
                 .get(WriteViewModel::class.java)
 
         val binding = DataBindingUtil.inflate<FragmentWrite6Binding>(
@@ -71,26 +69,26 @@ class Write6Fragment : Fragment() {
             override fun add() {
                 product = Product(null)
                 product.brand = viewModel.brand.value.toString()
-                product.metal = viewModel.metalField1.value ?: 0
-                product.type = viewModel.typeField1.value ?: 0
-                product.packageType = viewModel.packageTypeField.value ?: 0
-                product.quantity = viewModel.quantityField.value?.toInt() ?: 0
+                product.metal = viewModel.getmetalField1() ?: 0
+                product.type = viewModel.gettypeField1() ?: 0
+                product.packageType = viewModel.getpackageTypeField() ?: 0
+                product.quantity = viewModel.getquantityField()?.toInt() ?: 0
                 product.weight = viewModel.weightMerger.value?.toFloat() ?: 0f
-                product.weightUnit = viewModel.weightUnitField.value ?: 0
+                product.weightUnit = viewModel.getweightUnitField() ?: 0
                 product.weightr = viewModel.weightUnit.value?.toFloat() ?: 1f
-                product.currency = viewModel.currencyField.value ?: 0
-                product.price = viewModel.priceTest.toFloat()
-                product.grade = GRADE[viewModel.gradeField.value ?: 0]
-                product.gradeNum = viewModel.gradeNumField.value ?: 0
-                product.buyDate = viewModel.dateField.value ?: ""
-                product.reg = viewModel.regField.value ?: 0f
-                product.memo = viewModel.memoField.value ?: ""
+                product.currency = viewModel.getcurrencyField() ?: 0
+                product.price = viewModel.getPriceTest().toFloat()
+                product.grade = GRADE[viewModel.getgradeField() ?: 0]
+                product.gradeNum = viewModel.getgradeNumField() ?: 0
+                product.buyDate = viewModel.getdateField() ?: ""
+                product.reg = viewModel.getregField() ?: 0f
+                product.memo = viewModel.getmemoField() ?: ""
                 product.prePrice =
-                    (viewModel.priceTest.toFloat() * (viewModel.quantityField.value?.toFloat()
-                        ?: 1f) * PACKAGENUM[viewModel.packageTypeField.value ?: 0])
-                product.cur = viewModel.curField.value?.toFloat() ?: 0f
-                product.year = viewModel.yearSeriesField.value ?: 0
-                product.pre = viewModel.pre.value ?: 0f
+                    (viewModel.getPriceTest().toFloat() * (viewModel.getquantityField()?.toFloat()
+                        ?: 1f) * PACKAGENUM[viewModel.getpackageTypeField() ?: 0])
+                product.cur = viewModel.getcurField()?.toFloat() ?: 0f
+                product.year = viewModel.getyearSeriesField() ?: 0
+                product.pre = viewModel.getpre() ?: 0f
 
 //                if (sharedPreferences.getString(BUY_NAME, null).isNullOrEmpty()) {
 //                    sharedPreferences.edit()
@@ -122,13 +120,13 @@ class Write6Fragment : Fragment() {
     private fun setTextUI(binding: FragmentWrite6Binding, viewModel: WriteViewModel) {
         binding.memoEditText.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                viewModel.memoField.value = s.toString()
+                viewModel.setmemoField(s.toString())
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
-        binding.memoEditText.setText(viewModel.memoField.value ?: "")
+        binding.memoEditText.setText(viewModel.getmemoField() ?: "")
     }
 
     interface Callback {

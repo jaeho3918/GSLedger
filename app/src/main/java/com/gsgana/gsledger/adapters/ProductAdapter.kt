@@ -22,6 +22,7 @@ import com.gsgana.gsledger.viewmodels.ProductsViewModel
 
 class ProductAdapter(private val context: Context, private val realData: Map<String, Double>) :
     ListAdapter<Product, ProductAdapter.ViewHolder>(ProductDiffCallback()) {
+
     private lateinit var brand: String
     private lateinit var metal: String
     private lateinit var type: String

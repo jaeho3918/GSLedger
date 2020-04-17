@@ -49,9 +49,9 @@ class Write5Fragment : Fragment() {
     ): View? {
         val viewModel =
             ViewModelProviders.of(
-                    activity!!,
-                    InjectorUtils.provideWriteViewModelFactory(activity!!, null)
-                )
+                activity!!,
+                InjectorUtils.provideWriteViewModelFactory(activity!!, null)
+            )
                 .get(WriteViewModel::class.java)
 
         option =
@@ -83,19 +83,28 @@ class Write5Fragment : Fragment() {
                     binding.priceEditText2.text.toString()
                 }
 
+                binding.priceEditText1.isEnabled = false
+                binding.priceEditText2.isEnabled = false
+                binding.priceEditText3.isEnabled = false
+
                 val price_buf = "${price1}.${price2}".toFloat()
                 if (price_buf in min..max) {
+
                     binding.summitProgress.visibility = View.VISIBLE
                     binding.summitButton.isEnabled = false
                     binding.summitButton.text = ""
 
-                    val test = viewModel.dateField.value?.split("/")
+                    binding.priceEditText1.isEnabled = false
+                    binding.priceEditText2.isEnabled = false
+                    binding.priceEditText3.isEnabled = false
+
+                    val test = viewModel.getdateField()?.split("/")
                     val date_buf = if (test.isNullOrEmpty()) {
                         val cal = Calendar.getInstance()
                         val _year = cal.get(Calendar.YEAR)
                         val _month = cal.get(Calendar.MONTH) + 1
                         val _date = cal.get(Calendar.DATE)
-                        viewModel.dateField.value ?: String.format(
+                        viewModel.getdateField()?: String.format(
                             "%04d%02d%02d", _year, _month, _date
                         )
                     } else {
@@ -105,18 +114,17 @@ class Write5Fragment : Fragment() {
                     }
 
                     val jsonParam = JsonObject().apply {
-                        addProperty("metal", viewModel.metalField1.value.toString())
-                        addProperty("type1", viewModel.typeField1.value.toString())
+                        addProperty("metal", viewModel.getmetalField1().toString())
+                        addProperty("type1", viewModel.gettypeField1().toString())
                         addProperty("brand", viewModel.brand.value.toString())
                         addProperty("weight", viewModel.weightCalculator.value)
-                        addProperty("quantity", viewModel.quantityField.value)
+                        addProperty("quantity", viewModel.getquantityField())
                         addProperty("weightr", viewModel.weightUnit.value)
-                        addProperty("packageType1", viewModel.packageTypeField.value.toString())
-                        addProperty("grade", viewModel.gradeField.value.toString())
-                        addProperty("gradeNum", viewModel.gradeNumField.value.toString())
-                        addProperty("currency", viewModel.currencyField.value.toString())
-                        addProperty("year", viewModel.yearSeriesField.value.toString())
-
+                        addProperty("packageType1", viewModel.getpackageTypeField().toString())
+                        addProperty("grade", viewModel.getgradeField().toString())
+                        addProperty("gradeNum", viewModel.getgradeNumField().toString())
+                        addProperty("currency", viewModel.getcurrencyField().toString())
+                        addProperty("year", viewModel.getyearSeriesField().toString())
 
                         price1 = if ("${binding.priceEditText1.text}" == "") {
                             "0"
@@ -151,10 +159,10 @@ class Write5Fragment : Fragment() {
                                     .enqueue(object : retrofit2.Callback<Data> {
                                         override fun onFailure(call: Call<Data>, t: Throwable) {
                                             Toast.makeText(
-                                                    activity,
-                                                    t.toString(),
-                                                    Toast.LENGTH_LONG
-                                                )
+                                                activity,
+                                                t.toString(),
+                                                Toast.LENGTH_LONG
+                                            )
                                                 .show()
                                         }
 
@@ -163,29 +171,27 @@ class Write5Fragment : Fragment() {
                                             call: Call<Data>,
                                             response: Response<Data>
                                         ) {
-                                            viewModel.priceTest =
-                                                priceCalculate(binding).toString()
-                                            viewModel.regField.value =
-                                                response.body()?.reg?.toFloat()
-                                            viewModel.curField.value =
-                                                response.body()?.cur?.toFloat()
-                                            viewModel.pre.value =
-                                                response.body()?.pre?.toFloat()
+                                            viewModel.setPriceTest(priceCalculate(binding).toString())
+                                            viewModel.setregField(response.body()?.reg?.toFloat())
+                                            viewModel.setcurField(response.body()?.cur?.toFloat())
+                                            viewModel.setpre(response.body()?.pre?.toFloat())
+
                                             min = response.body()!!.min.toFloat()
                                             max = response.body()!!.max.toFloat()
 
                                             if ((min <= priceCalculate(binding)) &&
                                                 (max >= priceCalculate(binding))
                                             ) {
-                                                val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                                                val imm =
+                                                    context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                                                 imm.hideSoftInputFromWindow(view!!.windowToken, 0)
                                                 findNavController().navigate(R.id.action_write5Fragment_to_write6Fragment)
                                             } else {
                                                 binding.priceCur1.text =
-                                                    CURRENCYSYMBOL[viewModel.currencyField.value
+                                                    CURRENCYSYMBOL[viewModel.getcurrencyField()
                                                         ?: 0]
                                                 binding.priceCur2.text =
-                                                    CURRENCYSYMBOL[viewModel.currencyField.value
+                                                    CURRENCYSYMBOL[viewModel.getcurrencyField()
                                                         ?: 0]
                                                 binding.priceRange.visibility = View.VISIBLE
                                                 binding.summitButton.text = "NEXT"
@@ -195,25 +201,28 @@ class Write5Fragment : Fragment() {
                                                     String.format("%,.1f", min)
                                                 binding.priceMax.text =
                                                     String.format("%,.1f", max)
+                                                binding.priceEditText1.isEnabled = true
+                                                binding.priceEditText2.isEnabled = true
+                                                binding.priceEditText3.isEnabled = true
                                             }
-
                                         }
                                     })
                             }
                         }
                 } else if (price_buf !in min..max) {
+
                     if (min == 0f && max == 0f) {
                         binding.summitProgress.visibility = View.VISIBLE
                         binding.summitButton.isEnabled = false
                         binding.summitButton.text = ""
 
-                        val test = viewModel.dateField.value?.split("/")
+                        val test = viewModel.getdateField()?.split("/")
                         val date_buf = if (test.isNullOrEmpty()) {
                             val cal = Calendar.getInstance()
                             val _year = cal.get(Calendar.YEAR)
                             val _month = cal.get(Calendar.MONTH) + 1
                             val _date = cal.get(Calendar.DATE)
-                            viewModel.dateField.value ?: String.format(
+                            viewModel.getdateField() ?: String.format(
                                 "%04d%02d%02d", _year, _month, _date
                             )
                         } else {
@@ -223,17 +232,17 @@ class Write5Fragment : Fragment() {
                         }
 
                         val jsonParam = JsonObject().apply {
-                            addProperty("metal", viewModel.metalField1.value.toString())
-                            addProperty("type1", viewModel.typeField1.value.toString())
+                            addProperty("metal", viewModel.getmetalField1().toString())
+                            addProperty("type1", viewModel.gettypeField1().toString())
                             addProperty("brand", viewModel.brand.value.toString())
                             addProperty("weight", viewModel.weightCalculator.value)
-                            addProperty("quantity", viewModel.quantityField.value)
+                            addProperty("quantity", viewModel.getquantityField())
                             addProperty("weightr", viewModel.weightUnit.value)
-                            addProperty("packageType1", viewModel.packageTypeField.value.toString())
-                            addProperty("grade", viewModel.gradeField.value.toString())
-                            addProperty("gradeNum", viewModel.gradeNumField.value.toString())
-                            addProperty("currency", viewModel.currencyField.value.toString())
-                            addProperty("year", viewModel.yearSeriesField.value.toString())
+                            addProperty("packageType1", viewModel.getpackageTypeField().toString())
+                            addProperty("grade", viewModel.getgradeField().toString())
+                            addProperty("gradeNum", viewModel.getgradeNumField().toString())
+                            addProperty("currency", viewModel.getcurrencyField().toString())
+                            addProperty("year", viewModel.getyearSeriesField().toString())
 
 
                             price1 = if ("${binding.priceEditText1.text}" == "") {
@@ -269,10 +278,10 @@ class Write5Fragment : Fragment() {
                                         .enqueue(object : retrofit2.Callback<Data> {
                                             override fun onFailure(call: Call<Data>, t: Throwable) {
                                                 Toast.makeText(
-                                                        activity,
-                                                        t.toString(),
-                                                        Toast.LENGTH_LONG
-                                                    )
+                                                    activity,
+                                                    t.toString(),
+                                                    Toast.LENGTH_LONG
+                                                )
                                                     .show()
                                             }
 
@@ -281,30 +290,31 @@ class Write5Fragment : Fragment() {
                                                 call: Call<Data>,
                                                 response: Response<Data>
                                             ) {
-                                                viewModel.priceTest =
-                                                    priceCalculate(binding).toString()
-                                                viewModel.regField.value =
-                                                    response.body()?.reg?.toFloat()
-                                                viewModel.curField.value =
-                                                    response.body()?.cur?.toFloat()
-                                                viewModel.pre.value =
-                                                    response.body()?.pre?.toFloat()
-                                                 min = response.body()!!.min.toFloat()
-                                                 max = response.body()!!.max.toFloat()
+
+                                                viewModel.setPriceTest(priceCalculate(binding).toString())
+                                                viewModel.setregField(response.body()?.reg?.toFloat())
+                                                viewModel.setcurField(response.body()?.cur?.toFloat())
+                                                viewModel.setpre(response.body()?.pre?.toFloat())
+                                                min = response.body()!!.min.toFloat()
+                                                max = response.body()!!.max.toFloat()
 
                                                 if ((min <= priceCalculate(binding)) &&
                                                     (max >= priceCalculate(binding))
                                                 ) {
 
-                                                    val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                                                    imm.hideSoftInputFromWindow(view!!.windowToken, 0)
+                                                    val imm =
+                                                        context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                                                    imm.hideSoftInputFromWindow(
+                                                        view!!.windowToken,
+                                                        0
+                                                    )
                                                     findNavController().navigate(R.id.action_write5Fragment_to_write6Fragment)
                                                 } else {
                                                     binding.priceCur1.text =
-                                                        CURRENCYSYMBOL[viewModel.currencyField.value
+                                                        CURRENCYSYMBOL[viewModel.getcurrencyField()
                                                             ?: 0]
                                                     binding.priceCur2.text =
-                                                        CURRENCYSYMBOL[viewModel.currencyField.value
+                                                        CURRENCYSYMBOL[viewModel.getcurrencyField()
                                                             ?: 0]
                                                     binding.priceRange.visibility = View.VISIBLE
                                                     binding.summitButton.text = "NEXT"
@@ -323,7 +333,16 @@ class Write5Fragment : Fragment() {
                                 }
                             }
 
+                        binding.priceEditText1.isEnabled = true
+                        binding.priceEditText2.isEnabled = true
+                        binding.priceEditText3.isEnabled = true
+
                     } else {
+
+                        binding.priceEditText1.isEnabled = true
+                        binding.priceEditText2.isEnabled = true
+                        binding.priceEditText3.isEnabled = true
+
                         Toast.makeText(
                             context,
                             resources.getString(R.string.rangePrice),
@@ -360,7 +379,7 @@ class Write5Fragment : Fragment() {
                     position: Int,
                     id: Long
                 ) {
-                    viewModel.currencyField.value = position
+                    viewModel.setcurrencyField( position)
                 }
             }
         binding.currencySpinner1.setSelection(option ?: 0)

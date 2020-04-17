@@ -62,6 +62,7 @@ class IntroActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         val sf = this.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
         setContentView(R.layout.activity_intro)
         mAuth = FirebaseAuth.getInstance()
@@ -270,6 +271,8 @@ private fun googleSignInOption(binding: ActivityIntroBinding) {
         } else {
             val signInIntent = googleSigninClient.signInIntent
             binding.signupBtn.visibility = View.GONE
+            binding.agreeBox.visibility = View.GONE
+            binding.agreeText.visibility = View.GONE
             binding.signupProgress.visibility = View.VISIBLE
             startActivityForResult(signInIntent, RC_SIGN_IN)
         }

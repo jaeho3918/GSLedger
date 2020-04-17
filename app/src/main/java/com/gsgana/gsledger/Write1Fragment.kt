@@ -75,8 +75,8 @@ class Write1Fragment : Fragment() {
         }
 
         binding.moveTo1.setOnClickListener {
-            viewModel.product.metal = viewModel.metalField1.value!!
-            viewModel.product.type = viewModel.typeField1.value!!
+            viewModel.getProduct().metal = viewModel.getmetalField1()?:0
+            viewModel.getProduct().type = viewModel.gettypeField1()?:0
             findNavController().navigate(R.id.action_write1Fragment_to_write2Fragment)
 
         }
@@ -84,8 +84,8 @@ class Write1Fragment : Fragment() {
             binding.moveTo1.setTextColor(white!!)
             binding.moveTo1.isEnabled=true
             goldCoinSwitch = true
-            viewModel.metalField1.value = 0
-            viewModel.typeField1.value = 0
+            viewModel.setmetalField1(0)
+            viewModel.settypeField1(0)
             binding.stateLabel.text = "Gold Coin"
             binding.stateLabel.setTextColor(goldTextColor)
             binding.goldCoin.setImageDrawable(
@@ -125,8 +125,8 @@ class Write1Fragment : Fragment() {
             binding.moveTo1.setTextColor(white!!)
             binding.moveTo1.isEnabled=true
             goldBarSwitch = true
-            viewModel.metalField1.value = 0
-            viewModel.typeField1.value = 1
+            viewModel.setmetalField1(0)
+            viewModel.settypeField1(1)
             binding.stateLabel.text = "Gold Bar"
             binding.stateLabel.setTextColor(goldTextColor)
             binding.goldBar.setImageDrawable(
@@ -164,8 +164,8 @@ class Write1Fragment : Fragment() {
             binding.moveTo1.setTextColor(white!!)
             binding.moveTo1.isEnabled=true
             silverCoinSwitch = true
-            viewModel.metalField1.value = 1
-            viewModel.typeField1.value = 0
+            viewModel.setmetalField1(1)
+            viewModel.settypeField1(0)
             binding.stateLabel.text = "Silver Coin"
             binding.stateLabel.setTextColor(silverTextColor)
             binding.silverCoin.setImageDrawable(
@@ -204,8 +204,8 @@ class Write1Fragment : Fragment() {
             binding.moveTo1.setTextColor(white!!)
             binding.moveTo1.isEnabled=true
             silverBarSwitch = true
-            viewModel.metalField1.value = 1
-            viewModel.typeField1.value = 1
+            viewModel.setmetalField1(1)
+            viewModel.settypeField1(1)
             binding.stateLabel.text = "Silver Bar"
             binding.stateLabel.setTextColor(silverTextColor)
             binding.silverBar.setImageDrawable(

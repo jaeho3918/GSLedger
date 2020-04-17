@@ -91,16 +91,16 @@ class HomeViewPagerFragment : Fragment() {
                 weightOption = option.getInt(WEIGHT_NAME, 0)
 
                 if (currencyOption != null) {
-                    if (!viewModel.realData.value.isNullOrEmpty()) {
-                        data["currency"] = viewModel.realData.value?.getValue("currency") ?: 0.0
-                        data["weightUnit"] = viewModel.realData.value?.getValue("weightUnit") ?: 0.0
+                    if (!viewModel.getRealData().value.isNullOrEmpty()) {
+                        data["currency"] = viewModel.getRealData().value?.getValue("currency") ?: 0.0
+                        data["weightUnit"] = viewModel.getRealData().value?.getValue("weightUnit") ?: 0.0
                     } else {
                         data["currency"] = currencyOption!!.toDouble()
                         data["weightUnit"] = weightOption!!.toDouble()
                     }
                 }
                 data["USD"] = 1.0
-                viewModel.realData.value = data
+                viewModel.setRealData(data)
             }
         }
         )
@@ -142,7 +142,7 @@ class HomeViewPagerFragment : Fragment() {
             tab.text = getTabTitle(context, position)
         }.attach()
 
-        viewModel.realData.observe(viewLifecycleOwner) { realData ->
+        viewModel.getRealData().observe(viewLifecycleOwner) { realData ->
             val currencyOption = activity?.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
                 ?.getInt(CURR_NAME, 0)
 
@@ -151,8 +151,6 @@ class HomeViewPagerFragment : Fragment() {
             val date = simpleDateFormat.format(Date(realData["DATE"]!!.toLong() * 1000))
 
             binding.realUpdatedDate.text = date
-
-
             binding.realGoldCurrency.text = CURRENCYSYMBOL[currencyOption ?: 0]
             binding.realSilverCurrency.text = CURRENCYSYMBOL[currencyOption ?: 0]
             binding.realGoldCurrency.text = CURRENCYSYMBOL[currencyOption ?: 0]
@@ -269,8 +267,8 @@ class HomeViewPagerFragment : Fragment() {
         return when (position) {
             STAT_PAGE_INDEX -> context?.resources?.getString(R.string.overview)
             LEDGER_PAGE_INDEX -> context?.resources?.getString(R.string.list)
-            ADSANDOPTION_PAGE_INDEX -> context?.resources?.getString(R.string.option)
             CHART_PAGE_INDEX -> context?.resources?.getString(R.string.chart)
+            ADSANDOPTION_PAGE_INDEX -> context?.resources?.getString(R.string.option)
             else -> null
         }
     }

@@ -10,13 +10,16 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
+import com.github.mikephil.charting.components.AxisBase
 import com.github.mikephil.charting.components.MarkerView
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
+import com.github.mikephil.charting.formatter.IAxisValueFormatter
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.utils.MPPointF
 import com.google.android.gms.tasks.Task
@@ -27,6 +30,9 @@ import com.gsgana.gsledger.utilities.CURRENCYSYMBOL
 import com.gsgana.gsledger.utilities.InjectorUtils
 import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModel
 import kotlinx.android.synthetic.main.marker_view.view.*
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 @Suppress("UNCHECKED_CAST")
@@ -69,8 +75,8 @@ class ChartFragment : Fragment() {
             val list2 = data.result?.get("value_AG") as ArrayList<Float>
             val dates = data.result?.get("date") as ArrayList<String>
 
-            if (context != null) setLineChart(context!!, viewModel, binding, dates, list1)
-            if (context != null) setLineChart1(context!!, viewModel, binding, dates, list2)
+            if (context != null) setLineChart(context!!, binding, dates, list1)
+            if (context != null) setLineChart1(context!!, binding, dates, list2)
             list1.clear()
             list2.clear()
             dates.clear()
@@ -82,7 +88,6 @@ class ChartFragment : Fragment() {
 
     private fun setLineChart(
         context: Context,
-        viewPagerViewModel: HomeViewPagerViewModel,
         binding: ChartFragmentBinding,
         date: ArrayList<String>,
         value: List<Float>
@@ -120,7 +125,7 @@ class ChartFragment : Fragment() {
             description.isEnabled = false
             setTouchEnabled(true)
             isDragEnabled = true
-            setScaleEnabled(true)
+            setScaleEnabled(false)
             setDrawGridBackground(false)
             maxHighlightDistance = 300f
             setPinchZoom(false)
@@ -131,8 +136,19 @@ class ChartFragment : Fragment() {
             fitScreen()
 
         }
-
-        val valueFormatter = IndexAxisValueFormatter(date)
+        val valueFormatter =  IndexAxisValueFormatter(date)
+//        val valueFormatter = ChartAxisValueFormatter().apply {
+//            setValue(date)
+//        }
+//        val valueFormatter = object : IndexAxisValueFormatter(){
+//            val simpleDateFormat: SimpleDateFormat = SimpleDateFormat("yyyy/MM/dd")
+//            val cal = Calendar.getInstance()
+//
+//            override fun getFormattedValue(value: Float, axis: AxisBase?): String? {
+//                cal.timeInMillis = date[value.toInt()] * 1000L
+//                return simpleDateFormat.format(cal).toString()
+//            }
+//        }
 
         chart.xAxis
             .apply {
@@ -141,8 +157,9 @@ class ChartFragment : Fragment() {
                 gridColor = resources.getColor(R.color.chart_goldB, null)
                 textColor = context.resources.getColor(R.color.chart_font, null)
                 position = XAxis.XAxisPosition.BOTTOM
-                setLabelCount(6, true)
+                setLabelCount(5, false)
                 setDrawGridLines(false)
+                textSize = 5F
 
             }
 
@@ -165,7 +182,7 @@ class ChartFragment : Fragment() {
         )
 
         val mv =
-            CustomMarkerView(context,viewModel, R.layout.marker_view1).apply { chartView = chart }
+            CustomMarkerView(context, viewModel, R.layout.marker_view1).apply { chartView = chart }
 
         chart.marker = mv
         chart.invalidate()
@@ -175,7 +192,6 @@ class ChartFragment : Fragment() {
 
     private fun setLineChart1(
         context: Context,
-        viewPagerViewModel: HomeViewPagerViewModel,
         binding: ChartFragmentBinding,
         date: ArrayList<String>,
         value: List<Float>
@@ -211,7 +227,7 @@ class ChartFragment : Fragment() {
             description.isEnabled = false
             setTouchEnabled(true)
             isDragEnabled = true
-            setScaleEnabled(true)
+            setScaleEnabled(false)
             setDrawGridBackground(false)
             maxHighlightDistance = 300f
             setPinchZoom(false)
@@ -221,7 +237,22 @@ class ChartFragment : Fragment() {
             legend.isEnabled = true
             fitScreen()
         }
-        val valueFormatter = IndexAxisValueFormatter(date)
+
+
+        val valueFormatter =  IndexAxisValueFormatter(date)
+
+//        val valueFormatter = ChartAxisValueFormatter().apply {
+//            setValue(date)
+//        }
+
+//        val valueFormatter = object : IndexAxisValueFormatter(){
+//            val simpleDateFormat: SimpleDateFormat = SimpleDateFormat("yyyy/MM/dd")
+//            val cal = Calendar.getInstance()
+//            override fun getFormattedValue(value: Float, axis: AxisBase?): String? {
+//                cal.timeInMillis = date[value.toInt()] * 1000L
+//                return simpleDateFormat.format(cal).toString()
+//            }
+//        }
 
         chart.xAxis
             .apply {
@@ -231,7 +262,8 @@ class ChartFragment : Fragment() {
                 textColor = context.resources.getColor(R.color.chart_font, null)
                 position = XAxis.XAxisPosition.BOTTOM
                 setDrawGridLines(false)
-                setLabelCount(6, true)
+                setLabelCount(5, false)
+                textSize=5F
 
             }
 
@@ -264,20 +296,20 @@ class ChartFragment : Fragment() {
 
     private class CustomMarkerView(
         context: Context,
-        viewModel: HomeViewPagerViewModel,
+        private val viewModel: HomeViewPagerViewModel,
         layoutResource: Int
     ) : MarkerView(
         context,
         layoutResource
     ) {
-        private val tvContent: TextView = findViewById<View>(R.id.tvContent) as TextView
-        private val viewModel: HomeViewPagerViewModel = viewModel
+        private val tvContent: TextView
+            get() = findViewById<View>(R.id.tvContent) as TextView
 
         override fun refreshContent(e: Entry?, highlight: Highlight?) {
             tvContent.text =
                 String.format("%,.2f", e?.y) // set the entry-value as the display text
-            tvCurrency.text =
-                CURRENCYSYMBOL[viewModel.realData.value?.get("currency")?.toInt() ?: 0]
+            tvCurrency.text = CURRENCYSYMBOL[0]
+//                CURRENCYSYMBOL[viewModel.realData.value?.get("currency")?.toInt() ?: 0]
 
             super.refreshContent(e, highlight)
         }
@@ -320,5 +352,24 @@ class ChartFragment : Fragment() {
             }
     }
 
+//    private class ChartAxisValueFormatter : ValueFormatter() {
+//
+//        private lateinit var mValues: ArrayList<String>
+//
+//        fun setValue(mValues: ArrayList<String>) {
+//            this.mValues = mValues
+//        }
+//
+//        override fun getFormattedValue(value: Float): String {
+//            if (mValues.size != 0) {
+//                return if (value <= (mValues.size - 1)) {
+//                    mValues[value.toInt()]
+//                } else {
+//                    mValues[mValues.size - 1]
+//                }
+//            }
+//            return ""
+//        }
+//    }
 
 }

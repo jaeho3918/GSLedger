@@ -52,7 +52,8 @@ class Write4Fragment : Fragment() {
         binding.moveTo4.setOnClickListener {
             val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(view!!.windowToken, 0)
-            findNavController().navigate(R.id.action_write4Fragment_to_write5Fragment) }
+            findNavController().navigate(R.id.action_write4Fragment_to_write5Fragment)
+        }
 
         setSpinnerUi(binding, viewModel)
         setPickerUi(binding, viewModel)
@@ -80,7 +81,7 @@ class Write4Fragment : Fragment() {
                     position: Int,
                     id: Long
                 ) {
-                    viewModel.gradeField.value = position
+                    viewModel.setgradeField(position)
                     binding.gradePicker.visibility =
                         when (position) {
                             0 -> INVISIBLE
@@ -91,12 +92,12 @@ class Write4Fragment : Fragment() {
                             else -> INVISIBLE
                         }
                     if (position != 0) {
-                        viewModel.gradeNumField.value = 70
+                        viewModel.setgradeNumField(70)
                         binding.gradePicker.value = 70
                     }
                 }
             }
-        binding.gradeSpinner.setSelection(viewModel.gradeField.value ?: 0)
+        binding.gradeSpinner.setSelection(viewModel.getgradeField() ?: 0)
 
     }
 
@@ -109,7 +110,8 @@ class Write4Fragment : Fragment() {
         val _year = cal.get(Calendar.YEAR)
         val _month = cal.get(Calendar.MONTH)
         val _date = cal.get(Calendar.DATE)
-        cal.set(1993, 2, 18)
+        var buf_month : String
+        cal.set(1993, 3, 18)
 
         val now = System.currentTimeMillis() - 1000
         binding.datePicker1.minDate = cal.timeInMillis
@@ -117,18 +119,21 @@ class Write4Fragment : Fragment() {
         binding.datePicker1.init(
             _year, _month, _date
         ) { _: DatePicker, i: Int, i1: Int, i2: Int ->
-            viewModel.dateField.value = "$i/${i1 + 1}/$i2"
-        }
-        viewModel.dateField.value = "$_year/${_month + 1}/$_date"
+            buf_month = if (i1 + 1 < 10) "0" + (i1 + 1).toString()
+            else (i1 + 1).toString()
 
-        val date = viewModel.dateField.value?.split("/")
+            viewModel.setdateField("$i/${buf_month}/$i2")
+        }
+        viewModel.setdateField("$_year/${_month + 1}/$_date")
+
+        val date = viewModel.getdateField()?.split("/")
         if (!date.isNullOrEmpty()) {
             binding.datePicker1.init(
                 date[0].toInt(), (date[1].toInt() - 1), date[2].toInt()
             ) { _: DatePicker, i: Int, i1: Int, i2: Int ->
-                viewModel.dateField.value = "$i/${i1 + 1}/$i2"
+                viewModel.setdateField("$i/${i1 + 1}/$i2")
                 binding.yearSeriesPicker.value = i
-                viewModel.yearSeriesField.value = i
+                viewModel.setyearSeriesField( i)
             }
         }
 
@@ -137,21 +142,21 @@ class Write4Fragment : Fragment() {
         binding.gradePicker.wrapSelectorWheel = false
         binding.gradePicker.descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
         binding.gradePicker.setOnValueChangedListener { _: NumberPicker?, _: Int, newVal: Int ->
-            viewModel.gradeNumField.value = newVal
+            viewModel.setgradeNumField(newVal)
         }
-        binding.gradePicker.value = viewModel.gradeNumField.value ?: 70
+        binding.gradePicker.value = viewModel.getgradeNumField() ?: 70
 
         val year = Calendar.getInstance().get(Calendar.YEAR)
         binding.yearSeriesPicker.minValue = 1992
         binding.yearSeriesPicker.maxValue = year //
 
         binding.yearSeriesPicker.value = year
-        viewModel.yearSeriesField.value = year
+        viewModel.setyearSeriesField( year)
 
         binding.yearSeriesPicker.wrapSelectorWheel = false
         binding.yearSeriesPicker.descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
         binding.yearSeriesPicker.setOnValueChangedListener { _: NumberPicker?, _: Int, newVal: Int ->
-            viewModel.yearSeriesField.value = newVal
+            viewModel.setyearSeriesField( newVal)
         }
 
 

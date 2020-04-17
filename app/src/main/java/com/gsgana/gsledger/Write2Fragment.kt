@@ -50,13 +50,13 @@ class Write2Fragment : Fragment() {
         }
 
         binding.moveTo2.setOnClickListener {
-            viewModel.product.brand = viewModel.brand.value!!
+            viewModel.getProduct().brand = viewModel.brand.value!!
             findNavController().navigate(R.id.action_write2Fragment_to_write3Fragment)
         }
         setSpinnerUi(
             binding, viewModel, table = selectTable(
-                viewModel.metalField1.value!!,
-                viewModel.typeField1.value!!
+                viewModel.getmetalField1()?:0,
+                viewModel.gettypeField1()?:0
             )
         )
 
@@ -73,10 +73,10 @@ class Write2Fragment : Fragment() {
 
         if (!array.isNullOrEmpty()) {
             write2Array = array
-            viewModel.write2Array = array
+            viewModel.setwrite2Array(array)
         } else if (!table.isNullOrEmpty()) {
             write2Array = table
-            viewModel.write2Array = table
+            viewModel.setwrite2Array(write2Array)
         }
 
 
@@ -96,10 +96,10 @@ class Write2Fragment : Fragment() {
                 id: Long
             ) {
                 viewModel.brand.value = write2Array?.get(position)
-                viewModel.brandField1.value = position
+                viewModel.setbrandField1(position)
                 var brand = write2Array?.get(position)
-                val metal = METAL[viewModel.metalField1.value!!].toLowerCase(Locale.getDefault())
-                val type = TYPE[viewModel.typeField1.value!!].toLowerCase(Locale.getDefault())
+                val metal = METAL[viewModel.getmetalField1()?:0].toLowerCase(Locale.getDefault())
+                val type = TYPE[viewModel.gettypeField1()?:0].toLowerCase(Locale.getDefault())
 
                 binding.brandTitle.text =
                     "${write2Array?.get(position)} ${metal.capitalize()} ${type.capitalize()} "
@@ -126,8 +126,8 @@ class Write2Fragment : Fragment() {
             }
         }
 
-        if (viewModel.brandField1.value!! > 0) {
-            binding.brandSpn.setSelection(viewModel.brandField1.value!!)
+        if (viewModel.getbrandField1()?:0 > 0) {
+            binding.brandSpn.setSelection(viewModel.getbrandField1()?:0)
         }
     }
 

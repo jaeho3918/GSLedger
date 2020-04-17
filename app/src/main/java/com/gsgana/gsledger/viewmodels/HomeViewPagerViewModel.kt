@@ -10,19 +10,30 @@ class HomeViewPagerViewModel internal constructor(
 ) :
     ViewModel() {
 
-    var ratioMetal = MutableLiveData<List<Double>>(mutableListOf(0.0, 0.0, 0.0, 0.0))
+    private val ratioMetal = MutableLiveData<List<Double>>(mutableListOf(0.0, 0.0, 0.0, 0.0))
+    fun setRatioMetal(input: List<Double>) {
+        ratioMetal.value = input
+    }
 
     private val products: LiveData<List<Product>> = productRepository.getProducts()
-
-
-
-    val realData = MutableLiveData<Map<String, Double>>()
-
     fun getProducts(): LiveData<List<Product>> {
         return products
     }
 
-//    fun productNum() = products.value?.size ?: 0
+    private val currencyOption = MutableLiveData(0)
+    fun setCurrencyOption(input: Int) {
+        currencyOption.value = input }
+    fun getCurrencyOption(): LiveData<Int> {
+        return currencyOption }
+
+    private val realData = MutableLiveData<Map<String, Double>>()
+    fun setRealData(input :Map<String, Double>) {
+        realData.value = input }
+    fun getRealData() : LiveData<Map<String, Double>>{
+        return realData  }
+
+
+    fun productNum() = products.value?.size ?: 0
 
     fun addProduct(product: Product) {
         viewModelScope.launch {
@@ -43,20 +54,6 @@ class HomeViewPagerViewModel internal constructor(
         fun get(productRepository: ProductRepository): HomeViewPagerViewModel {
             sInstant =
                 if (::sInstant.isInitialized) sInstant else HomeViewPagerViewModel(productRepository)
-            return sInstant
-        }
-    }
-
-
-}
-
-private class RealData() : LiveData<Map<String, Double>>() {
-
-    companion object {
-        private lateinit var sInstant: RealData
-
-        fun get(): RealData {
-            sInstant = if (::sInstant.isInitialized) sInstant else RealData()
             return sInstant
         }
     }

@@ -42,7 +42,7 @@ class ListFragment : Fragment() {
     ): View? {
         binding = ListFragmentBinding.inflate(inflater, container, false)
 
-        realData = viewModel.realData.value ?: mapOf()
+        realData = viewModel.getRealData().value ?: mapOf()
 
         adapter = ProductAdapter(requireContext(), realData)
         binding.productList.adapter = adapter
@@ -71,6 +71,7 @@ class ListFragment : Fragment() {
         }
 
         binding.writeBtn.setOnClickListener {
+//            if (){}
             findNavController()
                 .navigate(R.id.action_homeViewPagerFragment_to_write1Fragment)
         }
@@ -87,6 +88,7 @@ class ListFragment : Fragment() {
         fun del()
     }
 }
+
 
 fun createRandomStringInt(): List<Any> {
     val charPool: List<Char> = ('a'..'z') + ('A'..'Z') + ('0'..'9')

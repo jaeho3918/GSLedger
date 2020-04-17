@@ -113,9 +113,10 @@ class AdsAndOptionFragment : Fragment() {
                     id: Long
                 ) {
                     option.edit()?.putInt(CURR_NAME, position)?.apply()
-                    val getData = viewModel?.realData?.value?.toMutableMap()
+                    val getData = viewModel?.getRealData()?.value?.toMutableMap()
                     getData?.set("currency", position.toDouble())
-                    viewModel?.realData?.value = getData?.toMap()
+                    viewModel?.setRealData(getData!!.toMap())
+                    viewModel?.setCurrencyOption(position)
                     getData?.clear()
                 }
             }
@@ -138,19 +139,19 @@ class AdsAndOptionFragment : Fragment() {
                     id: Long
                 ) {
                     option.edit()?.putInt(WEIGHT_NAME, position)?.apply()
-                    val getData = viewModel?.realData?.value?.toMutableMap()
+                    val getData = viewModel?.getRealData()?.value?.toMutableMap()
                     getData?.set("weightUnit", position.toDouble())
-                    viewModel?.realData?.value = getData?.toMap()
+                    viewModel?.setRealData(getData!!.toMap())
                     getData?.clear()
                 }
             }
 
 
         binding.currencyOption.setSelection(
-            (viewModel?.realData?.value?.get("currency") ?: 0.0).toInt()
+            (viewModel?.getRealData()?.value?.get("currency") ?: 0.0).toInt()
         )
         binding.weightUnitOption.setSelection(
-            (viewModel?.realData?.value?.get("weightUnit") ?: 0.0).toInt()
+            (viewModel?.getRealData()?.value?.get("weightUnit") ?: 0.0).toInt()
         )
 
     }

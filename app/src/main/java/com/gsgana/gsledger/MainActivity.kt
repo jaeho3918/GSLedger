@@ -55,26 +55,28 @@ class MainActivity : AppCompatActivity() {
 
 
 
+        billingClient = BillingClient.newBuilder(this).build()
+        billingClient.startConnection(object : BillingClientStateListener {
+            override fun onBillingSetupFinished(billingResult: BillingResult) {
+                if (billingResult.responseCode ==  BillingClient.BillingResponseCode.OK) {
+                    for (skuDetails in skuDetailsList) {
+                        val sku = skuDetails.sku
+                        val price = skuDetails.price
+                        if ("premium_upgrade" == sku) {
+                            premiumUpgradePrice = price
+                        } else if ("gas" == sku) {
+                            gasPrice = price
+                        }
+                    }
+                }
+            }
+            override fun onBillingServiceDisconnected() {
+                super.startConnection()
+            }
+        })
 
 
 
-
-
-
-
-
-//        billingClient = BillingClient.newBuilder(this).build()
-//        billingClient.startConnection(object : BillingClientStateListener {
-//            override fun onBillingSetupFinished(billingResult: BillingResult) {
-//                if (billingResult.responseCode ==  BillingClient.BillingResponseCode.OK) {
-//                    // The BillingClient is ready. You can query purchases here.
-//                }
-//            }
-//            override fun onBillingServiceDisconnected() {
-//                // Try to restart the connection on the next request to
-//                // Google Play by calling the startConnection() method.
-//            }
-//        })
 //
 //        // Retrieve a value for "skuDetails" by calling querySkuDetailsAsync().
 //        val flowParams = BillingFlowParams.newBuilder()
@@ -123,5 +125,17 @@ class MainActivity : AppCompatActivity() {
                 homeViewPagerFragmentpage.visibility = View.VISIBLE
             }, 2100
         )
+    }
+
+    suspend fun querySkuDetails() {
+        val skuList = ArrayList<String>()
+        skuList.add("premium_upgrade")
+        skuList.add("gas")
+        val params = SkuDetailsParams.newBuilder()
+        params.setSkusList(skuList).setType(BillingClient.SkuType.INAPP)
+        val skuDetailsResult = withContext(Dispatchers.IO) {
+            billingClient.querySkuDetails(params.build())
+        }
+        // Process the result.
     }
 }

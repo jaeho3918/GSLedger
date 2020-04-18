@@ -41,7 +41,7 @@
     <string name="disclaimer">면책조항</string>
     <string name="total">합계</string>
     <string name="Profit">이익</string>
-    <string name="slot">슬롯</string>
+    <string name="slot"></string>
     <string name="chart">차트</string>
     <string name="goldChart">Gold Chart</string>
     <string name="silverChart">Silver Chart</string>

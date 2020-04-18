@@ -37,10 +37,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import com.gsgana.gsledger.databinding.ActivityIntroBinding
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import org.bouncycastle.jce.provider.BouncyCastleProvider
 import java.security.Security
 import java.util.*
@@ -86,6 +83,7 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
     private lateinit var billingClient: BillingClient
     private val sku1800 = "gsledger_subscribe"
     private val sku3600 = "adfree_unlimited_entry"
+    private lateinit var flowParams : BillingFlowParams
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -96,7 +94,6 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
         val appUpdateInfoTask = appUpdateManager.appUpdateInfo
 
         // Checks that the platform will allow the specified type of update.
-
         appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
             if (appUpdateInfo.updateAvailability() == UpdateAvailability.UPDATE_AVAILABLE
                 // For a flexible update, use AppUpdateType.FLEXIBLE
@@ -118,24 +115,62 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
             .setListener(this)
             .build()
         billingClient.startConnection(object : BillingClientStateListener {
+            override fun onBillingServiceDisconnected() {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
             override fun onBillingSetupFinished(p0: BillingResult?) {
                 if (p0?.responseCode == BillingClient.BillingResponseCode.OK) {
                     val skuList: List<String> = arrayListOf(sku1800, sku3600)
                     val params: SkuDetailsParams.Builder = SkuDetailsParams.newBuilder()
                     params.setSkusList(skuList).setType(BillingClient.SkuType.SUBS)
-                    billingClient.querySkuDetailsAsync(params.build()
-                    ) { p0, p1 ->
-                        Toast.makeText(applicationContext, p0.toString(),Toast.LENGTH_LONG).show()
-                        Toast.makeText(applicationContext, p1.toString(),Toast.LENGTH_LONG).show()
-                    }
-                }
-                Toast.makeText(applicationContext,p0?.responseCode.toString(),Toast.LENGTH_LONG).show()
-            }
+                    billingClient.querySkuDetailsAsync(
+                        params.build(), object : SkuDetailsResponseListener {
+                            override fun onSkuDetailsResponse(
+                                p0: BillingResult?,
+                                p1: MutableList<SkuDetails>?
+                            ) {
+                                val flowParams: BillingFlowParams = BillingFlowParams.newBuilder()
+                                    .setSkuDetails(p1?.get(0))
+                                    .build();
+                                val billingResponseCode =
+                                    billingClient.launchBillingFlow(this@IntroActivity, flowParams)
+                                if (billingResponseCode.responseCode == BillingClient.BillingResponseCode.OK) {
 
-            override fun onBillingServiceDisconnected() {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                                }
+                            }
+                        }
+                    );
+                }
             }
-        })
+        }
+        )
+//            billingClient.startConnection(object : BillingClientStateListener {
+//                override fun onBillingSetupFinished(p0: BillingResult?) {
+//                    if (p0?.responseCode == BillingClient.BillingResponseCode.OK) {
+//                        val skuList: List<String> = arrayListOf(sku1800, sku3600)
+//                        val params: SkuDetailsParams.Builder = SkuDetailsParams.newBuilder()
+//                        params.setSkusList(skuList).setType(BillingClient.SkuType.SUBS)
+//                        billingClient.querySkuDetailsAsync(
+//                            params.build()
+//                        ) { p0, p1 ->
+//                            Toast.makeText(applicationContext, p0.toString(), Toast.LENGTH_LONG).show()
+//                            Toast.makeText(applicationContext, p1.toString(), Toast.LENGTH_LONG).show()
+//                        }
+//                    }
+//                    Toast.makeText(applicationContext, p0?.responseCode.toString(), Toast.LENGTH_LONG)
+//                        .show()
+//                }
+//
+//        GlobalScope.launch {
+//            val skuDetails = querySkuDetails()
+//            // Retrieve a value for "skuDetails" by calling querySkuDetailsAsync().
+//            flowParams = BillingFlowParams.newBuilder()
+//                .setSkuDetails(skuDetails)
+//                .build()
+//        }.invokeOnCompletion {
+//            val responseCode = billingClient.launchBillingFlow(this, flowParams)
+//        }
 
 
         val sf = this.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
@@ -397,32 +432,31 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-//    suspend fun querySkuDetails(): SkuDetailsResult {
-//        val skuList = ArrayList<String>()
-//        skuList.add("premium_upgrade")
-//        skuList.add("gas")
-//        val params = SkuDetailsParams.newBuilder()
-//        params.setSkusList(skuList).setType(BillingClient.SkuType.INAPP)
-//        val skuDetailsResult = withContext(Dispatchers.IO) {
-//            billingClient.querySkuDetails(params.build())
-//        }
-//        return skuDetailsResult
-//    }
+    private suspend fun querySkuDetails(): SkuDetails {
+        val skuList = ArrayList<String>()
+        skuList.add("premium_upgrade")
+        skuList.add("gas")
+        val params = SkuDetailsParams.newBuilder()
+        params.setSkusList(skuList).setType(BillingClient.SkuType.INAPP)
+        val skuDetailsResult = withContext(Dispatchers.IO) {
+            billingClient.querySkuDetails(params.build())
+        }
+        return skuDetailsResult.skuDetailsList!![0]
+    }
 
-//    override fun onBillingInitialized() {
-//        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-//    }
+//    private suspend fun handlePurchase() {
+//        if (purchase.purchaseState === PurchaseState.PURCHASED) {
+//            // Grant entitlement to the user.
 //
-//    override fun onPurchaseHistoryRestored() {
-//        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-//    }
-//
-//    override fun onProductPurchased(productId: String, details: TransactionDetails?) {
-//        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-//    }
-//
-//    override fun onBillingError(errorCode: Int, error: Throwable?) {
-//        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+//            // Acknowledge the purchase if it hasn't already been acknowledged.
+//            if (!purchase.isAcknowledged) {
+//                val acknowledgePurchaseParams = AcknowledgePurchaseParams.newBuilder()
+//                    .setPurchaseToken(purchase.purchaseToken)
+//                val ackPurchaseResult = withContext(Dispatchers.IO) {
+//                    client.acknowledgePurchase(acknowledgePurchaseParams.build())
+//                }
+//            }
+//        }
 //    }
 
 //    fun handlePurchase(purchase: Purchase) {

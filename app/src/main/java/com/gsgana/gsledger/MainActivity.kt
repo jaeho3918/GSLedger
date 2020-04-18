@@ -22,6 +22,7 @@ import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.util.ArrayList
 
 
 class MainActivity : AppCompatActivity(), PurchasesUpdatedListener {
@@ -80,45 +81,9 @@ class MainActivity : AppCompatActivity(), PurchasesUpdatedListener {
             }
         })
 
-//        billingClient = BillingClient.newBuilder(this).build()
-//        billingClient.startConnection(object : BillingClientStateListener {
-//            override fun onBillingSetupFinished(billingResult: BillingResult) {
-//                if (billingResult.responseCode ==  BillingClient.BillingResponseCode.OK) {
-//                    for (skuDetails in skuDetailsList) {
-//                        val sku = skuDetails.sku
-//                        val price = skuDetails.price
-//                        if ("premium_upgrade" == sku) {
-//                            premiumUpgradePrice = price
-//                        } else if ("gas" == sku) {
-//                            gasPrice = price
-//                        }
-//                    }
-//                }
-//            }
-//            override fun onBillingServiceDisconnected() {
-//                super.startConnection()
-//            }
-//        })
 
 
 
-//
-//        // Retrieve a value for "skuDetails" by calling querySkuDetailsAsync().
-//        val flowParams = BillingFlowParams.newBuilder()
-//            .setSkuDetails(skuDetails)
-//            .build()
-//
-//        val responseCode = billingClient.launchBillingFlow(this, flowParams)
-//        suspend fun acknowledgePurchase() {
-//            val acknowledgePurchaseParams =
-//                AcknowledgePurchaseParams.newBuilder()
-//                    .setPurchaseToken(/* token */)
-//                    .setDeveloperPayload(/* payload */)
-//                    .build()
-//            val ackPurchaseResult = withContext(Dispatchers.IO) {
-//                billingClient.acknowledgePurchase(acknowledgePurchaseParams)
-//            }
-//        }
 
 
 
@@ -152,7 +117,7 @@ class MainActivity : AppCompatActivity(), PurchasesUpdatedListener {
         )
     }
 
-    suspend fun querySkuDetails() {
+    suspend fun querySkuDetails(): List<SkuDetails>? {
         val skuList = ArrayList<String>()
         skuList.add("premium_upgrade")
         skuList.add("gas")
@@ -161,8 +126,9 @@ class MainActivity : AppCompatActivity(), PurchasesUpdatedListener {
         val skuDetailsResult = withContext(Dispatchers.IO) {
             billingClient.querySkuDetails(params.build())
         }
-        // Process the result.
+        return skuDetailsResult.skuDetailsList
     }
+
 
     override fun onPurchasesUpdated(p0: BillingResult?, p1: MutableList<Purchase>?) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.

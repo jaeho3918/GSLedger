@@ -35,6 +35,7 @@ import com.gsgana.gsledger.utilities.InjectorUtils
 import com.gsgana.gsledger.utilities.PACKAGENUM
 import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModel
 import kotlinx.android.synthetic.main.marker_view.view.*
+import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -117,22 +118,16 @@ class StatFragment : Fragment() {
                     }
 
                     if (chartCompareProduct != products.size) {
-                        viewModel.viewModelScope.launch {
-                            calChart2(products)
-                        }
+                        calChart2(products)
                     }
                 }, 600
             )
         }
-
-
         )
 
         viewModel.getCurrencyOption().observe(viewLifecycleOwner, Observer
         {
-            viewModel.viewModelScope.launch {
-                calChart1()
-            }
+            calChart1()
         })
 
 
@@ -277,23 +272,26 @@ class StatFragment : Fragment() {
         val data = LineData(dataSet)
 
         val chart = binding.goldChart.apply {
+
             isEnabled = true
             setData(data)
-            setViewPortOffsets(85f, 30f, 80f, 50f)
+            setViewPortOffsets(50f, 30f, 50f, 50f)
             setBackgroundColor(backGround)
             isDoubleTapToZoomEnabled = false
             setDrawMarkers(true)
             description.isEnabled = false
             setTouchEnabled(true)
-            isDragEnabled = true
-            setScaleEnabled(true)
+            isDragEnabled = false
+            setScaleEnabled(false)
             setDrawGridBackground(false)
             maxHighlightDistance = 300f
             setPinchZoom(false)
             setDrawMarkers(true)
             isHighlightPerTapEnabled = true
             axisRight.isEnabled = false
-            legend.isEnabled = true
+            legend.isEnabled = false
+            fitScreen()
+
         }
 
         val valueFormatter = IndexAxisValueFormatter(date)
@@ -310,7 +308,7 @@ class StatFragment : Fragment() {
                 textSize = 5F
             }
 
-        chart.axisLeft
+        val y = chart.axisLeft
             .apply {
                 textColor = resources.getColor(R.color.chart_font, null)
                 gridColor = resources.getColor(R.color.chart_goldB, null)
@@ -321,6 +319,12 @@ class StatFragment : Fragment() {
                 axisMinimum = dataSet.yMin - dataSet.yMin / 13 //dataSet.yMin - dataSet.yMin / 13
                 axisLineColor = backGround
             }
+
+        chart.setVisibleYRange(
+            dataSet.yMax + dataSet.yMax / 13,
+            dataSet.yMin - dataSet.yMin / 13,
+            y.axisDependency
+        )
 
         val mv =
             CustomMarkerView(context, viewModel, R.layout.marker_view).apply { chartView = chart }
@@ -636,30 +640,11 @@ class StatFragment : Fragment() {
             }
     }
 
-    //    private class ChartAxisValueFormatter : ValueFormatter() {
-//
-//        private lateinit var mValues: ArrayList<String>
-//
-//        fun setValue(mValues: ArrayList<String>) {
-//            this.mValues = mValues
-//        }
-//
-//        override fun getFormattedValue(value: Float): String {
-//            if (mValues.size != 0) {
-//                return if (value <= (mValues.size - 1)) {
-//                    mValues[value.toInt()]
-//                } else {
-//                    mValues[mValues.size - 1]
-//                }
-//            }
-//            return ""
-//        }
-//    }
-    suspend fun calChart1() {
+    fun calChart1() {
         val products = viewModel.getProducts().value
         if (!products.isNullOrEmpty()) {
             binding.goldChartProgress.visibility = View.VISIBLE
-            binding.goldChart.visibility = View.GONE
+            binding.goldChartLayout.visibility = View.GONE
             val holder_AG = mutableListOf<Float>()
             val holder_AU = mutableListOf<Float>()
             for (i in 0..79) {
@@ -706,7 +691,7 @@ class StatFragment : Fragment() {
 
                 if (context != null) setLineChart(context!!, binding, dates, result)
 
-                binding.goldChart.visibility = View.VISIBLE
+                binding.goldChartLayout.visibility = View.VISIBLE
                 binding.goldChartProgress.visibility = View.GONE
 
                 list1.clear()
@@ -722,10 +707,10 @@ class StatFragment : Fragment() {
 
     }
 
-    suspend fun calChart2(products: List<Product>) {
+    fun calChart2(products: List<Product>) {
         if (!products.isNullOrEmpty()) {
             binding.goldChartProgress.visibility = View.VISIBLE
-            binding.goldChart.visibility = View.GONE
+            binding.goldChartLayout.visibility = View.GONE
             val holder_AG = mutableListOf<Float>()
             val holder_AU = mutableListOf<Float>()
             for (i in 0..79) {
@@ -772,7 +757,7 @@ class StatFragment : Fragment() {
 
                 if (context != null) setLineChart(context!!, binding, dates, result)
 
-                binding.goldChart.visibility = View.VISIBLE
+                binding.goldChartLayout.visibility = View.VISIBLE
                 binding.goldChartProgress.visibility = View.GONE
 
                 list1.clear()

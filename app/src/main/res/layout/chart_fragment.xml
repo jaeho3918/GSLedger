@@ -46,12 +46,29 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"/>
 
-                        <com.github.mikephil.charting.charts.LineChart
-                            android:id="@+id/goldChart"
+                        <RelativeLayout
+                            android:id="@+id/goldChartLayout"
                             android:layout_width="match_parent"
-                            android:layout_height="250dp"
-                            android:visibility="gone"/>
+                            android:layout_height="match_parent"
+                            android:visibility="gone">
 
+                            <com.github.mikephil.charting.charts.LineChart
+                                android:id="@+id/goldChart"
+                                android:layout_width="match_parent"
+                                android:layout_height="250dp"/>
+
+                            <TextView
+                                android:id="@+id/todayLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignBottom="@+id/goldChart"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginEnd="3dp"
+                                android:layout_marginBottom="5.8dp"
+                                android:text="2020/04/18"
+                                android:textSize="6dp"
+                                android:textColor="@color/font_silver"/>
+                        </RelativeLayout>
 
                     </LinearLayout>
 
@@ -93,11 +110,29 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"/>
 
-                        <com.github.mikephil.charting.charts.LineChart
-                            android:id="@+id/silverChart"
+                        <RelativeLayout
+                            android:id="@+id/silverChartLayout"
                             android:layout_width="match_parent"
-                            android:layout_height="250dp"
-                            android:visibility="gone"/>
+                            android:layout_height="match_parent"
+                            android:visibility="gone">
+
+                            <com.github.mikephil.charting.charts.LineChart
+                                android:id="@+id/silverChart"
+                                android:layout_width="match_parent"
+                                android:layout_height="250dp"/>
+
+                            <TextView
+                                android:id="@+id/todayLabel1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignBottom="@+id/silverChart"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginEnd="3dp"
+                                android:layout_marginBottom="5.8dp"
+                                android:text="2020/04/18"
+                                android:textSize="6dp"
+                                android:textColor="@color/font_silver"/>
+                        </RelativeLayout>
 
 
                     </LinearLayout>

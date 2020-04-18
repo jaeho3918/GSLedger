@@ -118,13 +118,13 @@ class ChartFragment : Fragment() {
         val chart = binding.goldChart.apply {
             isEnabled = true
             setData(data)
-            setViewPortOffsets(85f, 30f, 80f, 50f)
+            setViewPortOffsets(50f, 30f, 50f, 50f)
             setBackgroundColor(backGround)
             isDoubleTapToZoomEnabled = false
             setDrawMarkers(true)
             description.isEnabled = false
             setTouchEnabled(true)
-            isDragEnabled = true
+            isDragEnabled = false
             setScaleEnabled(false)
             setDrawGridBackground(false)
             maxHighlightDistance = 300f
@@ -132,7 +132,7 @@ class ChartFragment : Fragment() {
             setDrawMarkers(true)
             isHighlightPerTapEnabled = true
             axisRight.isEnabled = false
-            legend.isEnabled = true
+            legend.isEnabled = false
             fitScreen()
 
         }
@@ -171,13 +171,13 @@ class ChartFragment : Fragment() {
                 setDrawGridLines(true)
                 setLabelCount(5, true)
                 axisMaximum = dataSet.yMax + dataSet.yMax / 13
-                axisMinimum = dataSet.yMin - dataSet.yMin / 13
+                axisMinimum = 0f
                 axisLineColor = backGround
             }
 
         chart.setVisibleYRange(
-            dataSet.yMax + dataSet.yMax / 10,
-            dataSet.yMax + dataSet.yMax / 10,
+            dataSet.yMax + dataSet.yMax / 13,
+            0f,
             y.axisDependency
         )
 
@@ -186,7 +186,7 @@ class ChartFragment : Fragment() {
 
         chart.marker = mv
         chart.invalidate()
-        binding.goldChart.visibility = View.VISIBLE
+        binding.goldChartLayout.visibility = View.VISIBLE
         binding.goldChartProgress.visibility = View.GONE
     }
 
@@ -220,39 +220,27 @@ class ChartFragment : Fragment() {
         val chart = binding.silverChart.apply {
             isEnabled = true
             setData(data)
-            setViewPortOffsets(85f, 30f, 80f, 50f)
+            setViewPortOffsets(50f, 30f, 50f, 50f)
             setBackgroundColor(backGround)
             isDoubleTapToZoomEnabled = false
             setDrawMarkers(true)
             description.isEnabled = false
             setTouchEnabled(true)
             isDragEnabled = true
-            setScaleEnabled(false)
+            setScaleEnabled(true)
             setDrawGridBackground(false)
             maxHighlightDistance = 300f
-            setPinchZoom(false)
+            setPinchZoom(true)
             setDrawMarkers(true)
             isHighlightPerTapEnabled = true
             axisRight.isEnabled = false
-            legend.isEnabled = true
+            legend.isEnabled = false
             fitScreen()
         }
 
 
         val valueFormatter =  IndexAxisValueFormatter(date)
 
-//        val valueFormatter = ChartAxisValueFormatter().apply {
-//            setValue(date)
-//        }
-
-//        val valueFormatter = object : IndexAxisValueFormatter(){
-//            val simpleDateFormat: SimpleDateFormat = SimpleDateFormat("yyyy/MM/dd")
-//            val cal = Calendar.getInstance()
-//            override fun getFormattedValue(value: Float, axis: AxisBase?): String? {
-//                cal.timeInMillis = date[value.toInt()] * 1000L
-//                return simpleDateFormat.format(cal).toString()
-//            }
-//        }
 
         chart.xAxis
             .apply {
@@ -261,8 +249,8 @@ class ChartFragment : Fragment() {
                 gridColor = resources.getColor(R.color.chart_silverB, null)
                 textColor = context.resources.getColor(R.color.chart_font, null)
                 position = XAxis.XAxisPosition.BOTTOM
-                setDrawGridLines(false)
                 setLabelCount(5, false)
+                setDrawGridLines(true)
                 textSize=5F
 
             }
@@ -274,14 +262,14 @@ class ChartFragment : Fragment() {
                 setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART)
                 setDrawGridLines(true)
                 setLabelCount(5, true)
-                axisMaximum = dataSet.yMax + dataSet.yMax / 13
-                axisMinimum = dataSet.yMin - dataSet.yMin / 13
+                axisMaximum = dataSet.yMax + dataSet.yMax / 130
+                axisMinimum = 0f
                 axisLineColor = backGround
             }
 
         chart.setVisibleYRange(
-            dataSet.yMax + dataSet.yMax / 10,
-            dataSet.yMax + dataSet.yMax / 10,
+            dataSet.yMax + dataSet.yMax / 130,
+            0f,
             y.axisDependency
         )
 
@@ -290,7 +278,7 @@ class ChartFragment : Fragment() {
 
         chart.marker = mv
         chart.invalidate()
-        binding.silverChart.visibility = View.VISIBLE
+        binding.silverChartLayout.visibility = View.VISIBLE
         binding.silverChartProgress.visibility = View.GONE
     }
 

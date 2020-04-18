@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -23,7 +24,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
 
     private val KEY = "Kd6c26TK65YSmkw6oU"
@@ -40,40 +41,64 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var skuDetails1800 : SkuDetails
 
-    private val skuID1800 = "gsledger_subscribe"
-    private val skuID3600 = "adfree_unlimited_entry"
+//    private val skuDetailsList
+
+    private lateinit var billingClient: BillingClient
+    private val sku1800 = "gsledger_subscribe"
+    private val sku3600 = "adfree_unlimited_entry"
 
 
 //    private val viewModel: HomeViewPagerViewModel by viewModels {
 //        InjectorUtils.provideHomeViewPagerViewModelFactory(this, this.intent.getCharArrayExtra(KEY))
 //    }
 
-    private lateinit var billingClient: BillingClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
-
-        billingClient = BillingClient.newBuilder(this).build()
+        billingClient = BillingClient.newBuilder(this)
+            .enablePendingPurchases()
+            .setListener(this)
+            .build()
         billingClient.startConnection(object : BillingClientStateListener {
-            override fun onBillingSetupFinished(billingResult: BillingResult) {
-                if (billingResult.responseCode ==  BillingClient.BillingResponseCode.OK) {
-                    for (skuDetails in skuDetailsList) {
-                        val sku = skuDetails.sku
-                        val price = skuDetails.price
-                        if ("premium_upgrade" == sku) {
-                            premiumUpgradePrice = price
-                        } else if ("gas" == sku) {
-                            gasPrice = price
-                        }
+            override fun onBillingSetupFinished(p0: BillingResult?) {
+                if (p0?.responseCode == BillingClient.BillingResponseCode.OK) {
+                    val skuList: List<String> = arrayListOf(sku1800, sku3600)
+                    val params: SkuDetailsParams.Builder = SkuDetailsParams.newBuilder()
+                    params.setSkusList(skuList).setType(BillingClient.SkuType.SUBS)
+                    billingClient.querySkuDetailsAsync(params.build()
+                    ) { p0, p1 ->
+                        Toast.makeText(applicationContext, p0.toString(),Toast.LENGTH_LONG).show()
+                        Toast.makeText(applicationContext, p1.toString(),Toast.LENGTH_LONG).show()
                     }
                 }
+                Toast.makeText(applicationContext,p0?.responseCode.toString(),Toast.LENGTH_LONG).show()
             }
+
             override fun onBillingServiceDisconnected() {
-                super.startConnection()
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
         })
+
+//        billingClient = BillingClient.newBuilder(this).build()
+//        billingClient.startConnection(object : BillingClientStateListener {
+//            override fun onBillingSetupFinished(billingResult: BillingResult) {
+//                if (billingResult.responseCode ==  BillingClient.BillingResponseCode.OK) {
+//                    for (skuDetails in skuDetailsList) {
+//                        val sku = skuDetails.sku
+//                        val price = skuDetails.price
+//                        if ("premium_upgrade" == sku) {
+//                            premiumUpgradePrice = price
+//                        } else if ("gas" == sku) {
+//                            gasPrice = price
+//                        }
+//                    }
+//                }
+//            }
+//            override fun onBillingServiceDisconnected() {
+//                super.startConnection()
+//            }
+//        })
 
 
 
@@ -137,5 +162,9 @@ class MainActivity : AppCompatActivity() {
             billingClient.querySkuDetails(params.build())
         }
         // Process the result.
+    }
+
+    override fun onPurchasesUpdated(p0: BillingResult?, p1: MutableList<Purchase>?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

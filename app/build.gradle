@@ -20,8 +20,8 @@ android {
         applicationId "com.gsgana.gsledger"
         minSdkVersion 23
         targetSdkVersion 29
-        versionCode 5
-        versionName "1.0.0.5"
+        versionCode 6
+        versionName "1.0.0.6"
         multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -88,7 +88,8 @@ android {
         // be sure to also include the core dependency
         implementation 'com.android.billingclient:billing:2.1.0'
         implementation 'com.android.billingclient:billing-ktx:2.1.0'
-
+        implementation 'com.google.android.play:core:1.7.1'
+        implementation 'com.anjlab.android.iab.v3:library:1.0.44'
 
 //        implementation 'com.github.warkiz.widget:indicatorseekbar:2.1.2'
 //

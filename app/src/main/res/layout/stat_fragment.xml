@@ -496,7 +496,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/chart"
+                    android:text="@string/totalChartSpotPrice"
                     android:textSize="@dimen/text_medium" />
 
                 <LinearLayout
@@ -529,10 +529,10 @@
                             android:layout_alignBottom="@+id/goldChart"
                             android:layout_alignParentEnd="true"
                             android:layout_marginEnd="3dp"
-                            android:layout_marginBottom="5.8dp"
+                            android:layout_marginBottom="7.4dp"
                             android:text="2020/04/18"
                             android:textSize="6dp"
-                            android:textColor="@color/font_silver"/>
+                            android:textColor="@color/chart_font"/>
                     </RelativeLayout>
             </LinearLayout>
         </LinearLayout>

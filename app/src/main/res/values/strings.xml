@@ -53,9 +53,10 @@
     <string name="disclaimer">Disclaimer</string>
     <string name="total">Total</string>
     <string name="overview">Overview</string>
+    <string name="chart">Chart</string>
     <string name="list">List</string>
     <string name="option">Option</string>
-    <string name="chart">Chart</string>
+    <string name="totalChartSpotPrice">Total Chart based on Spot price</string>
     <string name="slot">List</string>
     <string name="goldChart">Gold Chart</string>
     <string name="silverChart">Silver Chart</string>

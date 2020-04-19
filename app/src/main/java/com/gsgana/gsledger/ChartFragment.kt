@@ -1,6 +1,7 @@
 package com.gsgana.gsledger
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.graphics.Canvas
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -43,6 +44,11 @@ class ChartFragment : Fragment() {
 
     private val KEY = "Kd6c26TK65YSmkw6oU"
 
+    private val PREF_NAME = "01504f779d6c77df04"
+    private lateinit var sf : SharedPreferences
+    private val TODAY_NAME = "0d07f05fd0c595f615"
+
+
     private val viewModel: HomeViewPagerViewModel by viewModels {
         InjectorUtils.provideHomeViewPagerViewModelFactory(
             activity!!,
@@ -55,6 +61,8 @@ class ChartFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
+        sf = activity!!.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+
         rgl = mutableListOf()
         mAuth = FirebaseAuth.getInstance()
         fm = childFragmentManager
@@ -64,6 +72,9 @@ class ChartFragment : Fragment() {
 
         binding = ChartFragmentBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
+        val today = sf.getString(TODAY_NAME,"")
+        binding.todayLabel.text = today
+        binding.todayLabel1.text = today
 
         getChart().addOnCompleteListener { data ->
             val list1 = data.result?.get("value_AU") as ArrayList<Float>
@@ -158,7 +169,7 @@ class ChartFragment : Fragment() {
 
             }
 
-        val y = chart.axisLeft
+        chart.axisLeft
             .apply {
                 textColor = resources.getColor(R.color.chart_font, null)
                 gridColor = resources.getColor(R.color.chart_goldB, null)
@@ -250,7 +261,7 @@ class ChartFragment : Fragment() {
 
             }
 
-        val y = chart.axisLeft
+        chart.axisLeft
             .apply {
                 textColor = resources.getColor(R.color.chart_font, null)
                 gridColor = resources.getColor(R.color.chart_silverB, null)

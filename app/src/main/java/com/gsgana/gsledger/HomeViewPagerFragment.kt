@@ -44,6 +44,7 @@ class HomeViewPagerFragment : Fragment() {
     private val PREF_NAME = "01504f779d6c77df04"
     private val CURR_NAME = "1w3d4f7w9d2qG2eT36"
     private val WEIGHT_NAME = "f79604050dfc500715"
+    private val TODAY_NAME = "0d07f05fd0c595f615"
 
     private lateinit var option: SharedPreferences
 
@@ -100,6 +101,7 @@ class HomeViewPagerFragment : Fragment() {
                 viewModel.setRealData(data)
             }
         }
+
         )
 
         binding = HomeViewPagerFragmentBinding.inflate(inflater, container, false)
@@ -150,6 +152,8 @@ class HomeViewPagerFragment : Fragment() {
             val simpleDateFormat = SimpleDateFormat("yyyy/MM/dd HH:mm")
             simpleDateFormat.timeZone = calendar
             val date = simpleDateFormat.format(Date(realData["DATE"]!!.toLong() * 1000))
+
+            sf.edit().putString(TODAY_NAME,date).apply()
 
             binding.realUpdatedDate.text = date
             binding.realGoldCurrency.text = CURRENCYSYMBOL[currencyOption ?: 0]

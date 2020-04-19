@@ -306,15 +306,15 @@ class StatFragment : Fragment() {
                 textSize = 5F
             }
 
-        val y = chart.axisLeft
+        chart.axisLeft
             .apply {
                 textColor = resources.getColor(R.color.chart_font, null)
                 gridColor = resources.getColor(R.color.chart_goldB, null)
                 setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART)
                 setDrawGridLines(true)
                 setLabelCount(5, true)              //none
-                axisMaximum = dataSet.yMax * 16 / 15
-                axisMinimum = dataSet.yMin * 16 / 18
+                axisMaximum = dataSet.yMax * 25 / 24
+                axisMinimum = dataSet.yMin * 23 / 24
                 axisLineColor = backGround
             }
 
@@ -650,16 +650,17 @@ class StatFragment : Fragment() {
                 val dates = data.result?.get("date") as ArrayList<String>
                 val result = mutableListOf<Float>()
                 var dateFLAG: Int
-                val mformat = SimpleDateFormat("yyyy/MM/dd")
+//                val mformat = SimpleDateFormat("yyyy/MM/dd")
 
                 products.forEach { product ->
                     dateFLAG = 0
-                    for (dateIndex in 0 until dates.size) {
-                        if (mformat.parse(dates[dateIndex]).time >= mformat.parse(product.buyDate).time) {
-                            dateFLAG = dateIndex
-                            break
-                        }
-                    }
+
+//                    for (dateIndex in 0 until dates.size) {
+//                        if (mformat.parse(dates[dateIndex]).time >= mformat.parse(product.buyDate).time) {
+//                            dateFLAG = dateIndex
+//                            break
+//                        }
+//                    }
 
                     if (product.metal == 0) { //Gold
                         for (idx in dateFLAG until dates.size) {
@@ -715,19 +716,17 @@ class StatFragment : Fragment() {
             val list2 = data.result?.get("value_AG") as ArrayList<Float>
             val dates = data.result?.get("date") as ArrayList<String>
             val result = mutableListOf<Float>()
-            var dateFLAG: Int
-            val mformat = SimpleDateFormat("yyyy/MM/dd")
+            var dateFLAG = 0
+//            val mformat = SimpleDateFormat("yyyy/MM/dd")
 
             products.forEach { product ->
-                dateFLAG = 0
-                for (dateIndex in 0 until dates.size) {
-                    val test = dates[dateIndex]
-                    val test1 = product.buyDate
-                    if (mformat.parse(dates[dateIndex]).time >= mformat.parse(product.buyDate).time) {
-                        dateFLAG = dateIndex
-                        break
-                    }
-                }
+
+//                    for (dateIndex in 0 until dates.size) {
+//                        if (mformat.parse(dates[dateIndex]).time >= mformat.parse(product.buyDate).time) {
+//                            dateFLAG = dateIndex
+//                            break
+//                        }
+//                    }
 
                 if (product.metal == 0) { //Gold
                     for (idx in dateFLAG until dates.size) {

@@ -1,4 +1,4 @@
-package com.gsgana.gsledger
+package com.gsgana.gsledger.utilities
 //
 //import android.util.Log
 //import com.android.billingclient.api.*

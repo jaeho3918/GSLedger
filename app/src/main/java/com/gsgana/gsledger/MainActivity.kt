@@ -6,10 +6,8 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.View
 import android.widget.Toast
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.viewModels
 import com.android.billingclient.api.*
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
@@ -17,12 +15,7 @@ import com.google.android.gms.ads.InterstitialAd
 import com.google.android.gms.ads.MobileAds
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.gsgana.gsledger.databinding.ActivityMainBinding
-import com.gsgana.gsledger.utilities.InjectorUtils
-import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModel
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import java.util.ArrayList
 
 
 class MainActivity : AppCompatActivity(), PurchasesUpdatedListener {
@@ -34,76 +27,90 @@ class MainActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
     private val AD_UNIT_ID =
         "ca-app-pub-3940256099942544/8691691433"    // 실제   "ca-app-pub-8453032642509497/3082833180"
-                                                    // 테스트 "ca-app-pub-3940256099942544/8691691433"
+
+    // 테스트 "ca-app-pub-3940256099942544/8691691433"
     private lateinit var mInterstitialAd: InterstitialAd
     private lateinit var mBuilder: AdRequest.Builder
     private lateinit var mFirebaseAnalytics: FirebaseAnalytics
     private var doneOnce = true
 
-    private lateinit var skuDetails1800 : SkuDetails
-
-//    private val skuDetailsList
-
+    private val ADFREE_NAME = "CQi7aLBQH7dR7qyrCG"
     private lateinit var billingClient: BillingClient
     private val sku1800 = "gsledger_subscribe"
     private val sku3600 = "adfree_unlimited_entry"
-
-
-//    private val viewModel: HomeViewPagerViewModel by viewModels {
-//        InjectorUtils.provideHomeViewPagerViewModelFactory(this, this.intent.getCharArrayExtra(KEY))
-//    }
+    private lateinit var flowParams: BillingFlowParams
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        sf = this.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+
         billingClient = BillingClient.newBuilder(this)
             .enablePendingPurchases()
             .setListener(this)
             .build()
+
         billingClient.startConnection(object : BillingClientStateListener {
+            override fun onBillingServiceDisconnected() {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
             override fun onBillingSetupFinished(p0: BillingResult?) {
                 if (p0?.responseCode == BillingClient.BillingResponseCode.OK) {
                     val skuList: List<String> = arrayListOf(sku1800, sku3600)
                     val params: SkuDetailsParams.Builder = SkuDetailsParams.newBuilder()
                     params.setSkusList(skuList).setType(BillingClient.SkuType.SUBS)
-                    billingClient.querySkuDetailsAsync(params.build()
-                    ) { p0, p1 ->
-                        Toast.makeText(applicationContext, p0.toString(),Toast.LENGTH_LONG).show()
-                        Toast.makeText(applicationContext, p1.toString(),Toast.LENGTH_LONG).show()
-                    }
+                    billingClient.querySkuDetailsAsync(
+                        params.build(), object : SkuDetailsResponseListener {
+                            override fun onSkuDetailsResponse(
+                                p0: BillingResult?,
+                                p1: MutableList<SkuDetails>?
+                            ) {
+                                val flowParams: BillingFlowParams = BillingFlowParams.newBuilder()
+                                    .setSkuDetails(p1?.get(0))
+                                    .build();
+                                val billingResponseCode =
+                                    billingClient.launchBillingFlow(this@MainActivity, flowParams)
+                                if (billingResponseCode.responseCode == BillingClient.BillingResponseCode.OK) {
+                                    Toast.makeText(
+                                        applicationContext,
+                                        p0?.responseCode.toString(),
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                } else {
+                                    Toast.makeText(
+                                        applicationContext,
+                                        "Baaaaaaaaaaaaad",
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                }
+                            }
+                        }
+                    );
                 }
-                Toast.makeText(applicationContext,p0?.responseCode.toString(),Toast.LENGTH_LONG).show()
             }
-
-            override fun onBillingServiceDisconnected() {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
-        })
-
-
-
-
-
-
+        }
+        )
 
 //        this.intent.removeExtra(KEY)
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
         DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
 
-        sf = this.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-        MobileAds.initialize(this)
-        mInterstitialAd = InterstitialAd(this)
-        mInterstitialAd.adUnitId = AD_UNIT_ID
-        mBuilder = AdRequest.Builder()
-        mInterstitialAd.loadAd(mBuilder.build())
-        mInterstitialAd.adListener = object : AdListener() {
-            override fun onAdLoaded() {
-                if (mInterstitialAd.isLoaded) {
-                    if (doneOnce) {
-//                        mInterstitialAd.show()
-                        doneOnce = false
+        if(intent.getIntExtra(ADFREE_NAME,6) != 18 || sf.getInt(ADFREE_NAME,6)!=18){
+            MobileAds.initialize(this)
+            mInterstitialAd = InterstitialAd(this)
+            mInterstitialAd.adUnitId = AD_UNIT_ID
+            mBuilder = AdRequest.Builder()
+            mInterstitialAd.loadAd(mBuilder.build())
+            mInterstitialAd.adListener = object : AdListener() {
+                override fun onAdLoaded() {
+                    if (mInterstitialAd.isLoaded) {
+                        if (doneOnce) {
+                        mInterstitialAd.show()
+                            doneOnce = false
+                        }
                     }
                 }
             }
@@ -117,20 +124,36 @@ class MainActivity : AppCompatActivity(), PurchasesUpdatedListener {
         )
     }
 
-    suspend fun querySkuDetails(): List<SkuDetails>? {
-        val skuList = ArrayList<String>()
-        skuList.add("premium_upgrade")
-        skuList.add("gas")
-        val params = SkuDetailsParams.newBuilder()
-        params.setSkusList(skuList).setType(BillingClient.SkuType.INAPP)
-        val skuDetailsResult = withContext(Dispatchers.IO) {
-            billingClient.querySkuDetails(params.build())
+//    suspend fun querySkuDetails(): List<SkuDetails>? {
+//        val skuList = ArrayList<String>()
+//        skuList.add("premium_upgrade")
+//        skuList.add("gas")
+//        val params = SkuDetailsParams.newBuilder()
+//        params.setSkusList(skuList).setType(BillingClient.SkuType.INAPP)
+//        val skuDetailsResult = withContext(Dispatchers.IO) {
+//            billingClient.querySkuDetails(params.build())
+//        }
+//        return skuDetailsResult.skuDetailsList
+//    }
+
+
+    override fun onPurchasesUpdated(
+        billingresult: BillingResult?,
+        purchases: MutableList<Purchase>?
+    ) {
+        if (billingresult?.responseCode == BillingClient.BillingResponseCode.OK) {
+            purchases?.let {
+                for (purchase in purchases) {
+                    if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
+                        Toast.makeText(
+                            applicationContext,
+                            "adfree Goooooooooooooood",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        intent.putExtra(ADFREE_NAME, 18)
+                    }
+                }
+            }
         }
-        return skuDetailsResult.skuDetailsList
-    }
-
-
-    override fun onPurchasesUpdated(p0: BillingResult?, p1: MutableList<Purchase>?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

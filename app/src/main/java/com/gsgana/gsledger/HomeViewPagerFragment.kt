@@ -29,6 +29,7 @@ import com.gsgana.gsledger.utilities.CURRENCYSYMBOL
 import com.gsgana.gsledger.utilities.InjectorUtils
 import com.gsgana.gsledger.utilities.WEIGHTUNIT
 import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModel
+import kotlinx.android.synthetic.main.home_view_pager_fragment.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Matcher
@@ -65,6 +66,9 @@ class HomeViewPagerFragment : Fragment() {
 
     private lateinit var calendar: TimeZone
 
+    private val ADFREE_NAME = "CQi7aLBQH7dR7qyrCG"
+    private lateinit var sf : SharedPreferences
+
 //    private lateinit var viewModel: HomeViewPagerViewModel
 
     private val KEY = "Kd6c26TK65YSmkw6oU"
@@ -77,6 +81,8 @@ class HomeViewPagerFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        sf = activity!!.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
 
         calendar = Calendar.getInstance().timeZone
         option = activity!!.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
@@ -106,6 +112,10 @@ class HomeViewPagerFragment : Fragment() {
         )
 
         binding = HomeViewPagerFragmentBinding.inflate(inflater, container, false)
+
+        if(activity!!.intent.getIntExtra(ADFREE_NAME,6) != 18 || sf.getInt(ADFREE_NAME,6)!=18){
+            binding.adView.visibility = View.VISIBLE
+        }
 
         val mTransform = Linkify.TransformFilter { _: Matcher, _: String ->
             ""

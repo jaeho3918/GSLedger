@@ -80,6 +80,7 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
     private lateinit var pattern4: Pattern
     private lateinit var appUpdateManager: AppUpdateManager
 
+    private val ADFREE_NAME = "CQi7aLBQH7dR7qyrCG"
     private lateinit var billingClient: BillingClient
     private val sku1800 = "gsledger_subscribe"
     private val sku3600 = "adfree_unlimited_entry"
@@ -114,6 +115,7 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
             .enablePendingPurchases()
             .setListener(this)
             .build()
+
         billingClient.startConnection(object : BillingClientStateListener {
             override fun onBillingServiceDisconnected() {
                 TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
@@ -136,7 +138,10 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
                                 val billingResponseCode =
                                     billingClient.launchBillingFlow(this@IntroActivity, flowParams)
                                 if (billingResponseCode.responseCode == BillingClient.BillingResponseCode.OK) {
+                                    Toast.makeText(applicationContext, p0?.responseCode.toString(), Toast.LENGTH_LONG) .show()
 
+                                }else{
+                                    Toast.makeText(applicationContext,"Baaaaaaaaaaaaad", Toast.LENGTH_LONG) .show()
                                 }
                             }
                         }
@@ -145,35 +150,9 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
             }
         }
         )
-//            billingClient.startConnection(object : BillingClientStateListener {
-//                override fun onBillingSetupFinished(p0: BillingResult?) {
-//                    if (p0?.responseCode == BillingClient.BillingResponseCode.OK) {
-//                        val skuList: List<String> = arrayListOf(sku1800, sku3600)
-//                        val params: SkuDetailsParams.Builder = SkuDetailsParams.newBuilder()
-//                        params.setSkusList(skuList).setType(BillingClient.SkuType.SUBS)
-//                        billingClient.querySkuDetailsAsync(
-//                            params.build()
-//                        ) { p0, p1 ->
-//                            Toast.makeText(applicationContext, p0.toString(), Toast.LENGTH_LONG).show()
-//                            Toast.makeText(applicationContext, p1.toString(), Toast.LENGTH_LONG).show()
-//                        }
-//                    }
-//                    Toast.makeText(applicationContext, p0?.responseCode.toString(), Toast.LENGTH_LONG)
-//                        .show()
-//                }
-//
-//        GlobalScope.launch {
-//            val skuDetails = querySkuDetails()
-//            // Retrieve a value for "skuDetails" by calling querySkuDetailsAsync().
-//            flowParams = BillingFlowParams.newBuilder()
-//                .setSkuDetails(skuDetails)
-//                .build()
-//        }.invokeOnCompletion {
-//            val responseCode = billingClient.launchBillingFlow(this, flowParams)
-//        }
 
+        sf = this.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
 
-        val sf = this.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
         setContentView(R.layout.activity_intro)
         mAuth = FirebaseAuth.getInstance()
         binding = DataBindingUtil.setContentView(this, R.layout.activity_intro)
@@ -239,8 +218,7 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
                     test.clear()
                     rgl = rgl_b.toCharArray()
                     rgl_b.clear()
-                    val intent =
-                        Intent(applicationContext, MainActivity::class.java)
+                    val intent = Intent(applicationContext, MainActivity::class.java)
                     intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                     intent.putExtra(KEY, rgl)
                     startActivity(intent)
@@ -268,7 +246,6 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        val sf = this.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE) //option
         // google login
         if (requestCode === RC_SIGN_IN) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
@@ -428,83 +405,23 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
         return sb
     }
 
-    override fun onPurchasesUpdated(p0: BillingResult?, p1: MutableList<Purchase>?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    private suspend fun querySkuDetails(): SkuDetails {
-        val skuList = ArrayList<String>()
-        skuList.add("premium_upgrade")
-        skuList.add("gas")
-        val params = SkuDetailsParams.newBuilder()
-        params.setSkusList(skuList).setType(BillingClient.SkuType.INAPP)
-        val skuDetailsResult = withContext(Dispatchers.IO) {
-            billingClient.querySkuDetails(params.build())
+    override fun onPurchasesUpdated(
+        billingresult: BillingResult?,
+        purchases: MutableList<Purchase>?
+    ) {
+        if (billingresult?.responseCode == BillingClient.BillingResponseCode.OK) {
+            purchases?.let {
+                for (purchase in purchases) {
+                    if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
+                        Toast.makeText(
+                            applicationContext,
+                            "adfree Goooooooooooooood",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        sf.edit().putInt(ADFREE_NAME, 18).apply()
+                    }
+                }
+            }
         }
-        return skuDetailsResult.skuDetailsList!![0]
     }
-
-//    private suspend fun handlePurchase() {
-//        if (purchase.purchaseState === PurchaseState.PURCHASED) {
-//            // Grant entitlement to the user.
-//
-//            // Acknowledge the purchase if it hasn't already been acknowledged.
-//            if (!purchase.isAcknowledged) {
-//                val acknowledgePurchaseParams = AcknowledgePurchaseParams.newBuilder()
-//                    .setPurchaseToken(purchase.purchaseToken)
-//                val ackPurchaseResult = withContext(Dispatchers.IO) {
-//                    client.acknowledgePurchase(acknowledgePurchaseParams.build())
-//                }
-//            }
-//        }
-//    }
-
-//    fun handlePurchase(purchase: Purchase) {
-//        if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
-//            // Grant entitlement to the user.
-//
-//            // Acknowledge the purchase if it hasn't already been acknowledged.
-//            if (!purchase.isAcknowledged) {
-//                val acknowledgePurchaseParams = AcknowledgePurchaseParams.newBuilder()
-//                    .setPurchaseToken(purchase.purchaseToken)
-//                val ackPurchaseResult = withContext(Dispatchers.IO) {
-//                    client.acknowledgePurchase(acknowledgePurchaseParams.build())
-//                }
-//            }
-//        }
-//    }
-
-//    suspend fun Task<AppUpdateInfo>.await(): AppUpdateInfo {
-//        return suspendCoroutine { continuation ->
-//            addOnCompleteListener { result ->
-//                if (result.isSuccessful) {
-//                    continuation.resume(result.result)
-//                } else {
-//                    continuation.resumeWithException(result.exception)
-//                }
-//            }
-//        }
-//    }
-
-//    override fun onStateUpdate(state: InstallState) {
-//        if (state.installStatus() == InstallStatus.DOWNLOADED) {
-//            // After the update is downloaded, show a notification
-//            // and request user confirmation to restart the app.
-//            popupSnackbarForCompleteUpdate()
-//        }
-//    }
-//
-//    /* Displays the snackbar notification and call to action. */
-//    fun popupSnackbarForCompleteUpdate() {
-//        Snackbar.make(
-//            findViewById(R.id.activity_main_layout),
-//            "An update has just been downloaded.",
-//            Snackbar.LENGTH_INDEFINITE
-//        ).apply {
-//            setAction("RESTART") { appUpdateManager.completeUpdate() }
-//            setActionTextColor(resources.getColor(R.color.snackbar_action_text_color))
-//            show()
-//        }
-//    }
-
 }

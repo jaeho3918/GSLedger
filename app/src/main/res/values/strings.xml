@@ -25,7 +25,11 @@
     <string name="year">Year</string>
     <string name="spotPrice">Spot Price</string>
     <string name="weightUnit">Weight Unit</string>
-    <string name="delAccount">Delete Your List and User Account</string>
+    <string name="delAccount">Delete Your List and Initialize Application</string>
+    <string name="subscribe">Subscribe</string>
+    <string name="adfree">Ad Free</string>
+    <string name="unlimitedList">Unlimited List</string>
+    <string name="adfreerestart">Please restart to remove Ads.</string>
     <string name="caution">Caution</string>
     <string name="delAgreeCheck"> Do you agree to delete your list and accounts?(Data cannot be recovered and you can not use the data of device that is sign up with the same gmail.)</string>
     <string name="details">Details</string>
@@ -52,7 +56,7 @@
     <string name="list">List</string>
     <string name="option">Option</string>
     <string name="chart">Chart</string>
-    <string name="slot">Entry List</string>
+    <string name="slot">List</string>
     <string name="goldChart">Gold Chart</string>
     <string name="silverChart">Silver Chart</string>
     <string name="Profit">profit</string>
@@ -69,4 +73,5 @@
     <string name="oneperaccount">This Gmail is already signed up.&#10;Please sign up with another Gmail.</string>
     <string name="agree">Agree</string>
     <string name="checkBox">Please read and agree to the Terms and Conditions and Privacy Policy and check the box</string>
+    <string name="subscription_benefits">Subscription benefits :</string>
 </resources>

@@ -131,7 +131,7 @@ class ChartFragment : Fragment() {
             fitScreen()
 
         }
-        val valueFormatter =  IndexAxisValueFormatter(date)
+        val valueFormatter = IndexAxisValueFormatter(date)
 //        val valueFormatter = ChartAxisValueFormatter().apply {
 //            setValue(date)
 //        }
@@ -165,16 +165,16 @@ class ChartFragment : Fragment() {
                 setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART)
                 setDrawGridLines(true)
                 setLabelCount(5, true)
-                axisMaximum = dataSet.yMax + dataSet.yMax / 13
+                axisMaximum = dataSet.yMax * 15 / 13
                 axisMinimum = 0f
                 axisLineColor = backGround
             }
-
-        chart.setVisibleYRange(
-            dataSet.yMax + dataSet.yMax / 13,
-            0f,
-            y.axisDependency
-        )
+//
+//        chart.setVisibleYRange(
+//            0f,
+//            dataSet.yMax + dataSet.yMax / 13,
+//            y.axisDependency
+//        )
 
         val mv =
             CustomMarkerView(context, viewModel, R.layout.marker_view1).apply { chartView = chart }
@@ -234,7 +234,7 @@ class ChartFragment : Fragment() {
         }
 
 
-        val valueFormatter =  IndexAxisValueFormatter(date)
+        val valueFormatter = IndexAxisValueFormatter(date)
 
 
         chart.xAxis
@@ -246,7 +246,7 @@ class ChartFragment : Fragment() {
                 position = XAxis.XAxisPosition.BOTTOM
                 setLabelCount(5, false)
                 setDrawGridLines(true)
-                textSize=5F
+                textSize = 5F
 
             }
 
@@ -257,16 +257,16 @@ class ChartFragment : Fragment() {
                 setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART)
                 setDrawGridLines(true)
                 setLabelCount(5, true)
-                axisMaximum = dataSet.yMax + dataSet.yMax / 130
+                axisMaximum = dataSet.yMax * 15 / 13
                 axisMinimum = 0f
                 axisLineColor = backGround
             }
 
-        chart.setVisibleYRange(
-            dataSet.yMax + dataSet.yMax / 130,
-            0f,
-            y.axisDependency
-        )
+//        chart.setVisibleYRange(
+//            dataSet.yMax + dataSet.yMax / 130,
+//            0f,
+//            y.axisDependency
+//        )
 
         val mv =
             CustomMarkerView(context, viewModel, R.layout.marker_view1).apply { chartView = chart }

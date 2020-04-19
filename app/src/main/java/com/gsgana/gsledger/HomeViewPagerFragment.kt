@@ -41,18 +41,9 @@ class HomeViewPagerFragment : Fragment() {
     private lateinit var binding: HomeViewPagerFragmentBinding
     private val REAL_DB_PATH = "sYTVBn6F18VT6Ykw6L"
 
-//    private val LAST_DB_PATH = "OGn6sgTK6umHojW6QV"
-//    private val REAL_NAME = "sYTVBn2FO8VNT9Ykw90L"
-
     private val PREF_NAME = "01504f779d6c77df04"
     private val CURR_NAME = "1w3d4f7w9d2qG2eT36"
     private val WEIGHT_NAME = "f79604050dfc500715"
-//
-//    private lateinit var mAuth: FirebaseAuth
-//    private val USERS_DB_PATH = "qnI4vK2zSUq6GdeT6b"
-//    private lateinit var rgl: CharArray
-//    private lateinit var rgl_b: MutableList<Char>
-//    private lateinit var database: FirebaseDatabase
 
     private lateinit var option: SharedPreferences
 

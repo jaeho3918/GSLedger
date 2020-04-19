@@ -272,7 +272,6 @@ class StatFragment : Fragment() {
         val data = LineData(dataSet)
 
         val chart = binding.goldChart.apply {
-
             isEnabled = true
             setData(data)
             setViewPortOffsets(50f, 30f, 50f, 50f)
@@ -293,7 +292,6 @@ class StatFragment : Fragment() {
             fitScreen()
 
         }
-
         val valueFormatter = IndexAxisValueFormatter(date)
 
         chart.xAxis
@@ -304,7 +302,7 @@ class StatFragment : Fragment() {
                 textColor = context.resources.getColor(R.color.chart_font, null)
                 position = XAxis.XAxisPosition.BOTTOM
                 setLabelCount(5, false)
-                setDrawGridLines(true)
+                setDrawGridLines(false)
                 textSize = 5F
             }
 
@@ -314,17 +312,11 @@ class StatFragment : Fragment() {
                 gridColor = resources.getColor(R.color.chart_goldB, null)
                 setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART)
                 setDrawGridLines(true)
-                setLabelCount(5, true)
-                axisMaximum = dataSet.yMax + dataSet.yMax / 13
-                axisMinimum = dataSet.yMin - dataSet.yMin / 13 //dataSet.yMin - dataSet.yMin / 13
+                setLabelCount(5, true)              //none
+                axisMaximum = dataSet.yMax * 16 / 15
+                axisMinimum = dataSet.yMin * 16 / 18
                 axisLineColor = backGround
             }
-
-        chart.setVisibleYRange(
-            dataSet.yMax + dataSet.yMax / 13,
-            dataSet.yMin - dataSet.yMin / 13,
-            y.axisDependency
-        )
 
         val mv =
             CustomMarkerView(context, viewModel, R.layout.marker_view).apply { chartView = chart }
@@ -640,6 +632,7 @@ class StatFragment : Fragment() {
             }
     }
 
+    @SuppressLint("SimpleDateFormat")
     fun calChart1() {
         val products = viewModel.getProducts().value
         if (!products.isNullOrEmpty()) {
@@ -647,7 +640,7 @@ class StatFragment : Fragment() {
             binding.goldChartLayout.visibility = View.GONE
             val holder_AG = mutableListOf<Float>()
             val holder_AU = mutableListOf<Float>()
-            for (i in 0..79) {
+            for (i in 0..69) {
                 holder_AG.add(0f)
                 holder_AU.add(0f)
             }
@@ -698,6 +691,7 @@ class StatFragment : Fragment() {
                 list2.clear()
                 dates.clear()
                 result.clear()
+
                 chartCompareProduct = products.size
             }
             binding.chartCardView.visibility = View.VISIBLE
@@ -707,70 +701,70 @@ class StatFragment : Fragment() {
 
     }
 
-    fun calChart2(products: List<Product>) {
-        if (!products.isNullOrEmpty()) {
-            binding.goldChartProgress.visibility = View.VISIBLE
-            binding.goldChartLayout.visibility = View.GONE
-            val holder_AG = mutableListOf<Float>()
-            val holder_AU = mutableListOf<Float>()
-            for (i in 0..79) {
-                holder_AG.add(0f)
-                holder_AU.add(0f)
-            }
-            getChart().addOnCompleteListener { data ->
-                val list1 = data.result?.get("value_AU") as ArrayList<Float>
-                val list2 = data.result?.get("value_AG") as ArrayList<Float>
-                val dates = data.result?.get("date") as ArrayList<String>
-                val result = mutableListOf<Float>()
-                var dateFLAG: Int
-                val mformat = SimpleDateFormat("yyyy/MM/dd")
-
-                products.forEach { product ->
-                    dateFLAG = 0
-                    for (dateIndex in 0 until dates.size) {
-                        if (mformat.parse(dates[dateIndex]).time >= mformat.parse(product.buyDate).time) {
-                            dateFLAG = dateIndex
-                            break
-                        }
-                    }
-
-                    if (product.metal == 0) { //Gold
-                        for (idx in dateFLAG until dates.size) {
-                            holder_AU[idx] += list1[idx] * (1 + product.reg) * PACKAGENUM[product.packageType] * product.quantity * product.weightr * product.weight
-                        }
-                    } else { //Silver
-                        for (idx in dateFLAG until dates.size) {
-                            holder_AG[idx] += list2[idx] * (1 + product.reg) * PACKAGENUM[product.packageType] * product.quantity * product.weightr * product.weight
-                        }
-                    }
-                }
-
-                for (idx in 0 until list1.size) {
-                    result.add(
-                        (holder_AU[idx] + holder_AG[idx]) * (viewModel.getRealData().value?.get(
-                            CURRENCY[(viewModel.getRealData().value?.get("currency")
-                                ?: 0.0).toInt()]
-                        )
-                            ?: 1.0).toFloat()
-                    )
-                }
-
-                if (context != null) setLineChart(context!!, binding, dates, result)
-
-                binding.goldChartLayout.visibility = View.VISIBLE
-                binding.goldChartProgress.visibility = View.GONE
-
-                list1.clear()
-                list2.clear()
-                dates.clear()
-                result.clear()
-                chartCompareProduct = products.size
-            }
-            binding.chartCardView.visibility = View.VISIBLE
-        } else {
-            binding.chartCardView.visibility = View.GONE
+    fun calChart2(products: List<Product>) = if (!products.isNullOrEmpty()) {
+        binding.goldChartProgress.visibility = View.VISIBLE
+        binding.goldChartLayout.visibility = View.GONE
+        val holder_AG = mutableListOf<Float>()
+        val holder_AU = mutableListOf<Float>()
+        for (i in 0..69) {
+            holder_AG.add(0f)
+            holder_AU.add(0f)
         }
+        getChart().addOnCompleteListener { data ->
+            val list1 = data.result?.get("value_AU") as ArrayList<Float>
+            val list2 = data.result?.get("value_AG") as ArrayList<Float>
+            val dates = data.result?.get("date") as ArrayList<String>
+            val result = mutableListOf<Float>()
+            var dateFLAG: Int
+            val mformat = SimpleDateFormat("yyyy/MM/dd")
 
+            products.forEach { product ->
+                dateFLAG = 0
+                for (dateIndex in 0 until dates.size) {
+                    val test = dates[dateIndex]
+                    val test1 = product.buyDate
+                    if (mformat.parse(dates[dateIndex]).time >= mformat.parse(product.buyDate).time) {
+                        dateFLAG = dateIndex
+                        break
+                    }
+                }
+
+                if (product.metal == 0) { //Gold
+                    for (idx in dateFLAG until dates.size) {
+                        holder_AU[idx] += list1[idx] * (1 + product.reg) * PACKAGENUM[product.packageType] * product.quantity * product.weightr * product.weight
+                    }
+                } else { //Silver
+                    for (idx in dateFLAG until dates.size) {
+                        holder_AG[idx] += list2[idx] * (1 + product.reg) * PACKAGENUM[product.packageType] * product.quantity * product.weightr * product.weight
+                    }
+                }
+            }
+
+            for (idx in 0 until list1.size) {
+                result.add(
+                    (holder_AU[idx] + holder_AG[idx]) * (viewModel.getRealData().value?.get(
+                        CURRENCY[(viewModel.getRealData().value?.get("currency")
+                            ?: 0.0).toInt()]
+                    )
+                        ?: 1.0).toFloat()
+                )
+            }
+
+            if (context != null) setLineChart(context!!, binding, dates, result)
+
+            binding.goldChartLayout.visibility = View.VISIBLE
+            binding.goldChartProgress.visibility = View.GONE
+
+            list1.clear()
+            list2.clear()
+            dates.clear()
+            result.clear()
+
+            chartCompareProduct = products.size
+        }
+        binding.chartCardView.visibility = View.VISIBLE
+    } else {
+        binding.chartCardView.visibility = View.GONE
     }
 
 }

@@ -107,49 +107,49 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
                     UPDATE_REQUEST_CODE
                 )
             } else {
-                Toast.makeText(this, "gooooooooooooooooooood", Toast.LENGTH_LONG).show()
+//                Toast.makeText(this, "gooooooooooooooooooood", Toast.LENGTH_LONG).show()
             }
         }
 
-        billingClient = BillingClient.newBuilder(this)
-            .enablePendingPurchases()
-            .setListener(this)
-            .build()
-
-        billingClient.startConnection(object : BillingClientStateListener {
-            override fun onBillingServiceDisconnected() {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
-
-            override fun onBillingSetupFinished(p0: BillingResult?) {
-                if (p0?.responseCode == BillingClient.BillingResponseCode.OK) {
-                    val skuList: List<String> = arrayListOf(sku1800, sku3600)
-                    val params: SkuDetailsParams.Builder = SkuDetailsParams.newBuilder()
-                    params.setSkusList(skuList).setType(BillingClient.SkuType.SUBS)
-                    billingClient.querySkuDetailsAsync(
-                        params.build(), object : SkuDetailsResponseListener {
-                            override fun onSkuDetailsResponse(
-                                p0: BillingResult?,
-                                p1: MutableList<SkuDetails>?
-                            ) {
-                                val flowParams: BillingFlowParams = BillingFlowParams.newBuilder()
-                                    .setSkuDetails(p1?.get(0))
-                                    .build();
-                                val billingResponseCode =
-                                    billingClient.launchBillingFlow(this@IntroActivity, flowParams)
-                                if (billingResponseCode.responseCode == BillingClient.BillingResponseCode.OK) {
-                                    Toast.makeText(applicationContext, p0?.responseCode.toString(), Toast.LENGTH_LONG) .show()
-
-                                }else{
-                                    Toast.makeText(applicationContext,"Baaaaaaaaaaaaad", Toast.LENGTH_LONG) .show()
-                                }
-                            }
-                        }
-                    );
-                }
-            }
-        }
-        )
+//        billingClient = BillingClient.newBuilder(this)
+//            .enablePendingPurchases()
+//            .setListener(this)
+//            .build()
+//
+//        billingClient.startConnection(object : BillingClientStateListener {
+//            override fun onBillingServiceDisconnected() {
+//                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+//            }
+//
+//            override fun onBillingSetupFinished(p0: BillingResult?) {
+//                if (p0?.responseCode == BillingClient.BillingResponseCode.OK) {
+//                    val skuList: List<String> = arrayListOf(sku1800, sku3600)
+//                    val params: SkuDetailsParams.Builder = SkuDetailsParams.newBuilder()
+//                    params.setSkusList(skuList).setType(BillingClient.SkuType.SUBS)
+//                    billingClient.querySkuDetailsAsync(
+//                        params.build(), object : SkuDetailsResponseListener {
+//                            override fun onSkuDetailsResponse(
+//                                p0: BillingResult?,
+//                                p1: MutableList<SkuDetails>?
+//                            ) {
+//                                val flowParams: BillingFlowParams = BillingFlowParams.newBuilder()
+//                                    .setSkuDetails(p1?.get(0))
+//                                    .build();
+//                                val billingResponseCode =
+//                                    billingClient.launchBillingFlow(this@IntroActivity, flowParams)
+//                                if (billingResponseCode.responseCode == BillingClient.BillingResponseCode.OK) {
+//                                    Toast.makeText(applicationContext, p0?.responseCode.toString(), Toast.LENGTH_LONG) .show()
+//
+//                                }else{
+//                                    Toast.makeText(applicationContext,"Baaaaaaaaaaaaad", Toast.LENGTH_LONG) .show()
+//                                }
+//                            }
+//                        }
+//                    );
+//                }
+//            }
+//        }
+//        )
 
         sf = this.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
 
@@ -413,11 +413,6 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
             purchases?.let {
                 for (purchase in purchases) {
                     if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
-                        Toast.makeText(
-                            applicationContext,
-                            "adfree Goooooooooooooood",
-                            Toast.LENGTH_LONG
-                        ).show()
                         sf.edit().putInt(ADFREE_NAME, 18).apply()
                     }
                 }

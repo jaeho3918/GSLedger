@@ -121,10 +121,12 @@ class Write4Fragment : Fragment() {
         ) { _: DatePicker, i: Int, i1: Int, i2: Int ->
             buf_month = if (i1 + 1 < 10) "0" + (i1 + 1).toString()
             else (i1 + 1).toString()
-
             viewModel.setdateField("$i/${buf_month}/$i2")
         }
-        viewModel.setdateField("$_year/${_month + 1}/$_date")
+
+        buf_month = if (_month + 1 < 10) "0" + (_month + 1).toString()
+        else (_month + 1).toString()
+        viewModel.setdateField("$_year/${buf_month}/$_date")
 
         val date = viewModel.getdateField()?.split("/")
         if (!date.isNullOrEmpty()) {

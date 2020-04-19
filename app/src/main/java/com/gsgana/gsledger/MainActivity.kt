@@ -18,7 +18,7 @@ import com.gsgana.gsledger.databinding.ActivityMainBinding
 import kotlinx.android.synthetic.main.activity_main.*
 
 
-class MainActivity : AppCompatActivity(), PurchasesUpdatedListener {
+class MainActivity : AppCompatActivity() { //class MainActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
 
     private val KEY = "Kd6c26TK65YSmkw6oU"
@@ -36,7 +36,6 @@ class MainActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
     private val ADFREE_NAME = "CQi7aLBQH7dR7qyrCG"
     private lateinit var billingClient: BillingClient
-    private val sku1800 = "gsledger_subscribe"
     private val sku3600 = "adfree_unlimited_entry"
     private lateinit var flowParams: BillingFlowParams
 
@@ -45,53 +44,6 @@ class MainActivity : AppCompatActivity(), PurchasesUpdatedListener {
         super.onCreate(savedInstanceState)
 
         sf = this.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-
-        billingClient = BillingClient.newBuilder(this)
-            .enablePendingPurchases()
-            .setListener(this)
-            .build()
-
-        billingClient.startConnection(object : BillingClientStateListener {
-            override fun onBillingServiceDisconnected() {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
-
-            override fun onBillingSetupFinished(p0: BillingResult?) {
-                if (p0?.responseCode == BillingClient.BillingResponseCode.OK) {
-                    val skuList: List<String> = arrayListOf(sku1800, sku3600)
-                    val params: SkuDetailsParams.Builder = SkuDetailsParams.newBuilder()
-                    params.setSkusList(skuList).setType(BillingClient.SkuType.SUBS)
-                    billingClient.querySkuDetailsAsync(
-                        params.build(), object : SkuDetailsResponseListener {
-                            override fun onSkuDetailsResponse(
-                                p0: BillingResult?,
-                                p1: MutableList<SkuDetails>?
-                            ) {
-                                val flowParams: BillingFlowParams = BillingFlowParams.newBuilder()
-                                    .setSkuDetails(p1?.get(0))
-                                    .build();
-                                val billingResponseCode =
-                                    billingClient.launchBillingFlow(this@MainActivity, flowParams)
-                                if (billingResponseCode.responseCode == BillingClient.BillingResponseCode.OK) {
-                                    Toast.makeText(
-                                        applicationContext,
-                                        p0?.responseCode.toString(),
-                                        Toast.LENGTH_LONG
-                                    ).show()
-                                } else {
-                                    Toast.makeText(
-                                        applicationContext,
-                                        "Baaaaaaaaaaaaad",
-                                        Toast.LENGTH_LONG
-                                    ).show()
-                                }
-                            }
-                        }
-                    );
-                }
-            }
-        }
-        )
 
 //        this.intent.removeExtra(KEY)
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
@@ -124,36 +76,4 @@ class MainActivity : AppCompatActivity(), PurchasesUpdatedListener {
         )
     }
 
-//    suspend fun querySkuDetails(): List<SkuDetails>? {
-//        val skuList = ArrayList<String>()
-//        skuList.add("premium_upgrade")
-//        skuList.add("gas")
-//        val params = SkuDetailsParams.newBuilder()
-//        params.setSkusList(skuList).setType(BillingClient.SkuType.INAPP)
-//        val skuDetailsResult = withContext(Dispatchers.IO) {
-//            billingClient.querySkuDetails(params.build())
-//        }
-//        return skuDetailsResult.skuDetailsList
-//    }
-
-
-    override fun onPurchasesUpdated(
-        billingresult: BillingResult?,
-        purchases: MutableList<Purchase>?
-    ) {
-        if (billingresult?.responseCode == BillingClient.BillingResponseCode.OK) {
-            purchases?.let {
-                for (purchase in purchases) {
-                    if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
-                        Toast.makeText(
-                            applicationContext,
-                            "adfree Goooooooooooooood",
-                            Toast.LENGTH_LONG
-                        ).show()
-                        intent.putExtra(ADFREE_NAME, 18)
-                    }
-                }
-            }
-        }
-    }
 }

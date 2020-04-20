@@ -60,7 +60,8 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
     private val ENCRYPT_NAME = "a345f2f713ie8bd261"  //waiECtOFcBCylMcgjf7I
     private val ENCRYPT_NAME1 = "cBywaiEtOFlMg6jf7I"
     private val ENCRYPT_NAME6 = "JHv6DQ6loOBd6lLRrk"
-//    private val UID_NAME = "7e19f667a8a1c7075f"
+
+    //    private val UID_NAME = "7e19f667a8a1c7075f"
     private val KEY = "Kd6c26TK65YSmkw6oU"
     private val PREF_NAME = "01504f779d6c77df04"
 
@@ -329,6 +330,21 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
                                 }
                         }
 
+                    FirebaseFirestore
+                        .getInstance()
+                        .collection("bD7xKRsnpekf54DkwWg2")
+                        .document(mAuth.currentUser?.uid!!)
+                        .apply {
+                            get().addOnSuccessListener {
+                                if(!it.exists()){
+                                    this.set(
+                                        mapOf("requetNum" to 0)
+                                    )
+                                }
+                            }
+
+                        }
+
                     Handler().postDelayed({
                         docRef
                             .get()
@@ -414,7 +430,7 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
                 for (purchase in purchases) {
                     if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
                         sf.edit().putInt(ADFREE_NAME, 18).apply()
-                    } else{
+                    } else {
                         sf.edit().putInt(ADFREE_NAME, 6).apply()
                     }
                 }

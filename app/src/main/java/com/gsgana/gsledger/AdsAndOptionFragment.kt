@@ -73,7 +73,7 @@ class AdsAndOptionFragment : Fragment(), PurchasesUpdatedListener {
 
             billingClient.startConnection(object : BillingClientStateListener {
                 override fun onBillingServiceDisconnected() {
-                    Toast.makeText(context!!,"Baaaaaaaaaaaaad", Toast.LENGTH_LONG) .show()
+//                    Toast.makeText(context!!,"Baaaaaaaaaaaaad", Toast.LENGTH_LONG) .show()
                 }
 
                 override fun onBillingSetupFinished(p0: BillingResult?) {
@@ -93,9 +93,9 @@ class AdsAndOptionFragment : Fragment(), PurchasesUpdatedListener {
                                     val billingResponseCode =
                                         billingClient.launchBillingFlow(activity, flowParams)
                                     if (billingResponseCode.responseCode == BillingClient.BillingResponseCode.OK) {
-                                        Toast.makeText(context!!, p0?.responseCode.toString(), Toast.LENGTH_LONG) .show()
+//                                        Toast.makeText(context!!, p1?.get(0).toString(), Toast.LENGTH_LONG) .show()
                                     }else{
-                                        Toast.makeText(context!!,"Baaaaaaaaaaaaad", Toast.LENGTH_LONG) .show()
+//                                        Toast.makeText(context!!,"Baaaaaaaaaaaaad", Toast.LENGTH_LONG) .show()
                                     }
                                 }
                             }
@@ -130,10 +130,7 @@ class AdsAndOptionFragment : Fragment(), PurchasesUpdatedListener {
                 Handler().postDelayed({
                     activity!!.finish()
                 }, 1800)
-
-
             }
-
             builder.show()
         }
 
@@ -226,10 +223,10 @@ class AdsAndOptionFragment : Fragment(), PurchasesUpdatedListener {
                 for (purchase in purchases) {
                     if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
                         activity!!.intent.putExtra(ADFREE_NAME, 18)
-                        option.edit().putInt(ADFREE_NAME,18)
+                        option.edit().putInt(ADFREE_NAME,18).apply()
                         Toast.makeText(context,resources.getString(R.string.adfreerestart),Toast.LENGTH_LONG).show()
                     }
-                    Toast.makeText(context!!,"Baaaaaaaaaaaaad", Toast.LENGTH_LONG) .show()
+//                    Toast.makeText(context!!,"Baaaaaaaaaaaaad", Toast.LENGTH_LONG) .show()
                 }
             }
         }

@@ -57,10 +57,26 @@
                     android:layout_marginVertical="8dp"
                     android:layout_marginHorizontal="3dp">
 
+
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/item_image"
                         android:layout_width="134dp"
-                        android:layout_height="134dp" />
+                        android:layout_height="134dp"
+                        android:layout_marginVertical="5dp"/>
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/cert_image"
+                        android:layout_width="134dp"
+                        android:layout_height="134dp"/>
+
+                    <TextView
+                        android:id="@+id/cert_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        android:textSize="@dimen/text_medium"
+                        android:layout_marginStart="4dp"/>
 
                 </RelativeLayout>
 

@@ -53,8 +53,8 @@
     <string name="addProduct">품목 추가</string>
     <string name="deleteProduct">합계</string>
     <string name="banner_ad_unit_id">ca-app-pub-8453032642509497~4168684141</string>
-    <string name="rangePrice">정확한 계산을 위해 위 범위의 가격을 입력해주시기바랍니다.</string>
-    <string name="delProduct">해당 품목을 삭제하는것에 동의합니까? (데이터 복구 불가능)</string>
+    <string name="rangePrice">정확한 계산을 위해 위 범위의 가격으로 입력해주시기바랍니다.</string>
+    <string name="delProduct">해당 품목을 삭제하는것에 동의하십니까? (데이터 복구 불가능)</string>
     <string name="loginwithgmail">Gmail로 로그인</string>
     <string name="signupwithgmail">Gmail로 가입</string>
     <string name="quantity">수량</string>

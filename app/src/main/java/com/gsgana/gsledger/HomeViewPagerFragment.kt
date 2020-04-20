@@ -106,7 +106,7 @@ class HomeViewPagerFragment : Fragment() {
 
         binding = HomeViewPagerFragmentBinding.inflate(inflater, container, false)
 
-        if(activity!!.intent.getIntExtra(ADFREE_NAME,6) != 18 || sf.getInt(ADFREE_NAME,6)!=18){
+        if(!(activity!!.intent.getIntExtra(ADFREE_NAME,6) == 18 || sf.getInt(ADFREE_NAME,6) == 18)){
             binding.adView.visibility = View.VISIBLE
         }
 
@@ -151,9 +151,9 @@ class HomeViewPagerFragment : Fragment() {
 
             val simpleDateFormat = SimpleDateFormat("yyyy/MM/dd HH:mm")
             simpleDateFormat.timeZone = calendar
-            val date = simpleDateFormat.format(Date(realData["DATE"]!!.toLong() * 1000))
+            val date = simpleDateFormat.format(Date(realData["DATE"]!!.toLong() * 1000)) + " UTC"
 
-            sf.edit().putString(TODAY_NAME,date).apply()
+            sf.edit().putString(TODAY_NAME,date.substring(0..10)).apply()
 
             binding.realUpdatedDate.text = date
             binding.realGoldCurrency.text = CURRENCYSYMBOL[currencyOption ?: 0]

@@ -12,7 +12,7 @@
     <string name="provide">provided by investing.com</string>
     <string name="currency">Currency</string>
     <string name="edit">edit</string>
-    <string name="quantity">Amount</string>
+    <string name="quantity">Quantity</string>
     <string name="profit">Profit</string>
     <string name="buydate">Buy date</string>
     <string name="item">Item</string>
@@ -56,7 +56,7 @@
     <string name="chart">Chart</string>
     <string name="list">List</string>
     <string name="option">Option</string>
-    <string name="totalChartSpotPrice">Total Chart based on Spot price</string>
+    <string name="totalChartSpotPrice">Total Asset based on Spot price</string>
     <string name="slot">List</string>
     <string name="goldChart">Gold Chart</string>
     <string name="silverChart">Silver Chart</string>

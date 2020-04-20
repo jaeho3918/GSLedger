@@ -234,7 +234,7 @@
             ads:adSize="SMART_BANNER"
             ads:adUnitId="ca-app-pub-3940256099942544/6300978111"
             android:visibility="gone"/>
-        <!--  테스트  "ca-app-pub-3940256099942544/6300978111"    -->
+        <!--  테스트  "ca-app-pub-3940256099942544/6300978111" -->
         <!--  실제    "ca-app-pub-8453032642509497/2664030780" -->
 
     </LinearLayout>

@@ -108,7 +108,10 @@ class ProductAdapter(private val context: Context, private val realData: Map<Str
                 binding.productItemPlCurrency.text = CURRENCYSYMBOL[item.currency]
 
                 binding.productItemTotalprice.text =
-                    CURRENCYSYMBOL[item.currency] + " " + priceToString((realPrice * currency).toDouble(), "PriceInt")
+                    CURRENCYSYMBOL[item.currency] + " " + priceToString(
+                        (realPrice * currency).toDouble(),
+                        "PriceInt"
+                    )
 
                 setPriceColor(
                     context,
@@ -161,7 +164,7 @@ class ProductAdapter(private val context: Context, private val realData: Map<Str
                         item.weight.toString() + WEIGHTUNIT[product!!.weightUnit] + " " + metalType
                 } else {
                     binding.productItemType.text =
-                        product!!.year.toString() +" "+ weight.toString() + WEIGHTUNIT[product!!.weightUnit] + " " + METAL[product!!.metal] + " " + brandName + " " + TYPE[product!!.type]
+                        product!!.year.toString() + " " + weight.toString() + WEIGHTUNIT[product!!.weightUnit] + " " + METAL[product!!.metal] + " " + brandName + " " + TYPE[product!!.type]
                 }
 
                 brand = brand.toLowerCase().replace(" ", "").replace("'", "")
@@ -184,6 +187,16 @@ class ProductAdapter(private val context: Context, private val realData: Map<Str
                     binding.itemImage.setImageResource(imgId)
                 }
 
+                val grade = item.grade
+                val gradeNum = item.gradeNum.toString()
+                if (grade != "None") {
+                    if(grade.substring(0..3) == "PCGS"){
+                        binding.certImage.setImageResource(R.drawable.ic_pg)
+                    }else if(grade.substring(0..2) == "NGC"){
+                        binding.certImage.setImageResource(R.drawable.ic_ngc)
+                    }
+                    binding.certLabel.text = "${grade} ${gradeNum}"
+                }
                 executePendingBindings()
             }
         }

@@ -448,8 +448,6 @@
                                     android:textColor="@color/font_silver"
                                     android:textSize="@dimen/text_medium"
                                     android:visibility="visible" />
-
-
                             </LinearLayout>
 
                             <ProgressBar
@@ -529,7 +527,7 @@
                             android:layout_alignBottom="@+id/goldChart"
                             android:layout_alignParentEnd="true"
                             android:layout_marginEnd="3dp"
-                            android:layout_marginBottom="7.4dp"
+                            android:layout_marginBottom="6.3dp"
                             android:text="2020/04/18"
                             android:textSize="6dp"
                             android:textColor="@color/chart_font"/>

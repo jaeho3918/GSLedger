@@ -10,6 +10,8 @@
     <color name="chart_font">#333333</color>
 
     <color name="font_gold">#f5b500</color>
+    <color name="font_pcgs">#4f9ccc</color>
+    <color name="font_ngc">#95795b</color>
 
     <color name="border_background">#f6f6f6</color>
     <color name="border_stroke">#f6f6f6</color>

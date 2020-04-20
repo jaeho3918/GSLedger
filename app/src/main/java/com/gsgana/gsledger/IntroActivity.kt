@@ -60,14 +60,14 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
     private val ENCRYPT_NAME = "a345f2f713ie8bd261"  //waiECtOFcBCylMcgjf7I
     private val ENCRYPT_NAME1 = "cBywaiEtOFlMg6jf7I"
     private val ENCRYPT_NAME6 = "JHv6DQ6loOBd6lLRrk"
-    private val UID_NAME = "7e19f667a8a1c7075f"
+//    private val UID_NAME = "7e19f667a8a1c7075f"
     private val KEY = "Kd6c26TK65YSmkw6oU"
     private val PREF_NAME = "01504f779d6c77df04"
 
     private lateinit var sf: SharedPreferences
     private lateinit var rgl: CharArray
     private lateinit var rgl_b: MutableList<Char>
-    private lateinit var gso: GoogleSignInOptions
+//    private lateinit var gso: GoogleSignInOptions
 
     private lateinit var mAuth: FirebaseAuth
     private lateinit var googleSigninClient: GoogleSignInClient
@@ -81,10 +81,10 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
     private lateinit var appUpdateManager: AppUpdateManager
 
     private val ADFREE_NAME = "CQi7aLBQH7dR7qyrCG"
-    private lateinit var billingClient: BillingClient
-    private val sku1800 = "gsledger_subscribe"
-    private val sku3600 = "adfree_unlimited_entry"
-    private lateinit var flowParams : BillingFlowParams
+//    private lateinit var billingClient: BillingClient
+//    private val sku1800 = "gsledger_subscribe"
+//    private val sku3600 = "adfree_unlimited_entry"
+//    private lateinit var flowParams : BillingFlowParams
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

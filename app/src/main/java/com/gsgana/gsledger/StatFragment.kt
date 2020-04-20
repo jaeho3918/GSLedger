@@ -2,6 +2,7 @@ package com.gsgana.gsledger
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.SharedPreferences
 import android.graphics.Canvas
 import android.os.Bundle
 import android.os.Handler
@@ -56,6 +57,11 @@ class StatFragment : Fragment() {
 
     private var chartCompareProduct = 0
 
+
+    private val PREF_NAME = "01504f779d6c77df04"
+    private lateinit var sf : SharedPreferences
+    private val TODAY_NAME = "0d07f05fd0c595f615"
+
     private val KEY = "Kd6c26TK65YSmkw6oU"
     private val viewModel: HomeViewPagerViewModel by viewModels {
         InjectorUtils.provideHomeViewPagerViewModelFactory(
@@ -71,6 +77,8 @@ class StatFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
+        sf = activity!!.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+
         rgl = mutableListOf()
         mAuth = FirebaseAuth.getInstance()
         fm = childFragmentManager
@@ -80,6 +88,10 @@ class StatFragment : Fragment() {
 
         binding = StatFragmentBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
+
+
+        val today = sf.getString(TODAY_NAME,"")
+        binding.todayLabel.text = today
 
         viewModel.getRealData().observe(viewLifecycleOwner, Observer { realData ->
             if (!viewModel.getProducts().value.isNullOrEmpty()) {

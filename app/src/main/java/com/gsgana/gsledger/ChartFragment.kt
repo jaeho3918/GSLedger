@@ -236,7 +236,7 @@ class ChartFragment : Fragment() {
             setScaleEnabled(true)
             setDrawGridBackground(false)
             maxHighlightDistance = 300f
-            setPinchZoom(true)
+            setPinchZoom(false)
             setDrawMarkers(true)
             isHighlightPerTapEnabled = true
             axisRight.isEnabled = false

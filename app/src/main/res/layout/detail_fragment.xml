@@ -95,7 +95,22 @@
                             android:id="@+id/item_image"
                             android:layout_width="218dp"
                             android:layout_height="218dp"
+                            android:layout_marginTop="13dp"
                             android:padding="8dp" />
+
+                            <androidx.appcompat.widget.AppCompatImageView
+                                android:id="@+id/cert_image"
+                                android:layout_width="218dp"
+                                android:layout_height="218dp"/>
+
+                            <TextView
+                                android:id="@+id/cert_label"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/white"
+                                android:textStyle="bold"
+                                android:textSize="24dp"
+                                android:layout_marginStart="4dp"/>
 
                     </RelativeLayout>
 
@@ -109,7 +124,7 @@
                             android:id="@+id/product_item_brand"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="11dp"
+                            android:layout_marginTop="3dp"
                             android:layout_weight="1"
                             android:gravity="center"
                             android:textAppearance="?attr/textAppearanceListItem"
@@ -162,6 +177,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="11dp"
                                     android:gravity="left"
+                                    android:textStyle="bold"
                                     android:text="@{viewModel.grade}"
                                     android:textAppearance="?attr/textAppearanceListItem"
                                     android:textSize="@dimen/text_medium" />
@@ -173,6 +189,7 @@
                                     android:layout_marginTop="11dp"
                                     android:layout_marginLeft="5dp"
                                     android:gravity="left"
+                                    android:textStyle="bold"
                                     android:text="@{viewModel.gradeNum}"
                                     android:textAppearance="?attr/textAppearanceListItem"
                                     android:textSize="@dimen/text_medium" />

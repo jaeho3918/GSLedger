@@ -12,7 +12,7 @@
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-3940256099942544~3347511713" />
+            android:value="ca-app-pub-8453032642509497~4168684141" />
         <!--      테스트 ca-app-pub-3940256099942544~3347511713  -->
         <!--      실제 ca-app-pub-8453032642509497~4168684141  -->
         <activity android:name=".IntroActivity">

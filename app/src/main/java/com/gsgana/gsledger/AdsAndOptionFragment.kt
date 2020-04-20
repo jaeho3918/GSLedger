@@ -31,7 +31,6 @@ import kotlinx.android.synthetic.main.ads_and_option_fragment.*
 
 
 class AdsAndOptionFragment : Fragment(), PurchasesUpdatedListener {
-    private val PREF_NAME = "01504f779d6c77df04"
     private val CURR_NAME = "1w3d4f7w9d2qG2eT36"
     private val WEIGHT_NAME = "f79604050dfc500715"
     private lateinit var binding: AdsAndOptionFragmentBinding
@@ -43,15 +42,18 @@ class AdsAndOptionFragment : Fragment(), PurchasesUpdatedListener {
     private lateinit var option: SharedPreferences
     private lateinit var adapter: ArrayAdapter<String>
 
+    private val PREF_NAME = "01504f779d6c77df04"
     private val ADFREE_NAME = "CQi7aLBQH7dR7qyrCG"
     private lateinit var billingClient: BillingClient
     private val sku3600 = "adfree_unlimited_entry"
-    private lateinit var flowParams: BillingFlowParams
-    private lateinit var sf : SharedPreferences
+    private lateinit var sf: SharedPreferences
 
     private val KEY = "Kd6c26TK65YSmkw6oU"
     private val viewModel: HomeViewPagerViewModel by viewModels {
-        InjectorUtils.provideHomeViewPagerViewModelFactory(activity!!, activity!!.intent.getCharArrayExtra(KEY)) //(activity!!, activity!!.intent.getCharArrayExtra(KEY))
+        InjectorUtils.provideHomeViewPagerViewModelFactory(
+            activity!!,
+            activity!!.intent.getCharArrayExtra(KEY)
+        ) //(activity!!, activity!!.intent.getCharArrayExtra(KEY))
     }
 
 
@@ -87,14 +89,15 @@ class AdsAndOptionFragment : Fragment(), PurchasesUpdatedListener {
                                     p0: BillingResult?,
                                     p1: MutableList<SkuDetails>?
                                 ) {
-                                    val flowParams: BillingFlowParams = BillingFlowParams.newBuilder()
-                                        .setSkuDetails(p1?.get(0))
-                                        .build();
+                                    val flowParams: BillingFlowParams =
+                                        BillingFlowParams.newBuilder()
+                                            .setSkuDetails(p1?.get(0))
+                                            .build();
                                     val billingResponseCode =
                                         billingClient.launchBillingFlow(activity, flowParams)
                                     if (billingResponseCode.responseCode == BillingClient.BillingResponseCode.OK) {
 //                                        Toast.makeText(context!!, p1?.get(0).toString(), Toast.LENGTH_LONG) .show()
-                                    }else{
+                                    } else {
 //                                        Toast.makeText(context!!,"Baaaaaaaaaaaaad", Toast.LENGTH_LONG) .show()
                                     }
                                 }
@@ -110,7 +113,8 @@ class AdsAndOptionFragment : Fragment(), PurchasesUpdatedListener {
             val builder: AlertDialog.Builder = AlertDialog.Builder(context)
             builder.setTitle(resources.getString(R.string.caution))
             builder.setMessage(resources.getString(R.string.delAgreeCheck))
-            builder.setPositiveButton(resources.getString(R.string.agree)
+            builder.setPositiveButton(
+                resources.getString(R.string.agree)
             ) { _, _ ->
                 del_btn.text = ""
                 del_btn.isEnabled = false
@@ -214,7 +218,7 @@ class AdsAndOptionFragment : Fragment(), PurchasesUpdatedListener {
         )
     }
 
-        override fun onPurchasesUpdated(
+    override fun onPurchasesUpdated(
         billingresult: BillingResult?,
         purchases: MutableList<Purchase>?
     ) {
@@ -222,11 +226,16 @@ class AdsAndOptionFragment : Fragment(), PurchasesUpdatedListener {
             purchases?.let {
                 for (purchase in purchases) {
                     if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
-                        activity!!.intent.putExtra(ADFREE_NAME, 18)
-                        option.edit().putInt(ADFREE_NAME,18).apply()
-                        Toast.makeText(context,resources.getString(R.string.adfreerestart),Toast.LENGTH_LONG).show()
-                    }
+                        option.edit().putInt(ADFREE_NAME, 18).apply()
+                        Toast.makeText(
+                            context,
+                            resources.getString(R.string.adfreerestart),
+                            Toast.LENGTH_LONG
+                        ).show()
 //                    Toast.makeText(context!!,"Baaaaaaaaaaaaad", Toast.LENGTH_LONG) .show()
+                    } else {
+                        sf.edit().putInt(ADFREE_NAME, 6).apply()
+                    }
                 }
             }
         }

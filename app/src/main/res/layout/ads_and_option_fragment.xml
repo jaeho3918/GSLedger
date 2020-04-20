@@ -212,7 +212,6 @@
                     android:theme="@style/NextButton" />
 
             </LinearLayout>
-
         </androidx.cardview.widget.CardView>
 
 

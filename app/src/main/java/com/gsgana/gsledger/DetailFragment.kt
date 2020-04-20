@@ -188,15 +188,40 @@ class DetailFragment : Fragment() {
                         if (grade != "None") {
                             if(grade.substring(0..3) == "PCGS"){
                                 binding.certImage.setImageResource(R.drawable.ic_pg)
-                                binding.productItemGrade.setTextColor(resources.getColor(R.color.font_pcgs,null))
-                                binding.productItemGradeNum.setTextColor(resources.getColor(R.color.font_pcgs,null))
+                                if (context != null) {
+                                    binding.productItemGrade.setTextColor(
+                                        resources.getColor(
+                                            R.color.font_pcgs,
+                                            null
+                                        )
+                                    )
+                                    binding.productItemGradeNum.setTextColor(
+                                        resources.getColor(
+                                            R.color.font_pcgs,
+                                            null
+                                        )
+                                    )
+                                    binding.certLabel.text = "${grade} ${gradeNum}"
+                                }
 
                             }else if(grade.substring(0..2) == "NGC"){
-                                binding.certImage.setImageResource(R.drawable.ic_ngc)
-                                binding.productItemGrade.setTextColor(resources.getColor(R.color.font_ngc,null))
-                                binding.productItemGradeNum.setTextColor(resources.getColor(R.color.font_ngc,null))
+                                if (context != null) {
+                                    binding.certImage.setImageResource(R.drawable.ic_ngc)
+                                    binding.productItemGrade.setTextColor(
+                                        resources.getColor(
+                                            R.color.font_ngc,
+                                            null
+                                        )
+                                    )
+                                    binding.productItemGradeNum.setTextColor(
+                                        resources.getColor(
+                                            R.color.font_ngc,
+                                            null
+                                        )
+                                    )
+                                    binding.certLabel.text = "${grade} ${gradeNum}"
+                                }
                             }
-                            binding.certLabel.text = "${grade} ${gradeNum}"
                         }
 
                         binding.productItemPlCurrency1.text = CURRENCYSYMBOL[product.currency]

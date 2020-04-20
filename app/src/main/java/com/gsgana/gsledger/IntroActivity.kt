@@ -414,6 +414,8 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
                 for (purchase in purchases) {
                     if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
                         sf.edit().putInt(ADFREE_NAME, 18).apply()
+                    } else{
+                        sf.edit().putInt(ADFREE_NAME, 6).apply()
                     }
                 }
             }

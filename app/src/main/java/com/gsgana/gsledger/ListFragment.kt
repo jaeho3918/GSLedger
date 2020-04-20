@@ -7,9 +7,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
+import com.android.billingclient.api.BillingClient
+import com.android.billingclient.api.BillingResult
+import com.android.billingclient.api.Purchase
+import com.android.billingclient.api.PurchasesUpdatedListener
 
 import com.gsgana.gsledger.adapters.ProductAdapter
 import com.gsgana.gsledger.data.Product
@@ -18,16 +23,14 @@ import com.gsgana.gsledger.utilities.InjectorUtils
 import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModel
 
 
-class ListFragment : Fragment() {
+class ListFragment : Fragment(), PurchasesUpdatedListener {
 
     private lateinit var product: Product
     private lateinit var binding: ListFragmentBinding
 
-
     private val PREF_NAME = "01504f779d6c77df04"
     private lateinit var sf: SharedPreferences
     private val ADFREE_NAME = "CQi7aLBQH7dR7qyrCG"
-
 
     private val KEY = "Kd6c26TK65YSmkw6oU"
     private val viewModel: HomeViewPagerViewModel by viewModels {
@@ -36,8 +39,6 @@ class ListFragment : Fragment() {
             activity!!.intent.getCharArrayExtra(KEY)
         )
     }
-
-    private var productNum: Int = 0
 
     private lateinit var realData: Map<String, Double>
     private lateinit var adapter: ProductAdapter
@@ -71,6 +72,28 @@ class ListFragment : Fragment() {
     interface Callback {
         fun add()
         fun del()
+    }
+
+    override fun onPurchasesUpdated(
+        billingresult: BillingResult?,
+        purchases: MutableList<Purchase>?
+    ) {
+        if (billingresult?.responseCode == BillingClient.BillingResponseCode.OK) {
+            purchases?.let {
+                for (purchase in purchases) {
+                    if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
+                        sf.edit().putInt(ADFREE_NAME, 18).apply()
+                        Toast.makeText(
+                            context,
+                            resources.getString(R.string.adfreerestart),
+                            Toast.LENGTH_LONG
+                        ).show()
+                    } else {
+                        sf.edit().putInt(ADFREE_NAME, 6).apply()
+                    }
+                }
+            }
+        }
     }
 }
 

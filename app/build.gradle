@@ -21,8 +21,8 @@ android {
         applicationId "com.gsgana.gsledger"
         minSdkVersion 23
         targetSdkVersion 29
-        versionCode 48
-        versionName "1.0.1.17"
+        versionCode 55
+        versionName "1.1.0.1"
         multiDexEnabled false
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -42,7 +42,7 @@ android {
                 manifestPlaceholders = [enableCrashReporting: "false"]
             }
             release {
-                minifyEnabled true
+                minifyEnabled false
                 proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
                 manifestPlaceholders = [enableCrashReporting: "true"]
             }

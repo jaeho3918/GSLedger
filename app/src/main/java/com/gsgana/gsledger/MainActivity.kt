@@ -30,6 +30,7 @@ class MainActivity : AppCompatActivity() { //class MainActivity : AppCompatActiv
     private lateinit var mInterstitialAd: InterstitialAd
     private lateinit var mBuilder: AdRequest.Builder
     private lateinit var mFirebaseAnalytics: FirebaseAnalytics
+    private val delay = 3600
 
     private val ADFREE_NAME = "CQi7aLBQH7dR7qyrCG"
 //    private lateinit var billingClient: BillingClient
@@ -50,6 +51,20 @@ class MainActivity : AppCompatActivity() { //class MainActivity : AppCompatActiv
 
         if(!(intent.getIntExtra(ADFREE_NAME,6) == 18 || sf.getInt(ADFREE_NAME,6) ==18)){
            AdUtility(applicationContext).setAds()
+            Handler().postDelayed(
+                {
+                    loading.visibility = View.GONE
+                    homeViewPagerFragmentpage.visibility = View.VISIBLE
+                }, 3600
+            )
+        }else{
+            Handler().postDelayed(
+                {
+                    loading.visibility = View.GONE
+                    homeViewPagerFragmentpage.visibility = View.VISIBLE
+                }, 1300
+            )
+
         }
 
 //        if(!(intent.getIntExtra(ADFREE_NAME,6) == 18 || sf.getInt(ADFREE_NAME,6) ==18)){
@@ -71,12 +86,10 @@ class MainActivity : AppCompatActivity() { //class MainActivity : AppCompatActiv
 //            }
 //        }
 
-        Handler().postDelayed(
-            {
-                loading.visibility = View.GONE
-                homeViewPagerFragmentpage.visibility = View.VISIBLE
-            }, 2100
-        )
+
+
+
+
     }
 
 }

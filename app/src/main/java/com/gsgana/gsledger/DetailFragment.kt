@@ -3,8 +3,8 @@ package com.gsgana.gsledger
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
-import android.content.DialogInterface
 import android.content.res.Resources
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.util.TypedValue
@@ -20,7 +20,10 @@ import androidx.lifecycle.observe
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.google.firebase.database.*
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.gsgana.gsledger.data.Product
 import com.gsgana.gsledger.databinding.DetailFragmentBinding
 import com.gsgana.gsledger.utilities.*
@@ -66,7 +69,7 @@ class DetailFragment : Fragment() {
             findNavController().navigate(R.id.action_detailFragment_to_homeViewPagerFragment)
         }
 
-        subscribeUi(binding, detailViewModel, context!!)
+        subscribeUi(binding, detailViewModel, context)
 
         return binding.root
     }
@@ -75,7 +78,7 @@ class DetailFragment : Fragment() {
     private fun subscribeUi(
         binding: DetailFragmentBinding,
         viewModel: DetailViewModel,
-        context: Context
+        context: Context?
     ) {
 
         detailViewModel.getProduct().observe(viewLifecycleOwner) { product ->
@@ -99,15 +102,35 @@ class DetailFragment : Fragment() {
             val grade = product.grade
             val gradeNum = product.gradeNum.toString()
             if (grade != "None") {
-                if(grade.substring(0..3) == "PCGS"){
+                if (grade.substring(0..3) == "PCGS") {
                     binding.certImage.setImageResource(R.drawable.ic_pg)
-                    binding.productItemGrade.setTextColor(resources.getColor(R.color.font_pcgs,null))
-                    binding.productItemGradeNum.setTextColor(resources.getColor(R.color.font_pcgs,null))
+                    binding.productItemGrade.setTextColor(
+                        resources.getColor(
+                            R.color.font_pcgs,
+                            null
+                        )
+                    )
+                    binding.productItemGradeNum.setTextColor(
+                        resources.getColor(
+                            R.color.font_pcgs,
+                            null
+                        )
+                    )
 
-                }else if(grade.substring(0..2) == "NGC"){
+                } else if (grade.substring(0..2) == "NGC") {
                     binding.certImage.setImageResource(R.drawable.ic_ngc)
-                    binding.productItemGrade.setTextColor(resources.getColor(R.color.font_ngc,null))
-                    binding.productItemGradeNum.setTextColor(resources.getColor(R.color.font_ngc,null))
+                    binding.productItemGrade.setTextColor(
+                        resources.getColor(
+                            R.color.font_ngc,
+                            null
+                        )
+                    )
+                    binding.productItemGradeNum.setTextColor(
+                        resources.getColor(
+                            R.color.font_ngc,
+                            null
+                        )
+                    )
                 }
                 binding.certLabel.text = "${grade} ${gradeNum}"
             }
@@ -140,13 +163,13 @@ class DetailFragment : Fragment() {
 
             val imgId = "drawable".getResource(
                 "${brand}_${metal[0]}${type[0]}",
-                context
+                context!!
             )
             if (imgId == 0) {
                 binding.itemImage.setImageResource(
                     "drawable".getResource(
                         "ic_default_${metal}${type}",
-                        context
+                        context!!
                     )
                 )
             } else {
@@ -186,41 +209,43 @@ class DetailFragment : Fragment() {
                         val grade = product.grade
                         val gradeNum = product.gradeNum.toString()
                         if (grade != "None") {
-                            if(grade.substring(0..3) == "PCGS"){
+                            if (grade.substring(0..3) == "PCGS") {
                                 binding.certImage.setImageResource(R.drawable.ic_pg)
-                                if (context != null) {
-                                    binding.productItemGrade.setTextColor(
-                                        resources.getColor(
-                                            R.color.font_pcgs,
-                                            null
-                                        )
-                                    )
-                                    binding.productItemGradeNum.setTextColor(
-                                        resources.getColor(
-                                            R.color.font_pcgs,
-                                            null
-                                        )
-                                    )
-                                    binding.certLabel.text = "${grade} ${gradeNum}"
-                                }
 
-                            }else if(grade.substring(0..2) == "NGC"){
-                                if (context != null) {
-                                    binding.certImage.setImageResource(R.drawable.ic_ngc)
-                                    binding.productItemGrade.setTextColor(
-                                        resources.getColor(
-                                            R.color.font_ngc,
-                                            null
-                                        )
-                                    )
-                                    binding.productItemGradeNum.setTextColor(
-                                        resources.getColor(
-                                            R.color.font_ngc,
-                                            null
-                                        )
-                                    )
-                                    binding.certLabel.text = "${grade} ${gradeNum}"
-                                }
+                                binding.productItemGrade.setTextColor(
+                                    context?.getColor(
+                                        R.color.font_pcgs
+                                    )?: Color.parseColor("#4f9ccc")
+
+                                )
+
+                                binding.productItemGradeNum.setTextColor(
+                                    context?.getColor(
+                                        R.color.font_pcgs
+                                    )?: Color.parseColor("#4f9ccc")
+
+                                )
+
+                                binding.certLabel.text = "${grade} ${gradeNum}"
+
+
+                            } else if (grade.substring(0..2) == "NGC") {
+
+
+                                binding.productItemGrade.setTextColor(
+                                    context?.getColor(
+                                        R.color.font_ngc
+                                    )?: Color.parseColor("#95795b")
+                                )
+
+                                binding.productItemGradeNum.setTextColor(
+                                    context?.getColor(
+                                        R.color.font_ngc
+                                    )?: Color.parseColor("#95795b")
+                                )
+
+                                binding.certLabel.text = "${grade} ${gradeNum}"
+
                             }
                         }
 
@@ -258,12 +283,14 @@ class DetailFragment : Fragment() {
                     val builder: AlertDialog.Builder = AlertDialog.Builder(context)
                     builder.setTitle(resources.getString(R.string.caution))
                     builder.setMessage(resources.getString(R.string.delProduct))
-                    builder.setPositiveButton(resources.getString(R.string.delete)
+                    builder.setPositiveButton(
+                        resources.getString(R.string.delete)
                     ) { _, _ ->
                         detailViewModel.delProduct(args.id)
                         view?.findNavController()?.navigateUp()
                     }
-                    builder.setNegativeButton(resources.getString(R.string.no)
+                    builder.setNegativeButton(
+                        resources.getString(R.string.no)
                     ) { _, _ ->
                     }
                     builder.show()

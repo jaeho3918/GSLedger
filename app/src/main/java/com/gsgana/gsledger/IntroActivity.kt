@@ -14,41 +14,25 @@ import android.view.View
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.android.billingclient.api.*
-import com.anjlab.android.iab.v3.BillingProcessor
-import com.anjlab.android.iab.v3.TransactionDetails
+import com.crashlytics.android.Crashlytics
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.tasks.Task
-import com.google.android.material.snackbar.Snackbar
-import com.google.android.play.core.appupdate.AppUpdateInfo
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
-import com.google.android.play.core.install.InstallState
-import com.google.android.play.core.install.InstallStateUpdatedListener
 import com.google.android.play.core.install.model.AppUpdateType
-import com.google.android.play.core.install.model.AppUpdateType.IMMEDIATE
-import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import com.gsgana.gsledger.databinding.ActivityIntroBinding
-import kotlinx.coroutines.*
-import org.bouncycastle.jce.provider.BouncyCastleProvider
-import java.security.Security
+import io.fabric.sdk.android.Fabric
 import java.util.*
-import javax.crypto.Cipher
-import javax.crypto.spec.SecretKeySpec
-import org.bouncycastle.util.encoders.Base64
 import java.util.regex.Matcher
 import java.util.regex.Pattern
-import kotlin.coroutines.resume
-import kotlin.coroutines.resumeWithException
-import kotlin.coroutines.suspendCoroutine
 
 
 @Suppress("NAME_SHADOWING", "DEPRECATED_IDENTITY_EQUALS", "UNCHECKED_CAST")
@@ -90,6 +74,8 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        Fabric.with(this, Crashlytics())
+
         appUpdateManager = AppUpdateManagerFactory.create(this)
 
         // Returns an intent object that you use to check for an update.
@@ -112,45 +98,6 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
             }
         }
 
-//        billingClient = BillingClient.newBuilder(this)
-//            .enablePendingPurchases()
-//            .setListener(this)
-//            .build()
-//
-//        billingClient.startConnection(object : BillingClientStateListener {
-//            override fun onBillingServiceDisconnected() {
-//                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-//            }
-//
-//            override fun onBillingSetupFinished(p0: BillingResult?) {
-//                if (p0?.responseCode == BillingClient.BillingResponseCode.OK) {
-//                    val skuList: List<String> = arrayListOf(sku1800, sku3600)
-//                    val params: SkuDetailsParams.Builder = SkuDetailsParams.newBuilder()
-//                    params.setSkusList(skuList).setType(BillingClient.SkuType.SUBS)
-//                    billingClient.querySkuDetailsAsync(
-//                        params.build(), object : SkuDetailsResponseListener {
-//                            override fun onSkuDetailsResponse(
-//                                p0: BillingResult?,
-//                                p1: MutableList<SkuDetails>?
-//                            ) {
-//                                val flowParams: BillingFlowParams = BillingFlowParams.newBuilder()
-//                                    .setSkuDetails(p1?.get(0))
-//                                    .build();
-//                                val billingResponseCode =
-//                                    billingClient.launchBillingFlow(this@IntroActivity, flowParams)
-//                                if (billingResponseCode.responseCode == BillingClient.BillingResponseCode.OK) {
-//                                    Toast.makeText(applicationContext, p0?.responseCode.toString(), Toast.LENGTH_LONG) .show()
-//
-//                                }else{
-//                                    Toast.makeText(applicationContext,"Baaaaaaaaaaaaad", Toast.LENGTH_LONG) .show()
-//                                }
-//                            }
-//                        }
-//                    );
-//                }
-//            }
-//        }
-//        )
 
         sf = this.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
 
@@ -219,30 +166,31 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
                     test.clear()
                     rgl = rgl_b.toCharArray()
                     rgl_b.clear()
-                    val intent = Intent(applicationContext, MainActivity::class.java)
+                    val intent = Intent(this, MainActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                     intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                     intent.putExtra(KEY, rgl)
                     startActivity(intent)
                     rgl = charArrayOf()
-                    finish()
+                    this.finish()
                 }
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        appUpdateManager.appUpdateInfo
-            .addOnSuccessListener {
-                if (it.updateAvailability() == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
-                    appUpdateManager.startUpdateFlowForResult(
-                        it,
-                        AppUpdateType.IMMEDIATE,
-                        this,
-                        UPDATE_REQUEST_CODE
-                    )
-                }
-            }
-    }
+//    override fun onResume() {
+//        super.onResume()
+//        appUpdateManager.appUpdateInfo
+//            .addOnSuccessListener {
+//                if (it.updateAvailability() == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
+//                    appUpdateManager.startUpdateFlowForResult(
+//                        it,
+//                        AppUpdateType.IMMEDIATE,
+//                        this,
+//                        UPDATE_REQUEST_CODE
+//                    )
+//                }
+//            }
+//    }
 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -256,7 +204,6 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
             } catch (e: ApiException) {
                 Toast.makeText(this, e.toString(), Toast.LENGTH_LONG)
             }
-
             //Update Result
         } else if (requestCode == UPDATE_REQUEST_CODE) {
             if (resultCode != RESULT_OK) {
@@ -336,7 +283,7 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
                         .document(mAuth.currentUser?.uid!!)
                         .apply {
                             get().addOnSuccessListener {
-                                if(!it.exists()){
+                                if (!it.exists()) {
                                     this.set(
                                         mapOf("requetNum" to 0)
                                     )
@@ -361,8 +308,8 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
                                 test.clear()
                                 rgl = rgl_b.toCharArray()
                                 rgl_b.clear()
-                                val intent =
-                                    Intent(applicationContext, MainActivity::class.java)
+                                val intent = Intent(this, MainActivity::class.java)
+                                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                                 intent.putExtra(KEY, rgl)
                                 startActivity(intent)

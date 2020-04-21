@@ -75,4 +75,5 @@
     <string name="agree">Agree</string>
     <string name="checkBox">Please read and agree to the Terms and Conditions and Privacy Policy and check the box</string>
     <string name="subscription_benefits">Subscription benefits :</string>
+    <string name="com.crashlytics.useFirebaseAppId">true</string>
 </resources>

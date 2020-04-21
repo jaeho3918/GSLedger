@@ -36,13 +36,18 @@ buildscript {
         google()
         jcenter()
         mavenCentral()
+        maven {
+            url 'https://maven.fabric.io/public'
+        }
     }
 
     dependencies {
+        classpath 'io.fabric.tools:gradle:1.+'
         classpath "com.android.tools.build:gradle:$gradleVersion"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$navigationVersion"
         classpath 'com.google.gms:google-services:4.3.3'
+        classpath 'io.fabric.tools:gradle:1.31.2'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -55,6 +60,10 @@ allprojects {
         jcenter()
         maven { url "https://s3.amazonaws.com/repo.commonsware.com" }
         maven { url "https://jitpack.io" }
+        maven {url 'https://maven.fabric.io/public'}
+        maven {
+            url 'https://s3.amazonaws.com/fabric-artifacts-private/internal-snapshots'
+        }
 
     }
 }

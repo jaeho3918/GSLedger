@@ -15,7 +15,6 @@ import com.gsgana.gsledger.databinding.FragmentWrite1Binding
 import com.gsgana.gsledger.utilities.InjectorUtils
 import com.gsgana.gsledger.viewmodels.WriteViewModel
 
-
 class Write1Fragment : Fragment() {
 
     private lateinit var binding: FragmentWrite1Binding

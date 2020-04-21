@@ -75,4 +75,5 @@
     <string name="notice">알림</string>
     <string name="subscription_benefits">구독 혜택 :</string>
     <string name="adfreerestart">광고제거를 위해 재시작 해주시기 바랍니다.</string>
+    <string name="com.crashlytics.useFirebaseAppId">true</string>
 </resources>

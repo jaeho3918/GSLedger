@@ -5,25 +5,22 @@
     <application
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:label="GSLedger"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-8453032642509497~4168684141" />
+            android:value="ca-app-pub-3940256099942544~3347511713" />
         <!--      테스트 ca-app-pub-3940256099942544~3347511713  -->
         <!--      실제 ca-app-pub-8453032642509497~4168684141  -->
-        <activity android:name=".IntroActivity">
+        <activity android:name=".IntroActivity" android:label="GSLedger" android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity">
-        </activity>
+        <activity android:name=".MainActivity" android:label="GSLedger" android:noHistory="true" android:configChanges="orientation|keyboardHidden"/>
     </application>
 
 </manifest>

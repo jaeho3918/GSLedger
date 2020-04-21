@@ -107,7 +107,9 @@ class StatFragment : Fragment() {
                     if (!viewModel.getRealData().value.isNullOrEmpty()) {
                         val realData = viewModel.getRealData().value!!
                         ratio = calculateProduct(binding, realData, products)
-                        setChart(context!!, binding, ratio!!)
+                        if (context !=null)
+                        {setChart(context!!, binding, ratio!!)}
+
                         switchChart = true
                     } else {
                         binding.statChart.visibility = View.GONE
@@ -732,7 +734,6 @@ class StatFragment : Fragment() {
 //            val mformat = SimpleDateFormat("yyyy/MM/dd")
 
             products.forEach { product ->
-
 //                    for (dateIndex in 0 until dates.size) {
 //                        if (mformat.parse(dates[dateIndex]).time >= mformat.parse(product.buyDate).time) {
 //                            dateFLAG = dateIndex

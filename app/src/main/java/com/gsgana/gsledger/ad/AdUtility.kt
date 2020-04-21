@@ -9,12 +9,11 @@ import com.google.android.gms.ads.MobileAds
 class AdUtility(private val context: Context) {
     private lateinit var mInterstitialAd: InterstitialAd
     private lateinit var mBuilder: AdRequest.Builder
+    private var doneOnce = true
     private val AD_UNIT_ID =
-        "ca-app-pub-8453032642509497/3082833180"
+        "ca-app-pub-3940256099942544/8691691433"
     // 실제   "ca-app-pub-8453032642509497/3082833180"
     // 테스트 "ca-app-pub-3940256099942544/8691691433"
-    private var doneOnce = true
-
     fun setAds() {
         MobileAds.initialize(context)
         mInterstitialAd = InterstitialAd(context)

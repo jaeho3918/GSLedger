@@ -5,10 +5,11 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import com.android.billingclient.api.*
+import com.android.billingclient.api.BillingClient
+import com.android.billingclient.api.BillingFlowParams
+import com.crashlytics.android.Crashlytics
 import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.InterstitialAd
@@ -16,6 +17,7 @@ import com.google.android.gms.ads.MobileAds
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.gsgana.gsledger.ad.AdUtility
 import com.gsgana.gsledger.databinding.ActivityMainBinding
+import io.fabric.sdk.android.Fabric
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() { //class MainActivity : AppCompatActivity(), PurchasesUpdatedListener {
@@ -24,6 +26,7 @@ class MainActivity : AppCompatActivity() { //class MainActivity : AppCompatActiv
     private val PREF_NAME = "01504f779d6c77df04"
     private lateinit var sf: SharedPreferences
 
+    private var doneOnce = true
     private lateinit var mInterstitialAd: InterstitialAd
     private lateinit var mBuilder: AdRequest.Builder
     private lateinit var mFirebaseAnalytics: FirebaseAnalytics
@@ -37,6 +40,7 @@ class MainActivity : AppCompatActivity() { //class MainActivity : AppCompatActiv
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        Fabric.with(this, Crashlytics())
         sf = this.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
 
 //        this.intent.removeExtra(KEY)
@@ -47,6 +51,25 @@ class MainActivity : AppCompatActivity() { //class MainActivity : AppCompatActiv
         if(!(intent.getIntExtra(ADFREE_NAME,6) == 18 || sf.getInt(ADFREE_NAME,6) ==18)){
            AdUtility(applicationContext).setAds()
         }
+
+//        if(!(intent.getIntExtra(ADFREE_NAME,6) == 18 || sf.getInt(ADFREE_NAME,6) ==18)){
+//            MobileAds.initialize(this)
+//            mInterstitialAd = InterstitialAd(this)
+//            mInterstitialAd.adUnitId = "ca-app-pub-8453032642509497/3082833180"     // 실제   "ca-app-pub-8453032642509497/3082833180"
+//                                                                                    // 테스트 "ca-app-pub-3940256099942544/8691691433"
+//            mBuilder = AdRequest.Builder()
+//            mInterstitialAd.loadAd(mBuilder.build())
+//            mInterstitialAd.adListener = object : AdListener() {
+//                override fun onAdLoaded() {
+//                    if (mInterstitialAd.isLoaded) {
+//                        if (doneOnce) {
+//                            mInterstitialAd.show()
+//                            doneOnce = false
+//                        }
+//                    }
+//                }
+//            }
+//        }
 
         Handler().postDelayed(
             {

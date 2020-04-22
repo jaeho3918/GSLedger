@@ -27,7 +27,7 @@
     <string name="unitPrice">1개당 가격</string>
     <string name="oneUnitPrice">1개당 가격</string>
     <string name="memo">메모</string>
-    <string name="modify">변경</string>
+    <string name="modify">메모수정</string>
     <string name="selectType">유형선택</string>
     <string name="next">다음</string>
     <string name="Product">상품명</string>

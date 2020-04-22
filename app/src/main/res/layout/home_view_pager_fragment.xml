@@ -35,6 +35,7 @@
                 android:layout_height="wrap_content"
                 android:baselineAligned="false">
 
+<!--                goldLayout-->
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -86,6 +87,7 @@
                     </LinearLayout>
                 </LinearLayout>
 
+<!--                silverLayout-->
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -149,6 +151,7 @@
                 android:orientation="horizontal"
                 android:paddingTop="3dp">
 
+<!--       lasted updated Layout-->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -173,13 +176,13 @@
                         android:id="@+id/realUpdatedDate"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:text="2000/00/00 00:00:00 "
+                        android:text="2000/00/00 00:00 UTC "
                         android:textColor="@color/font_silver"
                         android:textSize="@dimen/text_small" />
 
                 </LinearLayout>
 
-
+<!--            spotprice Layout-->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

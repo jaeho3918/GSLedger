@@ -33,6 +33,7 @@ import io.fabric.sdk.android.Fabric
 import java.util.*
 import java.util.regex.Matcher
 import java.util.regex.Pattern
+import kotlin.math.sign
 
 
 @Suppress("NAME_SHADOWING", "DEPRECATED_IDENTITY_EQUALS", "UNCHECKED_CAST")
@@ -74,6 +75,8 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // Obtain the FirebaseAnalytics instance.
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
         Fabric.with(this, Crashlytics())
 
         appUpdateManager = AppUpdateManagerFactory.create(this)

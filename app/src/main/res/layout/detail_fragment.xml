@@ -500,7 +500,7 @@
                     android:layout_weight="1"
                     android:onClick="@{() -> callback.add()}"
                     android:text="@string/modify"
-                    android:textSize="35dp"
+                    android:textSize="24dp"
                     android:theme="@style/NextButton" />
 
                 <Button
@@ -510,7 +510,7 @@
                     android:layout_weight="1"
                     android:onClick="@{() -> callback.del()}"
                     android:text="@string/delete"
-                    android:textSize="35dp"
+                    android:textSize="24dp"
                     android:theme="@style/DeleteButton" />
             </LinearLayout>
         </LinearLayout>

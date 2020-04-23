@@ -34,11 +34,10 @@ import java.util.*
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
-
 @Suppress("UNCHECKED_CAST")
 class HomeViewPagerFragment : Fragment() {
     private lateinit var binding: HomeViewPagerFragmentBinding
-    private val REAL_DB_PATH = "sYTVBn6F18VT6Ykw6L"
+    private val REAL_DB_PATH = "v6WqgKE6RLT6JkFuBv" //v6WqgKE6RLT6JkFuBv   실제 sYTVBn6F18VT6Ykw6L
 
     private val PREF_NAME = "01504f779d6c77df04"
     private val CURR_NAME = "1w3d4f7w9d2qG2eT36"
@@ -56,8 +55,6 @@ class HomeViewPagerFragment : Fragment() {
     private lateinit var mAdView: AdView
 
     private lateinit var calendar: Calendar
-
-    private lateinit var dateTime : String
 
     private val ADFREE_NAME = "CQi7aLBQH7dR7qyrCG"
     private lateinit var sf: SharedPreferences
@@ -88,23 +85,23 @@ class HomeViewPagerFragment : Fragment() {
             override fun onDataChange(p0: DataSnapshot) {
 
                 val data = p0.value as HashMap<String, Double>
-                dateTime = data.get("DATE") as String
+                viewModel.dateTime = data.get("DATE") as String
                 data.remove("DATE")
 
                 currencyOption = sf.getInt(CURR_NAME, 0)
                 weightOption = sf.getInt(WEIGHT_NAME, 0)
+                viewModel.currency = (viewModel.getRealData().value?.getValue("currency") ?: 0.0).toInt()
 
-                if (currencyOption != null) {
-                    if (!viewModel.getRealData().value.isNullOrEmpty()) {
-                        data["currency"] =
-                            viewModel.getRealData().value?.getValue("currency") ?: 0.0
-                        data["weightUnit"] =
-                            viewModel.getRealData().value?.getValue("weightUnit") ?: 0.0
-                    } else {
-                        data["currency"] = currencyOption!!.toDouble()
-                        data["weightUnit"] = weightOption!!.toDouble()
-                    }
+                if (!viewModel.getRealData().value.isNullOrEmpty()) {
+                    data["currency"] =
+                        viewModel.getRealData().value?.getValue("currency") ?: 0.0
+                    data["weightUnit"] =
+                        viewModel.getRealData().value?.getValue("weightUnit") ?: 0.0
+                } else {
+                    data["currency"] = currencyOption!!.toDouble()
+                    data["weightUnit"] = weightOption!!.toDouble()
                 }
+                
                 data["USD"] = 1.0
                 viewModel.setRealData(data) //1587652649.61714
             }
@@ -163,11 +160,11 @@ class HomeViewPagerFragment : Fragment() {
                 ?.getInt(CURR_NAME, 0)
 
             val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
-            val utcTime = simpleDateFormat.parse(dateTime)
+            val utcTime = simpleDateFormat.parse(viewModel.dateTime)
 
             val offset = TimeZone.getDefault().rawOffset;
             val nowTime = utcTime.time + offset
-            val date =  Date(nowTime)
+            val date = Date(nowTime)
             val dateString = simpleDateFormat.format(date)
 
             sf.edit().putString(TODAY_NAME, dateString.substring(0..10)).apply()
@@ -186,20 +183,20 @@ class HomeViewPagerFragment : Fragment() {
                 else -> 1.0
             }
 
-            goldRealCurrency.text = CURRENCYSYMBOL[realData["currency"]!!.toInt()]
+            goldRealCurrency.text = CURRENCYSYMBOL[viewModel.currency]
             goldRealPrice.text =
                 String.format(
                     "%,.2f",
-                    realData["AU"]!! * realData[CURRENCY[realData["currency"]!!.toInt()]]!! * weight!!
+                    realData["AU"]!! * realData[CURRENCY[viewModel.currency]]!! * weight!!
                 )
             goldRealLayout.visibility = View.VISIBLE
             goldRealWeight.text = "1 " + WEIGHTUNIT[realData.getValue("weightUnit").toInt()] + ": "
 
-            silverRealCurrency.text = CURRENCYSYMBOL[realData["currency"]!!.toInt()]
+            silverRealCurrency.text = CURRENCYSYMBOL[viewModel.currency]
             silverRealPrice.text =
                 String.format(
                     "%,.2f",
-                    realData["AG"]!! * realData[CURRENCY[realData["currency"]!!.toInt()]]!! * weight!!
+                    realData["AG"]!! * realData[CURRENCY[viewModel.currency]]!! * weight!!
                 )
             silverRealLayout.visibility = View.VISIBLE
 

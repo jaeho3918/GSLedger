@@ -10,6 +10,10 @@ class HomeViewPagerViewModel internal constructor(
 ) :
     ViewModel() {
 
+    var dateTime =""
+
+    var currency = 0
+
     private val chartData = MutableLiveData<Map<String, ArrayList<*>>>()
 
     fun setchartData(input: Map<String, ArrayList<*>>) {

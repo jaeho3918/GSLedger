@@ -76,14 +76,14 @@ class MainActivity :
                 {
                     loading.visibility = View.GONE
                     homeViewPagerFragmentpage.visibility = View.VISIBLE
-                }, 1300 // 3600
+                }, 1800 // 3600
             )
         } else {
             Handler().postDelayed(
                 {
                     loading.visibility = View.GONE
                     homeViewPagerFragmentpage.visibility = View.VISIBLE
-                }, 1300
+                }, 1800
             )
 
         }

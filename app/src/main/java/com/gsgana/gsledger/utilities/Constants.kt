@@ -1,5 +1,8 @@
 package com.gsgana.gsledger.utilities
 
+val PREF_NAME = "01504f779d6c77df04"
+val TODAY_NAME = "0d07f05fd0c595f615"
+val KEY = "Kd6c26TK65YSmkw6oU"
 
 val GCTABLE = arrayOf(
     "Default",

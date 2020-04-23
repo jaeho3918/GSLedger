@@ -121,7 +121,7 @@ class ChartFragment : Fragment() {
 
         val data = LineData(dataSet)
 
-        val chart = binding.goldChart.apply {
+        val chart = binding.goldLongChart.apply {
             isEnabled = true
             setData(data)
             setViewPortOffsets(50f, 30f, 50f, 50f)
@@ -188,12 +188,12 @@ class ChartFragment : Fragment() {
 //        )
 
         val mv =
-            CustomMarkerView(context, viewModel, R.layout.marker_view1).apply { chartView = chart }
+            CustomMarkerView(context, "$", R.layout.marker_view, date).apply { chartView = chart }
 
         chart.marker = mv
         chart.invalidate()
-        binding.goldChartLayout.visibility = View.VISIBLE
-        binding.goldChartProgress.visibility = View.GONE
+        binding.goldLongChartLayout.visibility = View.VISIBLE
+        binding.goldLongChartProgress.visibility = View.GONE
     }
 
     private fun setLineChart1(
@@ -223,7 +223,7 @@ class ChartFragment : Fragment() {
 
         val data = LineData(dataSet)
 
-        val chart = binding.silverChart.apply {
+        val chart = binding.silverLongChart.apply {
             isEnabled = true
             setData(data)
             setViewPortOffsets(50f, 30f, 50f, 50f)
@@ -280,30 +280,30 @@ class ChartFragment : Fragment() {
 //        )
 
         val mv =
-            CustomMarkerView(context, viewModel, R.layout.marker_view1).apply { chartView = chart }
+            CustomMarkerView(context, "$", R.layout.marker_view, date).apply { chartView = chart }
 
         chart.marker = mv
         chart.invalidate()
-        binding.silverChartLayout.visibility = View.VISIBLE
-        binding.silverChartProgress.visibility = View.GONE
+        binding.silverLongChartLayout.visibility = View.VISIBLE
+        binding.silverLongChartProgress.visibility = View.GONE
     }
 
     private class CustomMarkerView(
         context: Context,
-        private val viewModel: HomeViewPagerViewModel,
-        layoutResource: Int
+        private val currencySymbol: String,
+        layoutResource: Int,
+        date_input: List<String>
     ) : MarkerView(
         context,
         layoutResource
     ) {
-        private val tvContent: TextView
-            get() = findViewById<View>(R.id.tvContent) as TextView
+        private val date = date_input
 
         override fun refreshContent(e: Entry?, highlight: Highlight?) {
+            tvDate.text = date[e?.x!!.toInt()]
             tvContent.text =
                 String.format("%,.2f", e?.y) // set the entry-value as the display text
-            tvCurrency.text = CURRENCYSYMBOL[0]
-//                CURRENCYSYMBOL[viewModel.realData.value?.get("currency")?.toInt() ?: 0]
+            tvCurrency.text = currencySymbol
 
             super.refreshContent(e, highlight)
         }

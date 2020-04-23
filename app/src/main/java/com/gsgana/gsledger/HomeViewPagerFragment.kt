@@ -20,7 +20,6 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.database.*
 import com.gsgana.gsledger.adapters.PagerAdapter
 import com.gsgana.gsledger.adapters.PagerAdapter.Companion.ADSANDOPTION_PAGE_INDEX
-import com.gsgana.gsledger.adapters.PagerAdapter.Companion.CHART_PAGE_INDEX
 import com.gsgana.gsledger.adapters.PagerAdapter.Companion.LEDGER_PAGE_INDEX
 import com.gsgana.gsledger.adapters.PagerAdapter.Companion.STAT_PAGE_INDEX
 import com.gsgana.gsledger.databinding.HomeViewPagerFragmentBinding
@@ -29,7 +28,7 @@ import com.gsgana.gsledger.utilities.CURRENCYSYMBOL
 import com.gsgana.gsledger.utilities.InjectorUtils
 import com.gsgana.gsledger.utilities.WEIGHTUNIT
 import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModel
-import kotlinx.android.synthetic.main.home_view_pager_fragment.view.*
+import kotlinx.android.synthetic.main.stat_fragment.*
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Matcher
@@ -56,16 +55,19 @@ class HomeViewPagerFragment : Fragment() {
     private lateinit var databaseRef: DatabaseReference
     private lateinit var mAdView: AdView
 
-    private lateinit var calendar: TimeZone
+    private lateinit var calendar: Calendar
+
+    private lateinit var dateTime : String
 
     private val ADFREE_NAME = "CQi7aLBQH7dR7qyrCG"
-    private lateinit var sf : SharedPreferences
-
-//    private lateinit var viewModel: HomeViewPagerViewModel
+    private lateinit var sf: SharedPreferences
 
     private val KEY = "Kd6c26TK65YSmkw6oU"
     private val viewModel: HomeViewPagerViewModel by viewModels {
-        InjectorUtils.provideHomeViewPagerViewModelFactory(activity!!, activity!!.intent.getCharArrayExtra(KEY))
+        InjectorUtils.provideHomeViewPagerViewModelFactory(
+            activity!!,
+            activity!!.intent.getCharArrayExtra(KEY)
+        )
     }
 
     @SuppressLint("SimpleDateFormat", "SetTextI18n")
@@ -76,8 +78,9 @@ class HomeViewPagerFragment : Fragment() {
 
         sf = activity!!.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
 
-        calendar = Calendar.getInstance().timeZone
-        option = activity!!.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+        calendar = Calendar.getInstance()
+
+
         databaseRef = FirebaseDatabase.getInstance().getReference(REAL_DB_PATH)
 
         databaseRef.addValueEventListener(object : ValueEventListener {
@@ -85,20 +88,25 @@ class HomeViewPagerFragment : Fragment() {
             override fun onDataChange(p0: DataSnapshot) {
 
                 val data = p0.value as HashMap<String, Double>
-                currencyOption = option.getInt(CURR_NAME, 0)
-                weightOption = option.getInt(WEIGHT_NAME, 0)
+                dateTime = data.get("DATE") as String
+                data.remove("DATE")
+
+                currencyOption = sf.getInt(CURR_NAME, 0)
+                weightOption = sf.getInt(WEIGHT_NAME, 0)
 
                 if (currencyOption != null) {
                     if (!viewModel.getRealData().value.isNullOrEmpty()) {
-                        data["currency"] = viewModel.getRealData().value?.getValue("currency") ?: 0.0
-                        data["weightUnit"] = viewModel.getRealData().value?.getValue("weightUnit") ?: 0.0
+                        data["currency"] =
+                            viewModel.getRealData().value?.getValue("currency") ?: 0.0
+                        data["weightUnit"] =
+                            viewModel.getRealData().value?.getValue("weightUnit") ?: 0.0
                     } else {
                         data["currency"] = currencyOption!!.toDouble()
                         data["weightUnit"] = weightOption!!.toDouble()
                     }
                 }
                 data["USD"] = 1.0
-                viewModel.setRealData(data)
+                viewModel.setRealData(data) //1587652649.61714
             }
         }
 
@@ -106,7 +114,11 @@ class HomeViewPagerFragment : Fragment() {
 
         binding = HomeViewPagerFragmentBinding.inflate(inflater, container, false)
 
-        if(!(activity!!.intent.getIntExtra(ADFREE_NAME,6) == 18 || sf.getInt(ADFREE_NAME,6) == 18)){
+        if (!(activity!!.intent.getIntExtra(ADFREE_NAME, 6) == 18 || sf.getInt(
+                ADFREE_NAME,
+                6
+            ) == 18)
+        ) {
             binding.adView.visibility = View.VISIBLE
         }
 
@@ -146,16 +158,21 @@ class HomeViewPagerFragment : Fragment() {
         }.attach()
 
         viewModel.getRealData().observe(viewLifecycleOwner) { realData ->
+
             val currencyOption = activity?.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
                 ?.getInt(CURR_NAME, 0)
 
-            val simpleDateFormat = SimpleDateFormat("yyyy/MM/dd HH:mm")
-            simpleDateFormat.timeZone = calendar
-            val date = simpleDateFormat.format(Date(realData["DATE"]!!.toLong() * 1000)) + " UTC"
+            val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
+            val utcTime = simpleDateFormat.parse(dateTime)
 
-            sf.edit().putString(TODAY_NAME,date.substring(0..10)).apply()
+            val offset = TimeZone.getDefault().rawOffset;
+            val nowTime = utcTime.time + offset
+            val date =  Date(nowTime)
+            val dateString = simpleDateFormat.format(date)
 
-            binding.realUpdatedDate.text = date
+            sf.edit().putString(TODAY_NAME, dateString.substring(0..10)).apply()
+
+            binding.realUpdatedDate.text = dateString.substring(0..15) + " Utc"
             binding.realGoldCurrency.text = CURRENCYSYMBOL[currencyOption ?: 0]
             binding.realSilverCurrency.text = CURRENCYSYMBOL[currencyOption ?: 0]
             binding.realGoldCurrency.text = CURRENCYSYMBOL[currencyOption ?: 0]
@@ -168,6 +185,27 @@ class HomeViewPagerFragment : Fragment() {
                 3.0 -> 0.120565//don
                 else -> 1.0
             }
+
+            goldRealCurrency.text = CURRENCYSYMBOL[realData["currency"]!!.toInt()]
+            goldRealPrice.text =
+                String.format(
+                    "%,.2f",
+                    realData["AU"]!! * realData[CURRENCY[realData["currency"]!!.toInt()]]!! * weight!!
+                )
+            goldRealLayout.visibility = View.VISIBLE
+            goldRealWeight.text = "1 " + WEIGHTUNIT[realData.getValue("weightUnit").toInt()] + ": "
+
+            silverRealCurrency.text = CURRENCYSYMBOL[realData["currency"]!!.toInt()]
+            silverRealPrice.text =
+                String.format(
+                    "%,.2f",
+                    realData["AG"]!! * realData[CURRENCY[realData["currency"]!!.toInt()]]!! * weight!!
+                )
+            silverRealLayout.visibility = View.VISIBLE
+
+            silverRealWeight.text =
+                "1 " + WEIGHTUNIT[realData.getValue("weightUnit").toInt()] + ": "
+
 
             binding.weightUnitLabel.text =
                 "(Unit: 1" + WEIGHTUNIT[realData.getValue("weightUnit").toInt()] + ")"
@@ -194,7 +232,6 @@ class HomeViewPagerFragment : Fragment() {
             setPriceColor(context!!, divAuValue, "pl", binding.realGoldPL)
             setPriceColor(context!!, divAgValue, "pl", binding.realSilverPL)
         }
-
         return binding.root
     }
 
@@ -272,7 +309,7 @@ class HomeViewPagerFragment : Fragment() {
         return when (position) {
             STAT_PAGE_INDEX -> context?.resources?.getString(R.string.overview)
             LEDGER_PAGE_INDEX -> context?.resources?.getString(R.string.list)
-            CHART_PAGE_INDEX -> context?.resources?.getString(R.string.chart)
+//            CHART_PAGE_INDEX -> context?.resources?.getString(R.string.chart)
             ADSANDOPTION_PAGE_INDEX -> context?.resources?.getString(R.string.option)
             else -> null
         }

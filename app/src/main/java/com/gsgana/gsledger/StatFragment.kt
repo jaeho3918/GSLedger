@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
@@ -36,12 +37,8 @@ class StatFragment : Fragment() {
 
     private var chartCompareProduct = 0
 
+    private lateinit var sf: SharedPreferences
 
-    private val PREF_NAME = "01504f779d6c77df04"
-    private lateinit var sf : SharedPreferences
-    private val TODAY_NAME = "0d07f05fd0c595f615"
-
-    private val KEY = "Kd6c26TK65YSmkw6oU"
     private val viewModel: HomeViewPagerViewModel by viewModels {
         InjectorUtils.provideHomeViewPagerViewModelFactory(
             activity!!,
@@ -55,6 +52,8 @@ class StatFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
+        val switch = Boolean
+
         sf = activity!!.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
 
         rgl = mutableListOf()
@@ -62,13 +61,10 @@ class StatFragment : Fragment() {
         fm = childFragmentManager
         fm.popBackStack()
 
-
-
         binding = StatFragmentBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
 
-
-        val today = sf.getString(TODAY_NAME,"")
+        val today = sf.getString(TODAY_NAME, "")
         binding.todayLabel.text = today
 
         viewModel.getRealData().observe(viewLifecycleOwner, Observer { realData ->
@@ -80,6 +76,11 @@ class StatFragment : Fragment() {
                     realData,
                     products
                 )
+                if (ratio!![0] <= 0.0 && ratio!![1] <= 0.0) {
+                    binding.totalGoldLayout.visibility = View.GONE
+                } else if (ratio!![2] <= 0.0 && ratio!![3] <= 0.0) {
+                    binding.totalSilverLayout.visibility = View.GONE
+                }
             }
         }
         )
@@ -96,8 +97,14 @@ class StatFragment : Fragment() {
                                 realData,
                                 products
                             )
-                        if (context !=null)
-                        {
+
+                        if (ratio!![0] <= 0.0 && ratio!![1] <= 0.0) {
+                            binding.totalGoldLayout.visibility = View.GONE
+                        } else if (ratio!![2] <= 0.0 && ratio!![3] <= 0.0) {
+                            binding.totalSilverLayout.visibility = View.GONE
+                        }
+
+                        if (context != null) {
                             getsetChart(
                                 context,
                                 binding,
@@ -125,31 +132,10 @@ class StatFragment : Fragment() {
                         binding.statChart.visibility = View.GONE
                         binding.isEmptyLayout.visibility = View.VISIBLE
                     }
-
-                    if (chartCompareProduct != products.size) {
-                        getcalChart2(
-                            products,
-                            context,
-                            binding,
-                            viewModel,
-                            chartCompareProduct
-                        )
-                    }
                 }, 600
             )
         }
         )
-
-        viewModel.getCurrencyOption().observe(viewLifecycleOwner, Observer
-        {
-            getcalChart1(
-                binding,
-                viewModel,
-                chartCompareProduct,
-                context
-            )
-        })
-
 
         Handler().postDelayed(
             {
@@ -163,37 +149,39 @@ class StatFragment : Fragment() {
             }, 2400
         )
 
+        viewModel.getchart().observe(viewLifecycleOwner, Observer {
+            getShortLineGoldChart(context!!, viewModel, binding, it)
+            getShortLineSilverChart(context!!, viewModel, binding, it)
+            Handler().postDelayed({
+                getcalChart1(
+                    binding,
+                    viewModel,
+                    chartCompareProduct,
+                    context
+                )
+            }, 1800)
+        })
+
+        viewModel.getCurrencyOption().observe(viewLifecycleOwner, Observer {
+            getShortLineGoldChart(context!!, viewModel, binding, viewModel.getchartData())
+            getShortLineSilverChart(context!!, viewModel, binding, viewModel.getchartData())
+            Handler().postDelayed({
+                getcalChart1(
+                    binding,
+                    viewModel,
+                    chartCompareProduct,
+                    context
+                )
+            }, 1800)
+        })
+
         binding.addBtn.setOnClickListener {
             findNavController()
                 .navigate(R.id.action_homeViewPagerFragment_to_write1Fragment)
         }
 
-
         return binding.root
     }
 
 }
- fun getChart(): Task<Map<*, ArrayList<*>>> {
 
-    // Create the arguments to the callable function.
-    lateinit var functions: FirebaseFunctions// ...
-
-    functions = FirebaseFunctions.getInstance()
-
-    val data = hashMapOf(
-        "date" to listOf<String>(),
-        "value_AU" to listOf<Float>(),
-        "value_AG" to listOf<Float>()
-    )
-    return functions
-        .getHttpsCallable("getShortChart")
-        .call(data)
-        .continueWith { task ->
-            // This continuation runs on either success or failure, but if the task
-            // has failed then result will throw an Exception which will be
-            // propagated down.
-
-            val result = task.result?.data as Map<*, ArrayList<*>>
-            result
-        }
-}

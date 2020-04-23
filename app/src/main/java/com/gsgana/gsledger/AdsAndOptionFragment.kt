@@ -31,7 +31,6 @@ import kotlinx.android.synthetic.main.ads_and_option_fragment.*
 
 
 class AdsAndOptionFragment : Fragment(), PurchasesUpdatedListener {
-    private val CURR_NAME = "1w3d4f7w9d2qG2eT36"
     private val WEIGHT_NAME = "f79604050dfc500715"
     private lateinit var binding: AdsAndOptionFragmentBinding
     private lateinit var googleSigninClient: GoogleSignInClient
@@ -39,9 +38,9 @@ class AdsAndOptionFragment : Fragment(), PurchasesUpdatedListener {
     private lateinit var mAuth: FirebaseAuth
     private val USERS_DB_PATH = "qnI4vK2zSUq6GdeT6b"
 
-    private lateinit var option: SharedPreferences
     private lateinit var adapter: ArrayAdapter<String>
 
+    private val CURR_NAME = "1w3d4f7w9d2qG2eT36"
     private val PREF_NAME = "01504f779d6c77df04"
     private val ADFREE_NAME = "CQi7aLBQH7dR7qyrCG"
     private lateinit var billingClient: BillingClient
@@ -62,7 +61,7 @@ class AdsAndOptionFragment : Fragment(), PurchasesUpdatedListener {
         savedInstanceState: Bundle?
     ): View? {
 
-        option = activity!!.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+        sf = activity!!.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
         binding = AdsAndOptionFragmentBinding.inflate(inflater, container, false)
 
         setSpinner(binding, viewModel)
@@ -126,8 +125,8 @@ class AdsAndOptionFragment : Fragment(), PurchasesUpdatedListener {
                     GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()
                 googleSigninClient = GoogleSignIn.getClient(activity!!, gso)
                 googleSigninClient.signOut()
-                option = activity!!.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-                option.edit()
+                sf = activity!!.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+                sf.edit()
                     .clear()
                     .apply()
 
@@ -162,7 +161,7 @@ class AdsAndOptionFragment : Fragment(), PurchasesUpdatedListener {
                     position: Int,
                     id: Long
                 ) {
-                    option.edit()?.putInt(CURR_NAME, position)?.apply()
+                    sf.edit()?.putInt(CURR_NAME, position)?.apply()
                     val getData = viewModel?.getRealData()?.value?.toMutableMap()
                     getData?.set("currency", position.toDouble())
                     viewModel?.setRealData(getData!!.toMap())
@@ -188,7 +187,7 @@ class AdsAndOptionFragment : Fragment(), PurchasesUpdatedListener {
                     position: Int,
                     id: Long
                 ) {
-                    option.edit()?.putInt(WEIGHT_NAME, position)?.apply()
+                    sf.edit()?.putInt(WEIGHT_NAME, position)?.apply()
                     val getData = viewModel?.getRealData()?.value?.toMutableMap()
                     getData?.set("weightUnit", position.toDouble())
                     viewModel?.setRealData(getData!!.toMap())
@@ -226,7 +225,7 @@ class AdsAndOptionFragment : Fragment(), PurchasesUpdatedListener {
             purchases?.let {
                 for (purchase in purchases) {
                     if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
-                        option.edit().putInt(ADFREE_NAME, 18).apply()
+                        sf.edit().putInt(ADFREE_NAME, 18).apply()
                         Toast.makeText(
                             context,
                             resources.getString(R.string.adfreerestart),

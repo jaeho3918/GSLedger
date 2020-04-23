@@ -1,3 +1,5 @@
+@file:Suppress("UNCHECKED_CAST")
+
 package com.gsgana.gsledger.utilities
 
 import android.annotation.SuppressLint
@@ -15,19 +17,54 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.formatter.PercentFormatter
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.utils.MPPointF
+import com.google.android.gms.tasks.Task
+import com.google.firebase.functions.FirebaseFunctions
 import com.gsgana.gsledger.R
 import com.gsgana.gsledger.data.Product
 import com.gsgana.gsledger.databinding.StatFragmentBinding
-import com.gsgana.gsledger.getChart
 import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModel
 import kotlinx.android.synthetic.main.marker_view.view.*
 
 @SuppressLint("SimpleDateFormat")
-private fun calChart1(binding:StatFragmentBinding,viewModel:HomeViewPagerViewModel, chartCompareProduct:Int, context: Context?) {
-    var chartCompareProduct = chartCompareProduct
-    val products = viewModel.getProducts().value
-    val context = context
+private fun calChart1(
+    binding: StatFragmentBinding,
+    viewModel: HomeViewPagerViewModel,
+    chartCompareProduct: Int,
+    context: Context?
+) {
+//    var chartCompareProduct = chartCompareProduct
+//    val context_input = context
+    var chartCompareProduct_input = chartCompareProduct
 
+    val PREF_NAME = "01504f779d6c77df04"
+    val CURR_NAME = "1w3d4f7w9d2qG2eT36"
+    var currency: Float
+    var currencySymbol: String
+    val data = viewModel.getchartData()
+
+    if (viewModel.getCurrencyOption().value ?: 0 == 0) {
+        val currencyOption =
+            context!!.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).getInt(CURR_NAME, 0)
+        currency =
+            (viewModel.getRealData().value?.get(CURRENCY[currencyOption]) ?: 1.0).toFloat()
+
+        currencySymbol = CURRENCYSYMBOL[currencyOption]
+
+    } else if (viewModel.getCurrencyOption().value == null) {
+        val currencyOption =
+            context!!.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).getInt(CURR_NAME, 0)
+        currency =
+            (viewModel.getRealData().value?.get(CURRENCY[currencyOption]) ?: 1.0).toFloat()
+        currencySymbol = CURRENCYSYMBOL[currencyOption]
+
+    } else {
+        currency = (viewModel.getRealData().value?.get(
+            CURRENCY[(viewModel.getCurrencyOption().value ?: 0)]
+        ) ?: 1.0).toFloat()
+        currencySymbol = CURRENCYSYMBOL[(viewModel.getCurrencyOption().value ?: 0)]
+    }
+
+    val products = viewModel.getProducts().value
     if (!products.isNullOrEmpty()) {
         binding.goldChartProgress.visibility = View.VISIBLE
         binding.goldChartLayout.visibility = View.GONE
@@ -37,106 +74,15 @@ private fun calChart1(binding:StatFragmentBinding,viewModel:HomeViewPagerViewMod
             holder_AG.add(0f)
             holder_AU.add(0f)
         }
-        getChart().addOnCompleteListener { data ->
-            val list1 = data.result?.get("value_AU") as ArrayList<Float>
-            val list2 = data.result?.get("value_AG") as ArrayList<Float>
-            val dates = data.result?.get("date") as ArrayList<String>
-            val result = mutableListOf<Float>()
-            var dateFLAG: Int
+        val list1 = data.get("value_AU") as ArrayList<Float>
+        val list2 = data.get("value_AG") as ArrayList<Float>
+        val dates = data.get("date") as ArrayList<String>
+        val result = mutableListOf<Float>()
+        var dateFLAG: Int
 //                val mformat = SimpleDateFormat("yyyy/MM/dd")
 
-            products.forEach { product ->
-                dateFLAG = 0
-
-//                    for (dateIndex in 0 until dates.size) {
-//                        if (mformat.parse(dates[dateIndex]).time >= mformat.parse(product.buyDate).time) {
-//                            dateFLAG = dateIndex
-//                            break
-//                        }
-//                    }
-
-                if (product.metal == 0) { //Gold
-                    for (idx in dateFLAG until dates.size) {
-                        holder_AU[idx] += list1[idx] * (1 + product.reg) * PACKAGENUM[product.packageType] * product.quantity * product.weightr * product.weight
-                    }
-                } else { //Silver
-                    for (idx in dateFLAG until dates.size) {
-                        holder_AG[idx] += list2[idx] * (1 + product.reg) * PACKAGENUM[product.packageType] * product.quantity * product.weightr * product.weight
-                    }
-                }
-            }
-
-            for (idx in 0 until list1.size) {
-                result.add(
-                    (holder_AU[idx] + holder_AG[idx]) * (viewModel.getRealData().value?.get(
-                        CURRENCY[(viewModel.getRealData().value?.get("currency")
-                            ?: 0.0).toInt()]
-                    )
-                        ?: 1.0).toFloat()
-                )
-            }
-
-            if (context != null) setLineChart(
-                context!!,
-                binding,
-                dates,
-                result,
-                viewModel
-            )
-
-            binding.goldChartLayout.visibility = View.VISIBLE
-            binding.goldChartProgress.visibility = View.GONE
-
-            list1.clear()
-            list2.clear()
-            dates.clear()
-            result.clear()
-
-            chartCompareProduct = products.size
-        }
-        binding.chartCardView.visibility = View.VISIBLE
-    } else {
-        binding.chartCardView.visibility = View.GONE
-    }
-
-}
-
-fun getcalChart1(binding:StatFragmentBinding,viewModel:HomeViewPagerViewModel, chartCompareProduct:Int, context: Context?){
-    calChart1(
-        binding,
-        viewModel,
-        chartCompareProduct,
-        context
-    )
-}
-
-private fun calChart2(products: List<Product>, context: Context?,binding: StatFragmentBinding, viewModel: HomeViewPagerViewModel,chartCompareProduct:Int ) = if (!products.isNullOrEmpty()) {
-    val context = context
-    var chartCompareProduct = chartCompareProduct
-
-    binding.goldChartProgress.visibility = View.VISIBLE
-    binding.goldChartLayout.visibility = View.GONE
-    val holder_AG = mutableListOf<Float>()
-    val holder_AU = mutableListOf<Float>()
-    for (i in 0..69) {
-        holder_AG.add(0f)
-        holder_AU.add(0f)
-    }
-    getChart().addOnCompleteListener { data ->
-        val list1 = data.result?.get("value_AU") as ArrayList<Float>
-        val list2 = data.result?.get("value_AG") as ArrayList<Float>
-        val dates = data.result?.get("date") as ArrayList<String>
-        val result = mutableListOf<Float>()
-        var dateFLAG = 0
-//            val mformat = SimpleDateFormat("yyyy/MM/dd")
-
         products.forEach { product ->
-            //                    for (dateIndex in 0 until dates.size) {
-//                        if (mformat.parse(dates[dateIndex]).time >= mformat.parse(product.buyDate).time) {
-//                            dateFLAG = dateIndex
-//                            break
-//                        }
-//                    }
+            dateFLAG = 0
 
             if (product.metal == 0) { //Gold
                 for (idx in dateFLAG until dates.size) {
@@ -151,16 +97,12 @@ private fun calChart2(products: List<Product>, context: Context?,binding: StatFr
 
         for (idx in 0 until list1.size) {
             result.add(
-                (holder_AU[idx] + holder_AG[idx]) * (viewModel.getRealData().value?.get(
-                    CURRENCY[(viewModel.getRealData().value?.get("currency")
-                        ?: 0.0).toInt()]
-                )
-                    ?: 1.0).toFloat()
+                (holder_AU[idx] + holder_AG[idx]) * (currency)
             )
         }
 
         if (context != null) setLineChart(
-            context!!,
+            context,
             binding,
             dates,
             result,
@@ -170,27 +112,123 @@ private fun calChart2(products: List<Product>, context: Context?,binding: StatFr
         binding.goldChartLayout.visibility = View.VISIBLE
         binding.goldChartProgress.visibility = View.GONE
 
-        list1.clear()
-        list2.clear()
-        dates.clear()
-        result.clear()
+        chartCompareProduct_input = products.size
 
-        chartCompareProduct = products.size
+        binding.chartCardView.visibility = View.VISIBLE
+    } else {
+        binding.chartCardView.visibility = View.GONE
     }
-    binding.chartCardView.visibility = View.VISIBLE
-} else {
-    binding.chartCardView.visibility = View.GONE
+
 }
 
-fun getcalChart2(products: List<Product>, context: Context?,binding: StatFragmentBinding, viewModel: HomeViewPagerViewModel,chartCompareProduct:Int ){
-    calChart2(
-        products,
-        context,
+fun getcalChart1(
+    binding: StatFragmentBinding,
+    viewModel: HomeViewPagerViewModel,
+    chartCompareProduct: Int,
+    context: Context?
+) {
+    calChart1(
         binding,
         viewModel,
-        chartCompareProduct
+        chartCompareProduct,
+        context
     )
 }
+
+//private fun calChart2(
+//    products: List<Product>,
+//    context: Context?,
+//    binding: StatFragmentBinding,
+//    viewModel: HomeViewPagerViewModel,
+//    chartCompareProduct: Int
+//) = if (!products.isNullOrEmpty()) {
+////    val context_input = context
+//    var chartCompareProduct_input = chartCompareProduct
+//    val CURR_NAME = "1w3d4f7w9d2qG2eT36"
+//
+//    binding.goldChartProgress.visibility = View.VISIBLE
+//    binding.goldChartLayout.visibility = View.GONE
+//    val holder_AG = mutableListOf<Float>()
+//    val holder_AU = mutableListOf<Float>()
+//    for (i in 0..69) {
+//        holder_AG.add(0f)
+//        holder_AU.add(0f)
+//    }
+//    getChart().addOnCompleteListener { data ->
+//        val list1 = data.result?.get("value_AU") as ArrayList<Float>
+//        val list2 = data.result?.get("value_AG") as ArrayList<Float>
+//        val dates = data.result?.get("date") as ArrayList<String>
+//        val result = mutableListOf<Float>()
+//        var dateFLAG = 0
+////            val mformat = SimpleDateFormat("yyyy/MM/dd")
+//
+//        products.forEach { product ->
+//            //                    for (dateIndex in 0 until dates.size) {
+////                        if (mformat.parse(dates[dateIndex]).time >= mformat.parse(product.buyDate).time) {
+////                            dateFLAG = dateIndex
+////                            break
+////                        }
+////                    }
+//
+//            if (product.metal == 0) { //Gold
+//                for (idx in dateFLAG until dates.size) {
+//                    holder_AU[idx] += list1[idx] * (1 + product.reg) * PACKAGENUM[product.packageType] * product.quantity * product.weightr * product.weight
+//                }
+//            } else { //Silver
+//                for (idx in dateFLAG until dates.size) {
+//                    holder_AG[idx] += list2[idx] * (1 + product.reg) * PACKAGENUM[product.packageType] * product.quantity * product.weightr * product.weight
+//                }
+//            }
+//        }
+//
+//        for (idx in 0 until list1.size) {
+//            result.add(
+//                (holder_AU[idx] + holder_AG[idx]) * (viewModel.getRealData().value?.get(
+//                    CURRENCY[(viewModel.getRealData().value?.get(CURR_NAME)
+//                        ?: 0.0).toInt()]
+//                )
+//                    ?: 1.0).toFloat()
+//            )
+//        }
+//
+//        if (context != null) setLineChart(
+//            context,
+//            binding,
+//            dates,
+//            result,
+//            viewModel
+//        )
+//
+//        binding.goldChartLayout.visibility = View.VISIBLE
+//        binding.goldChartProgress.visibility = View.GONE
+//
+//        list1.clear()
+//        list2.clear()
+//        dates.clear()
+//        result.clear()
+//
+//        chartCompareProduct_input = products.size
+//    }
+//    binding.chartCardView.visibility = View.VISIBLE
+//} else {
+//    binding.chartCardView.visibility = View.GONE
+//}
+//
+//fun getcalChart2(
+//    products: List<Product>,
+//    context: Context?,
+//    binding: StatFragmentBinding,
+//    viewModel: HomeViewPagerViewModel,
+//    chartCompareProduct: Int
+//) {
+//    calChart2(
+//        products,
+//        context,
+//        binding,
+//        viewModel,
+//        chartCompareProduct
+//    )
+//}
 
 private fun calculateProduct(
     viewModel: HomeViewPagerViewModel,
@@ -199,9 +237,12 @@ private fun calculateProduct(
     products: List<Product>
 ): List<Double> {
 
-    val currency = realData.getValue(CURRENCY[realData.getValue("currency").toInt()])
+    val currency = (viewModel.getRealData().value?.get(
+        CURRENCY[(viewModel.getCurrencyOption().value ?: 0)]
+    ) ?: 1.0).toFloat()
 
-    val currencyOption = realData.getValue("currency").toInt()
+    val currencySymbol = CURRENCYSYMBOL[(viewModel.getCurrencyOption().value ?: 0)]
+
 
     var goldCoin_RealData = 0.0
     var goldBar_RealData = 0.0
@@ -323,7 +364,7 @@ private fun calculateProduct(
 
     /* set Visible Layout */
     if (result_total > 0) {
-        binding.totalCurrency.text = CURRENCYSYMBOL[currencyOption]
+        binding.totalCurrency.text = currencySymbol
         binding.totalPrice.text =
             priceToString(result_total, "PriceInt")
         binding.totalPlper.text =
@@ -334,13 +375,13 @@ private fun calculateProduct(
                 result_totalPl,
                 "PriceInt"
             )
-        binding.plCurrency.text = CURRENCYSYMBOL[currencyOption]
+        binding.plCurrency.text = currencySymbol
 
         binding.totalLayout.visibility = View.VISIBLE
     }
 
     if (result_goldCoin > 0) {
-        binding.goldCoinCurrency.text = CURRENCYSYMBOL[currencyOption]
+        binding.goldCoinCurrency.text = currencySymbol
         binding.goldCoinPrice.text =
             priceToString(
                 result_goldCoin,
@@ -359,7 +400,7 @@ private fun calculateProduct(
         binding.goldCoinLayout.visibility = View.GONE
     }
     if (result_goldBar > 0) {
-        binding.goldBarCurrency.text = CURRENCYSYMBOL[currencyOption]
+        binding.goldBarCurrency.text = currencySymbol
         binding.goldBarPrice.text =
             priceToString(
                 result_goldBar,
@@ -378,7 +419,7 @@ private fun calculateProduct(
         binding.goldBarLayout.visibility = View.GONE
     }
     if (result_silverCoin > 0) {
-        binding.silverCoinCurrency.text = CURRENCYSYMBOL[currencyOption]
+        binding.silverCoinCurrency.text = currencySymbol
         binding.silverCoinPrice.text =
             priceToString(
                 result_silverCoin,
@@ -397,7 +438,7 @@ private fun calculateProduct(
         binding.silverCoinLayout.visibility = View.GONE
     }
     if (result_silverBar > 0) {
-        binding.silverBarCurrency.text = CURRENCYSYMBOL[currencyOption]
+        binding.silverBarCurrency.text = currencySymbol
         binding.silverBarPrice.text =
             priceToString(
                 result_silverBar,
@@ -504,7 +545,7 @@ private fun setChart(
     pieChart.dragDecelerationFrictionCoef = 0.95f
 
     pieChart.isDrawHoleEnabled = true
-    pieChart.setHoleColor(backGround?: Color.parseColor("#000000"))
+    pieChart.setHoleColor(backGround ?: Color.parseColor("#000000"))
 //
     pieChart.setTransparentCircleAlpha(110)
     pieChart.setCenterTextSize(18f)
@@ -535,10 +576,10 @@ private fun setChart(
 
     // add a lot of colors
     val colors = mutableListOf<Int>()
-    if (chartData[0] != 0f) colors.add(chart_goldC?: Color.parseColor("#ffd752"))
-    if (chartData[1] != 0f) colors.add(chart_goldB?: Color.parseColor("#ffd752"))
-    if (chartData[2] != 0f) colors.add(chart_silverC?: Color.parseColor("#a8a8a8"))
-    if (chartData[3] != 0f) colors.add(chart_silverB?: Color.parseColor("#a8a8a8"))
+    if (chartData[0] != 0f) colors.add(chart_goldC ?: Color.parseColor("#ffd752"))
+    if (chartData[1] != 0f) colors.add(chart_goldB ?: Color.parseColor("#ffd752"))
+    if (chartData[2] != 0f) colors.add(chart_silverC ?: Color.parseColor("#a8a8a8"))
+    if (chartData[3] != 0f) colors.add(chart_silverB ?: Color.parseColor("#a8a8a8"))
 
     dataSet.colors = colors
 
@@ -572,7 +613,7 @@ fun getsetChart(
     context: Context?,
     binding: StatFragmentBinding,
     ratio: List<Double>
-){
+) {
     setChart(context, binding, ratio)
 }
 
@@ -584,9 +625,15 @@ private fun setLineChart(
     viewModel: HomeViewPagerViewModel
 ) {
 
+    val chart_font = context.resources.getColor(R.color.chart_font, null)
     val chart_goldC = context.resources.getColor(R.color.chart_goldC, null)
     val chart_goldB = context.resources.getColor(R.color.chart_goldB, null)
     val backGround = context.resources.getColor(R.color.border_background, null)
+
+    val CURR_NAME = "1w3d4f7w9d2qG2eT36"
+
+    val currencySymbol = CURRENCYSYMBOL[(viewModel.getRealData().value?.get(CURR_NAME)
+        ?: 0.0).toInt()]
 
     val entries = arrayListOf<Entry>()
 
@@ -604,12 +651,12 @@ private fun setLineChart(
             setDrawCircles(false)
         }
 
-    val data = LineData(dataSet)
+    val data_set = LineData(dataSet)
 
     val chart = binding.goldChart.apply {
         isEnabled = true
-        setData(data)
-        setViewPortOffsets(50f, 30f, 50f, 50f)
+        setData(data_set)
+        setViewPortOffsets(50f, 30f, 50f, 80f)
         setBackgroundColor(backGround)
         isDoubleTapToZoomEnabled = false
         setDrawMarkers(true)
@@ -633,8 +680,174 @@ private fun setLineChart(
         .apply {
             setValueFormatter(valueFormatter)
             isEnabled = true
-            gridColor = context.resources.getColor(R.color.chart_goldB, null)
-            textColor = context.resources.getColor(R.color.chart_font, null)
+            gridColor = chart_goldB
+            textColor = chart_font
+            position = XAxis.XAxisPosition.BOTTOM
+            setLabelCount(5, false)
+            setDrawGridLines(false)
+            textSize = 5F
+        }
+
+    chart.axisLeft
+        .apply {
+            textColor = chart_font
+            gridColor = chart_goldB
+            setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART)
+            setDrawGridLines(true)
+            setLabelCount(5, true)              //none
+            axisMaximum = dataSet.yMax * 25 / 24
+            axisMinimum = dataSet.yMin * 23 / 24
+            axisLineColor = backGround
+        }
+
+
+    val mv =
+        CustomMarkerView(
+            context,
+            currencySymbol,
+            R.layout.marker_view,
+            date
+        ).apply { chartView = chart }
+
+    chart.marker = mv
+    chart.invalidate()
+}
+
+private class CustomMarkerView(
+    context: Context,
+    private val currencySymbol: String,
+    layoutResource: Int,
+    date_input: List<String>
+) : MarkerView(
+    context,
+    layoutResource
+) {
+    private val date = date_input
+
+    override fun refreshContent(e: Entry?, highlight: Highlight?) {
+        tvDate.text = date[(e?.x ?: 0f).toInt()]
+        tvContent.text =
+            String.format("%,.2f", e?.y) // set the entry-value as the display text
+        tvCurrency.text = currencySymbol
+
+        super.refreshContent(e, highlight)
+    }
+
+    override fun draw(
+        canvas: Canvas?,
+        posX: Float,
+        posY: Float
+    ) {
+        super.draw(canvas, posX, posY)
+        getOffsetForDrawingAtPoint(posX, posY)
+    }
+
+    override fun getOffset(): MPPointF {
+        super.getOffset().x = -(width / 2).toFloat()
+        super.getOffset().y = -(height.toFloat() + 18f)
+        return super.getOffset()
+    }
+}
+
+private fun setShortLineGoldChart(
+    context: Context,
+    viewModel: HomeViewPagerViewModel,
+    binding: StatFragmentBinding,
+    data: Map<String, List<*>>
+) {
+
+    val chart_font = context.resources.getColor(R.color.chart_font, null)
+    val chart_goldC = context.resources.getColor(R.color.chart_goldC, null)
+    val chart_goldB = context.resources.getColor(R.color.chart_goldB, null)
+    val backGround = context.resources.getColor(R.color.border_background, null)
+
+    val PREF_NAME = "01504f779d6c77df04"
+    val CURR_NAME = "1w3d4f7w9d2qG2eT36"
+    var currency: Float
+    var currencySymbol: String
+
+    val test = viewModel.getCurrencyOption().value
+
+    if (viewModel.getCurrencyOption().value ?: 0 == 0) {
+        val currencyOption =
+            context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).getInt(CURR_NAME, 0)
+
+        currency =
+            (viewModel.getRealData().value?.get(CURRENCY[currencyOption]) ?: 1.0).toFloat()
+
+        currencySymbol = CURRENCYSYMBOL[currencyOption]
+
+    } else if (viewModel.getCurrencyOption().value == null) {
+        val currencyOption =
+            context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).getInt(CURR_NAME, 0)
+
+        currency =
+            (viewModel.getRealData().value?.get(CURRENCY[currencyOption]) ?: 1.0).toFloat()
+
+        currencySymbol = CURRENCYSYMBOL[currencyOption]
+
+    } else {
+        currency = (viewModel.getRealData().value?.get(
+            CURRENCY[(viewModel.getCurrencyOption().value ?: 0)]
+        ) ?: 1.0).toFloat()
+        currencySymbol = CURRENCYSYMBOL[(viewModel.getCurrencyOption().value ?: 0)]
+    }
+
+    val result = arrayListOf<Entry>()
+    data.getValue("value_AU").forEachIndexed { index, fl ->
+        result.add(
+            Entry(
+                index.toFloat(),
+                (fl.toString().toFloat()) * currency
+            )
+        )
+    }
+
+    val date = data.getValue("date") as List<String>
+
+    val dataSet = LineDataSet(result, "")
+        .apply {
+            setDrawFilled(true)
+            setDrawValues(false)
+            fillColor = chart_goldC
+            color = chart_goldC
+            setCircleColor(chart_goldB)
+            mode = LineDataSet.Mode.CUBIC_BEZIER
+            isHighlightEnabled = true
+            setDrawCircles(false)
+        }
+
+    val data_set = LineData(dataSet)
+
+    val chart = binding.goldShortChart.apply {
+        isEnabled = true
+        setData(data_set)
+        setViewPortOffsets(50f, 30f, 50f, 80f)
+        setBackgroundColor(backGround)
+        isDoubleTapToZoomEnabled = false
+        setDrawMarkers(true)
+        description.isEnabled = false
+        setTouchEnabled(true)
+        isDragEnabled = false
+        setScaleEnabled(false)
+        setDrawGridBackground(false)
+        maxHighlightDistance = 300f
+        setPinchZoom(false)
+        setDrawMarkers(true)
+        isHighlightPerTapEnabled = true
+        axisRight.isEnabled = false
+        legend.isEnabled = false
+        fitScreen()
+
+    }
+    val valueFormatter = IndexAxisValueFormatter(date)
+
+    chart.xAxis
+        .apply {
+            setValueFormatter(valueFormatter)
+            isEnabled = true
+            gridColor = chart_goldB
+            textColor = chart_font
             position = XAxis.XAxisPosition.BOTTOM
             setLabelCount(5, false)
             setDrawGridLines(false)
@@ -654,49 +867,176 @@ private fun setLineChart(
         }
 
     val mv =
-        CustomMarkerView(
-            context,
-            viewModel,
-            R.layout.marker_view
-        )
+        CustomMarkerView(context, currencySymbol, R.layout.marker_view, date)
             .apply { chartView = chart }
 
     chart.marker = mv
     chart.invalidate()
+    binding.goldShortChartLayout.visibility = View.VISIBLE
+    binding.goldShortChartProgress.visibility = View.GONE
 }
 
-private class CustomMarkerView(
+fun getShortLineGoldChart(
     context: Context,
-    private val viewModel: HomeViewPagerViewModel,
-    layoutResource: Int
-) : MarkerView(
-    context,
-    layoutResource
+    viewModel: HomeViewPagerViewModel,
+    binding: StatFragmentBinding,
+    data: Map<String, List<*>>
 ) {
-    private val tvContent: TextView
-        get() = findViewById<View>(R.id.tvContent) as TextView
+    setShortLineGoldChart(context, viewModel, binding, data)
+}
 
-    override fun refreshContent(e: Entry?, highlight: Highlight?) {
-        tvContent.text =
-            String.format("%,.2f", e?.y) // set the entry-value as the display text
-        tvCurrency.text =
-            CURRENCYSYMBOL[viewModel.getRealData().value?.get("currency")?.toInt() ?: 0]
+private fun setShortLineSilverChart(
+    context: Context,
+    viewModel: HomeViewPagerViewModel,
+    binding: StatFragmentBinding,
+    data: Map<String, List<*>>
+) {
+    val chart_font = context.resources.getColor(R.color.chart_font, null)
+    val chart_silverC = context.resources.getColor(R.color.chart_silverC, null)
+    val chart_silverB = context.resources.getColor(R.color.chart_silverB, null)
+    val backGround = context.resources.getColor(R.color.border_background, null)
 
-        super.refreshContent(e, highlight)
+    val PREF_NAME = "01504f779d6c77df04"
+    val CURR_NAME = "1w3d4f7w9d2qG2eT36"
+    var currency: Float
+    var currencySymbol: String
+
+    if (viewModel.getCurrencyOption().value ?: 0 == 0) {
+        val currencyOption =
+            context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).getInt(CURR_NAME, 0)
+
+        currency =
+            (viewModel.getRealData().value?.get(CURRENCY[currencyOption]) ?: 1.0).toFloat()
+
+        currencySymbol = CURRENCYSYMBOL[currencyOption]
+
+    } else if (viewModel.getCurrencyOption().value == null) {
+        val currencyOption =
+            context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).getInt(CURR_NAME, 0)
+
+        currency =
+            (viewModel.getRealData().value?.get(CURRENCY[currencyOption]) ?: 1.0).toFloat()
+
+        currencySymbol = CURRENCYSYMBOL[currencyOption]
+
+    } else {
+        currency = (viewModel.getRealData().value?.get(
+            CURRENCY[(viewModel.getCurrencyOption().value ?: 0)]
+        ) ?: 1.0).toFloat()
+        currencySymbol = CURRENCYSYMBOL[(viewModel.getCurrencyOption().value ?: 0)]
     }
 
-    override fun draw(
-        canvas: Canvas?,
-        posX: Float,
-        posY: Float
-    ) {
-        super.draw(canvas, posX, posY)
-        getOffsetForDrawingAtPoint(posX, posY)
+
+    val result = arrayListOf<Entry>()
+    data.getValue("value_AG").forEachIndexed { index, fl ->
+        result.add(
+            Entry(
+                index.toFloat(),
+                (fl.toString().toFloat()) * currency
+            )
+        )
     }
 
-    override fun getOffset(): MPPointF {
-        super.getOffset().x = -(width / 2).toFloat()
-        super.getOffset().y = -(height.toFloat() + 18f)
-        return super.getOffset()
+    val date = data.getValue("date") as List<String>
+
+    val dataSet = LineDataSet(result, "")
+        .apply {
+            setDrawFilled(true)
+            setDrawValues(false)
+            fillColor = chart_silverC
+            color = chart_silverC
+            setCircleColor(chart_silverB)
+            mode = LineDataSet.Mode.CUBIC_BEZIER
+            isHighlightEnabled = true
+            setDrawCircles(false)
+        }
+
+    val data_set = LineData(dataSet)
+
+    val chart = binding.silverShortChart.apply {
+        isEnabled = true
+        setData(data_set)
+        setViewPortOffsets(50f, 30f, 50f, 80f)
+        setBackgroundColor(backGround)
+        isDoubleTapToZoomEnabled = false
+        setDrawMarkers(true)
+        description.isEnabled = false
+        setTouchEnabled(true)
+        isDragEnabled = false
+        setScaleEnabled(false)
+        setDrawGridBackground(false)
+        maxHighlightDistance = 300f
+        setPinchZoom(false)
+        setDrawMarkers(true)
+        isHighlightPerTapEnabled = true
+        axisRight.isEnabled = false
+        legend.isEnabled = false
+        fitScreen()
+
     }
+    val valueFormatter = IndexAxisValueFormatter(date)
+
+    chart.xAxis
+        .apply {
+            setValueFormatter(valueFormatter)
+            isEnabled = true
+            gridColor = chart_silverB
+            textColor = chart_font
+            position = XAxis.XAxisPosition.BOTTOM
+            setLabelCount(5, false)
+            setDrawGridLines(false)
+            textSize = 5F
+        }
+
+    chart.axisLeft
+        .apply {
+            textColor = chart_font
+            gridColor = chart_silverB
+            setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART)
+            setDrawGridLines(true)
+            setLabelCount(5, true)              //none
+            axisMaximum = dataSet.yMax * 25 / 24
+            axisMinimum = dataSet.yMin * 23 / 24
+            axisLineColor = backGround
+        }
+
+    val mv =
+        CustomMarkerView(context, currencySymbol, R.layout.marker_view, date)
+            .apply { chartView = chart }
+
+    chart.marker = mv
+    chart.invalidate()
+    binding.silverShortChartLayout.visibility = View.VISIBLE
+    binding.silverShortChartProgress.visibility = View.GONE
+}
+
+fun getShortLineSilverChart(
+    context: Context,
+    viewModel: HomeViewPagerViewModel,
+    binding: StatFragmentBinding,
+    data: Map<String, List<*>>
+) {
+    setShortLineSilverChart(context, viewModel, binding, data)
+}
+
+fun getChart(): Task<Map<*, ArrayList<*>>> {
+    // Create the arguments to the callable function.
+    var functions: FirebaseFunctions = FirebaseFunctions.getInstance()
+
+    val data = hashMapOf(
+        "date" to listOf<String>(),
+        "value_AU" to listOf<Float>(),
+        "value_AG" to listOf<Float>()
+    )
+    return functions
+        .getHttpsCallable("getShortChart")
+        .call(data)
+        .continueWith { task ->
+            // This continuation runs on either success or failure, but if the task
+            // has failed then result will throw an Exception which will be
+            // propagated down.
+
+            val result = task.result?.data as Map<*, ArrayList<*>>
+            result
+        }
 }

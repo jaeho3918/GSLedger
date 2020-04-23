@@ -42,18 +42,18 @@
                         android:orientation="vertical">
 
                         <ProgressBar
-                            android:id="@+id/goldChartProgress"
+                            android:id="@+id/goldLongChartProgress"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"/>
 
                         <RelativeLayout
-                            android:id="@+id/goldChartLayout"
+                            android:id="@+id/goldLongChartLayout"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:visibility="gone">
 
                             <com.github.mikephil.charting.charts.LineChart
-                                android:id="@+id/goldChart"
+                                android:id="@+id/goldLongChart"
                                 android:layout_width="match_parent"
                                 android:layout_height="250dp"/>
 
@@ -61,10 +61,10 @@
                                 android:id="@+id/todayLabel"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_alignBottom="@+id/goldChart"
+                                android:layout_alignBottom="@+id/goldLongChart"
                                 android:layout_alignParentEnd="true"
                                 android:layout_marginEnd="3dp"
-                                android:layout_marginBottom="6.3dp"
+                                android:layout_marginBottom="5.3dp"
                                 android:text="2020/04/18"
                                 android:textSize="6dp"
                                 android:textColor="@color/chart_font"/>
@@ -73,6 +73,8 @@
                     </LinearLayout>
 
                 </LinearLayout>
+
+
             </androidx.cardview.widget.CardView>
 
 
@@ -106,18 +108,18 @@
                         android:orientation="vertical">
 
                         <ProgressBar
-                            android:id="@+id/silverChartProgress"
+                            android:id="@+id/silverLongChartProgress"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"/>
 
                         <RelativeLayout
-                            android:id="@+id/silverChartLayout"
+                            android:id="@+id/silverLongChartLayout"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:visibility="gone">
 
                             <com.github.mikephil.charting.charts.LineChart
-                                android:id="@+id/silverChart"
+                                android:id="@+id/silverLongChart"
                                 android:layout_width="match_parent"
                                 android:layout_height="250dp"/>
 
@@ -125,10 +127,10 @@
                                 android:id="@+id/todayLabel1"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_alignBottom="@+id/silverChart"
+                                android:layout_alignBottom="@+id/silverLongChart"
                                 android:layout_alignParentEnd="true"
                                 android:layout_marginEnd="3dp"
-                                android:layout_marginBottom="6.3dp"
+                                android:layout_marginBottom="5.3dp"
                                 android:text="2020/04/18"
                                 android:textSize="6dp"
                                 android:textColor="@color/chart_font"/>

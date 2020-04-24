@@ -664,6 +664,13 @@ private fun setShortLineGoldChart(
     val CURR_NAME = "1w3d4f7w9d2qG2eT36"
     var currency: Float
     var currencySymbol: String
+    val weight: Float = when (viewModel.getRealDataValue()["weightUnit"]!!) {
+        0.0 -> 1.0f //toz
+        1.0 -> 0.03215f //g
+        2.0 -> 32.150747f  //kg
+        3.0 -> 0.120565f//don
+        else -> 1.0f
+    }
 
     if (viewModel.getRealDataValue().get("currency")?.toInt() ?: 0 == 0) {
         val currencyOption =
@@ -696,7 +703,7 @@ private fun setShortLineGoldChart(
         result.add(
             Entry(
                 index.toFloat(),
-                (fl.toString().toFloat()) * currency
+                (fl.toString().toFloat()) * currency * weight
             )
         )
     }
@@ -798,6 +805,13 @@ private fun setShortLineSilverChart(
     val CURR_NAME = "1w3d4f7w9d2qG2eT36"
     var currency: Float
     var currencySymbol: String
+    val weight: Float = when (viewModel.getRealDataValue()["weightUnit"]!!) {
+        0.0 -> 1.0f //toz
+        1.0 -> 0.03215f //g
+        2.0 -> 32.150747f  //kg
+        3.0 -> 0.120565f//don
+        else -> 1.0f
+    }
 
     if (viewModel.getRealDataValue().get("currency")?.toInt() ?: 0 == 0) {
         val currencyOption =
@@ -831,7 +845,7 @@ private fun setShortLineSilverChart(
         result.add(
             Entry(
                 index.toFloat(),
-                (fl.toString().toFloat()) * currency
+                (fl.toString().toFloat()) * currency * weight
             )
         )
     }

@@ -15,6 +15,9 @@
         <action
             android:id="@+id/action_homeViewPagerFragment_to_write1Fragment"
             app:destination="@id/write1Fragment" />
+        <action
+            android:id="@+id/action_homeViewPagerFragment_to_chartFragment"
+            app:destination="@id/chartFragment" />
     </fragment>
 
     <fragment
@@ -173,6 +176,18 @@
             app:launchSingleTop="false"
             app:popUpToInclusive="false"
             app:popUpTo="@+id/homeViewPagerFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/chartFragment"
+        android:name="com.gsgana.gsledger.ChartFragment"
+        android:label="ChartFragment" >
+        <action
+            android:id="@+id/action_chartFragment_to_homeViewPagerFragment"
+            app:destination="@id/homeViewPagerFragment"
+            app:launchSingleTop="false"
+            app:popUpToInclusive="false"
+            app:popUpTo="@+id/homeViewPagerFragment"/>
     </fragment>
 
 </navigation>

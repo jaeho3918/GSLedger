@@ -47,6 +47,7 @@
     <string name="goldChart">Gold Chart</string>
     <string name="silverChart">Silver Chart</string>
     <string name="overview">개요</string>
+    <string name="historicalChart">Historical Chart</string>
     <string name="list">리스트</string>
     <string name="option">설정</string>
     <string name="ledgerEmpty">리스트가 비었습니다.</string>

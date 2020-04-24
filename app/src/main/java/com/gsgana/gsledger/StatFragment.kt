@@ -32,8 +32,6 @@ class StatFragment : Fragment() {
     private lateinit var rgl: MutableList<Char>
     private var switchChart = false
 
-    private var weight : Double = 0.0
-
     private lateinit var fm: FragmentManager
 
     private var ratio: List<Double>? = null
@@ -71,16 +69,20 @@ class StatFragment : Fragment() {
         binding = StatFragmentBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
 
-        val today = sf.getString(TODAY_NAME, "")
-        binding.todayLabel.text = today
+//        val today = sf.getString(TODAY_NAME, "")
+//        binding.todayLabel.text = today
 
-        viewModel.getRealData().observe(viewLifecycleOwner, Observer { realData ->
+        binding.moveToChart.setOnClickListener {
+            findNavController()
+                .navigate(R.id.action_homeViewPagerFragment_to_chartFragment)
+        }
+
+        viewModel.getRealData().observe(viewLifecycleOwner, Observer { _ ->
             if (!viewModel.getProducts().value.isNullOrEmpty()) {
                 val products = viewModel.getProducts().value!!
                 ratio = getcalculateProduct(
                     viewModel,
                     binding,
-                    realData,
                     products
                 )
                 if (ratio!![0] <= 0.0 && ratio!![1] <= 0.0) {
@@ -88,36 +90,18 @@ class StatFragment : Fragment() {
                 } else if (ratio!![2] <= 0.0 && ratio!![3] <= 0.0) {
                     binding.totalSilverLayout.visibility = View.GONE
                 }
-
-                weight = when (realData["weightUnit"]!!) {
-                    0.0 -> 1.0 //toz
-                    1.0 -> 0.03215 //g
-                    2.0 -> 32.150747  //kg
-                    3.0 -> 0.120565//don
-                    else -> 1.0
-                }
-
-                binding.goldRealCurrency.text = CURRENCYSYMBOL[viewModel.currency]
-                binding.goldRealPrice.text =
-                    String.format(
-                        "%,.2f",
-                        realData["AU"]!! * realData[CURRENCY[viewModel.currency]]!! * weight!!
-                    )
-                binding.goldRealLayout.visibility = View.VISIBLE
-                binding.goldRealWeight.text =
-                    "1 " + WEIGHTUNIT[realData.getValue("weightUnit").toInt()] + ": "
-
-                binding.silverRealCurrency.text = CURRENCYSYMBOL[viewModel.currency]
-                binding.silverRealPrice.text =
-                    String.format(
-                        "%,.2f",
-                        realData["AG"]!! * realData[CURRENCY[viewModel.currency]]!! * weight!!
-                    )
-                binding.silverRealLayout.visibility = View.VISIBLE
-
-                binding.silverRealWeight.text =
-                    "1 " + WEIGHTUNIT[realData.getValue("weightUnit").toInt()] + ": "
             }
+            getsetLabel(binding,viewModel)
+            getShortLineGoldChart(context!!, viewModel, binding, viewModel.getchartData())
+            getShortLineSilverChart(context!!, viewModel, binding, viewModel.getchartData())
+            Handler().postDelayed({
+                getcalChart1(
+                    binding,
+                    viewModel,
+                    chartCompareProduct,
+                    context
+                )
+            }, 600)
         }
         )
 
@@ -125,15 +109,12 @@ class StatFragment : Fragment() {
             Handler().postDelayed(
                 {
                     if (!viewModel.getRealData().value.isNullOrEmpty()) {
-                        val realData = viewModel.getRealData().value!!
                         ratio =
                             getcalculateProduct(
                                 viewModel,
                                 binding,
-                                realData,
                                 products
                             )
-
                         if (ratio!![0] <= 0.0 && ratio!![1] <= 0.0) {
                             binding.totalGoldLayout.visibility = View.GONE
                         } else if (ratio!![2] <= 0.0 && ratio!![3] <= 0.0) {
@@ -168,7 +149,7 @@ class StatFragment : Fragment() {
                         binding.statChart.visibility = View.GONE
                         binding.isEmptyLayout.visibility = View.VISIBLE
                     }
-                }, 1300
+                }, 600
             )
         }
         )
@@ -182,8 +163,7 @@ class StatFragment : Fragment() {
                         ratio!!
                     ) //if (context!=null)
                 }
-                val realData = viewModel.getRealData().value!!
-            }, 2400
+            }, 600
         )
 
         viewModel.getchart().observe(viewLifecycleOwner, Observer {
@@ -196,21 +176,10 @@ class StatFragment : Fragment() {
                     chartCompareProduct,
                     context
                 )
-            }, 1800)
+                getsetLabel(binding,viewModel)
+            }, 600)
         })
 
-        viewModel.getCurrencyOption().observe(viewLifecycleOwner, Observer {
-            getShortLineGoldChart(context!!, viewModel, binding, viewModel.getchartData())
-            getShortLineSilverChart(context!!, viewModel, binding, viewModel.getchartData())
-            Handler().postDelayed({
-                getcalChart1(
-                    binding,
-                    viewModel,
-                    chartCompareProduct,
-                    context
-                )
-            }, 2400)
-        })
 
         binding.addBtn.setOnClickListener {
             findNavController()

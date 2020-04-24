@@ -16,8 +16,10 @@ import androidx.lifecycle.observe
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.tasks.Task
 import com.google.android.material.tabs.TabLayoutMediator
 import com.google.firebase.database.*
+import com.google.firebase.functions.FirebaseFunctions
 import com.gsgana.gsledger.adapters.PagerAdapter
 import com.gsgana.gsledger.adapters.PagerAdapter.Companion.ADSANDOPTION_PAGE_INDEX
 import com.gsgana.gsledger.adapters.PagerAdapter.Companion.LEDGER_PAGE_INDEX
@@ -28,7 +30,6 @@ import com.gsgana.gsledger.utilities.CURRENCYSYMBOL
 import com.gsgana.gsledger.utilities.InjectorUtils
 import com.gsgana.gsledger.utilities.WEIGHTUNIT
 import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModel
-import kotlinx.android.synthetic.main.stat_fragment.*
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Matcher
@@ -77,39 +78,31 @@ class HomeViewPagerFragment : Fragment() {
 
         calendar = Calendar.getInstance()
 
-
         databaseRef = FirebaseDatabase.getInstance().getReference(REAL_DB_PATH)
 
         databaseRef.addValueEventListener(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {}
             override fun onDataChange(p0: DataSnapshot) {
-
                 val data = p0.value as HashMap<String, Double>
-                viewModel.dateTime = data.get("DATE") as String
+                viewModel.setDateTime(data.get("DATE") as String)
                 data.remove("DATE")
 
                 currencyOption = sf.getInt(CURR_NAME, 0)
                 weightOption = sf.getInt(WEIGHT_NAME, 0)
-                viewModel.currency = (viewModel.getRealData().value?.getValue("currency") ?: 0.0).toInt()
 
-                if (!viewModel.getRealData().value.isNullOrEmpty()) {
-                    data["currency"] =
-                        viewModel.getRealData().value?.getValue("currency") ?: 0.0
-                    data["weightUnit"] =
-                        viewModel.getRealData().value?.getValue("weightUnit") ?: 0.0
-                    viewModel.currency = data["currency"]!!.toInt()
-                } else {
-                    viewModel.currency =  currencyOption!!.toInt()
-                    data["currency"] = currencyOption!!.toDouble()
-                    data["weightUnit"] = weightOption!!.toDouble()
-                }
-                
+                data["currency"] = currencyOption!!.toDouble()
+                data["weightUnit"] = weightOption!!.toDouble()
+
                 data["USD"] = 1.0
                 viewModel.setRealData(data) //1587652649.61714
             }
-        }
+        })
 
-        )
+        getChart().addOnCompleteListener { data ->
+            if (!data.result.isNullOrEmpty()) {
+                viewModel.setchartData(data.result!!)
+            }
+        }
 
         binding = HomeViewPagerFragmentBinding.inflate(inflater, container, false)
 
@@ -162,16 +155,27 @@ class HomeViewPagerFragment : Fragment() {
                 ?.getInt(CURR_NAME, 0)
 
             val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
-            val utcTime = simpleDateFormat.parse(viewModel.dateTime)
+            simpleDateFormat.timeZone = TimeZone.getTimeZone("UTC")
+            val date1 = simpleDateFormat.parse(viewModel.getDateTime())
 
-            val offset = TimeZone.getDefault().rawOffset;
-            val nowTime = utcTime.time + offset
-            val date = Date(nowTime)
-            val dateString = simpleDateFormat.format(date)
+            val nowDf = SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
 
-            sf.edit().putString(TODAY_NAME, dateString.substring(0..10)).apply()
 
-            binding.realUpdatedDate.text = dateString.substring(0..15) + " Utc"
+//            simpleDateFormat.timeZone = TimeZone.getDefault()
+//            val simpleDateFormat1 = SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
+//            simpleDateFormat1.timeZone = TimeZone.getDefault()
+            val dateString = nowDf.format(date1)
+//
+//            val dateStr = "Jul 16, 2013 12:08:59 AM"
+//            val df =
+//                SimpleDateFormat("MMM dd, yyyy HH:mm:ss a", Locale.ENGLISH)
+//            df.timeZone = TimeZone.getTimeZone("UTC")
+//            val date = df.parse(dateStr)
+//            df.timeZone = TimeZone.getDefault()
+//            val formattedDate = df.format(date)
+            sf.edit().putString(TODAY_NAME, dateString.substring(0..15)).apply()
+
+            binding.realUpdatedDate.text = dateString.substring(0..15)
             binding.realGoldCurrency.text = CURRENCYSYMBOL[currencyOption ?: 0]
             binding.realSilverCurrency.text = CURRENCYSYMBOL[currencyOption ?: 0]
             binding.realGoldCurrency.text = CURRENCYSYMBOL[currencyOption ?: 0]
@@ -291,5 +295,30 @@ class HomeViewPagerFragment : Fragment() {
             ADSANDOPTION_PAGE_INDEX -> context?.resources?.getString(R.string.option)
             else -> null
         }
+    }
+
+    private fun getChart(): Task<Map<String, ArrayList<*>>> {
+        // Create the arguments to the callable function.
+        lateinit var functions: FirebaseFunctions// ...
+
+        functions = FirebaseFunctions.getInstance()
+
+        val data = hashMapOf(
+            "date" to listOf<String>(),
+            "value_AU" to listOf<Float>(),
+            "value_AG" to listOf<Float>()
+        )
+
+        return functions
+            .getHttpsCallable("getShortChart")
+            .call(data)
+            .continueWith { task ->
+                // This continuation runs on either success or failure, but if the task
+                // has failed then result will throw an Exception which will be
+                // propagated down.
+
+                val result = task.result?.data as Map<String, ArrayList<*>>
+                result
+            }
     }
 }

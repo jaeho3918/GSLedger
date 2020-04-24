@@ -111,17 +111,17 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="180dp" />
 
-                                    <TextView
-                                        android:id="@+id/todayLabel2"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_alignBottom="@+id/goldShortChart"
-                                        android:layout_alignParentEnd="true"
-                                        android:layout_marginEnd="3dp"
-                                        android:layout_marginBottom="18.3dp"
-                                        android:text="2020/04/18"
-                                        android:textColor="@color/chart_font"
-                                        android:textSize="6dp" />
+<!--                                    <TextView-->
+<!--                                        android:id="@+id/todayLabel2"-->
+<!--                                        android:layout_width="wrap_content"-->
+<!--                                        android:layout_height="wrap_content"-->
+<!--                                        android:layout_alignBottom="@+id/goldShortChart"-->
+<!--                                        android:layout_alignParentEnd="true"-->
+<!--                                        android:layout_marginEnd="3dp"-->
+<!--                                        android:layout_marginBottom="18.3dp"-->
+<!--                                        android:text="2020/04/18"-->
+<!--                                        android:textColor="@color/chart_font"-->
+<!--                                        android:textSize="6dp" />-->
                                 </RelativeLayout>
 
 
@@ -135,6 +135,7 @@
                         android:layout_height="match_parent"
                         android:background="@drawable/rounded_border"
                         android:orientation="vertical"
+                        android:gravity="center"
                         android:padding="5dp">
 
                         <RelativeLayout
@@ -210,22 +211,31 @@
                                         android:layout_width="match_parent"
                                         android:layout_height="180dp" />
 
-                                    <TextView
-                                        android:id="@+id/todayLabel1"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:layout_alignBottom="@+id/silverShortChart"
-                                        android:layout_alignParentEnd="true"
-                                        android:layout_marginEnd="3dp"
-                                        android:layout_marginBottom="18.3dp"
-                                        android:text="2020/04/18"
-                                        android:textColor="@color/chart_font"
-                                        android:textSize="6dp" />
+<!--                                    <TextView-->
+<!--                                        android:id="@+id/todayLabel1"-->
+<!--                                        android:layout_width="wrap_content"-->
+<!--                                        android:layout_height="wrap_content"-->
+<!--                                        android:layout_alignBottom="@+id/silverShortChart"-->
+<!--                                        android:layout_alignParentEnd="true"-->
+<!--                                        android:layout_marginEnd="3dp"-->
+<!--                                        android:layout_marginBottom="18.3dp"-->
+<!--                                        android:text="2020/04/18"-->
+<!--                                        android:textColor="@color/chart_font"-->
+<!--                                        android:textSize="6dp" />-->
                                 </RelativeLayout>
 
 
                             </RelativeLayout>
                         </LinearLayout>
+
+                        <Button
+                            android:id="@+id/moveToChart"
+                            android:text="@string/historicalChart"
+                            android:layout_width="210dp"
+                            android:layout_height="43dp"
+                            android:background="@drawable/subscribe_btn"
+                            android:textColor="@color/white"/>
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -713,17 +723,17 @@
                                 android:layout_height="250dp"
                                 android:layout_marginVertical="8dp" />
 
-                            <TextView
-                                android:id="@+id/todayLabel"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignBottom="@+id/goldChart"
-                                android:layout_alignParentEnd="true"
-                                android:layout_marginEnd="3dp"
-                                android:layout_marginBottom="18.3dp"
-                                android:text="2020/04/18"
-                                android:textColor="@color/chart_font"
-                                android:textSize="6dp" />
+<!--                            <TextView-->
+<!--                                android:id="@+id/todayLabel"-->
+<!--                                android:layout_width="wrap_content"-->
+<!--                                android:layout_height="wrap_content"-->
+<!--                                android:layout_alignBottom="@+id/goldChart"-->
+<!--                                android:layout_alignParentEnd="true"-->
+<!--                                android:layout_marginEnd="3dp"-->
+<!--                                android:layout_marginBottom="18.3dp"-->
+<!--                                android:text="2020/04/18"-->
+<!--                                android:textColor="@color/chart_font"-->
+<!--                                android:textSize="6dp" />-->
                         </RelativeLayout>
                     </LinearLayout>
                 </LinearLayout>

@@ -29,7 +29,7 @@ class MainActivity :
     private val PREF_NAME = "01504f779d6c77df04"
     private lateinit var sf: SharedPreferences
 
-    private val AD_ID = "ca-app-pub-3940256099942544/8691691433"
+    private val AD_ID = "ca-app-pub-8453032642509497/3082833180"
     // 실제   "ca-app-pub-8453032642509497/3082833180"
 //  // 테스트 "ca-app-pub-3940256099942544/8691691433"
 
@@ -43,12 +43,6 @@ class MainActivity :
     val KEY = "Kd6c26TK65YSmkw6oU"
     val TODAY_NAME = "0d07f05fd0c595f615"
 
-    private val viewModel: HomeViewPagerViewModel by viewModels {
-        InjectorUtils.provideHomeViewPagerViewModelFactory(
-            this,
-            intent.getCharArrayExtra(KEY)
-        )
-    }
 
     private val ADFREE_NAME = "CQi7aLBQH7dR7qyrCG"
 //    private lateinit var billingClient: BillingClient
@@ -64,14 +58,10 @@ class MainActivity :
 
         DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
 
-        getChart().addOnCompleteListener { data ->
-            if (!data.result.isNullOrEmpty()) {
-                viewModel.setchartData(data.result!!)
-            }
-        }
+
 
         if (!(intent.getIntExtra(ADFREE_NAME, 6) == 18 || sf.getInt(ADFREE_NAME, 6) == 18)) {
-//            setAds()
+            setAds()
             Handler().postDelayed(
                 {
                     loading.visibility = View.GONE
@@ -88,32 +78,6 @@ class MainActivity :
 
         }
     }
-
-    private fun getChart(): Task<Map<String, ArrayList<*>>> {
-        // Create the arguments to the callable function.
-        lateinit var functions: FirebaseFunctions// ...
-
-        functions = FirebaseFunctions.getInstance()
-
-        val data = hashMapOf(
-            "date" to listOf<String>(),
-            "value_AU" to listOf<Float>(),
-            "value_AG" to listOf<Float>()
-        )
-
-        return functions
-            .getHttpsCallable("getShortChart")
-            .call(data)
-            .continueWith { task ->
-                // This continuation runs on either success or failure, but if the task
-                // has failed then result will throw an Exception which will be
-                // propagated down.
-
-                val result = task.result?.data as Map<String, ArrayList<*>>
-                result
-            }
-    }
-
     private fun setAds() {
         MobileAds.initialize(this)
         mInterstitialAd = InterstitialAd(this)

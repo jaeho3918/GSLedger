@@ -39,29 +39,25 @@ private fun calChart1(
     val PREF_NAME = "01504f779d6c77df04"
     val CURR_NAME = "1w3d4f7w9d2qG2eT36"
     var currency: Float
-    var currencySymbol: String
     val data = viewModel.getchartData()
 
-    if (viewModel.getCurrencyOption().value ?: 0 == 0) {
+    if (viewModel.getRealDataValue().get("currency")?.toInt() ?: 0 == 0) {
         val currencyOption =
             context!!.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).getInt(CURR_NAME, 0)
         currency =
             (viewModel.getRealData().value?.get(CURRENCY[currencyOption]) ?: 1.0).toFloat()
 
-        currencySymbol = CURRENCYSYMBOL[currencyOption]
 
-    } else if (viewModel.getCurrencyOption().value == null) {
+    } else if (viewModel.getRealDataValue().get("currency")?.toInt() == null) {
         val currencyOption =
             context!!.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).getInt(CURR_NAME, 0)
         currency =
             (viewModel.getRealData().value?.get(CURRENCY[currencyOption]) ?: 1.0).toFloat()
-        currencySymbol = CURRENCYSYMBOL[currencyOption]
 
     } else {
         currency = (viewModel.getRealData().value?.get(
-            CURRENCY[(viewModel.getCurrencyOption().value ?: 0)]
+            CURRENCY[(viewModel.getRealDataValue().get("currency")?.toInt() ?: 0)]
         ) ?: 1.0).toFloat()
-        currencySymbol = CURRENCYSYMBOL[(viewModel.getCurrencyOption().value ?: 0)]
     }
 
     val products = viewModel.getProducts().value
@@ -138,15 +134,17 @@ fun getcalChart1(
 private fun calculateProduct(
     viewModel: HomeViewPagerViewModel,
     binding: StatFragmentBinding,
-    realData: Map<String, Double>,
     products: List<Product>
 ): List<Double> {
 
-    val currency = (viewModel.getRealData().value?.get(
-        CURRENCY[(viewModel.getCurrencyOption().value ?: 0)]
-    ) ?: 1.0).toFloat()
+    val realData = viewModel.getRealDataValue()
 
-    val currencySymbol = CURRENCYSYMBOL[(viewModel.getCurrencyOption().value ?: 0)]
+    val currency = viewModel.getRealDataValue().get(
+        CURRENCY[((viewModel.getRealDataValue().get("currency") ?: 0.0).toInt())]
+    ) ?: 1.0
+
+    val currencySymbol =
+        CURRENCYSYMBOL[((viewModel.getRealDataValue().get("currency") ?: 0.0).toInt())]
 
 
     var goldCoin_RealData = 0.0
@@ -373,13 +371,11 @@ private fun calculateProduct(
 fun getcalculateProduct(
     viewModel: HomeViewPagerViewModel,
     binding: StatFragmentBinding,
-    realData: Map<String, Double>,
     products: List<Product>
 ): List<Double> {
     return calculateProduct(
         viewModel,
         binding,
-        realData,
         products
     )
 }
@@ -535,9 +531,7 @@ private fun setLineChart(
     val chart_goldB = context.resources.getColor(R.color.chart_goldB, null)
     val backGround = context.resources.getColor(R.color.border_background, null)
 
-    val CURR_NAME = "1w3d4f7w9d2qG2eT36"
-
-    val currencySymbol = CURRENCYSYMBOL[(viewModel.getRealData().value?.get(CURR_NAME)
+    val currencySymbol = CURRENCYSYMBOL[(viewModel.getRealData().value?.get("currency")
         ?: 0.0).toInt()]
 
     val entries = arrayListOf<Entry>()
@@ -599,7 +593,7 @@ private fun setLineChart(
             gridColor = chart_goldB
             setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART)
             setDrawGridLines(true)
-            setLabelCount(5, true)              //none
+            setLabelCount(3, true)              //none
             axisMaximum = dataSet.yMax * 25 / 24
             axisMinimum = dataSet.yMin * 23 / 24
             axisLineColor = backGround
@@ -622,7 +616,7 @@ private class CustomMarkerView(
     context: Context,
     private val currencySymbol: String,
     layoutResource: Int,
-    date_input: List<String>
+    date_input: ArrayList<String>
 ) : MarkerView(
     context,
     layoutResource
@@ -671,9 +665,7 @@ private fun setShortLineGoldChart(
     var currency: Float
     var currencySymbol: String
 
-    val test = viewModel.getCurrencyOption().value
-
-    if (viewModel.getCurrencyOption().value ?: 0 == 0) {
+    if (viewModel.getRealDataValue().get("currency")?.toInt() ?: 0 == 0) {
         val currencyOption =
             context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).getInt(CURR_NAME, 0)
 
@@ -682,7 +674,7 @@ private fun setShortLineGoldChart(
 
         currencySymbol = CURRENCYSYMBOL[currencyOption]
 
-    } else if (viewModel.getCurrencyOption().value == null) {
+    } else if (viewModel.getRealDataValue().get("currency")?.toInt() == null) {
         val currencyOption =
             context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).getInt(CURR_NAME, 0)
 
@@ -693,9 +685,10 @@ private fun setShortLineGoldChart(
 
     } else {
         currency = (viewModel.getRealData().value?.get(
-            CURRENCY[(viewModel.getCurrencyOption().value ?: 0)]
+            CURRENCY[(viewModel.getRealDataValue().get("currency")?.toInt() ?: 0)]
         ) ?: 1.0).toFloat()
-        currencySymbol = CURRENCYSYMBOL[(viewModel.getCurrencyOption().value ?: 0)]
+        currencySymbol =
+            CURRENCYSYMBOL[(viewModel.getRealDataValue().get("currency")?.toInt() ?: 0)]
     }
 
     val result = arrayListOf<Entry>()
@@ -708,7 +701,7 @@ private fun setShortLineGoldChart(
         )
     }
 
-    val date = data.getValue("date") as List<String>
+    val date = data.getValue("date") as ArrayList<String>
 
     val dataSet = LineDataSet(result, "")
         .apply {
@@ -765,7 +758,7 @@ private fun setShortLineGoldChart(
             gridColor = context.resources.getColor(R.color.chart_goldB, null)
             setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART)
             setDrawGridLines(true)
-            setLabelCount(5, true)              //none
+            setLabelCount(3, true)              //none
             axisMaximum = dataSet.yMax * 25 / 24
             axisMinimum = dataSet.yMin * 23 / 24
             axisLineColor = backGround
@@ -806,7 +799,7 @@ private fun setShortLineSilverChart(
     var currency: Float
     var currencySymbol: String
 
-    if (viewModel.getCurrencyOption().value ?: 0 == 0) {
+    if (viewModel.getRealDataValue().get("currency")?.toInt() ?: 0 == 0) {
         val currencyOption =
             context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).getInt(CURR_NAME, 0)
 
@@ -815,7 +808,7 @@ private fun setShortLineSilverChart(
 
         currencySymbol = CURRENCYSYMBOL[currencyOption]
 
-    } else if (viewModel.getCurrencyOption().value == null) {
+    } else if (viewModel.getRealDataValue().get("currency")?.toInt() == null) {
         val currencyOption =
             context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).getInt(CURR_NAME, 0)
 
@@ -826,9 +819,10 @@ private fun setShortLineSilverChart(
 
     } else {
         currency = (viewModel.getRealData().value?.get(
-            CURRENCY[(viewModel.getCurrencyOption().value ?: 0)]
+            CURRENCY[(viewModel.getRealDataValue().get("currency")?.toInt() ?: 0)]
         ) ?: 1.0).toFloat()
-        currencySymbol = CURRENCYSYMBOL[(viewModel.getCurrencyOption().value ?: 0)]
+        currencySymbol =
+            CURRENCYSYMBOL[(viewModel.getRealDataValue().get("currency")?.toInt() ?: 0)]
     }
 
 
@@ -842,7 +836,7 @@ private fun setShortLineSilverChart(
         )
     }
 
-    val date = data.getValue("date") as List<String>
+    val date = data.getValue("date") as ArrayList<String>
 
     val dataSet = LineDataSet(result, "")
         .apply {
@@ -899,7 +893,7 @@ private fun setShortLineSilverChart(
             gridColor = chart_silverB
             setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART)
             setDrawGridLines(true)
-            setLabelCount(5, true)              //none
+            setLabelCount(3, true)              //none
             axisMaximum = dataSet.yMax * 25 / 24
             axisMinimum = dataSet.yMin * 23 / 24
             axisLineColor = backGround
@@ -924,24 +918,38 @@ fun getShortLineSilverChart(
     setShortLineSilverChart(context, viewModel, binding, data)
 }
 
-fun getChart(): Task<Map<*, ArrayList<*>>> {
-    // Create the arguments to the callable function.
-    var functions: FirebaseFunctions = FirebaseFunctions.getInstance()
+private fun setLabel(binding: StatFragmentBinding, viewModel: HomeViewPagerViewModel) {
 
-    val data = hashMapOf(
-        "date" to listOf<String>(),
-        "value_AU" to listOf<Float>(),
-        "value_AG" to listOf<Float>()
-    )
-    return functions
-        .getHttpsCallable("getShortChart")
-        .call(data)
-        .continueWith { task ->
-            // This continuation runs on either success or failure, but if the task
-            // has failed then result will throw an Exception which will be
-            // propagated down.
+    val weight: Double = when (viewModel.getRealDataValue()["weightUnit"]!!) {
+        0.0 -> 1.0 //toz
+        1.0 -> 0.03215 //g
+        2.0 -> 32.150747  //kg
+        3.0 -> 0.120565//don
+        else -> 1.0
+    }
+    var currency = viewModel.getRealDataValue().get("currency")!!.toInt()
 
-            val result = task.result?.data as Map<*, ArrayList<*>>
-            result
-        }
+    binding.goldRealCurrency.text = CURRENCYSYMBOL[currency]
+    binding.goldRealPrice.text =
+        String.format(
+            "%,.2f",
+            viewModel.getRealDataValue()["AU"]!! * viewModel.getRealDataValue()[CURRENCY[currency]]!! * weight
+        )
+    binding.goldRealLayout.visibility = View.VISIBLE
+    binding.goldRealWeight.text =
+        "1 " + WEIGHTUNIT[viewModel.getRealDataValue().getValue("weightUnit").toInt()] + ": "
+
+    binding.silverRealCurrency.text = CURRENCYSYMBOL[currency]
+    binding.silverRealPrice.text =
+        String.format(
+            "%,.2f",
+            viewModel.getRealDataValue()["AG"]!! * viewModel.getRealDataValue()[CURRENCY[currency]]!! * weight
+        )
+    binding.silverRealLayout.visibility = View.VISIBLE
+    binding.silverRealWeight.text =
+        "1 " + WEIGHTUNIT[viewModel.getRealDataValue().getValue("weightUnit").toInt()] + ": "
+}
+
+fun getsetLabel(binding: StatFragmentBinding, viewModel: HomeViewPagerViewModel) {
+    setLabel(binding, viewModel)
 }

@@ -21,8 +21,8 @@ android {
         applicationId "com.gsgana.gsledger"
         minSdkVersion 23
         targetSdkVersion 29
-        versionCode 61
-        versionName "1.1.0.7"
+        versionCode 69
+        versionName "1.1.0.8"
         multiDexEnabled false
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"

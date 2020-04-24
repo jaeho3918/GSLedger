@@ -11,6 +11,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.github.mikephil.charting.components.MarkerView
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
@@ -20,7 +21,12 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.utils.MPPointF
+import com.google.android.gms.ads.AdListener
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.InterstitialAd
+import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.tasks.Task
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.functions.FirebaseFunctions
 import com.gsgana.gsledger.databinding.ChartFragmentBinding
@@ -40,14 +46,22 @@ class ChartFragment : Fragment() {
 
     private lateinit var fm: FragmentManager
 
-    private lateinit var functions: FirebaseFunctions// ...
+    private val functions: FirebaseFunctions = FirebaseFunctions.getInstance()
 
     private val KEY = "Kd6c26TK65YSmkw6oU"
 
     private val PREF_NAME = "01504f779d6c77df04"
-    private lateinit var sf : SharedPreferences
+    private lateinit var sf: SharedPreferences
     private val TODAY_NAME = "0d07f05fd0c595f615"
+    private val ADFREE_NAME = "CQi7aLBQH7dR7qyrCG"
 
+    private lateinit var mInterstitialAd: InterstitialAd
+    private lateinit var mBuilder: AdRequest.Builder
+
+    private var doneOnce = true
+    private val AD_ID = "ca-app-pub-8453032642509497/3082833180"
+    // 실제   "ca-app-pub-8453032642509497/3082833180"
+//  // 테스트 "ca-app-pub-3940256099942544/8691691433"
 
     private val viewModel: HomeViewPagerViewModel by viewModels {
         InjectorUtils.provideHomeViewPagerViewModelFactory(
@@ -61,18 +75,25 @@ class ChartFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
+        binding = ChartFragmentBinding.inflate(inflater, container, false)
+        binding.lifecycleOwner = viewLifecycleOwner
+
         sf = activity!!.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+
+        if (sf.getInt(ADFREE_NAME, 6) != 18) {
+            setAds()
+        } else {
+            binding.chartProgress.visibility = View.GONE
+        }
 
         rgl = mutableListOf()
         mAuth = FirebaseAuth.getInstance()
         fm = childFragmentManager
         fm.popBackStack()
 
-        functions = FirebaseFunctions.getInstance()
 
-        binding = ChartFragmentBinding.inflate(inflater, container, false)
-        binding.lifecycleOwner = viewLifecycleOwner
-        val today = sf.getString(TODAY_NAME,"")
+
+        val today = sf.getString(TODAY_NAME, "")
         binding.todayLabel.text = today
         binding.todayLabel1.text = today
 
@@ -83,19 +104,30 @@ class ChartFragment : Fragment() {
 
             if (context != null) setLineChart(context!!, binding, dates, list1)
             if (context != null) setLineChart1(context!!, binding, dates, list2)
+            viewModel.setChartDate(dates)
             list1.clear()
             list2.clear()
-            dates.clear()
         }
+
+        binding.chartBackButton.setOnClickListener {
+            findNavController()
+                .navigate(R.id.action_chartFragment_to_homeViewPagerFragment)
+        }
+
+
 
         return binding.root
     }
 
+    override fun onDestroy() {
+        viewModel.getChartDate().clear()
+        super.onDestroy()
+    }
 
     private fun setLineChart(
         context: Context,
         binding: ChartFragmentBinding,
-        date: ArrayList<String>,
+        date_input: ArrayList<String>,
         value: List<Float>
     ) {
 
@@ -118,6 +150,7 @@ class ChartFragment : Fragment() {
                 isHighlightEnabled = true
                 setDrawCircles(false)
             }
+        val date = date_input
 
         val data = LineData(dataSet)
 
@@ -180,15 +213,11 @@ class ChartFragment : Fragment() {
                 axisMinimum = 0f
                 axisLineColor = backGround
             }
-//
-//        chart.setVisibleYRange(
-//            0f,
-//            dataSet.yMax + dataSet.yMax / 13,
-//            y.axisDependency
-//        )
 
         val mv =
-            CustomMarkerView(context, "$", R.layout.marker_view, date).apply { chartView = chart }
+            CustomMarkerView(context, "$", R.layout.marker_view, viewModel).apply {
+                chartView = chart
+            }
 
         chart.marker = mv
         chart.invalidate()
@@ -273,14 +302,10 @@ class ChartFragment : Fragment() {
                 axisLineColor = backGround
             }
 
-//        chart.setVisibleYRange(
-//            dataSet.yMax + dataSet.yMax / 130,
-//            0f,
-//            y.axisDependency
-//        )
-
         val mv =
-            CustomMarkerView(context, "$", R.layout.marker_view, date).apply { chartView = chart }
+            CustomMarkerView(context, "$", R.layout.marker_view, viewModel).apply {
+                chartView = chart
+            }
 
         chart.marker = mv
         chart.invalidate()
@@ -292,15 +317,19 @@ class ChartFragment : Fragment() {
         context: Context,
         private val currencySymbol: String,
         layoutResource: Int,
-        date_input: List<String>
+        private val viewModel: HomeViewPagerViewModel
     ) : MarkerView(
         context,
         layoutResource
     ) {
-        private val date = date_input
 
         override fun refreshContent(e: Entry?, highlight: Highlight?) {
-            tvDate.text = date[e?.x!!.toInt()]
+            if ((e?.x ?: 0f).toInt() <= viewModel.getChartDate().size - 1) {
+                tvDate.text = viewModel.getChartDate()[(e?.x ?: 0f).toInt()]
+                dateLayout.visibility = View.VISIBLE
+            } else
+                dateLayout.visibility = View.GONE
+
             tvContent.text =
                 String.format("%,.2f", e?.y) // set the entry-value as the display text
             tvCurrency.text = currencySymbol
@@ -346,7 +375,7 @@ class ChartFragment : Fragment() {
             }
     }
 
-//    private class ChartAxisValueFormatter : ValueFormatter() {
+    //    private class ChartAxisValueFormatter : ValueFormatter() {
 //
 //        private lateinit var mValues: ArrayList<String>
 //
@@ -365,5 +394,26 @@ class ChartFragment : Fragment() {
 //            return ""
 //        }
 //    }
+    private fun setAds() {
+        MobileAds.initialize(context)
+        mInterstitialAd = InterstitialAd(context)
+        mInterstitialAd.adUnitId = AD_ID
+        mBuilder = AdRequest.Builder()
+        mInterstitialAd.loadAd(mBuilder.build())
+        mInterstitialAd.adListener = object : AdListener() {
+            override fun onAdLoaded() {
+                if (mInterstitialAd.isLoaded) {
+                    if (doneOnce) {
+                        mInterstitialAd.show()
+                        doneOnce = false
+                    }
+                }
+            }
 
+            override fun onAdClosed() {
+                super.onAdClosed()
+                binding.chartProgress.visibility = View.GONE
+            }
+        }
+    }
 }

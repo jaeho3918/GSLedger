@@ -31,7 +31,6 @@ import kotlinx.android.synthetic.main.ads_and_option_fragment.*
 
 
 class AdsAndOptionFragment : Fragment(), PurchasesUpdatedListener {
-    private val WEIGHT_NAME = "f79604050dfc500715"
     private lateinit var binding: AdsAndOptionFragmentBinding
     private lateinit var googleSigninClient: GoogleSignInClient
     private lateinit var gso: GoogleSignInOptions
@@ -40,12 +39,14 @@ class AdsAndOptionFragment : Fragment(), PurchasesUpdatedListener {
 
     private lateinit var adapter: ArrayAdapter<String>
 
+    private lateinit var sf: SharedPreferences
     private val CURR_NAME = "1w3d4f7w9d2qG2eT36"
+    private val WEIGHT_NAME = "f79604050dfc500715"
     private val PREF_NAME = "01504f779d6c77df04"
     private val ADFREE_NAME = "CQi7aLBQH7dR7qyrCG"
+
     private lateinit var billingClient: BillingClient
     private val sku3600 = "adfree_unlimited_entry"
-    private lateinit var sf: SharedPreferences
 
     private val KEY = "Kd6c26TK65YSmkw6oU"
     private val viewModel: HomeViewPagerViewModel by viewModels {
@@ -165,11 +166,9 @@ class AdsAndOptionFragment : Fragment(), PurchasesUpdatedListener {
                     val getData = viewModel?.getRealData()?.value?.toMutableMap()
                     getData?.set("currency", position.toDouble())
                     viewModel?.setRealData(getData!!.toMap())
-                    viewModel?.setCurrencyOption(position)
                     getData?.clear()
                 }
             }
-
 
         adapter =
             ArrayAdapter(

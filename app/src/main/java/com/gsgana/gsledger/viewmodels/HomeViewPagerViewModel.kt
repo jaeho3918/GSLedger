@@ -10,12 +10,26 @@ class HomeViewPagerViewModel internal constructor(
 ) :
     ViewModel() {
 
-    var dateTime =""
+    private var dateTime = ""
+    fun setDateTime(string: String) {
+        dateTime = string
+    }
 
-    var currency = 0
+    fun getDateTime(): String {
+        return dateTime
+    }
+
+    private var chartDate = arrayListOf<String>()
+    fun setChartDate(inputList: ArrayList<String>) {
+        chartDate = inputList
+    }
+    fun getChartDate() :ArrayList<String> {
+        return chartDate
+    }
+
+
 
     private val chartData = MutableLiveData<Map<String, ArrayList<*>>>()
-
     fun setchartData(input: Map<String, ArrayList<*>>) {
         chartData.value = input
     }
@@ -43,21 +57,36 @@ class HomeViewPagerViewModel internal constructor(
         return products
     }
 
-    private val currencyOption = MutableLiveData(0)
-    fun setCurrencyOption(input: Int) {
-        currencyOption.value = input }
-    fun getCurrencyOption(): LiveData<Int> {
-        return currencyOption }
 
     private val realData = MutableLiveData<Map<String, Double>>()
-    fun setRealData(input :Map<String, Double>) {
-        realData.value = input }
-    fun getRealData() : LiveData<Map<String, Double>>{
-        return realData  }
+    fun setRealData(input: Map<String, Double>) {
+        realData.value = input
+    }
+
+    fun getRealData(): LiveData<Map<String, Double>> {
+        return realData
+    }
+
+    fun getRealDataValue(): Map<String, Double> {
+        return realData.value ?: mapOf(
+            "AU" to 1.0,
+            "AG" to 1.0,
+            "USD" to 1.0,
+            "KRW" to 1.0,
+            "EUR" to 1.0,
+            "JPY" to 1.0,
+            "AUD" to 1.0,
+            "CAD" to 1.0,
+            "INR" to 1.0,
+            "currency" to 0.0,
+            "weightUnit" to 0.0,
+            "GBP" to 1.0,
+            "CNY" to 1.0
+        )
+    }
 
 
     fun productNum() = products.value?.size ?: 0
-
     fun addProduct(product: Product) {
         viewModelScope.launch {
             productRepository.createProduct(product)
@@ -73,7 +102,6 @@ class HomeViewPagerViewModel internal constructor(
 
     companion object {
         private lateinit var sInstant: HomeViewPagerViewModel
-
         fun get(productRepository: ProductRepository): HomeViewPagerViewModel {
             sInstant =
                 if (::sInstant.isInitialized) sInstant else HomeViewPagerViewModel(productRepository)

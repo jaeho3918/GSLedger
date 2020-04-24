@@ -54,6 +54,7 @@
     <string name="total">Total</string>
     <string name="overview">Overview</string>
     <string name="chart">Chart</string>
+    <string name="historicalChart">Historical Chart</string>
     <string name="list">List</string>
     <string name="option">Option</string>
     <string name="totalChartSpotPrice">Total Asset based on Spot price</string>

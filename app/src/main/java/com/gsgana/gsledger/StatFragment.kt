@@ -20,6 +20,7 @@ import com.google.firebase.functions.FirebaseFunctions
 import com.gsgana.gsledger.databinding.StatFragmentBinding
 import com.gsgana.gsledger.utilities.*
 import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModel
+import kotlinx.android.synthetic.main.stat_fragment.*
 import kotlin.collections.ArrayList
 
 
@@ -30,6 +31,8 @@ class StatFragment : Fragment() {
     private lateinit var mAuth: FirebaseAuth
     private lateinit var rgl: MutableList<Char>
     private var switchChart = false
+
+    private var weight : Double = 0.0
 
     private lateinit var fm: FragmentManager
 
@@ -45,6 +48,8 @@ class StatFragment : Fragment() {
             activity!!.intent.getCharArrayExtra(KEY)
         )
     }
+    private var currencyOption: Int = 0
+    private var weightOption: Int = 0
 
     @SuppressLint("SimpleDateFormat")
     override fun onCreateView(
@@ -52,9 +57,11 @@ class StatFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        val switch = Boolean
-
         sf = activity!!.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+        val switch = Boolean
+        currencyOption = sf.getInt(CURR_NAME, 0)
+        weightOption = sf.getInt(WEIGHT_NAME, 0)
+
 
         rgl = mutableListOf()
         mAuth = FirebaseAuth.getInstance()
@@ -81,6 +88,35 @@ class StatFragment : Fragment() {
                 } else if (ratio!![2] <= 0.0 && ratio!![3] <= 0.0) {
                     binding.totalSilverLayout.visibility = View.GONE
                 }
+
+                weight = when (realData["weightUnit"]!!) {
+                    0.0 -> 1.0 //toz
+                    1.0 -> 0.03215 //g
+                    2.0 -> 32.150747  //kg
+                    3.0 -> 0.120565//don
+                    else -> 1.0
+                }
+
+                binding.goldRealCurrency.text = CURRENCYSYMBOL[viewModel.currency]
+                binding.goldRealPrice.text =
+                    String.format(
+                        "%,.2f",
+                        realData["AU"]!! * realData[CURRENCY[viewModel.currency]]!! * weight!!
+                    )
+                binding.goldRealLayout.visibility = View.VISIBLE
+                binding.goldRealWeight.text =
+                    "1 " + WEIGHTUNIT[realData.getValue("weightUnit").toInt()] + ": "
+
+                binding.silverRealCurrency.text = CURRENCYSYMBOL[viewModel.currency]
+                binding.silverRealPrice.text =
+                    String.format(
+                        "%,.2f",
+                        realData["AG"]!! * realData[CURRENCY[viewModel.currency]]!! * weight!!
+                    )
+                binding.silverRealLayout.visibility = View.VISIBLE
+
+                binding.silverRealWeight.text =
+                    "1 " + WEIGHTUNIT[realData.getValue("weightUnit").toInt()] + ": "
             }
         }
         )
@@ -132,7 +168,7 @@ class StatFragment : Fragment() {
                         binding.statChart.visibility = View.GONE
                         binding.isEmptyLayout.visibility = View.VISIBLE
                     }
-                }, 600
+                }, 1300
             )
         }
         )
@@ -146,6 +182,7 @@ class StatFragment : Fragment() {
                         ratio!!
                     ) //if (context!=null)
                 }
+                val realData = viewModel.getRealData().value!!
             }, 2400
         )
 
@@ -172,7 +209,7 @@ class StatFragment : Fragment() {
                     chartCompareProduct,
                     context
                 )
-            }, 1800)
+            }, 2400)
         })
 
         binding.addBtn.setOnClickListener {

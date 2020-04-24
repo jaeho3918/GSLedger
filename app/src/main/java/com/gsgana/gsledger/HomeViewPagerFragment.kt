@@ -97,7 +97,9 @@ class HomeViewPagerFragment : Fragment() {
                         viewModel.getRealData().value?.getValue("currency") ?: 0.0
                     data["weightUnit"] =
                         viewModel.getRealData().value?.getValue("weightUnit") ?: 0.0
+                    viewModel.currency = data["currency"]!!.toInt()
                 } else {
+                    viewModel.currency =  currencyOption!!.toInt()
                     data["currency"] = currencyOption!!.toDouble()
                     data["weightUnit"] = weightOption!!.toDouble()
                 }
@@ -182,27 +184,6 @@ class HomeViewPagerFragment : Fragment() {
                 3.0 -> 0.120565//don
                 else -> 1.0
             }
-
-            goldRealCurrency.text = CURRENCYSYMBOL[viewModel.currency]
-            goldRealPrice.text =
-                String.format(
-                    "%,.2f",
-                    realData["AU"]!! * realData[CURRENCY[viewModel.currency]]!! * weight!!
-                )
-            goldRealLayout.visibility = View.VISIBLE
-            goldRealWeight.text = "1 " + WEIGHTUNIT[realData.getValue("weightUnit").toInt()] + ": "
-
-            silverRealCurrency.text = CURRENCYSYMBOL[viewModel.currency]
-            silverRealPrice.text =
-                String.format(
-                    "%,.2f",
-                    realData["AG"]!! * realData[CURRENCY[viewModel.currency]]!! * weight!!
-                )
-            silverRealLayout.visibility = View.VISIBLE
-
-            silverRealWeight.text =
-                "1 " + WEIGHTUNIT[realData.getValue("weightUnit").toInt()] + ": "
-
 
             binding.weightUnitLabel.text =
                 "(Unit: 1" + WEIGHTUNIT[realData.getValue("weightUnit").toInt()] + ")"

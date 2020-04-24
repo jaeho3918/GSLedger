@@ -3,6 +3,8 @@ package com.gsgana.gsledger.utilities
 val PREF_NAME = "01504f779d6c77df04"
 val TODAY_NAME = "0d07f05fd0c595f615"
 val KEY = "Kd6c26TK65YSmkw6oU"
+val CURR_NAME = "1w3d4f7w9d2qG2eT36"
+val WEIGHT_NAME = "f79604050dfc500715"
 
 val GCTABLE = arrayOf(
     "Default",

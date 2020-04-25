@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
 import android.content.res.Resources
+import android.graphics.Canvas
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
@@ -12,6 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -20,15 +22,24 @@ import androidx.lifecycle.observe
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.github.mikephil.charting.components.MarkerView
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.highlight.Highlight
+import com.github.mikephil.charting.utils.MPPointF
+import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.functions.FirebaseFunctions
 import com.gsgana.gsledger.data.Product
 import com.gsgana.gsledger.databinding.DetailFragmentBinding
 import com.gsgana.gsledger.utilities.*
 import com.gsgana.gsledger.viewmodels.DetailViewModel
+import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModel
 import kotlinx.android.synthetic.main.detail_fragment.*
+import kotlinx.android.synthetic.main.marker_view.view.*
 
 
 @Suppress("UNCHECKED_CAST")
@@ -37,7 +48,9 @@ class DetailFragment : Fragment() {
     private val args: DetailFragmentArgs by navArgs()
 
     private val REAL_DB_PATH = "sYTVBn6F18VT6Ykw6L"
-    private val databaseRef = FirebaseDatabase.getInstance().getReference(REAL_DB_PATH)
+    private val databaseRef = FirebaseDatabase.getInstance()
+
+    private val functions: FirebaseFunctions = FirebaseFunctions.getInstance()
 
     private lateinit var product: Product
     private val detailViewModel: DetailViewModel by viewModels {
@@ -86,18 +99,19 @@ class DetailFragment : Fragment() {
             binding.viewModel = detailViewModel
             binding.lifecycleOwner = viewLifecycleOwner
 
-            databaseRef.addValueEventListener(object : ValueEventListener {
-                override fun onCancelled(p0: DatabaseError) {}
-                override fun onDataChange(p0: DataSnapshot) {
-                    data = p0.value as HashMap<String, Double>
-                    if (product.metal == 0) {
-                        pre = (data!!["AU"] ?: 0.0).toFloat()
-                    } else if (product.metal == 1) {
-                        pre = (data!!["AG"] ?: 0.0).toFloat()
+            databaseRef.getReference(REAL_DB_PATH)
+                .addValueEventListener(object : ValueEventListener {
+                    override fun onCancelled(p0: DatabaseError) {}
+                    override fun onDataChange(p0: DataSnapshot) {
+                        data = p0.value as HashMap<String, Double>
+                        if (product.metal == 0) {
+                            pre = (data!!["AU"] ?: 0.0).toFloat()
+                        } else if (product.metal == 1) {
+                            pre = (data!!["AG"] ?: 0.0).toFloat()
+                        }
+                        data!!["USD"] = 1.0
                     }
-                    data!!["USD"] = 1.0
-                }
-            })
+                })
 
             val grade = product.grade
             val gradeNum = product.gradeNum.toString()
@@ -215,14 +229,14 @@ class DetailFragment : Fragment() {
                                 binding.productItemGrade.setTextColor(
                                     context?.getColor(
                                         R.color.font_pcgs
-                                    )?: Color.parseColor("#4f9ccc")
+                                    ) ?: Color.parseColor("#4f9ccc")
 
                                 )
 
                                 binding.productItemGradeNum.setTextColor(
                                     context?.getColor(
                                         R.color.font_pcgs
-                                    )?: Color.parseColor("#4f9ccc")
+                                    ) ?: Color.parseColor("#4f9ccc")
 
                                 )
 
@@ -235,13 +249,13 @@ class DetailFragment : Fragment() {
                                 binding.productItemGrade.setTextColor(
                                     context?.getColor(
                                         R.color.font_ngc
-                                    )?: Color.parseColor("#95795b")
+                                    ) ?: Color.parseColor("#95795b")
                                 )
 
                                 binding.productItemGradeNum.setTextColor(
                                     context?.getColor(
                                         R.color.font_ngc
-                                    )?: Color.parseColor("#95795b")
+                                    ) ?: Color.parseColor("#95795b")
                                 )
 
                                 binding.certLabel.text = "${grade} ${gradeNum}"
@@ -298,6 +312,14 @@ class DetailFragment : Fragment() {
                 }
             }
         }
+
+
+        getChart("20200103").addOnSuccessListener {
+            data -> Toast.makeText(context!!,data.toString(),Toast.LENGTH_LONG).show()
+        }.addOnFailureListener{
+            Toast.makeText(context!!,it.toString(),Toast.LENGTH_LONG).show()
+        }
+
     }
 
     interface Callback {
@@ -389,4 +411,67 @@ class DetailFragment : Fragment() {
         textView.text = string
         return 1
     }
+
+    private class CustomMarkerView(
+        context: Context,
+        private val currencySymbol: String,
+        layoutResource: Int,
+        private val viewModel: DetailViewModel
+    ) : MarkerView(
+        context,
+        layoutResource
+    ) {
+
+        override fun refreshContent(e: Entry?, highlight: Highlight?) {
+            if ((e?.x ?: 0f).toInt() <= viewModel.getChartDate().size - 1) {
+                tvDate.text = viewModel.getChartDate()[(e?.x ?: 0f).toInt()]
+                dateLayout.visibility = View.VISIBLE
+            } else
+                dateLayout.visibility = View.GONE
+
+            tvContent.text =
+                String.format("%,.2f", e?.y) // set the entry-value as the display text
+            tvCurrency.text = currencySymbol
+
+            super.refreshContent(e, highlight)
+        }
+
+        override fun draw(
+            canvas: Canvas?,
+            posX: Float,
+            posY: Float
+        ) {
+            super.draw(canvas, posX, posY)
+            getOffsetForDrawingAtPoint(posX, posY)
+        }
+
+        override fun getOffset(): MPPointF {
+            super.getOffset().x = -(width / 2).toFloat()
+            super.getOffset().y = -(height.toFloat() + 18f)
+            return super.getOffset()
+        }
+    }
+
+    private fun getChart(buyDate: String): Task<Map<*, ArrayList<*>>> {
+
+        // Create the arguments to the callable function.
+
+        val data = hashMapOf(
+            "buyDate" to buyDate
+        )
+
+        return functions
+            .getHttpsCallable("getDetailChart")
+            .call(data)
+            .continueWith { task ->
+                // This continuation runs on either success or failure, but if the task
+                // has failed then result will throw an Exception which will be
+                // propagated down.
+
+                val result = task.result?.data as Map<*, ArrayList<*>>
+                result
+            }
+
+    }
 }
+

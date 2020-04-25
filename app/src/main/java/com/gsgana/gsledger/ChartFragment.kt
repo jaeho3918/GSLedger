@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
@@ -408,6 +409,11 @@ class ChartFragment : Fragment() {
                         doneOnce = false
                     }
                 }
+            }
+
+            override fun onAdFailedToLoad(p0: Int) {
+                super.onAdFailedToLoad(p0)
+                Toast.makeText(context!!, p0.toString(),Toast.LENGTH_SHORT).show()
             }
 
             override fun onAdClosed() {

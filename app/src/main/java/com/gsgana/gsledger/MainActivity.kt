@@ -29,7 +29,7 @@ class MainActivity :
     private val PREF_NAME = "01504f779d6c77df04"
     private lateinit var sf: SharedPreferences
 
-    private val AD_ID = "ca-app-pub-8453032642509497/3082833180"
+    private val AD_ID = "ca-app-pub-3940256099942544/8691691433"
     // 실제   "ca-app-pub-8453032642509497/3082833180"
 //  // 테스트 "ca-app-pub-3940256099942544/8691691433"
 

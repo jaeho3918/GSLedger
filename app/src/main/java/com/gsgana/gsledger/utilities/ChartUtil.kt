@@ -123,12 +123,17 @@ fun getcalChart1(
     chartCompareProduct: Int,
     context: Context?
 ) {
-    calChart1(
-        binding,
-        viewModel,
-        chartCompareProduct,
-        context
-    )
+    if (context != null) {
+        calChart1(
+            binding,
+            viewModel,
+            chartCompareProduct,
+            context
+        )
+    }else{
+            binding.totalChartLayout.visibility ==View.GONE
+        }
+    }
 }
 
 private fun calculateProduct(

@@ -1,6 +1,7 @@
 package com.gsgana.gsledger.viewmodels
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gsgana.gsledger.data.Product
@@ -18,6 +19,44 @@ class DetailViewModel(
     fun getProduct(): LiveData<Product> {
         return product
     }
+
+    private var dateTime = ""
+
+    fun setDateTime(string: String) { dateTime = string }
+    fun getDateTime(): String { return dateTime }
+
+    private var chartDate = arrayListOf<String>()
+    fun setChartDate(inputList: ArrayList<String>) {
+        chartDate = inputList
+    }
+    fun getChartDate() :ArrayList<String> {
+        return chartDate
+    }
+
+
+
+    private val chartData = MutableLiveData<Map<String, ArrayList<*>>>()
+    fun setchartData(input: Map<String, ArrayList<*>>) {
+        chartData.value = input
+    }
+    fun getchart(): LiveData<Map<String, ArrayList<*>>> {
+        return chartData
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     val brand
         get() = {

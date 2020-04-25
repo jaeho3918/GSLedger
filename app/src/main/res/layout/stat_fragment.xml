@@ -688,6 +688,7 @@
                 card_view:cardBackgroundColor="@color/border_background">
 
                 <LinearLayout
+                    android:id="@+id/totalChartLayout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/rounded_border"

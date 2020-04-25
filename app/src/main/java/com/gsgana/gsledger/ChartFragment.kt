@@ -92,8 +92,6 @@ class ChartFragment : Fragment() {
         fm = childFragmentManager
         fm.popBackStack()
 
-
-
         val today = sf.getString(TODAY_NAME, "")
         binding.todayLabel.text = today
         binding.todayLabel1.text = today

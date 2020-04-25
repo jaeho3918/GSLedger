@@ -21,6 +21,8 @@ import com.gsgana.gsledger.databinding.StatFragmentBinding
 import com.gsgana.gsledger.utilities.*
 import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModel
 import kotlinx.android.synthetic.main.stat_fragment.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import kotlin.collections.ArrayList
 
 
@@ -92,6 +94,7 @@ class StatFragment : Fragment() {
                 }
             }
             getsetLabel(binding,viewModel)
+
             getShortLineGoldChart(context!!, viewModel, binding, viewModel.getchartData())
             getShortLineSilverChart(context!!, viewModel, binding, viewModel.getchartData())
             Handler().postDelayed({

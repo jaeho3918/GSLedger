@@ -160,19 +160,8 @@ class HomeViewPagerFragment : Fragment() {
 
             val nowDf = SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
 
-
-//            simpleDateFormat.timeZone = TimeZone.getDefault()
-//            val simpleDateFormat1 = SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
-//            simpleDateFormat1.timeZone = TimeZone.getDefault()
             val dateString = nowDf.format(date1)
 //
-//            val dateStr = "Jul 16, 2013 12:08:59 AM"
-//            val df =
-//                SimpleDateFormat("MMM dd, yyyy HH:mm:ss a", Locale.ENGLISH)
-//            df.timeZone = TimeZone.getTimeZone("UTC")
-//            val date = df.parse(dateStr)
-//            df.timeZone = TimeZone.getDefault()
-//            val formattedDate = df.format(date)
             sf.edit().putString(TODAY_NAME, dateString.substring(0..15)).apply()
 
             binding.realUpdatedDate.text = dateString.substring(0..15)

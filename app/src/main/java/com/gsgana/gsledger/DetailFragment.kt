@@ -58,7 +58,7 @@ class DetailFragment : Fragment() {
     }
 
     private lateinit var binding: DetailFragmentBinding
-    private var data: HashMap<String, Double>? = null
+    private var realData1: HashMap<String, Double>? = null
 
     private var pre: Float? = null
 
@@ -103,13 +103,13 @@ class DetailFragment : Fragment() {
                 .addValueEventListener(object : ValueEventListener {
                     override fun onCancelled(p0: DatabaseError) {}
                     override fun onDataChange(p0: DataSnapshot) {
-                        data = p0.value as HashMap<String, Double>
+                        realData1 = p0.value as HashMap<String, Double>
                         if (product.metal == 0) {
-                            pre = (data!!["AU"] ?: 0.0).toFloat()
+                            pre = (realData1!!["AU"] ?: 0.0).toFloat()
                         } else if (product.metal == 1) {
-                            pre = (data!!["AG"] ?: 0.0).toFloat()
+                            pre = (realData1!!["AG"] ?: 0.0).toFloat()
                         }
-                        data!!["USD"] = 1.0
+                        realData1!!["USD"] = 1.0
                     }
                 })
 
@@ -183,7 +183,7 @@ class DetailFragment : Fragment() {
                 binding.itemImage.setImageResource(
                     "drawable".getResource(
                         "ic_default_${metal}${type}",
-                        context!!
+                        context
                     )
                 )
             } else {
@@ -194,15 +194,15 @@ class DetailFragment : Fragment() {
 
             Handler().postDelayed(
                 {
-                    if (!data.isNullOrEmpty()) {
-                        val product_currency = data!![CURRENCY[product.currency]]
+                    if (!realData1.isNullOrEmpty()) {
+                        val product_currency = realData1!![CURRENCY[product.currency]]
                         val realData =
-                            data!![METALCODE[product.metal]]!!.toFloat() * (1 + product.reg) * PACKAGENUM[product.packageType] * product.quantity * product.weightr * product.weight
+                            realData1!![METALCODE[product.metal]]!!.toFloat() * (1 + product.reg) * PACKAGENUM[product.packageType] * product.quantity * product.weightr * product.weight
                         val buyPrice = product.prePrice / product_currency!!
 
                         setPriceColor(
                             context,
-                            (realData * data!![CURRENCY[product.currency]]!!),
+                            (realData * realData1!![CURRENCY[product.currency]]!!),
                             "pricefloat",
                             binding.productItemCurrentPrice
                         )
@@ -215,7 +215,7 @@ class DetailFragment : Fragment() {
 
                         setPriceColor(
                             context,
-                            (realData * data!![CURRENCY[product.currency]]!! / (PACKAGENUM[product.packageType] * product.quantity)),
+                            (realData * realData1!![CURRENCY[product.currency]]!! / (PACKAGENUM[product.packageType] * product.quantity)),
                             "pricefloat",
                             binding.productItemPerprice
                         )
@@ -227,14 +227,14 @@ class DetailFragment : Fragment() {
                                 binding.certImage.setImageResource(R.drawable.ic_pg)
 
                                 binding.productItemGrade.setTextColor(
-                                    context?.getColor(
+                                    context.getColor(
                                         R.color.font_pcgs
                                     ) ?: Color.parseColor("#4f9ccc")
 
                                 )
 
                                 binding.productItemGradeNum.setTextColor(
-                                    context?.getColor(
+                                    context.getColor(
                                         R.color.font_pcgs
                                     ) ?: Color.parseColor("#4f9ccc")
 
@@ -247,13 +247,13 @@ class DetailFragment : Fragment() {
 
 
                                 binding.productItemGrade.setTextColor(
-                                    context?.getColor(
+                                    context.getColor(
                                         R.color.font_ngc
                                     ) ?: Color.parseColor("#95795b")
                                 )
 
                                 binding.productItemGradeNum.setTextColor(
-                                    context?.getColor(
+                                    context.getColor(
                                         R.color.font_ngc
                                     ) ?: Color.parseColor("#95795b")
                                 )
@@ -263,11 +263,18 @@ class DetailFragment : Fragment() {
                             }
                         }
 
+                        getChart(product.buyDate.replace("/", ""),product.metal)
+                            .addOnCompleteListener { data ->
+                                if (!data.result.isNullOrEmpty()) {
+                                    viewModel.setChartDate(data.result!!["date"] as ArrayList<String> )
+                                    getdetailChart(binding,viewModel,context,data.result!!,realData1!!)
+                                }
+                            }
+
                         binding.productItemPlCurrency1.text = CURRENCYSYMBOL[product.currency]
                         binding.productItemPlCurrency2.text = CURRENCYSYMBOL[product.currency]
                         binding.productItemProgress.visibility = View.GONE
                     }
-
                 }, 800
             )
 
@@ -312,14 +319,6 @@ class DetailFragment : Fragment() {
                 }
             }
         }
-
-
-        getChart("20200103").addOnSuccessListener {
-            data -> Toast.makeText(context!!,data.toString(),Toast.LENGTH_LONG).show()
-        }.addOnFailureListener{
-            Toast.makeText(context!!,it.toString(),Toast.LENGTH_LONG).show()
-        }
-
     }
 
     interface Callback {
@@ -327,23 +326,12 @@ class DetailFragment : Fragment() {
         fun del()
     }
 
-    private fun dipToPixels(dipValue: Float): Float {
-        return TypedValue.applyDimension(
-            TypedValue.COMPLEX_UNIT_DIP,
-            dipValue,
-            resources.displayMetrics
-        )
-    }
-
     private fun String.getResource(resName: String, context: Context): Int {
-
         val resContext: Context = context.createPackageContext(context.packageName, 0)
         val res: Resources = resContext.resources
         val id: Int = res.getIdentifier(resName, this, context.packageName)
-
         return id
     }
-
 
     private fun setPriceColor(
         context: Context,
@@ -412,54 +400,11 @@ class DetailFragment : Fragment() {
         return 1
     }
 
-    private class CustomMarkerView(
-        context: Context,
-        private val currencySymbol: String,
-        layoutResource: Int,
-        private val viewModel: DetailViewModel
-    ) : MarkerView(
-        context,
-        layoutResource
-    ) {
 
-        override fun refreshContent(e: Entry?, highlight: Highlight?) {
-            if ((e?.x ?: 0f).toInt() <= viewModel.getChartDate().size - 1) {
-                tvDate.text = viewModel.getChartDate()[(e?.x ?: 0f).toInt()]
-                dateLayout.visibility = View.VISIBLE
-            } else
-                dateLayout.visibility = View.GONE
 
-            tvContent.text =
-                String.format("%,.2f", e?.y) // set the entry-value as the display text
-            tvCurrency.text = currencySymbol
-
-            super.refreshContent(e, highlight)
-        }
-
-        override fun draw(
-            canvas: Canvas?,
-            posX: Float,
-            posY: Float
-        ) {
-            super.draw(canvas, posX, posY)
-            getOffsetForDrawingAtPoint(posX, posY)
-        }
-
-        override fun getOffset(): MPPointF {
-            super.getOffset().x = -(width / 2).toFloat()
-            super.getOffset().y = -(height.toFloat() + 18f)
-            return super.getOffset()
-        }
-    }
-
-    private fun getChart(buyDate: String): Task<Map<*, ArrayList<*>>> {
-
-        // Create the arguments to the callable function.
-
-        val data = hashMapOf(
-            "buyDate" to buyDate
-        )
-
+    private fun getChart(buyDate: String,metal:Int): Task<Map<String, ArrayList<*>>> {
+        val data = hashMapOf("buyDate" to buyDate,
+            "metal" to metal)
         return functions
             .getHttpsCallable("getDetailChart")
             .call(data)
@@ -468,10 +413,10 @@ class DetailFragment : Fragment() {
                 // has failed then result will throw an Exception which will be
                 // propagated down.
 
-                val result = task.result?.data as Map<*, ArrayList<*>>
+                val result = task.result?.data as Map<String, ArrayList<*>>
                 result
             }
-
     }
 }
+
 

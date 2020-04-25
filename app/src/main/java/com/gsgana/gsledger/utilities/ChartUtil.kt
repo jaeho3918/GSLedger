@@ -21,7 +21,9 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.functions.FirebaseFunctions
 import com.gsgana.gsledger.R
 import com.gsgana.gsledger.data.Product
+import com.gsgana.gsledger.databinding.DetailFragmentBinding
 import com.gsgana.gsledger.databinding.StatFragmentBinding
+import com.gsgana.gsledger.viewmodels.DetailViewModel
 import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModel
 import kotlinx.android.synthetic.main.marker_view.view.*
 
@@ -130,11 +132,11 @@ fun getcalChart1(
             chartCompareProduct,
             context
         )
-    }else{
-            binding.totalChartLayout.visibility ==View.GONE
-        }
+    } else {
+        binding.totalChartLayout.visibility = View.GONE
     }
 }
+
 
 private fun calculateProduct(
     viewModel: HomeViewPagerViewModel,
@@ -617,6 +619,8 @@ private fun setLineChart(
     chart.invalidate()
 }
 
+
+
 private class CustomMarkerView(
     context: Context,
     private val currencySymbol: String,
@@ -971,4 +975,207 @@ private fun setLabel(binding: StatFragmentBinding, viewModel: HomeViewPagerViewM
 
 fun getsetLabel(binding: StatFragmentBinding, viewModel: HomeViewPagerViewModel) {
     setLabel(binding, viewModel)
+}
+
+private fun detailChart(
+    binding: DetailFragmentBinding,
+    viewModel: DetailViewModel,
+    context: Context?,
+    input_data: Map<String, ArrayList<*>>,
+    realData: HashMap<String, Double>
+) {
+//    var chartCompareProduct = chartCompareProduct
+//    val context_input = context
+
+    val PREF_NAME = "01504f779d6c77df04"
+    val CURR_NAME = "1w3d4f7w9d2qG2eT36"
+    var currency: Float
+    val data = input_data
+
+    currency =
+        (realData.get(CURRENCY[viewModel.getProduct().value?.currency!!]) ?: 1.0).toFloat()
+
+    val product = viewModel.getProduct().value
+    if (product != null) {
+
+        val holder = mutableListOf<Float>()
+
+        val list1 = data.get("value") as ArrayList<Float>
+        val dates = data.get("date") as ArrayList<String>
+        val result = mutableListOf<Float>()
+
+
+
+        for (idx in 0 until list1.size) {
+            result.add(
+                list1[idx] *  currency * (1 + product.reg) * PACKAGENUM[product.packageType] * product.quantity * product.weightr * product.weight
+            )
+        }
+
+        if (context != null) setDetailChart(
+            context,
+            viewModel,
+            binding,
+            dates,
+            result,
+            CURRENCYSYMBOL[viewModel.getProduct().value?.currency!!]
+        )
+
+        binding.goldChartLayout.visibility = View.VISIBLE
+        binding.goldChart.visibility = View.VISIBLE
+        binding.goldChartProgress.visibility = View.GONE
+
+    }
+
+}
+
+fun getdetailChart(
+    binding: DetailFragmentBinding,
+    viewModel: DetailViewModel,
+    context: Context?,
+    date: Map<String, ArrayList<*>>,
+    realData: HashMap<String, Double>
+) {
+    if (context != null) {
+        detailChart(
+            binding,
+            viewModel,
+            context,
+            date, realData
+        )
+    }
+}
+
+private fun setDetailChart(
+    context: Context,
+    viewModel:DetailViewModel,
+    binding: DetailFragmentBinding,
+    date: ArrayList<String>,
+    value: MutableList<Float>,
+    symbol : String
+) {
+
+    val chart_font = context.resources.getColor(R.color.chart_font, null)
+    val chart_goldC = context.resources.getColor(R.color.chart_goldC, null)
+    val chart_goldB = context.resources.getColor(R.color.chart_goldB, null)
+    val backGround = context.resources.getColor(R.color.border_background, null)
+
+    val currencySymbol = symbol
+
+    val entries = arrayListOf<Entry>()
+
+    value.forEachIndexed { index, fl -> entries.add(Entry(index.toFloat(), fl)) }
+
+    val dataSet = LineDataSet(entries, "")
+        .apply {
+            setDrawFilled(true)
+            setDrawValues(false)
+            fillColor = chart_goldC
+            color = chart_goldC
+            setCircleColor(chart_goldB)
+            mode = LineDataSet.Mode.CUBIC_BEZIER
+            isHighlightEnabled = true
+            setDrawCircles(false)
+        }
+
+    val data_set = LineData(dataSet)
+
+    val chart = binding.goldChart.apply {
+        isEnabled = true
+        setData(data_set)
+        setViewPortOffsets(50f, 30f, 50f, 80f)
+        setBackgroundColor(backGround)
+        isDoubleTapToZoomEnabled = false
+        setDrawMarkers(true)
+        description.isEnabled = false
+        setTouchEnabled(true)
+        isDragEnabled = false
+        setScaleEnabled(false)
+        setDrawGridBackground(false)
+        maxHighlightDistance = 300f
+        setPinchZoom(false)
+        setDrawMarkers(true)
+        isHighlightPerTapEnabled = true
+        axisRight.isEnabled = false
+        legend.isEnabled = false
+        fitScreen()
+
+    }
+    val valueFormatter = IndexAxisValueFormatter(date)
+
+    chart.xAxis
+        .apply {
+            setValueFormatter(valueFormatter)
+            isEnabled = true
+            gridColor = chart_goldB
+            textColor = chart_font
+            position = XAxis.XAxisPosition.BOTTOM
+            setLabelCount(5, false)
+            setDrawGridLines(false)
+            textSize = 5F
+        }
+
+    chart.axisLeft
+        .apply {
+            textColor = chart_font
+            gridColor = chart_goldB
+            setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART)
+            setDrawGridLines(true)
+            setLabelCount(3, true)              //none
+            axisMaximum = dataSet.yMax * 25 / 24
+            axisMinimum = dataSet.yMin * 23 / 24
+            axisLineColor = backGround
+        }
+
+
+    val mv =
+        CustomMarkerDetailView(
+            context,
+            currencySymbol,
+            R.layout.marker_view,
+            viewModel
+        ).apply { chartView = chart }
+
+    chart.marker = mv
+    chart.invalidate()
+}
+private class CustomMarkerDetailView(
+    context: Context,
+    private val currencySymbol: String,
+    layoutResource: Int,
+    private val viewModel: DetailViewModel
+) : MarkerView(
+    context,
+    layoutResource
+) {
+
+    override fun refreshContent(e: Entry?, highlight: Highlight?) {
+        if ((e?.x ?: 0f).toInt() <= viewModel.getChartDate().size - 1) {
+            val date = viewModel.getChartDate()[(e?.x ?: 0f).toInt()]
+            tvDate.text = date.substring(0..3)+"/"+date.substring(4..5)+"/"+date.substring(6..7)
+            dateLayout.visibility = View.VISIBLE
+        } else
+            dateLayout.visibility = View.GONE
+
+        tvContent.text =
+            String.format("%,.2f", e?.y) // set the entry-value as the display text
+        tvCurrency.text = currencySymbol
+
+        super.refreshContent(e, highlight)
+    }
+
+    override fun draw(
+        canvas: Canvas?,
+        posX: Float,
+        posY: Float
+    ) {
+        super.draw(canvas, posX, posY)
+        getOffsetForDrawingAtPoint(posX, posY)
+    }
+
+    override fun getOffset(): MPPointF {
+        super.getOffset().x = -(width / 2).toFloat()
+        super.getOffset().y = -(height.toFloat() + 18f)
+        return super.getOffset()
+    }
 }

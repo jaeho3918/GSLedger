@@ -98,9 +98,9 @@ class HomeViewPagerFragment : Fragment() {
             }
         })
 
-        getChart().addOnCompleteListener { data ->
-            if (!data.result.isNullOrEmpty()) {
-                viewModel.setchartData(data.result!!)
+        getChart().addOnSuccessListener { data ->
+            if (!data.isNullOrEmpty()) {
+                viewModel.setchartData(data)
             }
         }
 

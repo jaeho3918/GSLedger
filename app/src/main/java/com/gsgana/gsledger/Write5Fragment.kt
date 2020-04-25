@@ -49,9 +49,9 @@ class Write5Fragment : Fragment() {
     ): View? {
         val viewModel =
             ViewModelProviders.of(
-                activity!!,
-                InjectorUtils.provideWriteViewModelFactory(activity!!, null)
-            )
+                    activity!!,
+                    InjectorUtils.provideWriteViewModelFactory(activity!!, null)
+                )
                 .get(WriteViewModel::class.java)
 
         option =
@@ -104,7 +104,7 @@ class Write5Fragment : Fragment() {
                         val _year = cal.get(Calendar.YEAR)
                         val _month = cal.get(Calendar.MONTH) + 1
                         val _date = cal.get(Calendar.DATE)
-                        viewModel.getdateField()?: String.format(
+                        viewModel.getdateField() ?: String.format(
                             "%04d%02d%02d", _year, _month, _date
                         )
                     } else {
@@ -159,10 +159,10 @@ class Write5Fragment : Fragment() {
                                     .enqueue(object : retrofit2.Callback<Data> {
                                         override fun onFailure(call: Call<Data>, t: Throwable) {
                                             Toast.makeText(
-                                                activity,
-                                                t.toString(),
-                                                Toast.LENGTH_LONG
-                                            )
+                                                    activity,
+                                                    t.toString(),
+                                                    Toast.LENGTH_LONG
+                                                )
                                                 .show()
                                         }
 
@@ -176,8 +176,8 @@ class Write5Fragment : Fragment() {
                                             viewModel.setcurField(response.body()?.cur?.toFloat())
                                             viewModel.setpre(response.body()?.pre?.toFloat())
 
-                                            min = response.body()!!.min.toFloat()
-                                            max = response.body()!!.max.toFloat()
+                                            min = response.body()?.min?.toFloat() ?: 0f
+                                            max = response.body()?.max?.toFloat() ?: 999999999f
 
                                             if ((min <= priceCalculate(binding)) &&
                                                 (max >= priceCalculate(binding))
@@ -278,10 +278,10 @@ class Write5Fragment : Fragment() {
                                         .enqueue(object : retrofit2.Callback<Data> {
                                             override fun onFailure(call: Call<Data>, t: Throwable) {
                                                 Toast.makeText(
-                                                    activity,
-                                                    t.toString(),
-                                                    Toast.LENGTH_LONG
-                                                )
+                                                        activity,
+                                                        t.toString(),
+                                                        Toast.LENGTH_LONG
+                                                    )
                                                     .show()
                                             }
 
@@ -379,7 +379,7 @@ class Write5Fragment : Fragment() {
                     position: Int,
                     id: Long
                 ) {
-                    viewModel.setcurrencyField( position)
+                    viewModel.setcurrencyField(position)
                 }
             }
         binding.currencySpinner1.setSelection(option ?: 0)

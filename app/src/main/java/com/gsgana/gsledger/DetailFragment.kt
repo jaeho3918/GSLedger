@@ -262,12 +262,15 @@ class DetailFragment : Fragment() {
 
                             }
                         }
+                        val date_buf = product.buyDate.split("/").toMutableList()
+                        if (date_buf[1].toInt() < 10) date_buf[1] = "0" + date_buf[1]
+                        if (date_buf[2].toInt() < 10) date_buf[2] = "0" + date_buf[2]
 
-                        getChart(product.buyDate.replace("/", ""),product.metal)
-                            .addOnCompleteListener { data ->
-                                if (!data.result.isNullOrEmpty()) {
-                                    viewModel.setChartDate(data.result!!["date"] as ArrayList<String> )
-                                    getdetailChart(binding,viewModel,context,data.result!!,realData1!!)
+                        getChart("${date_buf[0]}${date_buf[1]}${date_buf[2]}", product.metal)
+                            .addOnSuccessListener { data ->
+                                if (!data.isNullOrEmpty()) {
+                                    viewModel.setChartDate(data["date"] as ArrayList<String>)
+                                    getdetailChart(binding, viewModel, context, data, realData1!!)
                                 }
                             }
 
@@ -401,10 +404,11 @@ class DetailFragment : Fragment() {
     }
 
 
-
-    private fun getChart(buyDate: String,metal:Int): Task<Map<String, ArrayList<*>>> {
-        val data = hashMapOf("buyDate" to buyDate,
-            "metal" to metal)
+    private fun getChart(buyDate: String, metal: Int): Task<Map<String, ArrayList<*>>> {
+        val data = hashMapOf(
+            "buyDate" to buyDate,
+            "metal" to metal
+        )
         return functions
             .getHttpsCallable("getDetailChart")
             .call(data)

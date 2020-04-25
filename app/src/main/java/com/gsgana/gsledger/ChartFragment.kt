@@ -96,10 +96,10 @@ class ChartFragment : Fragment() {
         binding.todayLabel.text = today
         binding.todayLabel1.text = today
 
-        getChart().addOnCompleteListener { data ->
-            val list1 = data.result?.get("value_AU") as ArrayList<Float>
-            val list2 = data.result?.get("value_AG") as ArrayList<Float>
-            val dates = data.result?.get("date") as ArrayList<String>
+        getChart().addOnSuccessListener { data ->
+            val list1 = data.get("value_AU") as ArrayList<Float>
+            val list2 = data.get("value_AG") as ArrayList<Float>
+            val dates = data.get("date") as ArrayList<String>
 
             if (context != null) setLineChart(context!!, binding, dates, list1)
             if (context != null) setLineChart1(context!!, binding, dates, list2)

@@ -620,7 +620,6 @@ private fun setLineChart(
 }
 
 
-
 private class CustomMarkerView(
     context: Context,
     private val currencySymbol: String,
@@ -1007,9 +1006,10 @@ private fun detailChart(
 
 
         for (idx in 0 until list1.size) {
-            result.add(
-                list1[idx] *  currency * (1 + product.reg) * PACKAGENUM[product.packageType] * product.quantity * product.weightr * product.weight
-            )
+            if (list1[idx] != null)
+                result.add(
+                    list1[idx] * currency * (1 + product.reg) * PACKAGENUM[product.packageType] * product.quantity * product.weightr * product.weight
+                )
         }
 
         if (context != null) setDetailChart(
@@ -1048,11 +1048,11 @@ fun getdetailChart(
 
 private fun setDetailChart(
     context: Context,
-    viewModel:DetailViewModel,
+    viewModel: DetailViewModel,
     binding: DetailFragmentBinding,
     date: ArrayList<String>,
     value: MutableList<Float>,
-    symbol : String
+    symbol: String
 ) {
 
     val chart_font = context.resources.getColor(R.color.chart_font, null)
@@ -1139,6 +1139,7 @@ private fun setDetailChart(
     chart.marker = mv
     chart.invalidate()
 }
+
 private class CustomMarkerDetailView(
     context: Context,
     private val currencySymbol: String,
@@ -1152,7 +1153,8 @@ private class CustomMarkerDetailView(
     override fun refreshContent(e: Entry?, highlight: Highlight?) {
         if ((e?.x ?: 0f).toInt() <= viewModel.getChartDate().size - 1) {
             val date = viewModel.getChartDate()[(e?.x ?: 0f).toInt()]
-            tvDate.text = date.substring(0..3)+"/"+date.substring(4..5)+"/"+date.substring(6..7)
+            tvDate.text =
+                date.substring(0..3) + "/" + date.substring(4..5) + "/" + date.substring(6..7)
             dateLayout.visibility = View.VISIBLE
         } else
             dateLayout.visibility = View.GONE

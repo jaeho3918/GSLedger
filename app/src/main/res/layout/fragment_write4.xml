@@ -57,7 +57,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.3"
-                    android:text="Write 4/6"
+                    android:text="Page 4/6"
                     android:textAlignment="center"
                     android:textSize="29sp" />
             </LinearLayout>

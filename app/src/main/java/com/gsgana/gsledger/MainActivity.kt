@@ -29,19 +29,18 @@ class MainActivity :
     private val PREF_NAME = "01504f779d6c77df04"
     private lateinit var sf: SharedPreferences
 
-    private val AD_ID = "ca-app-pub-3940256099942544/8691691433"
+    private val AD_ID = "ca-app-pub-8453032642509497/3082833180"
     // 실제   "ca-app-pub-8453032642509497/3082833180"
-//  // 테스트 "ca-app-pub-3940256099942544/8691691433"
+    //테스트 "ca-app-pub-3940256099942544/8691691433"
 
     private var doneOnce = true
     private lateinit var mInterstitialAd: InterstitialAd
     private lateinit var mBuilder: AdRequest.Builder
     private lateinit var mFirebaseAnalytics: FirebaseAnalytics
-    private val delay = 3600
 
 
     val KEY = "Kd6c26TK65YSmkw6oU"
-    val TODAY_NAME = "0d07f05fd0c595f615"
+//    val TODAY_NAME = "0d07f05fd0c595f615"
 
 
     private val ADFREE_NAME = "CQi7aLBQH7dR7qyrCG"
@@ -76,6 +75,7 @@ class MainActivity :
 
         }
     }
+
     private fun setAds() {
         MobileAds.initialize(this)
         mInterstitialAd = InterstitialAd(this)

@@ -17,15 +17,11 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
-import com.google.firebase.auth.FirebaseAuth
-import com.google.gson.JsonObject
+import com.google.android.gms.tasks.Task
+import com.google.firebase.functions.FirebaseFunctions
 import com.gsgana.gsledger.databinding.FragmentWrite5Binding
 import com.gsgana.gsledger.utilities.*
 import com.gsgana.gsledger.viewmodels.WriteViewModel
-import retrofit2.Call
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import java.util.*
 
 
@@ -34,6 +30,8 @@ class Write5Fragment : Fragment() {
 
     private val PREF_NAME = "01504f779d6c77df04"
     private val CURR_NAME = "1w3d4f7w9d2qG2eT36"
+
+    private val functions: FirebaseFunctions = FirebaseFunctions.getInstance()
 
     //    private val TIME_NAME = "6ck9uUlDuh7o6QKQFZ"
     private var option: Int? = null
@@ -49,9 +47,9 @@ class Write5Fragment : Fragment() {
     ): View? {
         val viewModel =
             ViewModelProviders.of(
-                    activity!!,
-                    InjectorUtils.provideWriteViewModelFactory(activity!!, null)
-                )
+                activity!!,
+                InjectorUtils.provideWriteViewModelFactory(activity!!, null)
+            )
                 .get(WriteViewModel::class.java)
 
         option =
@@ -71,12 +69,12 @@ class Write5Fragment : Fragment() {
 
         binding.callbackSummit = object : CallbackSummit {
             override fun click() {
+
                 price1 = if ("${binding.priceEditText1.text}" == "") {
                     "0"
                 } else {
                     binding.priceEditText1.text.toString()
                 }
-
                 price2 = if ("${binding.priceEditText2.text}" == "") {
                     "0"
                 } else {
@@ -88,6 +86,7 @@ class Write5Fragment : Fragment() {
                 binding.priceEditText3.isEnabled = false
 
                 val price_buf = "${price1}.${price2}".toFloat()
+
                 if (price_buf in min..max) {
 
                     binding.summitProgress.visibility = View.VISIBLE
@@ -98,117 +97,39 @@ class Write5Fragment : Fragment() {
                     binding.priceEditText2.isEnabled = false
                     binding.priceEditText3.isEnabled = false
 
-                    val test = viewModel.getdateField()?.split("/")
-                    val date_buf = if (test.isNullOrEmpty()) {
-                        val cal = Calendar.getInstance()
-                        val _year = cal.get(Calendar.YEAR)
-                        val _month = cal.get(Calendar.MONTH) + 1
-                        val _date = cal.get(Calendar.DATE)
-                        viewModel.getdateField() ?: String.format(
-                            "%04d%02d%02d", _year, _month, _date
-                        )
-                    } else {
-                        String.format(
-                            "%04d%02d%02d", test[0].toInt(), test[1].toInt(), test[2].toInt()
-                        )
-                    }
+                    getPrice(viewModel, binding).addOnSuccessListener { data ->
+                        viewModel.setPriceTest(priceCalculate(binding).toString())
+                        viewModel.setregField((data["reg"] ?: "0").toFloat())
+                        viewModel.setcurField((data["cur"] ?: "0").toFloat())
+                        viewModel.setpre((data["pre"] ?: "0").toFloat())
+                        min = (data["min"] ?: "0").toFloat()
+                        max = (data["max"] ?: "0").toFloat()
 
-                    val jsonParam = JsonObject().apply {
-                        addProperty("metal", viewModel.getmetalField1().toString())
-                        addProperty("type1", viewModel.gettypeField1().toString())
-                        addProperty("brand", viewModel.brand.value.toString())
-                        addProperty("weight", viewModel.weightCalculator.value)
-                        addProperty("quantity", viewModel.getquantityField())
-                        addProperty("weightr", viewModel.weightUnit.value)
-                        addProperty("packageType1", viewModel.getpackageTypeField().toString())
-                        addProperty("grade", viewModel.getgradeField().toString())
-                        addProperty("gradeNum", viewModel.getgradeNumField().toString())
-                        addProperty("currency", viewModel.getcurrencyField().toString())
-                        addProperty("year", viewModel.getyearSeriesField().toString())
-
-                        price1 = if ("${binding.priceEditText1.text}" == "") {
-                            "0"
+                        if ((min <= priceCalculate(binding)) && (max >= priceCalculate(binding))) {
+                            val imm =
+                                context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                            imm.hideSoftInputFromWindow(view!!.windowToken, 0)
+                            findNavController().navigate(R.id.action_write5Fragment_to_write6Fragment)
                         } else {
-                            binding.priceEditText1.text.toString()
+                            binding.priceCur1.text =
+                                CURRENCYSYMBOL[viewModel.getcurrencyField()
+                                    ?: 0]
+                            binding.priceCur2.text =
+                                CURRENCYSYMBOL[viewModel.getcurrencyField()
+                                    ?: 0]
+                            binding.priceRange.visibility = View.VISIBLE
+                            binding.summitButton.text = "NEXT"
+                            binding.summitButton.isEnabled = true
+                            binding.summitProgress.visibility = View.GONE
+                            binding.priceMin.text =
+                                String.format("%,.1f", min)
+                            binding.priceMax.text =
+                                String.format("%,.1f", max)
+                            binding.priceEditText1.isEnabled = true
+                            binding.priceEditText2.isEnabled = true
+                            binding.priceEditText3.isEnabled = true
                         }
-
-                        price2 = if ("${binding.priceEditText2.text}" == "") {
-                            "0"
-                        } else {
-                            binding.priceEditText2.text.toString()
-                        }
-                        addProperty(
-                            "priceMerger",
-                            "${price1}.${(price2)}"
-                        )
-
-                        addProperty("price", viewModel.price.value)
-                        addProperty("date", date_buf)
                     }
-                    val retrofit = Retrofit.Builder()
-                        .baseUrl(URL)
-                        .addConverterFactory(GsonConverterFactory.create()).build()
-                    val service = retrofit.create(ServerSummit::class.java)
-
-                    val mUser = FirebaseAuth.getInstance().currentUser
-                    mUser?.getIdToken(true)
-                        ?.addOnCompleteListener { p0 ->
-                            if (p0.isSuccessful) {
-                                val idToken = p0.result?.token
-                                service.postRequest(idToken!!, jsonParam)
-                                    .enqueue(object : retrofit2.Callback<Data> {
-                                        override fun onFailure(call: Call<Data>, t: Throwable) {
-                                            Toast.makeText(
-                                                    activity,
-                                                    t.toString(),
-                                                    Toast.LENGTH_LONG
-                                                )
-                                                .show()
-                                        }
-
-                                        @SuppressLint("SetTextI18n")
-                                        override fun onResponse(
-                                            call: Call<Data>,
-                                            response: Response<Data>
-                                        ) {
-                                            viewModel.setPriceTest(priceCalculate(binding).toString())
-                                            viewModel.setregField(response.body()?.reg?.toFloat())
-                                            viewModel.setcurField(response.body()?.cur?.toFloat())
-                                            viewModel.setpre(response.body()?.pre?.toFloat())
-
-                                            min = response.body()?.min?.toFloat() ?: 0f
-                                            max = response.body()?.max?.toFloat() ?: 999999999f
-
-                                            if ((min <= priceCalculate(binding)) &&
-                                                (max >= priceCalculate(binding))
-                                            ) {
-                                                val imm =
-                                                    context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                                                imm.hideSoftInputFromWindow(view!!.windowToken, 0)
-                                                findNavController().navigate(R.id.action_write5Fragment_to_write6Fragment)
-                                            } else {
-                                                binding.priceCur1.text =
-                                                    CURRENCYSYMBOL[viewModel.getcurrencyField()
-                                                        ?: 0]
-                                                binding.priceCur2.text =
-                                                    CURRENCYSYMBOL[viewModel.getcurrencyField()
-                                                        ?: 0]
-                                                binding.priceRange.visibility = View.VISIBLE
-                                                binding.summitButton.text = "NEXT"
-                                                binding.summitButton.isEnabled = true
-                                                binding.summitProgress.visibility = View.GONE
-                                                binding.priceMin.text =
-                                                    String.format("%,.1f", min)
-                                                binding.priceMax.text =
-                                                    String.format("%,.1f", max)
-                                                binding.priceEditText1.isEnabled = true
-                                                binding.priceEditText2.isEnabled = true
-                                                binding.priceEditText3.isEnabled = true
-                                            }
-                                        }
-                                    })
-                            }
-                        }
                 } else if (price_buf !in min..max) {
 
                     if (min == 0f && max == 0f) {
@@ -216,141 +137,55 @@ class Write5Fragment : Fragment() {
                         binding.summitButton.isEnabled = false
                         binding.summitButton.text = ""
 
-                        val test = viewModel.getdateField()?.split("/")
-                        val date_buf = if (test.isNullOrEmpty()) {
-                            val cal = Calendar.getInstance()
-                            val _year = cal.get(Calendar.YEAR)
-                            val _month = cal.get(Calendar.MONTH) + 1
-                            val _date = cal.get(Calendar.DATE)
-                            viewModel.getdateField() ?: String.format(
-                                "%04d%02d%02d", _year, _month, _date
-                            )
-                        } else {
-                            String.format(
-                                "%04d%02d%02d", test[0].toInt(), test[1].toInt(), test[2].toInt()
-                            )
-                        }
+                        getPrice(viewModel, binding).addOnSuccessListener { data ->
+                            viewModel.setPriceTest(priceCalculate(binding).toString())
+                            viewModel.setregField((data["reg"] ?: "0").toFloat())
+                            viewModel.setcurField((data["cur"] ?: "0").toFloat())
+                            viewModel.setpre((data["pre"] ?: "0").toFloat())
+                            min = (data["min"] ?: "0").toFloat()
+                            max = (data["max"] ?: "0").toFloat()
 
-                        val jsonParam = JsonObject().apply {
-                            addProperty("metal", viewModel.getmetalField1().toString())
-                            addProperty("type1", viewModel.gettypeField1().toString())
-                            addProperty("brand", viewModel.brand.value.toString())
-                            addProperty("weight", viewModel.weightCalculator.value)
-                            addProperty("quantity", viewModel.getquantityField())
-                            addProperty("weightr", viewModel.weightUnit.value)
-                            addProperty("packageType1", viewModel.getpackageTypeField().toString())
-                            addProperty("grade", viewModel.getgradeField().toString())
-                            addProperty("gradeNum", viewModel.getgradeNumField().toString())
-                            addProperty("currency", viewModel.getcurrencyField().toString())
-                            addProperty("year", viewModel.getyearSeriesField().toString())
-
-
-                            price1 = if ("${binding.priceEditText1.text}" == "") {
-                                "0"
+                            if ((min <= priceCalculate(binding)) &&
+                                (max >= priceCalculate(binding))
+                            ) {
+                                findNavController().navigate(R.id.action_write5Fragment_to_write6Fragment)
                             } else {
-                                binding.priceEditText1.text.toString()
+                                binding.priceCur1.text =
+                                    CURRENCYSYMBOL[viewModel.getcurrencyField()
+                                        ?: 0]
+                                binding.priceCur2.text =
+                                    CURRENCYSYMBOL[viewModel.getcurrencyField()
+                                        ?: 0]
+                                binding.priceRange.visibility = View.VISIBLE
+                                binding.summitButton.text = "NEXT"
+                                binding.summitButton.isEnabled = true
+                                binding.summitProgress.visibility = View.GONE
+                                binding.priceMin.text =
+                                    String.format("%,.1f", min)
+                                binding.priceMax.text =
+                                    String.format("%,.1f", max)
                             }
-
-                            price2 = if ("${binding.priceEditText2.text}" == "") {
-                                "0"
-                            } else {
-                                binding.priceEditText2.text.toString()
-                            }
-                            addProperty(
-                                "priceMerger",
-                                "${price1}.${(price2)}"
-                            )
-
-                            addProperty("price", viewModel.price.value)
-                            addProperty("date", date_buf)
                         }
-                        val retrofit = Retrofit.Builder()
-                            .baseUrl(URL)
-                            .addConverterFactory(GsonConverterFactory.create()).build()
-                        val service = retrofit.create(ServerSummit::class.java)
-
-                        val mUser = FirebaseAuth.getInstance().currentUser
-                        mUser?.getIdToken(true)
-                            ?.addOnCompleteListener { p0 ->
-                                if (p0.isSuccessful) {
-                                    val idToken = p0.result?.token
-                                    service.postRequest(idToken!!, jsonParam)
-                                        .enqueue(object : retrofit2.Callback<Data> {
-                                            override fun onFailure(call: Call<Data>, t: Throwable) {
-                                                Toast.makeText(
-                                                        activity,
-                                                        t.toString(),
-                                                        Toast.LENGTH_LONG
-                                                    )
-                                                    .show()
-                                            }
-
-                                            @SuppressLint("SetTextI18n")
-                                            override fun onResponse(
-                                                call: Call<Data>,
-                                                response: Response<Data>
-                                            ) {
-
-                                                viewModel.setPriceTest(priceCalculate(binding).toString())
-                                                viewModel.setregField(response.body()?.reg?.toFloat())
-                                                viewModel.setcurField(response.body()?.cur?.toFloat())
-                                                viewModel.setpre(response.body()?.pre?.toFloat())
-                                                min = response.body()!!.min.toFloat()
-                                                max = response.body()!!.max.toFloat()
-
-                                                if ((min <= priceCalculate(binding)) &&
-                                                    (max >= priceCalculate(binding))
-                                                ) {
-
-                                                    val imm =
-                                                        context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                                                    imm.hideSoftInputFromWindow(
-                                                        view!!.windowToken,
-                                                        0
-                                                    )
-                                                    findNavController().navigate(R.id.action_write5Fragment_to_write6Fragment)
-                                                } else {
-                                                    binding.priceCur1.text =
-                                                        CURRENCYSYMBOL[viewModel.getcurrencyField()
-                                                            ?: 0]
-                                                    binding.priceCur2.text =
-                                                        CURRENCYSYMBOL[viewModel.getcurrencyField()
-                                                            ?: 0]
-                                                    binding.priceRange.visibility = View.VISIBLE
-                                                    binding.summitButton.text = "NEXT"
-                                                    binding.summitButton.isEnabled = true
-                                                    binding.summitProgress.visibility = View.GONE
-                                                    binding.priceMin.text =
-                                                        String.format("%,.1f", min)
-                                                    binding.priceMax.text =
-                                                        String.format("%,.1f", max)
-                                                }
-
-                                            }
-                                        })
-                                } else {
-                                    p0.exception
-                                }
-                            }
-
-                        binding.priceEditText1.isEnabled = true
-                        binding.priceEditText2.isEnabled = true
-                        binding.priceEditText3.isEnabled = true
-
-                    } else {
-
-                        binding.priceEditText1.isEnabled = true
-                        binding.priceEditText2.isEnabled = true
-                        binding.priceEditText3.isEnabled = true
-
-                        Toast.makeText(
-                            context,
-                            resources.getString(R.string.rangePrice),
-                            Toast.LENGTH_LONG
-                        ).show()
                     }
+
+                    binding.priceEditText1.isEnabled = true
+                    binding.priceEditText2.isEnabled = true
+                    binding.priceEditText3.isEnabled = true
+
+                } else {
+
+                    binding.priceEditText1.isEnabled = true
+                    binding.priceEditText2.isEnabled = true
+                    binding.priceEditText3.isEnabled = true
+
+                    Toast.makeText(
+                        context,
+                        resources.getString(R.string.rangePrice),
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }
+
         }
 
         setSpinnerUi(binding, viewModel)
@@ -385,7 +220,6 @@ class Write5Fragment : Fragment() {
         binding.currencySpinner1.setSelection(option ?: 0)
     }
 
-
     private fun Float.dipToPixels(): Float {
         return TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP,
@@ -407,6 +241,66 @@ class Write5Fragment : Fragment() {
 
     interface CallbackSummit {
         fun click()
+    }
 
+    private fun getPrice(
+        viewModel: WriteViewModel,
+        binding: FragmentWrite5Binding
+    ): Task<Map<String,String>> {
+
+        val price1 = if ("${binding.priceEditText1.text}" == "") {
+            "0"
+        } else {
+            binding.priceEditText1.text.toString()
+        }
+
+        val price2 = if ("${binding.priceEditText2.text}" == "") {
+            "0"
+        } else {
+            binding.priceEditText2.text.toString()
+        }
+
+        val test = viewModel.getdateField()?.split("/")
+        val date_buf = if (test.isNullOrEmpty()) {
+            val cal = Calendar.getInstance()
+            val _year = cal.get(Calendar.YEAR)
+            val _month = cal.get(Calendar.MONTH) + 1
+            val _date = cal.get(Calendar.DATE)
+            viewModel.getdateField() ?: String.format(
+                "%04d%02d%02d", _year, _month, _date
+            )
+        } else {
+            String.format(
+                "%04d%02d%02d", test[0].toInt(), test[1].toInt(), test[2].toInt()
+            )
+        }
+        // Create the arguments to the callable function.
+        val productData = hashMapOf(
+            "metal" to viewModel.getmetalField1().toString(),
+            "type1" to viewModel.gettypeField1().toString(),
+            "brand" to viewModel.brand.value.toString(),
+            "weight" to viewModel.weightCalculator.value,
+            "quantity" to viewModel.getquantityField(),
+            "weightr" to viewModel.weightUnit.value,
+            "packageType1" to viewModel.getpackageTypeField().toString(),
+            "grade" to viewModel.getgradeField().toString(),
+            "gradeNum" to viewModel.getgradeNumField().toString(),
+            "currency" to viewModel.getcurrencyField().toString(),
+            "year" to viewModel.getyearSeriesField().toString(),
+            "date" to date_buf,
+            "priceMerger" to "${price1}.${(price2)}",
+            "price" to viewModel.price.value
+        )
+
+        return functions
+            .getHttpsCallable("summitData6")
+            .call(productData)
+            .continueWith { task ->
+                // This continuation runs on either success or failure, but if the task
+                // has failed then result will throw an Exception which will be
+                // propagated down.
+                val result = task.result?.data as Map<String, String>
+                result
+            }
     }
 }

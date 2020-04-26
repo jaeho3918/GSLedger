@@ -21,8 +21,8 @@ android {
         applicationId "com.gsgana.gsledger"
         minSdkVersion 23
         targetSdkVersion 29
-        versionCode 74
-        versionName "1.1.0.9"
+        versionCode 75
+        versionName "1.1.0.10"
         multiDexEnabled false
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -81,8 +81,6 @@ android {
         implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.coroutinesVersion"
         implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$rootProject.coroutinesVersion"
         implementation "com.android.support:multidex:2.0.0"
-        implementation 'com.squareup.retrofit2:retrofit:2.7.1'
-        implementation 'com.squareup.retrofit2:converter-gson:2.7.1'
         implementation 'net.zetetic:android-database-sqlcipher:4.3.0@aar'
         implementation 'androidx.sqlite:sqlite:2.1.0'
         implementation 'org.bouncycastle:bcpkix-jdk15on:1.56'//

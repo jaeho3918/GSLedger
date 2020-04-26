@@ -55,8 +55,6 @@ class Write3Fragment : Fragment() {
         }
 
         binding.moveTo3.setOnClickListener {
-            val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(view!!.windowToken, 0)
             findNavController().navigate(R.id.action_write3Fragment_to_write4Fragment)
         }
 

@@ -31,8 +31,6 @@ class Write5Fragment : Fragment() {
     private val PREF_NAME = "01504f779d6c77df04"
     private val CURR_NAME = "1w3d4f7w9d2qG2eT36"
 
-    private val functions: FirebaseFunctions = FirebaseFunctions.getInstance()
-
     //    private val TIME_NAME = "6ck9uUlDuh7o6QKQFZ"
     private var option: Int? = null
     private var price1: String? = null
@@ -97,7 +95,9 @@ class Write5Fragment : Fragment() {
                     binding.priceEditText2.isEnabled = false
                     binding.priceEditText3.isEnabled = false
 
-                    getPrice(viewModel, binding).addOnSuccessListener { data ->
+                    val price_buf = "${price1}.${price2}"
+
+                    getPriceData(viewModel, binding, price_buf).addOnSuccessListener { data ->
                         viewModel.setPriceTest(priceCalculate(binding).toString())
                         viewModel.setregField((data["reg"] ?: "0").toFloat())
                         viewModel.setcurField((data["cur"] ?: "0").toFloat())
@@ -137,7 +137,9 @@ class Write5Fragment : Fragment() {
                         binding.summitButton.isEnabled = false
                         binding.summitButton.text = ""
 
-                        getPrice(viewModel, binding).addOnSuccessListener { data ->
+                        val price_buf = "${price1}.${price2}"
+
+                        getPriceData(viewModel, binding, price_buf).addOnSuccessListener { data ->
                             viewModel.setPriceTest(priceCalculate(binding).toString())
                             viewModel.setregField((data["reg"] ?: "0").toFloat())
                             viewModel.setcurField((data["cur"] ?: "0").toFloat())
@@ -243,64 +245,64 @@ class Write5Fragment : Fragment() {
         fun click()
     }
 
-    private fun getPrice(
-        viewModel: WriteViewModel,
-        binding: FragmentWrite5Binding
-    ): Task<Map<String,String>> {
-
-        val price1 = if ("${binding.priceEditText1.text}" == "") {
-            "0"
-        } else {
-            binding.priceEditText1.text.toString()
-        }
-
-        val price2 = if ("${binding.priceEditText2.text}" == "") {
-            "0"
-        } else {
-            binding.priceEditText2.text.toString()
-        }
-
-        val test = viewModel.getdateField()?.split("/")
-        val date_buf = if (test.isNullOrEmpty()) {
-            val cal = Calendar.getInstance()
-            val _year = cal.get(Calendar.YEAR)
-            val _month = cal.get(Calendar.MONTH) + 1
-            val _date = cal.get(Calendar.DATE)
-            viewModel.getdateField() ?: String.format(
-                "%04d%02d%02d", _year, _month, _date
-            )
-        } else {
-            String.format(
-                "%04d%02d%02d", test[0].toInt(), test[1].toInt(), test[2].toInt()
-            )
-        }
-        // Create the arguments to the callable function.
-        val productData = hashMapOf(
-            "metal" to viewModel.getmetalField1().toString(),
-            "type1" to viewModel.gettypeField1().toString(),
-            "brand" to viewModel.brand.value.toString(),
-            "weight" to viewModel.weightCalculator.value,
-            "quantity" to viewModel.getquantityField(),
-            "weightr" to viewModel.weightUnit.value,
-            "packageType1" to viewModel.getpackageTypeField().toString(),
-            "grade" to viewModel.getgradeField().toString(),
-            "gradeNum" to viewModel.getgradeNumField().toString(),
-            "currency" to viewModel.getcurrencyField().toString(),
-            "year" to viewModel.getyearSeriesField().toString(),
-            "date" to date_buf,
-            "priceMerger" to "${price1}.${(price2)}",
-            "price" to viewModel.price.value
-        )
-
-        return functions
-            .getHttpsCallable("summitData6")
-            .call(productData)
-            .continueWith { task ->
-                // This continuation runs on either success or failure, but if the task
-                // has failed then result will throw an Exception which will be
-                // propagated down.
-                val result = task.result?.data as Map<String, String>
-                result
-            }
-    }
+//    private fun getPrice(
+//        viewModel: WriteViewModel,
+//        binding: FragmentWrite5Binding
+//    ): Task<Map<String,String>> {
+//
+//        val price1 = if ("${binding.priceEditText1.text}" == "") {
+//            "0"
+//        } else {
+//            binding.priceEditText1.text.toString()
+//        }
+//
+//        val price2 = if ("${binding.priceEditText2.text}" == "") {
+//            "0"
+//        } else {
+//            binding.priceEditText2.text.toString()
+//        }
+//
+//        val test = viewModel.getdateField()?.split("/")
+//        val date_buf = if (test.isNullOrEmpty()) {
+//            val cal = Calendar.getInstance()
+//            val _year = cal.get(Calendar.YEAR)
+//            val _month = cal.get(Calendar.MONTH) + 1
+//            val _date = cal.get(Calendar.DATE)
+//            viewModel.getdateField() ?: String.format(
+//                "%04d%02d%02d", _year, _month, _date
+//            )
+//        } else {
+//            String.format(
+//                "%04d%02d%02d", test[0].toInt(), test[1].toInt(), test[2].toInt()
+//            )
+//        }
+//        // Create the arguments to the callable function.
+//        val productData = hashMapOf(
+//            "metal" to viewModel.getmetalField1().toString(),
+//            "type1" to viewModel.gettypeField1().toString(),
+//            "brand" to viewModel.brand.value.toString(),
+//            "weight" to viewModel.weightCalculator.value,
+//            "quantity" to viewModel.getquantityField(),
+//            "weightr" to viewModel.weightUnit.value,
+//            "packageType1" to viewModel.getpackageTypeField().toString(),
+//            "grade" to viewModel.getgradeField().toString(),
+//            "gradeNum" to viewModel.getgradeNumField().toString(),
+//            "currency" to viewModel.getcurrencyField().toString(),
+//            "year" to viewModel.getyearSeriesField().toString(),
+//            "date" to date_buf,
+//            "priceMerger" to "${price1}.${(price2)}",
+//            "price" to viewModel.price.value
+//        )
+//
+//        return functions
+//            .getHttpsCallable("summitData6")
+//            .call(productData)
+//            .continueWith { task ->
+//                // This continuation runs on either success or failure, but if the task
+//                // has failed then result will throw an Exception which will be
+//                // propagated down.
+//                val result = task.result?.data as Map<String, String>
+//                result
+//            }
+//    }
 }

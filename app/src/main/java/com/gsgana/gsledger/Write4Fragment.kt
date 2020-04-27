@@ -50,8 +50,6 @@ class Write4Fragment : Fragment() {
         }
 
         binding.moveTo4.setOnClickListener {
-            val imm = context!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(view!!.windowToken, 0)
             findNavController().navigate(R.id.action_write4Fragment_to_write5Fragment)
         }
 

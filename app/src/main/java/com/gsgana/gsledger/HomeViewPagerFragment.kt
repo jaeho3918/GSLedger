@@ -24,12 +24,14 @@ import com.gsgana.gsledger.adapters.PagerAdapter
 import com.gsgana.gsledger.adapters.PagerAdapter.Companion.ADSANDOPTION_PAGE_INDEX
 import com.gsgana.gsledger.adapters.PagerAdapter.Companion.LEDGER_PAGE_INDEX
 import com.gsgana.gsledger.adapters.PagerAdapter.Companion.STAT_PAGE_INDEX
+import com.gsgana.gsledger.databinding.FragmentWrite5Binding
 import com.gsgana.gsledger.databinding.HomeViewPagerFragmentBinding
 import com.gsgana.gsledger.utilities.CURRENCY
 import com.gsgana.gsledger.utilities.CURRENCYSYMBOL
 import com.gsgana.gsledger.utilities.InjectorUtils
 import com.gsgana.gsledger.utilities.WEIGHTUNIT
 import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModel
+import com.gsgana.gsledger.viewmodels.WriteViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Matcher
@@ -44,6 +46,7 @@ class HomeViewPagerFragment : Fragment() {
     private val CURR_NAME = "1w3d4f7w9d2qG2eT36"
     private val WEIGHT_NAME = "f79604050dfc500715"
     private val TODAY_NAME = "0d07f05fd0c595f615"
+
 
     private lateinit var option: SharedPreferences
 
@@ -310,4 +313,68 @@ class HomeViewPagerFragment : Fragment() {
                 result
             }
     }
+
+
+}
+
+private fun getPrice(
+    viewModel: WriteViewModel,
+    binding: FragmentWrite5Binding,
+    price: String
+): Task<Map<String, String>> {
+
+    val functions: FirebaseFunctions = FirebaseFunctions.getInstance()
+
+    val test = viewModel.getdateField()!!.split("/")
+
+    val date_buf = if (test != null) {
+        val cal = Calendar.getInstance()
+        val _year = cal.get(Calendar.YEAR)
+        val _month = cal.get(Calendar.MONTH) + 1
+        val _date = cal.get(Calendar.DATE)
+        viewModel.getdateField() ?: String.format(
+            "%04d%02d%02d", _year, _month, _date
+        )
+    } else {
+        String.format(
+            "%04d%02d%02d", test[0].toInt(), test[1].toInt(), test[2].toInt()
+        )
+    }
+    // Create the arguments to the callable function.
+    val productData = hashMapOf(
+        "metal" to viewModel.getmetalField1().toString(),
+        "type1" to viewModel.gettypeField1().toString(),
+        "brand" to viewModel.brand.value.toString(),
+        "weight" to viewModel.weightCalculator.value,
+        "quantity" to viewModel.getquantityField(),
+        "weightr" to viewModel.weightUnit.value,
+        "packageType1" to viewModel.getpackageTypeField().toString(),
+        "grade" to viewModel.getgradeField().toString(),
+        "gradeNum" to viewModel.getgradeNumField().toString(),
+        "currency" to viewModel.getcurrencyField().toString(),
+        "year" to viewModel.getyearSeriesField().toString(),
+        "date" to date_buf,
+        "priceMerger" to price,
+        "price" to viewModel.price.value
+    )
+
+    return functions
+        .getHttpsCallable("summitData6")
+        .call(productData)
+        .continueWith { task ->
+            // This continuation runs on either success or failure, but if the task
+            // has failed then result will throw an Exception which will be
+            // propagated down.
+            val result = task.result?.data as Map<String, String>
+            result
+        }
+}
+
+fun getPriceData(
+
+    viewModel: WriteViewModel,
+    binding: FragmentWrite5Binding,
+    price: String
+): Task<Map<String, String>> {
+    return getPrice(viewModel, binding,price)
 }

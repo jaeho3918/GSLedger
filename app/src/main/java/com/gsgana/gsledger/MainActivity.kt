@@ -16,6 +16,7 @@ import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.tasks.Task
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.functions.FirebaseFunctions
+import com.google.firebase.messaging.FirebaseMessaging
 import com.gsgana.gsledger.databinding.ActivityMainBinding
 import com.gsgana.gsledger.utilities.InjectorUtils
 import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModel
@@ -29,7 +30,7 @@ class MainActivity :
     private val PREF_NAME = "01504f779d6c77df04"
     private lateinit var sf: SharedPreferences
 
-    private val AD_ID = "ca-app-pub-8453032642509497/3082833180"
+    private val AD_ID = "ca-app-pub-3940256099942544/8691691433"
     // 실제   "ca-app-pub-8453032642509497/3082833180"
     //테스트 "ca-app-pub-3940256099942544/8691691433"
 
@@ -52,6 +53,19 @@ class MainActivity :
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
         Fabric.with(this, Crashlytics())
         sf = this.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+
+        FirebaseMessaging.getInstance().subscribeToTopic("TEST")
+//            .addOnCompleteListener { task ->
+////                var msg = getString(R.string.msg_subscribed)
+//                if (!task.isSuccessful) {
+//                    task.result
+////                    msg = getString(R.string.msg_subscribe_failed)
+//                }
+////                Log.d(TAG, msg)
+////                Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+//            }
+
+        FirebaseMessaging.getInstance().isAutoInitEnabled = true
 
         super.onCreate(savedInstanceState)
 

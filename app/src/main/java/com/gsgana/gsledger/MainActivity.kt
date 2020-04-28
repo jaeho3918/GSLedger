@@ -54,7 +54,7 @@ class MainActivity :
         Fabric.with(this, Crashlytics())
         sf = this.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
 
-        FirebaseMessaging.getInstance().subscribeToTopic("TEST")
+//        FirebaseMessaging.getInstance().subscribeToTopic("TEST")
 //            .addOnCompleteListener { task ->
 ////                var msg = getString(R.string.msg_subscribed)
 //                if (!task.isSuccessful) {

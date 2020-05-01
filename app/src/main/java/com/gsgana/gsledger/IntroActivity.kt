@@ -172,7 +172,6 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
                     rgl = rgl_b.toCharArray()
                     rgl_b.clear()
                     val intent = Intent(this, MainActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                     intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                     intent.putExtra(KEY, rgl)
                     startActivity(intent)
@@ -314,7 +313,6 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
                                 rgl = rgl_b.toCharArray()
                                 rgl_b.clear()
                                 val intent = Intent(this, MainActivity::class.java)
-                                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
                                 intent.putExtra(KEY, rgl)
                                 startActivity(intent)

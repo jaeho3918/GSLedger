@@ -55,6 +55,8 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
     private lateinit var rgl_b: MutableList<Char>
 //    private lateinit var gso: GoogleSignInOptions
 
+
+
     private lateinit var mAuth: FirebaseAuth
     private lateinit var googleSigninClient: GoogleSignInClient
     private lateinit var binding: ActivityIntroBinding
@@ -362,12 +364,12 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
         return sb.toString()
     }
 
-    private fun generateRgl6(length: Int = 36): List<String> {
+    private fun generateRgl6(length: Int = 36): List<Char> {
         val ALLOWED_CHARACTERS = "013567890123456789ABCDEFGHIJKLMNOPQRSTUWXYZ"
         val random = Random()
-        val sb = mutableListOf<String>()
+        val sb = mutableListOf<Char>()
         for (i in 0 until length)
-            sb.add(ALLOWED_CHARACTERS[random.nextInt(ALLOWED_CHARACTERS.length)].toString())
+            sb.add(ALLOWED_CHARACTERS[random.nextInt(ALLOWED_CHARACTERS.length)].toChar())
         return sb
     }
 

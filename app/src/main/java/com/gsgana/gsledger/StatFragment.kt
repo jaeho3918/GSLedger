@@ -62,7 +62,6 @@ class StatFragment : Fragment() {
         currencyOption = sf.getInt(CURR_NAME, 0)
         weightOption = sf.getInt(WEIGHT_NAME, 0)
 
-
         rgl = mutableListOf()
         mAuth = FirebaseAuth.getInstance()
         fm = childFragmentManager

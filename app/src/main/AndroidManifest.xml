@@ -19,9 +19,9 @@
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-8453032642509497~4168684141" />
+            android:value="ca-app-pub-8453032642509497~1792686253" />
         <!--      테스트 ca-app-pub-3940256099942544~3347511713  -->
-        <!--      실제 ca-app-pub-8453032642509497~4168684141  -->
+        <!--      실제 ca-app-pub-8453032642509497~1792686253  -->
 
         <!-- Set custom default icon. This is used when no icon is set for incoming notification messages.
      See README(https://goo.gl/l4GJaQ) for more. -->

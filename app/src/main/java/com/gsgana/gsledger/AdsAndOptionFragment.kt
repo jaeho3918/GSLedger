@@ -24,6 +24,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.gsgana.gsledger.databinding.AdsAndOptionFragmentBinding
 import com.gsgana.gsledger.utilities.CURRENCY
+import com.gsgana.gsledger.utilities.CURRENCYANDSYMBOL
 import com.gsgana.gsledger.utilities.InjectorUtils
 import com.gsgana.gsledger.utilities.WEIGHTUNIT
 import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModel
@@ -148,7 +149,7 @@ class AdsAndOptionFragment : Fragment(), PurchasesUpdatedListener {
 
         adapter =
             ArrayAdapter(
-                context!!, R.layout.support_simple_spinner_dropdown_item, CURRENCY
+                context!!, R.layout.support_simple_spinner_dropdown_item, CURRENCYANDSYMBOL
             )
 
         binding.currencyOption.adapter = adapter

@@ -149,6 +149,10 @@ val CURRENCY = arrayOf(
     "USD", "GBP", "EUR", "JPY", "CNY", "KRW", "CAD", "AUD", "INR"
 )
 
+val CURRENCYANDSYMBOL = arrayOf(
+    "USD:\$", "GBP:￡", "EUR:€", "JPY:¥", "CNY:Ұ", "KRW:₩", "CAD:C\$", "AUD:A\$", "INR:₹"
+)
+
 val CURRENCYSYMBOL = arrayOf(
     "$", "￡", "€", "¥", "Ұ", "₩", "$", "$", "₹"
 )

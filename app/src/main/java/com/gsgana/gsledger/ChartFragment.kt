@@ -162,7 +162,7 @@ class ChartFragment : Fragment() {
             setDrawMarkers(true)
             description.isEnabled = false
             setTouchEnabled(true)
-            isDragEnabled = false
+            isDragEnabled = true
             setScaleEnabled(false)
             setDrawGridBackground(false)
             maxHighlightDistance = 300f

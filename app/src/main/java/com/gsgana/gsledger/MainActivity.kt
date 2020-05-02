@@ -30,7 +30,7 @@ class MainActivity :
     private val PREF_NAME = "01504f779d6c77df04"
     private lateinit var sf: SharedPreferences
 
-    private val AD_ID = "ca-app-pub-3940256099942544/8691691433"
+    private val AD_ID = "ca-app-pub-8453032642509497/3082833180"
     // 실제   "ca-app-pub-8453032642509497/3082833180"
     //테스트 "ca-app-pub-3940256099942544/8691691433"
 
@@ -39,6 +39,9 @@ class MainActivity :
     private lateinit var mBuilder: AdRequest.Builder
     private lateinit var mFirebaseAnalytics: FirebaseAnalytics
 
+
+    private val ALERTSWITCH_NAME = "Ly6gWNc6kHb6hXf0yz"
+    private val ALERTRANGE_NAME = "g6b6UQL9Prae7b5h2A"
 
     val KEY = "Kd6c26TK65YSmkw6oU"
 //    val TODAY_NAME = "0d07f05fd0c595f615"
@@ -54,18 +57,18 @@ class MainActivity :
         Fabric.with(this, Crashlytics())
         sf = this.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
 
-//        FirebaseMessaging.getInstance().subscribeToTopic("TEST")
-//            .addOnCompleteListener { task ->
-////                var msg = getString(R.string.msg_subscribed)
-//                if (!task.isSuccessful) {
-//                    task.result
-////                    msg = getString(R.string.msg_subscribe_failed)
-//                }
-////                Log.d(TAG, msg)
-////                Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
-//            }
-
-        FirebaseMessaging.getInstance().isAutoInitEnabled = true
+        if (sf.getInt(ALERTSWITCH_NAME,0) == 1) {
+            val topicList = when(sf.getInt(ALERTRANGE_NAME,0)){
+                0-> listOf("Alpha","Beta","Gamma")
+                1-> listOf("Beta","Gamma")
+                2-> listOf("Gamma")
+                else ->listOf("Alpha","Beta","Gamma")
+            }
+            topicList.forEach{topic ->
+                FirebaseMessaging.getInstance().subscribeToTopic(topic)
+            }
+            FirebaseMessaging.getInstance().isAutoInitEnabled = true
+        }
 
         super.onCreate(savedInstanceState)
 
@@ -73,12 +76,6 @@ class MainActivity :
 
         if (!(intent.getIntExtra(ADFREE_NAME, 6) == 18 || sf.getInt(ADFREE_NAME, 6) == 18)) {
             setAds()
-            Handler().postDelayed(
-                {
-                    loading.visibility = View.GONE
-                    homeViewPagerFragmentpage.visibility = View.VISIBLE
-                }, 3600 // 3600
-            )
         } else {
             Handler().postDelayed(
                 {
@@ -104,6 +101,11 @@ class MainActivity :
                         doneOnce = false
                     }
                 }
+            }
+            override fun onAdClosed() {
+                super.onAdClosed()
+                loading.visibility = View.GONE
+                homeViewPagerFragmentpage.visibility = View.VISIBLE
             }
         }
     }

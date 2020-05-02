@@ -573,7 +573,7 @@ private fun setLineChart(
         setDrawMarkers(true)
         description.isEnabled = false
         setTouchEnabled(true)
-        isDragEnabled = false
+        isDragEnabled = true
         setScaleEnabled(false)
         setDrawGridBackground(false)
         maxHighlightDistance = 300f
@@ -746,7 +746,7 @@ private fun setShortLineGoldChart(
         setDrawMarkers(true)
         description.isEnabled = false
         setTouchEnabled(true)
-        isDragEnabled = false
+        isDragEnabled = true
         setScaleEnabled(false)
         setDrawGridBackground(false)
         maxHighlightDistance = 300f
@@ -888,7 +888,7 @@ private fun setShortLineSilverChart(
         setDrawMarkers(true)
         description.isEnabled = false
         setTouchEnabled(true)
-        isDragEnabled = false
+        isDragEnabled = true
         setScaleEnabled(false)
         setDrawGridBackground(false)
         maxHighlightDistance = 300f
@@ -1094,7 +1094,7 @@ private fun setDetailChart(
         setDrawMarkers(true)
         description.isEnabled = false
         setTouchEnabled(true)
-        isDragEnabled = false
+        isDragEnabled = true
         setScaleEnabled(false)
         setDrawGridBackground(false)
         maxHighlightDistance = 300f

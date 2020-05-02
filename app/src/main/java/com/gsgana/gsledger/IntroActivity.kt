@@ -56,7 +56,6 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
 //    private lateinit var gso: GoogleSignInOptions
 
 
-
     private lateinit var mAuth: FirebaseAuth
     private lateinit var googleSigninClient: GoogleSignInClient
     private lateinit var binding: ActivityIntroBinding
@@ -161,6 +160,8 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
                 .addOnSuccessListener { data ->
                     //if
                     rgl_b = arrayListOf()
+                    val test11 = sf.getString(ENCRYPT_NAME6, "null")
+                    val test1123 = data.data
                     val test = data.data?.get(
                         sf.getString(ENCRYPT_NAME6, "null")
                     ) as ArrayList<String>
@@ -245,40 +246,39 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
                         .collection(USERS_DB_PATH)
                         .document(mAuth.currentUser?.uid!!)
                         .apply {
-                            get()
-                                .addOnSuccessListener { data ->
-                                    if (data.exists()) {
-                                        update(
-                                            mapOf(
-                                                sf.getString(
-                                                    ENCRYPT_NAME6,
-                                                    "null"
-                                                )!! to generateRgl6()
-                                            )
-                                        ).addOnFailureListener {
-                                            Toast.makeText(
-                                                applicationContext,
-                                                it.toString(),
-                                                Toast.LENGTH_LONG
-                                            ).show()
-                                        }
-                                    } else {
-                                        set(
-                                            hashMapOf(
-                                                sf.getString(
-                                                    ENCRYPT_NAME6,
-                                                    "null"
-                                                )!! to generateRgl6()
-                                            )
-                                        ).addOnFailureListener {
-                                            Toast.makeText(
-                                                applicationContext,
-                                                it.toString(),
-                                                Toast.LENGTH_LONG
-                                            ).show()
-                                        }
+                            get().addOnSuccessListener { data ->
+                                if (data.exists()) {
+                                    update(
+                                        mapOf(
+                                            sf.getString(
+                                                ENCRYPT_NAME6,
+                                                "null"
+                                            ) to generateRgl6()
+                                        )
+                                    ).addOnFailureListener {
+                                        Toast.makeText(
+                                            applicationContext,
+                                            it.toString(),
+                                            Toast.LENGTH_LONG
+                                        ).show()
+                                    }
+                                } else {
+                                    set(
+                                        hashMapOf(
+                                            sf.getString(
+                                                ENCRYPT_NAME6,
+                                                "null"
+                                            ) to generateRgl6()
+                                        )
+                                    ).addOnFailureListener {
+                                        Toast.makeText(
+                                            applicationContext,
+                                            it.toString(),
+                                            Toast.LENGTH_LONG
+                                        ).show()
                                     }
                                 }
+                            }
                         }
 
                     FirebaseFirestore
@@ -362,12 +362,12 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
         return sb.toString()
     }
 
-    private fun generateRgl6(length: Int = 36): List<Char> {
+    private fun generateRgl6(length: Int = 36): List<String> {
         val ALLOWED_CHARACTERS = "013567890123456789ABCDEFGHIJKLMNOPQRSTUWXYZ"
         val random = Random()
-        val sb = mutableListOf<Char>()
+        val sb = mutableListOf<String>()
         for (i in 0 until length)
-            sb.add(ALLOWED_CHARACTERS[random.nextInt(ALLOWED_CHARACTERS.length)].toChar())
+            sb.add(ALLOWED_CHARACTERS[random.nextInt(ALLOWED_CHARACTERS.length)].toString())
         return sb
     }
 

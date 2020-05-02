@@ -22,11 +22,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.messaging.FirebaseMessaging
 import com.gsgana.gsledger.databinding.AdsAndOptionFragmentBinding
-import com.gsgana.gsledger.utilities.CURRENCY
-import com.gsgana.gsledger.utilities.CURRENCYANDSYMBOL
-import com.gsgana.gsledger.utilities.InjectorUtils
-import com.gsgana.gsledger.utilities.WEIGHTUNIT
+import com.gsgana.gsledger.utilities.*
 import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModel
 import kotlinx.android.synthetic.main.ads_and_option_fragment.*
 
@@ -48,6 +46,9 @@ class AdsAndOptionFragment : Fragment(), PurchasesUpdatedListener {
 
     private lateinit var billingClient: BillingClient
     private val sku3600 = "adfree_unlimited_entry"
+
+    private val ALERTSWITCH_NAME = "Ly6gWNc6kHb6hXf0yz"
+    private val ALERTRANGE_NAME = "g6b6UQL9Prae7b5h2A"
 
     private val KEY = "Kd6c26TK65YSmkw6oU"
     private val viewModel: HomeViewPagerViewModel by viewModels {
@@ -76,7 +77,6 @@ class AdsAndOptionFragment : Fragment(), PurchasesUpdatedListener {
 
             billingClient.startConnection(object : BillingClientStateListener {
                 override fun onBillingServiceDisconnected() {
-//                    Toast.makeText(context!!,"Baaaaaaaaaaaaad", Toast.LENGTH_LONG) .show()
                 }
 
                 override fun onBillingSetupFinished(p0: BillingResult?) {
@@ -165,9 +165,11 @@ class AdsAndOptionFragment : Fragment(), PurchasesUpdatedListener {
                 ) {
                     sf.edit()?.putInt(CURR_NAME, position)?.apply()
                     val getData = viewModel?.getRealData()?.value?.toMutableMap()
-                    getData?.set("currency", position.toDouble())
-                    viewModel?.setRealData(getData!!.toMap())
-                    getData?.clear()
+                    if (!getData.isNullOrEmpty()) {
+                        getData.set("currency", position.toDouble())
+                        viewModel.setRealData(getData.toMap())
+                        getData.clear()
+                    }
                 }
             }
 
@@ -189,9 +191,11 @@ class AdsAndOptionFragment : Fragment(), PurchasesUpdatedListener {
                 ) {
                     sf.edit()?.putInt(WEIGHT_NAME, position)?.apply()
                     val getData = viewModel?.getRealData()?.value?.toMutableMap()
-                    getData?.set("weightUnit", position.toDouble())
-                    viewModel?.setRealData(getData!!.toMap())
-                    getData?.clear()
+                    if (!getData.isNullOrEmpty()) {
+                        getData.set("weightUnit", position.toDouble())
+                        viewModel.setRealData(getData.toMap())
+                        getData.clear()
+                    }
                 }
             }
 
@@ -203,7 +207,94 @@ class AdsAndOptionFragment : Fragment(), PurchasesUpdatedListener {
             (viewModel?.getRealData()?.value?.get("weightUnit") ?: 0.0).toInt()
         )
 
+        adapter =
+            ArrayAdapter(
+                context!!, R.layout.support_simple_spinner_dropdown_item, ALERTSWITCH
+            )
+
+        binding.alertSwitchOption.adapter = adapter
+        binding.alertSwitchOption.dropDownVerticalOffset = dipToPixels(53f).toInt()
+        binding.alertSwitchOption.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(parent: AdapterView<*>?) {}
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    sf.edit()?.putInt(ALERTSWITCH_NAME, position)?.apply()
+
+                    if (position == 1) {
+                        val topicList = when (sf.getInt(ALERTRANGE_NAME, 0)) {
+                            0 -> listOf("Alpha", "Beta", "Gamma")
+                            1 -> listOf("Beta", "Gamma")
+                            2 -> listOf("Gamma")
+                            else -> listOf("Alpha", "Beta", "Gamma")
+                        }
+                        topicList.forEach { topic ->
+                            FirebaseMessaging.getInstance().subscribeToTopic(topic)
+                        }
+                        FirebaseMessaging.getInstance().isAutoInitEnabled = true
+                        binding.alertRangeOption.isEnabled = true
+
+                    } else {
+                        val topicList = listOf("Alpha", "Beta", "Gamma")
+                        topicList.forEach { topic ->
+                            FirebaseMessaging.getInstance().unsubscribeFromTopic(topic)
+                        }
+                        FirebaseMessaging.getInstance().isAutoInitEnabled = true
+                        binding.alertRangeOption.isEnabled = false
+                    }
+                }
+            }
+
+        adapter =
+            ArrayAdapter(
+                context!!, R.layout.support_simple_spinner_dropdown_item, ALERTRANGE
+            )
+
+        binding.alertRangeOption.adapter = adapter
+        binding.alertRangeOption.dropDownVerticalOffset = dipToPixels(53f).toInt()
+        binding.alertRangeOption.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onNothingSelected(parent: AdapterView<*>?) {}
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    if (sf.getInt(ALERTSWITCH_NAME, 0) == 1) {
+                        sf.edit()?.putInt(ALERTRANGE_NAME, position)?.apply()
+                        val topicListRemove = listOf("Alpha", "Beta", "Gamma")
+                        topicListRemove.forEach { topic ->
+                            FirebaseMessaging.getInstance().unsubscribeFromTopic(topic)
+                        }
+                        val topicList = when (sf.getInt(ALERTRANGE_NAME, 0)) {
+                            0 -> listOf("Alpha", "Beta", "Gamma")
+                            1 -> listOf("Beta", "Gamma")
+                            2 -> listOf("Gamma")
+                            else -> listOf("Alpha", "Beta", "Gamma")
+                        }
+                        topicList.forEach { topic ->
+                            FirebaseMessaging.getInstance().subscribeToTopic(topic)
+                        }
+                        FirebaseMessaging.getInstance().isAutoInitEnabled = true
+                    }
+                }
+            }
+
+
+        binding.alertSwitchOption.setSelection(sf.getInt(ALERTSWITCH_NAME,0))
+        if (sf.getInt(ALERTSWITCH_NAME, 0) == 0) {
+            binding.alertRangeOption.isEnabled = false
+        } else {
+            binding.alertRangeOption.setSelection(sf.getInt(ALERTRANGE_NAME,0))
+        }
     }
+
+
 
     interface Callback {
         fun add()

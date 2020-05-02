@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.view.doOnLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
@@ -47,6 +48,7 @@ class HomeViewPagerFragment : Fragment() {
     private val WEIGHT_NAME = "f79604050dfc500715"
     private val TODAY_NAME = "0d07f05fd0c595f615"
 
+    private val START_NAME = "zT6VjmOul6oDKF6FUI"
 
     private lateinit var option: SharedPreferences
 
@@ -206,6 +208,16 @@ class HomeViewPagerFragment : Fragment() {
             setPriceColor(context!!, divAuValue, "pl", binding.realGoldPL)
             setPriceColor(context!!, divAgValue, "pl", binding.realSilverPL)
         }
+
+
+        if (sf.getInt(START_NAME, 6) == 6) {
+            viewPager.doOnLayout {
+                sf.edit().putInt(START_NAME, 18).apply()
+                viewPager.currentItem = ADSANDOPTION_PAGE_INDEX
+                viewPager.setCurrentItem(ADSANDOPTION_PAGE_INDEX, true)
+            }
+        }
+
         return binding.root
     }
 

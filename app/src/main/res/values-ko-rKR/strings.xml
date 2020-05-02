@@ -67,6 +67,9 @@
     <string name="details">상세사항</string>
     <string name="totalPrice">총 가격</string>
     <string name="write">작성</string>
+    <string name="alert">실시간 가격 알림</string>
+    <string name="alertswitch">알림 스위치</string>
+    <string name="alertrange">알림 범위</string>
     <string name="no">아니오</string>
     <string name="oneperaccount">해당 Gmail은 이미 가입되어 있습니다.&#10;다른 Gmail로 가입해주시기 바랍니다.</string>
     <string name="agree">동의</string>

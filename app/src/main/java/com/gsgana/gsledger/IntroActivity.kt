@@ -45,6 +45,8 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
     private val ENCRYPT_NAME = "a345f2f713ie8bd261"  //waiECtOFcBCylMcgjf7I
     private val ENCRYPT_NAME1 = "cBywaiEtOFlMg6jf7I"
     private val ENCRYPT_NAME6 = "JHv6DQ6loOBd6lLRrk"
+    private val PAST_LOGIN_EXIST = "j35v9H6ZZ8nLZhlGh8Np"
+
 
     //    private val UID_NAME = "7e19f667a8a1c7075f"
     private val KEY = "Kd6c26TK65YSmkw6oU"
@@ -110,47 +112,12 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_intro)
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
-        if (mAuth.currentUser == null) {
-            //First Signup
-            binding.introProgressBar.visibility = View.GONE
-            val mTransform = Linkify.TransformFilter { _: Matcher, _: String -> "" }
-            pattern1 = Pattern.compile("Privacy Policy")
-            pattern2 = Pattern.compile("개인정보보호정책")
-            pattern3 = Pattern.compile("Terms and Conditions")
-            pattern4 = Pattern.compile("이용약관")
 
-            Linkify.addLinks(
-                binding.agreeText,
-                pattern1,
-                "https://gsledger-29cad.firebaseapp.com/privacypolicy.html",
-                null,
-                mTransform
-            )
-            Linkify.addLinks(
-                binding.agreeText,
-                pattern2,
-                "https://gsledger-29cad.firebaseapp.com/privacypolicy_kr.html",
-                null,
-                mTransform
-            )
-            Linkify.addLinks(
-                binding.agreeText,
-                pattern3,
-                "https://gsledger-29cad.firebaseapp.com/termsandconditions.html",
-                null,
-                mTransform
-            )
-            Linkify.addLinks(
-                binding.agreeText,
-                pattern4,
-                "https://gsledger-29cad.firebaseapp.com/termsandconditions_kr.html",
-                null,
-                mTransform
-            )
+        if (sf.getInt(PAST_LOGIN_EXIST, 6) == 18) {
 
-            googleSignInOption(binding)
+        }
 
-        } else {
+        if (mAuth.currentUser != null) {
             //currentUser exist id
             FirebaseFirestore
                 .getInstance()

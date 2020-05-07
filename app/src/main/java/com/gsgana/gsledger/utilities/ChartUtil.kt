@@ -604,7 +604,7 @@ private fun setLineChart(
             textColor = chart_font
             gridColor = chart_goldB
             setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART)
-            setDrawGridLines(true)
+            setDrawGridLines(false)
             setLabelCount(3, true)              //none
             axisMaximum = dataSet.yMax * 25 / 24
             axisMinimum = dataSet.yMin * 23 / 24
@@ -777,7 +777,7 @@ private fun setShortLineGoldChart(
             textColor = context.resources.getColor(R.color.chart_font, null)
             gridColor = context.resources.getColor(R.color.chart_goldB, null)
             setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART)
-            setDrawGridLines(true)
+            setDrawGridLines(false)
             setLabelCount(3, true)              //none
             axisMaximum = dataSet.yMax * 25 / 24
             axisMinimum = dataSet.yMin * 23 / 24
@@ -919,7 +919,7 @@ private fun setShortLineSilverChart(
             textColor = chart_font
             gridColor = chart_silverB
             setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART)
-            setDrawGridLines(true)
+            setDrawGridLines(false)
             setLabelCount(3, true)              //none
             axisMaximum = dataSet.yMax * 25 / 24
             axisMinimum = dataSet.yMin * 23 / 24
@@ -1125,7 +1125,7 @@ private fun setDetailChart(
             textColor = chart_font
             gridColor = chart_goldB
             setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART)
-            setDrawGridLines(true)
+            setDrawGridLines(false)
             setLabelCount(3, true)              //none
             axisMaximum = dataSet.yMax * 25 / 24
             axisMinimum = dataSet.yMin * 23 / 24

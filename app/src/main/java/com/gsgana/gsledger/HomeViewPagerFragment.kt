@@ -1,5 +1,8 @@
 package com.gsgana.gsledger
 
+import android.animation.ArgbEvaluator
+import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
@@ -49,6 +52,11 @@ class HomeViewPagerFragment : Fragment() {
     private val TODAY_NAME = "0d07f05fd0c595f615"
 
     private val START_NAME = "zT6VjmOul6oDKF6FUI"
+
+    private var last_ag = 0.0
+    private var last_au = 0.0
+
+    private val DURATION: Long = 180
 
     private lateinit var option: SharedPreferences
 
@@ -199,6 +207,7 @@ class HomeViewPagerFragment : Fragment() {
 
             /////////////////////////////////////////////////////////////////////////////////////////////
 
+
             val divAuValue =
                 ((realData["AU"] ?: 0.0) - (realData["YESAU"] ?: 0.0)) / (realData["AU"]
                     ?: 0.0) * 100
@@ -207,6 +216,71 @@ class HomeViewPagerFragment : Fragment() {
                     ?: 0.0) * 100
             setPriceColor(context!!, divAuValue, "pl", binding.realGoldPL)
             setPriceColor(context!!, divAgValue, "pl", binding.realSilverPL)
+
+
+
+
+            if (!(divAuValue != last_au || last_au != 0.0)) {
+                if (divAuValue > last_au) {
+                    val objectAnimator = ObjectAnimator.ofObject(
+                        binding.realGoldPrice,
+                        "backgroundColor",
+                        ArgbEvaluator(),
+                        ContextCompat.getColor(context!!, R.color.white),
+                        ContextCompat.getColor(context!!, R.color.mu1_data_up)
+                    )
+                    objectAnimator.repeatCount = 1
+                    objectAnimator.repeatMode = ValueAnimator.REVERSE
+                    objectAnimator.duration = DURATION
+                    objectAnimator.start()
+                    last_au = divAuValue
+                } else {
+                    val objectAnimator = ObjectAnimator.ofObject(
+                        binding.realGoldPrice,
+                        "backgroundColor",
+                        ArgbEvaluator(),
+                        ContextCompat.getColor(context!!, R.color.white),
+                        ContextCompat.getColor(context!!, R.color.mu1_data_down)
+                    )
+                    objectAnimator.repeatCount = 1
+                    objectAnimator.repeatMode = ValueAnimator.REVERSE
+                    objectAnimator.duration = DURATION
+                    objectAnimator.start()
+                    last_au = divAuValue
+                }
+            }
+
+            if (!(divAgValue != last_ag || last_ag != 0.0)) {
+                if (divAgValue > last_ag) {
+                    val objectAnimator = ObjectAnimator.ofObject(
+                        binding.realSilverPrice,
+                        "backgroundColor",
+                        ArgbEvaluator(),
+                        ContextCompat.getColor(context!!, R.color.white),
+                        ContextCompat.getColor(context!!, R.color.mu1_data_up)
+                    )
+                    objectAnimator.repeatCount = 1
+                    objectAnimator.repeatMode = ValueAnimator.REVERSE
+                    objectAnimator.duration = DURATION
+                    objectAnimator.start()
+                    last_ag = divAgValue
+                } else {
+                    val objectAnimator = ObjectAnimator.ofObject(
+                        binding.realSilverPrice,
+                        "backgroundColor",
+                        ArgbEvaluator(),
+                        ContextCompat.getColor(context!!, R.color.white),
+                        ContextCompat.getColor(context!!, R.color.mu1_data_down)
+                    )
+                    objectAnimator.repeatCount = 1
+                    objectAnimator.repeatMode = ValueAnimator.REVERSE
+                    objectAnimator.duration = DURATION
+                    objectAnimator.start()
+                    last_ag = divAgValue
+                }
+            }
+
+
         }
 
 
@@ -388,5 +462,5 @@ fun getPriceData(
     binding: FragmentWrite5Binding,
     price: String
 ): Task<Map<String, String>> {
-    return getPrice(viewModel, binding,price)
+    return getPrice(viewModel, binding, price)
 }

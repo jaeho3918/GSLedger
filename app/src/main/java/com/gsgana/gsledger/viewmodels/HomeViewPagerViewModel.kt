@@ -10,12 +10,12 @@ class HomeViewPagerViewModel internal constructor(
 ) :
     ViewModel() {
 
-    private var dateTime = ""
-    fun setDateTime(string: String) {
+    private var dateTime = 0L
+    fun setDateTime(string: Long) {
         dateTime = string
     }
 
-    fun getDateTime(): String {
+    fun getDateTime(): Long {
         return dateTime
     }
 

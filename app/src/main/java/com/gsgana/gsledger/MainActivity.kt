@@ -5,21 +5,14 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.crashlytics.android.Crashlytics
-import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.InterstitialAd
-import com.google.android.gms.ads.MobileAds
-import com.google.android.gms.tasks.Task
 import com.google.firebase.analytics.FirebaseAnalytics
-import com.google.firebase.functions.FirebaseFunctions
 import com.google.firebase.messaging.FirebaseMessaging
 import com.gsgana.gsledger.databinding.ActivityMainBinding
-import com.gsgana.gsledger.utilities.InjectorUtils
-import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModel
 import io.fabric.sdk.android.Fabric
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -70,44 +63,17 @@ class MainActivity :
             FirebaseMessaging.getInstance().isAutoInitEnabled = true
         }
 
+        val test = intent.getCharArrayExtra(KEY)
+
         super.onCreate(savedInstanceState)
 
         DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
 
-        if (!(intent.getIntExtra(ADFREE_NAME, 6) == 18 || sf.getInt(ADFREE_NAME, 6) == 18)) {
-            setAds()
-        } else {
-            Handler().postDelayed(
-                {
-                    loading.visibility = View.GONE
-                    homeViewPagerFragmentpage.visibility = View.VISIBLE
-                }, 1800
-            )
-
-        }
-    }
-
-    private fun setAds() {
-        MobileAds.initialize(this)
-        mInterstitialAd = InterstitialAd(this)
-        mInterstitialAd.adUnitId = AD_ID
-        mBuilder = AdRequest.Builder()
-        mInterstitialAd.loadAd(mBuilder.build())
-        mInterstitialAd.adListener = object : AdListener() {
-            override fun onAdLoaded() {
-                if (mInterstitialAd.isLoaded) {
-                    if (doneOnce) {
-                        mInterstitialAd.show()
-                        doneOnce = false
-                    }
-                }
-            }
-            override fun onAdClosed() {
-                super.onAdClosed()
+        Handler().postDelayed(
+            {
                 loading.visibility = View.GONE
                 homeViewPagerFragmentpage.visibility = View.VISIBLE
-            }
-        }
+            }, 1800
+        )
     }
-
 }

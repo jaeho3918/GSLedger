@@ -28,7 +28,6 @@ import com.gsgana.gsledger.adapters.PagerAdapter
 import com.gsgana.gsledger.adapters.PagerAdapter.Companion.ADSANDOPTION_PAGE_INDEX
 import com.gsgana.gsledger.adapters.PagerAdapter.Companion.LEDGER_PAGE_INDEX
 import com.gsgana.gsledger.adapters.PagerAdapter.Companion.STAT_PAGE_INDEX
-import com.gsgana.gsledger.databinding.FragmentWrite5Binding
 import com.gsgana.gsledger.databinding.HomeViewPagerFragmentBinding
 import com.gsgana.gsledger.utilities.CURRENCY
 import com.gsgana.gsledger.utilities.CURRENCYSYMBOL
@@ -44,7 +43,7 @@ import java.util.regex.Pattern
 @Suppress("UNCHECKED_CAST")
 class HomeViewPagerFragment : Fragment() {
     private lateinit var binding: HomeViewPagerFragmentBinding
-    private val REAL_DB_PATH = "v6WqgKE6RLT6JkFuBv" //v6WqgKE6RLT6JkFuBv   실제 sYTVBn6F18VT6Ykw6L
+    private val REAL_DB_PATH = "sYTVBn6F18VT6Ykw6L" //v6WqgKE6RLT6JkFuBv   실제 sYTVBn6F18VT6Ykw6L
 
     private val PREF_NAME = "01504f779d6c77df04"
     private val CURR_NAME = "1w3d4f7w9d2qG2eT36"
@@ -97,7 +96,7 @@ class HomeViewPagerFragment : Fragment() {
             override fun onCancelled(p0: DatabaseError) {}
             override fun onDataChange(p0: DataSnapshot) {
                 val data = p0.value as HashMap<String, Double>
-                viewModel.setDateTime(data.get("DATE") as String)
+                viewModel.setDateTime(data.get("DATE") as Long)
                 data.remove("DATE")
 
                 currencyOption = sf.getInt(CURR_NAME, 0)
@@ -167,17 +166,28 @@ class HomeViewPagerFragment : Fragment() {
             val currencyOption = activity?.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
                 ?.getInt(CURR_NAME, 0)
 
-            val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
-            simpleDateFormat.timeZone = TimeZone.getTimeZone("UTC")
-            val date1 = simpleDateFormat.parse(viewModel.getDateTime())
-
-            val nowDf = SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
-
-            val dateString = nowDf.format(date1)
+//            val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
+//            simpleDateFormat.timeZone = TimeZone.getTimeZone("UTC")
+//            val date1 = simpleDateFormat.parse(viewModel.getDateTime())
 //
-            sf.edit().putString(TODAY_NAME, dateString.substring(0..15)).apply()
+//            val nowDf = SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
+//
+//            val dateString = nowDf.format(date1)
 
-            binding.realUpdatedDate.text = dateString.substring(0..15)
+            val cal = Calendar.getInstance()
+            val tz = cal.timeZone
+            val sdf = SimpleDateFormat("yyyy/MM/dd HH:mm")
+            sdf.timeZone = tz
+
+            val timestamp = viewModel.getDateTime()
+            val localTime = sdf.format(Date(timestamp.toLong() * 1000))
+
+
+
+//sf.edit().putString(TODAY_NAME, dateString.substring(0..15)).apply()
+            sf.edit().putString(TODAY_NAME, localTime).apply()
+
+            binding.realUpdatedDate.text = localTime
             binding.realGoldCurrency.text = CURRENCYSYMBOL[currencyOption ?: 0]
             binding.realSilverCurrency.text = CURRENCYSYMBOL[currencyOption ?: 0]
             binding.realGoldCurrency.text = CURRENCYSYMBOL[currencyOption ?: 0]
@@ -216,9 +226,6 @@ class HomeViewPagerFragment : Fragment() {
                     ?: 0.0) * 100
             setPriceColor(context!!, divAuValue, "pl", binding.realGoldPL)
             setPriceColor(context!!, divAgValue, "pl", binding.realSilverPL)
-
-
-
 
             if (!(divAuValue != last_au || last_au != 0.0)) {
                 if (divAuValue > last_au) {
@@ -280,6 +287,8 @@ class HomeViewPagerFragment : Fragment() {
                 }
             }
 
+            last_au = divAuValue
+            last_ag = divAgValue
 
         }
 
@@ -405,7 +414,6 @@ class HomeViewPagerFragment : Fragment() {
 
 private fun getPrice(
     viewModel: WriteViewModel,
-    binding: FragmentWrite5Binding,
     price: String
 ): Task<Map<String, String>> {
 
@@ -457,10 +465,8 @@ private fun getPrice(
 }
 
 fun getPriceData(
-
     viewModel: WriteViewModel,
-    binding: FragmentWrite5Binding,
     price: String
 ): Task<Map<String, String>> {
-    return getPrice(viewModel, binding, price)
+    return getPrice(viewModel, price)
 }

@@ -76,8 +76,7 @@ class AdsAndOptionFragment : Fragment(), PurchasesUpdatedListener {
                 .build()
 
             billingClient.startConnection(object : BillingClientStateListener {
-                override fun onBillingServiceDisconnected() {
-                }
+                override fun onBillingServiceDisconnected() {}
 
                 override fun onBillingSetupFinished(p0: BillingResult?) {
                     if (p0?.responseCode == BillingClient.BillingResponseCode.OK) {
@@ -286,14 +285,13 @@ class AdsAndOptionFragment : Fragment(), PurchasesUpdatedListener {
             }
 
 
-        binding.alertSwitchOption.setSelection(sf.getInt(ALERTSWITCH_NAME,0))
+        binding.alertSwitchOption.setSelection(sf.getInt(ALERTSWITCH_NAME, 0))
         if (sf.getInt(ALERTSWITCH_NAME, 0) == 0) {
             binding.alertRangeOption.isEnabled = false
         } else {
-            binding.alertRangeOption.setSelection(sf.getInt(ALERTRANGE_NAME,0))
+            binding.alertRangeOption.setSelection(sf.getInt(ALERTRANGE_NAME, 0))
         }
     }
-
 
 
     interface Callback {

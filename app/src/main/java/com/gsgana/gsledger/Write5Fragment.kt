@@ -97,7 +97,7 @@ class Write5Fragment : Fragment() {
 
                     val price_buf = "${price1}.${price2}"
 
-                    getPriceData(viewModel, binding, price_buf).addOnSuccessListener { data ->
+                    getPriceData(viewModel, price_buf).addOnSuccessListener { data ->
                         viewModel.setPriceTest(priceCalculate(binding).toString())
                         viewModel.setregField((data["reg"] ?: "0").toFloat())
                         viewModel.setcurField((data["cur"] ?: "0").toFloat())
@@ -139,7 +139,7 @@ class Write5Fragment : Fragment() {
 
                         val price_buf = "${price1}.${price2}"
 
-                        getPriceData(viewModel, binding, price_buf).addOnSuccessListener { data ->
+                        getPriceData(viewModel, price_buf).addOnSuccessListener { data ->
                             viewModel.setPriceTest(priceCalculate(binding).toString())
                             viewModel.setregField((data["reg"] ?: "0").toFloat())
                             viewModel.setcurField((data["cur"] ?: "0").toFloat())

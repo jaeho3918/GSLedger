@@ -41,7 +41,6 @@ private fun calChart1(
 ) {
 //    var chartCompareProduct = chartCompareProduct
 //    val context_input = context
-    var chartCompareProduct_input = chartCompareProduct
 
     val PREF_NAME = "01504f779d6c77df04"
     val CURR_NAME = "1w3d4f7w9d2qG2eT36"
@@ -115,7 +114,6 @@ private fun calChart1(
         binding.goldChartLayout.visibility = View.VISIBLE
         binding.goldChartProgress.visibility = View.GONE
 
-        chartCompareProduct_input = products.size
 
         binding.chartCardView.visibility = View.VISIBLE
     } else {
@@ -991,8 +989,7 @@ private fun detailChart(
 //    var chartCompareProduct = chartCompareProduct
 //    val context_input = context
 
-    val PREF_NAME = "01504f779d6c77df04"
-    val CURR_NAME = "1w3d4f7w9d2qG2eT36"
+
     var currency: Float
     val data = input_data
 
@@ -1002,7 +999,6 @@ private fun detailChart(
     val product = viewModel.getProduct().value
     if (product != null) {
 
-        val holder = mutableListOf<Float>()
 
         val list1 = data.get("value") as ArrayList<Float>
         val dates = data.get("date") as ArrayList<String>

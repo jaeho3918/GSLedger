@@ -1,15 +1,11 @@
 package com.gsgana.gsledger
 
-import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
-import android.text.util.Linkify
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
@@ -20,6 +16,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.Task
 import com.google.android.play.core.appupdate.AppUpdateManager
 import com.google.android.play.core.appupdate.AppUpdateManagerFactory
 import com.google.android.play.core.install.model.AppUpdateType
@@ -28,12 +25,12 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.functions.FirebaseFunctions
 import com.gsgana.gsledger.databinding.ActivityIntroBinding
 import io.fabric.sdk.android.Fabric
 import java.util.*
-import java.util.regex.Matcher
 import java.util.regex.Pattern
-import kotlin.math.sign
+import kotlin.collections.ArrayList
 
 
 @Suppress("NAME_SHADOWING", "DEPRECATED_IDENTITY_EQUALS", "UNCHECKED_CAST")
@@ -46,6 +43,9 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
     private val ENCRYPT_NAME1 = "cBywaiEtOFlMg6jf7I"
     private val ENCRYPT_NAME6 = "JHv6DQ6loOBd6lLRrk"
 
+    private val NEW_LABEL = "RECSHenWYqdadfXOog"
+    private val NEW_ENCRYPT = "X67LWGmYAc3rlCbmPe"
+
     //    private val UID_NAME = "7e19f667a8a1c7075f"
     private val KEY = "Kd6c26TK65YSmkw6oU"
     private val PREF_NAME = "01504f779d6c77df04"
@@ -55,6 +55,7 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
     private lateinit var rgl_b: MutableList<Char>
 //    private lateinit var gso: GoogleSignInOptions
 
+    private val functions = FirebaseFunctions.getInstance()
 
     private lateinit var mAuth: FirebaseAuth
     private lateinit var googleSigninClient: GoogleSignInClient
@@ -68,6 +69,7 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
     private lateinit var appUpdateManager: AppUpdateManager
 
     private val ADFREE_NAME = "CQi7aLBQH7dR7qyrCG"
+
 //    private lateinit var billingClient: BillingClient
 //    private val sku1800 = "gsledger_subscribe"
 //    private val sku3600 = "adfree_unlimited_entry"
@@ -75,6 +77,7 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
 
         // Obtain the FirebaseAnalytics instance.
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
@@ -105,98 +108,103 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
         sf = this.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
 
+//        sf.edit().putString(NEW_LABEL, "").apply()
+//        sf.edit().putString(NEW_ENCRYPT, "").apply()
+
         setContentView(R.layout.activity_intro)
         mAuth = FirebaseAuth.getInstance()
         binding = DataBindingUtil.setContentView(this, R.layout.activity_intro)
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
-        if (mAuth.currentUser == null) {
-            //First Signup
-            binding.introProgressBar.visibility = View.GONE
-            val mTransform = Linkify.TransformFilter { _: Matcher, _: String -> "" }
-            pattern1 = Pattern.compile("Privacy Policy")
-            pattern2 = Pattern.compile("개인정보보호정책")
-            pattern3 = Pattern.compile("Terms and Conditions")
-            pattern4 = Pattern.compile("이용약관")
-
-            Linkify.addLinks(
-                binding.agreeText,
-                pattern1,
-                "https://gsledger-29cad.firebaseapp.com/privacypolicy.html",
-                null,
-                mTransform
-            )
-            Linkify.addLinks(
-                binding.agreeText,
-                pattern2,
-                "https://gsledger-29cad.firebaseapp.com/privacypolicy_kr.html",
-                null,
-                mTransform
-            )
-            Linkify.addLinks(
-                binding.agreeText,
-                pattern3,
-                "https://gsledger-29cad.firebaseapp.com/termsandconditions.html",
-                null,
-                mTransform
-            )
-            Linkify.addLinks(
-                binding.agreeText,
-                pattern4,
-                "https://gsledger-29cad.firebaseapp.com/termsandconditions_kr.html",
-                null,
-                mTransform
-            )
-
-            googleSignInOption(binding)
-
-        } else {
+        if (mAuth.currentUser != null) {
             //currentUser exist id
-            FirebaseFirestore
-                .getInstance()
-                .collection(USERS_DB_PATH)
-                .document(mAuth.currentUser?.uid!!)
-                .get()
-                .addOnSuccessListener { data ->
-                    //if
-                    rgl_b = arrayListOf()
-                    val test11 = sf.getString(ENCRYPT_NAME6, "null")
-                    val test1123 = data.data
-                    val test = data.data?.get(
-                        sf.getString(ENCRYPT_NAME6, "null")
-                    ) as ArrayList<String>
+            if (sf.getString(NEW_LABEL, "") == "") {
+                FirebaseFirestore
+                    .getInstance()
+                    .collection(USERS_DB_PATH)
+                    .document(mAuth.currentUser?.uid!!)
+                    .get()
+                    .addOnSuccessListener { data ->
+                        //if
+                        rgl_b = arrayListOf()
+                        val test = data.data?.get(
+                            sf.getString(ENCRYPT_NAME6, "null")
+                        ) as ArrayList<String>
 
-                    for (s in test) {
-                        this.rgl_b.add(s.toCharArray()[0])
+                        for (s in test) {
+                            this.rgl_b.add(s.toCharArray()[0])
+                        }
+
+                        var label = generateLabel()
+                        var encrypt = generateRgl6()
+                        setNewKey(label, encrypt, test).addOnSuccessListener { result ->
+                            if (result[0] == 1) {
+                                this.finish()
+                            } else if (result[0] == 18) {
+                                sf.edit().putString(NEW_LABEL, label).apply()
+                                sf.edit().putString(NEW_ENCRYPT, encrypt).apply()
+                                label = ""
+                                test.clear()
+
+                                rgl = rgl_b.toCharArray()
+                                rgl_b.clear()
+                                val intent = Intent(this, MainActivity::class.java)
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                                intent.putExtra(KEY, rgl)
+                                startActivity(intent)
+                                rgl = charArrayOf()
+                                this.finish()
+                            }
+                        }
                     }
-                    test.clear()
-                    rgl = rgl_b.toCharArray()
-                    rgl_b.clear()
-                    val intent = Intent(this, MainActivity::class.java)
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                    intent.putExtra(KEY, rgl)
-                    startActivity(intent)
-                    rgl = charArrayOf()
-                    this.finish()
+            } else {
+                getNewKey(sf.getString(NEW_LABEL, "")!!, sf.getString(NEW_ENCRYPT, "")!!)
+                    .addOnSuccessListener {
+                        val intent = Intent(this, MainActivity::class.java)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                        intent.putExtra(KEY, it)
+                        startActivity(intent)
+                        this.finish()
+                    }
+            }
+        } else {
+
+            //firebase Auth currenct User not exist
+
+            if (sf.getString(NEW_LABEL, "") == "") {
+                var label = generateLabel()
+                val tset = generateRgl18()
+                val encrypt = generateRgl6()
+                setNewKey(label, encrypt, tset).addOnSuccessListener { result ->
+                    if (result[0] == 1) {
+                        this.finish()
+                    } else if (result[0] == 18) {
+                        sf.edit().putString(NEW_LABEL, label).apply()
+                        sf.edit().putString(NEW_ENCRYPT, encrypt).apply()
+                        label = ""
+                        rgl_b = arrayListOf()
+                        for (s in tset) {
+                            this.rgl_b.add(s.toCharArray()[0])
+                        }
+                        val intent = Intent(this, MainActivity::class.java)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                        intent.putExtra(KEY, rgl_b.toCharArray())
+                        startActivity(intent)
+                        this.finish()
+                    }
                 }
+            } else {
+                getNewKey(sf.getString(NEW_LABEL, "")!!, sf.getString(NEW_ENCRYPT, "")!!)
+                    .addOnSuccessListener {
+                        val intent = Intent(this, MainActivity::class.java)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                        intent.putExtra(KEY, it)
+                        startActivity(intent)
+                        this.finish()
+                    }
+            }
         }
     }
-
-//    override fun onResume() {
-//        super.onResume()
-//        appUpdateManager.appUpdateInfo
-//            .addOnSuccessListener {
-//                if (it.updateAvailability() == UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS) {
-//                    appUpdateManager.startUpdateFlowForResult(
-//                        it,
-//                        AppUpdateType.IMMEDIATE,
-//                        this,
-//                        UPDATE_REQUEST_CODE
-//                    )
-//                }
-//            }
-//    }
-
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -326,33 +334,6 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
             }
     }
 
-    private fun googleSignInOption(binding: ActivityIntroBinding) {
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id))
-            .requestEmail()
-            .build()
-        googleSigninClient = GoogleSignIn.getClient(this, gso)
-
-        binding.signInCheck.visibility = View.VISIBLE
-        binding.signupBtn.visibility = View.VISIBLE
-        binding.signupBtn.setOnClickListener {
-            if (!binding.agreeBox.isChecked) {
-                Toast.makeText(
-                    this,
-                    resources.getString(R.string.checkBox),
-                    Toast.LENGTH_LONG
-                ).show()
-            } else {
-                val signInIntent = googleSigninClient.signInIntent
-                binding.signupBtn.visibility = View.GONE
-                binding.agreeBox.visibility = View.GONE
-                binding.agreeText.visibility = View.GONE
-                binding.signupProgress.visibility = View.VISIBLE
-                startActivityForResult(signInIntent, RC_SIGN_IN)
-            }
-        }
-    }
-
     private fun Int.generateRgl(): String {
         val ALLOWED_CHARACTERS = "013567890123456789ABCDEFGHIJKLMNOPQRSTUWXYZ"
         val random = Random()
@@ -360,15 +341,6 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
         for (i in 0 until this)
             sb.append(ALLOWED_CHARACTERS[random.nextInt(ALLOWED_CHARACTERS.length)])
         return sb.toString()
-    }
-
-    private fun generateRgl6(length: Int = 36): List<String> {
-        val ALLOWED_CHARACTERS = "013567890123456789ABCDEFGHIJKLMNOPQRSTUWXYZ"
-        val random = Random()
-        val sb = mutableListOf<String>()
-        for (i in 0 until length)
-            sb.add(ALLOWED_CHARACTERS[random.nextInt(ALLOWED_CHARACTERS.length)].toString())
-        return sb
     }
 
     override fun onPurchasesUpdated(
@@ -386,5 +358,79 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
                 }
             }
         }
+    }
+
+    private fun generateRgl6(length: Int = 24): String {
+        val ALLOWED_CHARACTERS = "01356789012356789ABCDEFGHIJKLMNOPQRSTUWXYZ"
+        val random = Random()
+        var sb = ""
+        for (i in 0 until length)
+            sb += ALLOWED_CHARACTERS[random.nextInt(ALLOWED_CHARACTERS.length)]
+        return sb
+    }
+
+    private fun generateRgl18(length: Int = 24): List<String> {
+        val ALLOWED_CHARACTERS = "01356789012356789ABCDEFGHIJKLMNOPQRSTUWXYZ"
+        val random = Random()
+        var sb = mutableListOf<String>()
+        for (i: Int in 0 until length)
+            sb.add(ALLOWED_CHARACTERS[random.nextInt(ALLOWED_CHARACTERS.length)].toString())
+        return sb
+    }
+
+    private fun generateLabel(length: Int = 36): String {
+        val ALLOWED_CHARACTERS = "01356789012356789ABCDEFGHIJKLMNOPQRSTUWXYZ"
+        val random = Random()
+        var sb = ""
+        for (i in 0 until length)
+            sb += ALLOWED_CHARACTERS[random.nextInt(ALLOWED_CHARACTERS.length)]
+        return sb
+    }
+
+    private fun setNewKey(label: String, reg: String, list: List<String>): Task<ArrayList<Int>> {
+        // Create the arguments to the callable function.
+
+        val data = hashMapOf(
+            "label" to label,
+            "reg" to reg,
+            "list" to list
+        )
+
+        return functions
+            .getHttpsCallable("NEWXcgis5LkXO3g6ibNDE")
+            .call(data)
+            .continueWith { task ->
+                // This continuation runs on either success or failure, but if the task
+                // has failed then result will throw an Exception which will be
+                // propagated down.
+
+                val result = task.result?.data as ArrayList<Int>
+                result
+            }
+    }
+
+    private fun getNewKey(label: String, reg: String): Task<CharArray> {
+        // Create the arguments to the callable function.
+        val data = hashMapOf(
+            "label" to label,
+            "reg" to reg
+        )
+        return functions
+            .getHttpsCallable("NEGETKEYis5kXO3DEg6iN")
+            .call(data)
+            .continueWith { task ->
+                // This continuation runs on either success or failure, but if the task
+                // has failed then result will throw an Exception which will be
+                // propagated down.
+
+                val rgl = mutableListOf<Char>()
+
+                val result = task.result?.data as ArrayList<String>
+
+                for (s in result) {
+                    rgl.add(s.toCharArray()[0])
+                }
+                rgl.toCharArray()
+            }
     }
 }

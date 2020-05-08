@@ -58,7 +58,6 @@ class StatFragment : Fragment() {
     ): View? {
 
         sf = activity!!.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-        val switch = Boolean
         currencyOption = sf.getInt(CURR_NAME, 0)
         weightOption = sf.getInt(WEIGHT_NAME, 0)
 

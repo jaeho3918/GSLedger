@@ -206,45 +206,47 @@ class AdsAndOptionFragment : Fragment(), PurchasesUpdatedListener {
                 "US" -> {
                     binding.currencyOption.setSelection(0)
                     binding.weightUnitOption.setSelection(0)
+                    sf.edit()?.putInt(CURR_NAME, 0)?.apply()
+                    sf.edit()?.putInt(WEIGHT_NAME, 0)?.apply()
                 }
 
                 "KR" -> {
                     binding.currencyOption.setSelection(5)   // KRW
                     binding.weightUnitOption.setSelection(2) // KG
+                    sf.edit()?.putInt(CURR_NAME, 5)?.apply()
+                    sf.edit()?.putInt(WEIGHT_NAME, 2)?.apply()
                 }
 
                 "JP" -> {
                     binding.currencyOption.setSelection(4)   // KRW
                     binding.weightUnitOption.setSelection(2) // KG
+                    sf.edit()?.putInt(CURR_NAME, 4)?.apply()
+                    sf.edit()?.putInt(WEIGHT_NAME, 2)?.apply()
                 }
 
                 "IN" -> {
                     binding.currencyOption.setSelection(2)   // INR
                     binding.weightUnitOption.setSelection(2) // kg
+                    sf.edit()?.putInt(CURR_NAME, 2)?.apply()
+                    sf.edit()?.putInt(WEIGHT_NAME, 2)?.apply()
                 }
 
                 "GB" -> {
                     binding.currencyOption.setSelection(1)   // GBP
                     binding.weightUnitOption.setSelection(0) // oz
+                    sf.edit()?.putInt(CURR_NAME, 1)?.apply()
+                    sf.edit()?.putInt(WEIGHT_NAME, 0)?.apply()
                 }
 
                 "CN" -> {
-                    binding.currencyOption.setSelection(6)   // GBP
+                    binding.currencyOption.setSelection(6)   // CNY
                     binding.weightUnitOption.setSelection(2) // kg
-                }
-
-                else -> {
-                    binding.currencyOption.setSelection(
-                        (viewModel?.getRealData()?.value?.get("currency") ?: 0.0).toInt()
-                    )
-                    binding.weightUnitOption.setSelection(
-                        (viewModel?.getRealData()?.value?.get("weightUnit") ?: 0.0).toInt()
-                    )
+                    sf.edit()?.putInt(CURR_NAME, 6)?.apply()
+                    sf.edit()?.putInt(WEIGHT_NAME, 2)?.apply()
                 }
             }
-
-
             sf.edit().putInt(START_OPTION, 18).apply()
+
         } else {
             binding.currencyOption.setSelection(
                 (viewModel?.getRealData()?.value?.get("currency") ?: 0.0).toInt()

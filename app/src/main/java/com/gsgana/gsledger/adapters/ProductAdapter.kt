@@ -70,7 +70,9 @@ class ProductAdapter(private val context: Context, private val realData: Map<Str
                 HomeViewPagerFragmentDirections.actionHomeViewPagerFragmentToDetailFragment(
                     product.id!!
                 )
-            it.findNavController().navigate(direction)
+            if (it.findNavController().currentDestination?.id == R.id.homeViewPagerFragment) {
+                it.findNavController().navigate(direction)
+            }
         }
 
         @SuppressLint("DefaultLocale", "SetTextI18n")
@@ -190,9 +192,9 @@ class ProductAdapter(private val context: Context, private val realData: Map<Str
                 val grade = item.grade
                 val gradeNum = item.gradeNum.toString()
                 if (grade != "None") {
-                    if(grade.substring(0..3) == "PCGS"){
+                    if (grade.substring(0..3) == "PCGS") {
                         binding.certImage.setImageResource(R.drawable.ic_pg)
-                    }else if(grade.substring(0..2) == "NGC"){
+                    } else if (grade.substring(0..2) == "NGC") {
                         binding.certImage.setImageResource(R.drawable.ic_ngc)
                     }
                     binding.certLabel.text = "${grade} ${gradeNum}"

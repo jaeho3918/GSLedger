@@ -14,6 +14,14 @@ class WriteViewModel internal constructor(
     private var product = Product()
     fun getProduct() = product
 
+    private var min = 0f
+    fun getmin() = min
+    fun setmin(input: Float){ min= input}
+
+    private var max = 0f
+    fun getmax() = max
+    fun setmax(input: Float){ max= input}
+
     private var priceTest = ""
     fun getPriceTest() = priceTest
     fun setPriceTest(input : String){ priceTest = input }

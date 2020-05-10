@@ -191,7 +191,6 @@ class HomeViewPagerFragment : Fragment() {
             val localTime = sdf.format(Date(timestamp.toLong() * 1000))
 
 
-
 //sf.edit().putString(TODAY_NAME, dateString.substring(0..15)).apply()
             sf.edit().putString(TODAY_NAME, localTime).apply()
 
@@ -419,7 +418,7 @@ class HomeViewPagerFragment : Fragment() {
 
 private fun getPrice(
     viewModel: WriteViewModel,
-    price: String
+    price: String, label: String, reg: String, num: Int
 ): Task<Map<String, String>> {
 
     val functions: FirebaseFunctions = FirebaseFunctions.getInstance()
@@ -440,7 +439,7 @@ private fun getPrice(
         )
     }
     // Create the arguments to the callable function.
-    val productData = hashMapOf(
+    val data = hashMapOf(
         "metal" to viewModel.getmetalField1().toString(),
         "type1" to viewModel.gettypeField1().toString(),
         "brand" to viewModel.brand.value.toString(),
@@ -454,12 +453,15 @@ private fun getPrice(
         "year" to viewModel.getyearSeriesField().toString(),
         "date" to date_buf,
         "priceMerger" to price,
-        "price" to viewModel.price.value
+        "price" to viewModel.price.value,
+        "label" to label,
+        "reg" to reg,
+        "number" to num
     )
 
     return functions
-        .getHttpsCallable("summitData6")
-        .call(productData)
+        .getHttpsCallable("summitData18")
+        .call(data)
         .continueWith { task ->
             // This continuation runs on either success or failure, but if the task
             // has failed then result will throw an Exception which will be
@@ -471,7 +473,7 @@ private fun getPrice(
 
 fun getPriceData(
     viewModel: WriteViewModel,
-    price: String
+    price: String, label: String, reg: String, num: Int
 ): Task<Map<String, String>> {
-    return getPrice(viewModel, price)
+    return getPrice(viewModel, price, label, reg, num)
 }

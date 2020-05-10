@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.gsgana.gsledger.databinding.StatFragmentBinding
@@ -66,8 +67,10 @@ class StatFragment : Fragment() {
 //        binding.todayLabel.text = today
 
         binding.moveToChart.setOnClickListener {
-            findNavController()
-                .navigate(R.id.action_homeViewPagerFragment_to_chartFragment)
+            if (it.findNavController().currentDestination?.id == R.id.homeViewPagerFragment) {
+                findNavController()
+                    .navigate(R.id.action_homeViewPagerFragment_to_chartFragment)
+            }
         }
 
         viewModel.getRealData().observe(viewLifecycleOwner, Observer { _ ->
@@ -84,7 +87,7 @@ class StatFragment : Fragment() {
                     binding.totalSilverLayout.visibility = View.GONE
                 }
             }
-            getsetLabel(binding,viewModel)
+            getsetLabel(binding, viewModel)
 
             getShortLineGoldChart(context!!, viewModel, binding, viewModel.getchartData())
             getShortLineSilverChart(context!!, viewModel, binding, viewModel.getchartData())
@@ -170,14 +173,16 @@ class StatFragment : Fragment() {
                     chartCompareProduct,
                     context
                 )
-                getsetLabel(binding,viewModel)
+                getsetLabel(binding, viewModel)
             }, 600)
         })
 
 
         binding.addBtn.setOnClickListener {
-            findNavController()
-                .navigate(R.id.action_homeViewPagerFragment_to_write1Fragment)
+            if (it.findNavController().currentDestination?.id == R.id.homeViewPagerFragment) {
+                findNavController()
+                    .navigate(R.id.action_homeViewPagerFragment_to_write1Fragment)
+            }
         }
 
         return binding.root

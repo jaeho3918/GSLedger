@@ -183,28 +183,30 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
             //firebase Auth currenct User not exist
 
-            mAuth.signInAnonymously()
+
             if (sf.getString(NEW_LABEL, "") == "") {
-                var label = generateLabel()
-                val tset = generateRgl18()
-                val encrypt = generateRgl6()
-                setNewKey(label, encrypt, tset).addOnSuccessListener { result ->
-                    if (result[0] == 1) {
-                        this.finish()
-                    } else if (result[0] == 18) {
-                        sf.edit().putString(NEW_LABEL, label).apply()
-                        sf.edit().putString(NEW_ENCRYPT, encrypt).apply()
-                        sf.edit().putInt(NUMBER, result[1]).apply()
-                        label = ""
-                        rgl_b = arrayListOf()
-                        for (s in tset) {
-                            this.rgl_b.add(s.toCharArray()[0])
+                mAuth.signInAnonymously().addOnSuccessListener {
+                    var label = generateLabel()
+                    val tset = generateRgl18()
+                    val encrypt = generateRgl6()
+                    setNewKey(label, encrypt, tset).addOnSuccessListener { result ->
+                        if (result[0] == 1) {
+                            this.finish()
+                        } else if (result[0] == 18) {
+                            sf.edit().putString(NEW_LABEL, label).apply()
+                            sf.edit().putString(NEW_ENCRYPT, encrypt).apply()
+                            sf.edit().putInt(NUMBER, result[1]).apply()
+                            label = ""
+                            rgl_b = arrayListOf()
+                            for (s in tset) {
+                                this.rgl_b.add(s.toCharArray()[0])
+                            }
+                            val intent = Intent(this, MainActivity::class.java)
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                            intent.putExtra(KEY, rgl_b.toCharArray())
+                            startActivity(intent)
+                            this.finish()
                         }
-                        val intent = Intent(this, MainActivity::class.java)
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                        intent.putExtra(KEY, rgl_b.toCharArray())
-                        startActivity(intent)
-                        this.finish()
                     }
                 }
             } else {
@@ -221,6 +223,7 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
                         this.finish()
                     }
             }
+
         }
     }
 

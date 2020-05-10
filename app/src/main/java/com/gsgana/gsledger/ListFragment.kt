@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingResult
@@ -58,8 +59,10 @@ class ListFragment : Fragment(), PurchasesUpdatedListener {
 
 
         binding.writeBtn.setOnClickListener {
-            findNavController()
-                .navigate(R.id.action_homeViewPagerFragment_to_write1Fragment)
+            if (it.findNavController().currentDestination?.id == R.id.homeViewPagerFragment) {
+                findNavController()
+                    .navigate(R.id.action_homeViewPagerFragment_to_write1Fragment)
+            }
         }
 
         viewModel.getProducts().observe(viewLifecycleOwner) { result ->

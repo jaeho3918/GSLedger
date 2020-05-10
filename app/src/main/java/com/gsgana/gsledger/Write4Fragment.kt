@@ -3,12 +3,12 @@
 package com.gsgana.gsledger
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.INVISIBLE
-import android.view.View.VISIBLE
+import android.view.View.*
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
@@ -17,13 +17,21 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.gsgana.gsledger.databinding.FragmentWrite4Binding
+import com.gsgana.gsledger.databinding.FragmentWrite5Binding
+import com.gsgana.gsledger.utilities.CURR_NAME
 import com.gsgana.gsledger.utilities.GRADE
 import com.gsgana.gsledger.utilities.InjectorUtils
+import com.gsgana.gsledger.utilities.PREF_NAME
 import com.gsgana.gsledger.viewmodels.WriteViewModel
 import java.util.*
 
 
 class Write4Fragment : Fragment() {
+
+    private val NEW_LABEL = "RECSHenWYqdadfXOog"
+    private val NEW_ENCRYPT = "X67LWGmYAc3rlCbmPe"
+    private val NUMBER = "HYf75f2q2a36enW18b"
+    private lateinit var sf: SharedPreferences
 
     private lateinit var binding: FragmentWrite4Binding
 
@@ -31,11 +39,14 @@ class Write4Fragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        sf = activity!!.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+
         val viewModel =
             ViewModelProviders.of(
-                activity!!,
-                InjectorUtils.provideWriteViewModelFactory(activity!!, null)
-            )
+                    activity!!,
+                    InjectorUtils.provideWriteViewModelFactory(activity!!, null)
+                )
                 .get(WriteViewModel::class.java)
         val binding = DataBindingUtil.inflate<FragmentWrite4Binding>(
             inflater, R.layout.fragment_write4, container, false
@@ -50,7 +61,26 @@ class Write4Fragment : Fragment() {
         }
 
         binding.moveTo4.setOnClickListener {
-            findNavController().navigate(R.id.action_write4Fragment_to_write5Fragment)
+
+            binding.moveTo4.isEnabled = false
+            binding.summitProgress.visibility = VISIBLE
+            binding.moveTo4.text = ""
+            viewModel.setcurrencyField(
+                activity!!.getSharedPreferences(
+                    PREF_NAME,
+                    Context.MODE_PRIVATE
+                ).getInt(CURR_NAME, 0)
+            )
+
+            getPriceData(
+                viewModel, "1.1", sf.getString(NEW_LABEL, "")!!,
+                sf.getString(NEW_ENCRYPT, "")!!,
+                sf.getInt(NUMBER, 0)
+            ).addOnSuccessListener { data ->
+                viewModel.setmin(data["min"]!!.toFloat())
+                viewModel.setmax(data["max"]!!.toFloat())
+                findNavController().navigate(R.id.action_write4Fragment_to_write5Fragment)
+            }
         }
 
         setSpinnerUi(binding, viewModel)
@@ -108,7 +138,7 @@ class Write4Fragment : Fragment() {
         val _year = cal.get(Calendar.YEAR)
         val _month = cal.get(Calendar.MONTH)
         val _date = cal.get(Calendar.DATE)
-        var buf_month : String
+        var buf_month: String
         cal.set(1993, 3, 18)
 
         val now = System.currentTimeMillis() - 1000
@@ -133,7 +163,7 @@ class Write4Fragment : Fragment() {
             ) { _: DatePicker, i: Int, i1: Int, i2: Int ->
                 viewModel.setdateField("$i/${i1 + 1}/$i2")
                 binding.yearSeriesPicker.value = i
-                viewModel.setyearSeriesField( i)
+                viewModel.setyearSeriesField(i)
             }
         }
 
@@ -151,15 +181,23 @@ class Write4Fragment : Fragment() {
         binding.yearSeriesPicker.maxValue = year //
 
         binding.yearSeriesPicker.value = year
-        viewModel.setyearSeriesField( year)
+        viewModel.setyearSeriesField(year)
 
         binding.yearSeriesPicker.wrapSelectorWheel = false
         binding.yearSeriesPicker.descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
         binding.yearSeriesPicker.setOnValueChangedListener { _: NumberPicker?, _: Int, newVal: Int ->
-            viewModel.setyearSeriesField( newVal)
+            viewModel.setyearSeriesField(newVal)
         }
+    }
 
+    private fun priceCalculate(binding: FragmentWrite5Binding): Float {
+        var text1 = binding.priceEditText1.text.toString()
+        var text2 = binding.priceEditText2.text.toString()
 
+        if (text1 == "") text1 = "0"
+        if (text2 == "") text2 = "0"
+
+        return "${text1}.${text2}".toFloat()
     }
 
     private fun Float.dipToPixels(): Float {

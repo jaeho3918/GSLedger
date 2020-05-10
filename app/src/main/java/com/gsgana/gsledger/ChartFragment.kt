@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.github.mikephil.charting.components.MarkerView
 import com.github.mikephil.charting.components.XAxis
@@ -117,8 +118,10 @@ class ChartFragment : Fragment() {
         }
 
         binding.chartBackButton.setOnClickListener {
-            findNavController()
-                .navigate(R.id.action_chartFragment_to_homeViewPagerFragment)
+            if (it.findNavController().currentDestination?.id == R.id.chartFragment) {
+                findNavController()
+                    .navigate(R.id.action_chartFragment_to_homeViewPagerFragment)
+            }
         }
 
 

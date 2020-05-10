@@ -76,26 +76,19 @@
                     android:text="@string/Product"
                     android:textSize="24sp" />
 
-                <Spinner
-                    android:id="@+id/brand_spn"
-                    android:layout_marginTop="18dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginBottom="24dp" />
-
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/brand_image"
+                    android:layout_marginTop="18dp"
                     android:layout_width="match_parent"
                     android:layout_height="240dp"
                     android:layout_marginBottom="24dp" />
 
-                <TextView
-                    android:id="@+id/brand_title"
+                <Spinner
+                    android:id="@+id/brand_spn"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text=""
-                    android:textAlignment="center"
-                    android:textSize="29sp" />
+                    android:layout_height="50dp"
+                    android:layout_marginBottom="24dp" />
+
 
             </LinearLayout>
 

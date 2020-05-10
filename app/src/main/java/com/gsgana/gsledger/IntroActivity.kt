@@ -23,6 +23,7 @@ import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.functions.FirebaseFunctions
@@ -45,6 +46,7 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
     private val NEW_LABEL = "RECSHenWYqdadfXOog"
     private val NEW_ENCRYPT = "X67LWGmYAc3rlCbmPe"
+    private val NUMBER = "HYf75f2q2a36enW18b"
 
     //    private val UID_NAME = "7e19f667a8a1c7075f"
     private val KEY = "Kd6c26TK65YSmkw6oU"
@@ -57,6 +59,7 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
     private val functions = FirebaseFunctions.getInstance()
 
+    private lateinit var mfirebase: FirebaseUser
     private lateinit var mAuth: FirebaseAuth
     private lateinit var googleSigninClient: GoogleSignInClient
     private lateinit var binding: ActivityIntroBinding
@@ -117,6 +120,9 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
         if (mAuth.currentUser != null) {
+            mAuth.signOut()
+            mAuth.signInAnonymously()
+
             //currentUser exist id
             if (sf.getString(NEW_LABEL, "") == "") {
                 FirebaseFirestore
@@ -143,6 +149,7 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
                             } else if (result[0] == 18) {
                                 sf.edit().putString(NEW_LABEL, label).apply()
                                 sf.edit().putString(NEW_ENCRYPT, encrypt).apply()
+                                sf.edit().putInt(NUMBER, result[1]).apply()
                                 label = ""
                                 test.clear()
 
@@ -158,7 +165,11 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
                         }
                     }
             } else {
-                getNewKey(sf.getString(NEW_LABEL, "")!!, sf.getString(NEW_ENCRYPT, "")!!)
+                getNewKey(
+                    sf.getString(NEW_LABEL, "")!!,
+                    sf.getString(NEW_ENCRYPT, "")!!,
+                    sf.getInt(NUMBER, 0)
+                )
                     .addOnSuccessListener {
                         val intent = Intent(this, MainActivity::class.java)
                         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
@@ -171,6 +182,7 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
 
             //firebase Auth currenct User not exist
 
+            mAuth.signInAnonymously()
             if (sf.getString(NEW_LABEL, "") == "") {
                 var label = generateLabel()
                 val tset = generateRgl18()
@@ -181,6 +193,7 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
                     } else if (result[0] == 18) {
                         sf.edit().putString(NEW_LABEL, label).apply()
                         sf.edit().putString(NEW_ENCRYPT, encrypt).apply()
+                        sf.edit().putInt(NUMBER, result[1]).apply()
                         label = ""
                         rgl_b = arrayListOf()
                         for (s in tset) {
@@ -194,7 +207,11 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
                     }
                 }
             } else {
-                getNewKey(sf.getString(NEW_LABEL, "")!!, sf.getString(NEW_ENCRYPT, "")!!)
+                getNewKey(
+                    sf.getString(NEW_LABEL, "")!!,
+                    sf.getString(NEW_ENCRYPT, "")!!,
+                    sf.getInt(NUMBER, 0)
+                )
                     .addOnSuccessListener {
                         val intent = Intent(this, MainActivity::class.java)
                         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
@@ -409,11 +426,12 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
             }
     }
 
-    private fun getNewKey(label: String, reg: String): Task<CharArray> {
+    private fun getNewKey(label: String, reg: String, num: Int): Task<CharArray> {
         // Create the arguments to the callable function.
         val data = hashMapOf(
             "label" to label,
-            "reg" to reg
+            "reg" to reg,
+            "number" to num
         )
         return functions
             .getHttpsCallable("NEGETKEYis5kXO3DEg6iN")

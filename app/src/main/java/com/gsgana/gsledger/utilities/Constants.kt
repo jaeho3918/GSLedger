@@ -146,15 +146,15 @@ val METALCODE = arrayOf(
 //}
 
 val CURRENCY = arrayOf(
-    "USD", "INR", "GBP", "EUR", "JPY", "KRW", "CNY", "CAD", "AUD"
+    "USD", "GBP", "INR", "EUR", "JPY", "KRW", "CNY", "CAD", "AUD"
 )
 
 val CURRENCYANDSYMBOL = arrayOf(
-    "USD: \$", "INR: ₹", "GBP: ￡", "EUR: €", "JPY: ¥", "KRW: ₩", "CNY: Ұ", "CAD: C\$", "AUD: A\$"
+    "USD: \$", "GBP: ￡", "INR: ₹", "EUR: €", "JPY: ¥", "KRW: ₩", "CNY: Ұ", "CAD: C\$", "AUD: A\$"
 )
 
 val CURRENCYSYMBOL = arrayOf(
-    "$", "₹", "￡", "€", "¥", "₩", "Ұ", "$", "$"
+    "$", "￡", "₹", "€", "¥", "₩", "Ұ", "$", "$"
 )
 
 val ALERTSWITCH = arrayOf(

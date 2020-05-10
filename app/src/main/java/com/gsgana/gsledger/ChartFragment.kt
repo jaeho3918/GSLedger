@@ -47,6 +47,10 @@ class ChartFragment : Fragment() {
 
     private lateinit var fm: FragmentManager
 
+    private val NEW_LABEL = "RECSHenWYqdadfXOog"
+    private val NEW_ENCRYPT = "X67LWGmYAc3rlCbmPe"
+    private val NUMBER = "HYf75f2q2a36enW18b"
+
     private val functions: FirebaseFunctions = FirebaseFunctions.getInstance()
 
     private val KEY = "Kd6c26TK65YSmkw6oU"
@@ -60,7 +64,7 @@ class ChartFragment : Fragment() {
     private lateinit var mBuilder: AdRequest.Builder
 
     private var doneOnce = true
-    private val AD_ID = "ca-app-pub-8453032642509497/3082833180"
+    private val AD_ID = "ca-app-pub-3940256099942544/8691691433"
     // 실제   "ca-app-pub-8453032642509497/3082833180"
 //  // 테스트 "ca-app-pub-3940256099942544/8691691433"
 
@@ -96,7 +100,11 @@ class ChartFragment : Fragment() {
         binding.todayLabel.text = today
         binding.todayLabel1.text = today
 
-        getChart().addOnSuccessListener { data ->
+        getChart(
+            sf.getString(NEW_LABEL, "")!!,
+            sf.getString(NEW_ENCRYPT, "")!!,
+            sf.getInt(NUMBER, 0)
+        ).addOnSuccessListener { data ->
             val list1 = data.get("value_AU") as ArrayList<Float>
             val list2 = data.get("value_AG") as ArrayList<Float>
             val dates = data.get("date") as ArrayList<String>
@@ -352,19 +360,20 @@ class ChartFragment : Fragment() {
         }
     }
 
-    private fun getChart(): Task<Map<*, ArrayList<*>>> {
+    private fun getChart(label: String, reg: String, num: Int): Task<Map<*, ArrayList<*>>> {
 
         // Create the arguments to the callable function.
 
         val data = hashMapOf(
-            "date" to listOf<String>(),
-            "value_AU" to listOf<Float>(),
-            "value_AG" to listOf<Float>()
+            "label" to label,
+            "reg" to reg,
+            "number" to num
         )
+
         return functions
-            .getHttpsCallable("getLongChart")
+            .getHttpsCallable("L3Vi6HftOI0HK6VH6rHsB6At")
             .call(data)
-            .continueWith { task ->
+            .continueWith {task ->
                 // This continuation runs on either success or failure, but if the task
                 // has failed then result will throw an Exception which will be
                 // propagated down.

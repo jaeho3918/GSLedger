@@ -101,8 +101,8 @@ class Write2Fragment : Fragment() {
                 val metal = METAL[viewModel.getmetalField1()?:0].toLowerCase(Locale.getDefault())
                 val type = TYPE[viewModel.gettypeField1()?:0].toLowerCase(Locale.getDefault())
 
-                binding.brandTitle.text =
-                    "${write2Array?.get(position)} ${metal.capitalize()} ${type.capitalize()} "
+//                binding.brandTitle.text =
+//                    "${write2Array?.get(position)} ${metal.capitalize()} ${type.capitalize()} "
 
                 brand = (brand ?: "default").toLowerCase(Locale.getDefault()).replace(" ", "").replace("'", "")
                     .replace(".", "").replace("-", "")

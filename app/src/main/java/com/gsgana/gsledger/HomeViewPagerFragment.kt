@@ -55,6 +55,10 @@ class HomeViewPagerFragment : Fragment() {
     private var last_ag = 0.0
     private var last_au = 0.0
 
+    private val NEW_LABEL = "RECSHenWYqdadfXOog"
+    private val NEW_ENCRYPT = "X67LWGmYAc3rlCbmPe"
+    private val NUMBER = "HYf75f2q2a36enW18b"
+
     private val DURATION: Long = 180
 
     private lateinit var option: SharedPreferences
@@ -110,7 +114,11 @@ class HomeViewPagerFragment : Fragment() {
             }
         })
 
-        getChart().addOnSuccessListener { data ->
+        getChart(
+            sf.getString(NEW_LABEL, "")!!,
+            sf.getString(NEW_ENCRYPT, "")!!,
+            sf.getInt(NUMBER, 0)
+        ).addOnSuccessListener { data ->
             if (!data.isNullOrEmpty()) {
                 viewModel.setchartData(data)
             }
@@ -384,32 +392,29 @@ class HomeViewPagerFragment : Fragment() {
         }
     }
 
-    private fun getChart(): Task<Map<String, ArrayList<*>>> {
+    private fun getChart(label: String, reg: String, num: Int): Task<Map<String, ArrayList<*>>> {
         // Create the arguments to the callable function.
         lateinit var functions: FirebaseFunctions// ...
 
         functions = FirebaseFunctions.getInstance()
 
         val data = hashMapOf(
-            "date" to listOf<String>(),
-            "value_AU" to listOf<Float>(),
-            "value_AG" to listOf<Float>()
+            "label" to label,
+            "reg" to reg,
+            "number" to num
         )
 
         return functions
-            .getHttpsCallable("getShortChart")
+            .getHttpsCallable("SG0ZRjr99Z1OAdeROjF1e6nS")
             .call(data)
             .continueWith { task ->
                 // This continuation runs on either success or failure, but if the task
                 // has failed then result will throw an Exception which will be
                 // propagated down.
-
                 val result = task.result?.data as Map<String, ArrayList<*>>
                 result
             }
     }
-
-
 }
 
 private fun getPrice(

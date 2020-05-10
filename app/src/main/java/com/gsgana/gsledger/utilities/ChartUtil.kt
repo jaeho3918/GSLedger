@@ -7,7 +7,6 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.view.View
-import android.widget.TextView
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.components.MarkerView
 import com.github.mikephil.charting.components.XAxis
@@ -17,18 +16,13 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.formatter.PercentFormatter
 import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.utils.MPPointF
-import com.google.android.gms.tasks.Task
-import com.google.firebase.functions.FirebaseFunctions
 import com.gsgana.gsledger.R
 import com.gsgana.gsledger.data.Product
 import com.gsgana.gsledger.databinding.DetailFragmentBinding
-import com.gsgana.gsledger.databinding.FragmentWrite5Binding
 import com.gsgana.gsledger.databinding.StatFragmentBinding
 import com.gsgana.gsledger.viewmodels.DetailViewModel
 import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModel
-import com.gsgana.gsledger.viewmodels.WriteViewModel
 import kotlinx.android.synthetic.main.marker_view.view.*
-import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 

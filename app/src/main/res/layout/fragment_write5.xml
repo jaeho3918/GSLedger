@@ -161,8 +161,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="36dp"
                         android:gravity="center"
-                        android:orientation="vertical"
-                        android:visibility="gone">
+                        android:orientation="vertical">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -190,8 +189,6 @@
                                 android:id="@+id/priceMin"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-
-                                android:text="min"
                                 android:textSize="21dp" />
 
                             <TextView
@@ -215,8 +212,6 @@
                                 android:id="@+id/priceMax"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-
-                                android:text="max"
                                 android:textAlignment="center"
                                 android:textSize="21dp" />
 

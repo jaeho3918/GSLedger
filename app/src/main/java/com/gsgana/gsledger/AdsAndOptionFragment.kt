@@ -1,32 +1,31 @@
 package com.gsgana.gsledger
 
-import android.app.Activity
 import android.app.AlertDialog
 import android.content.Context
-import android.content.DialogInterface
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
 import android.util.TypedValue
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.android.billingclient.api.*
+import com.firebase.ui.auth.AuthUI.getApplicationContext
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.messaging.FirebaseMessaging
 import com.gsgana.gsledger.databinding.AdsAndOptionFragmentBinding
 import com.gsgana.gsledger.utilities.*
 import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModel
 import kotlinx.android.synthetic.main.ads_and_option_fragment.*
+import java.util.*
 
 
 class AdsAndOptionFragment : Fragment(), PurchasesUpdatedListener {
@@ -49,6 +48,8 @@ class AdsAndOptionFragment : Fragment(), PurchasesUpdatedListener {
 
     private val ALERTSWITCH_NAME = "Ly6gWNc6kHb6hXf0yz"
     private val ALERTRANGE_NAME = "g6b6UQL9Prae7b5h2A"
+
+    private val START_OPTION = "P6Uga62r9b5Ae7bQLh"
 
     private val KEY = "Kd6c26TK65YSmkw6oU"
     private val viewModel: HomeViewPagerViewModel by viewModels {
@@ -198,13 +199,61 @@ class AdsAndOptionFragment : Fragment(), PurchasesUpdatedListener {
                 }
             }
 
+        if (sf.getInt(START_OPTION, 6) == 6) {
+            val country = Locale.getDefault().country
 
-        binding.currencyOption.setSelection(
-            (viewModel?.getRealData()?.value?.get("currency") ?: 0.0).toInt()
-        )
-        binding.weightUnitOption.setSelection(
-            (viewModel?.getRealData()?.value?.get("weightUnit") ?: 0.0).toInt()
-        )
+            when (country) {
+                "US" -> {
+                    binding.currencyOption.setSelection(0)
+                    binding.weightUnitOption.setSelection(0)
+                }
+
+                "KR" -> {
+                    binding.currencyOption.setSelection(5)   // KRW
+                    binding.weightUnitOption.setSelection(2) // KG
+                }
+
+                "JP" -> {
+                    binding.currencyOption.setSelection(4)   // KRW
+                    binding.weightUnitOption.setSelection(2) // KG
+                }
+
+                "IN" -> {
+                    binding.currencyOption.setSelection(2)   // INR
+                    binding.weightUnitOption.setSelection(2) // kg
+                }
+
+                "GB" -> {
+                    binding.currencyOption.setSelection(1)   // GBP
+                    binding.weightUnitOption.setSelection(0) // oz
+                }
+
+                "CN" -> {
+                    binding.currencyOption.setSelection(6)   // GBP
+                    binding.weightUnitOption.setSelection(2) // kg
+                }
+
+                else -> {
+                    binding.currencyOption.setSelection(
+                        (viewModel?.getRealData()?.value?.get("currency") ?: 0.0).toInt()
+                    )
+                    binding.weightUnitOption.setSelection(
+                        (viewModel?.getRealData()?.value?.get("weightUnit") ?: 0.0).toInt()
+                    )
+                }
+            }
+
+
+            sf.edit().putInt(START_OPTION, 18).apply()
+        } else {
+            binding.currencyOption.setSelection(
+                (viewModel?.getRealData()?.value?.get("currency") ?: 0.0).toInt()
+            )
+            binding.weightUnitOption.setSelection(
+                (viewModel?.getRealData()?.value?.get("weightUnit") ?: 0.0).toInt()
+            )
+        }
+
 
         adapter =
             ArrayAdapter(

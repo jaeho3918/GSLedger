@@ -62,8 +62,8 @@ private fun calChart1(
 
     val products = viewModel.getProducts().value
     if (!products.isNullOrEmpty()) {
-        binding.goldChartProgress.visibility = View.VISIBLE
-        binding.goldChartLayout.visibility = View.GONE
+        binding.totalChartProgress.visibility = View.VISIBLE
+        binding.totalchartLayout.visibility = View.GONE
         val holder_AG = mutableListOf<Float>()
         val holder_AU = mutableListOf<Float>()
         for (i in 0..69) {
@@ -105,13 +105,11 @@ private fun calChart1(
             viewModel
         )
 
-        binding.goldChartLayout.visibility = View.VISIBLE
-        binding.goldChartProgress.visibility = View.GONE
-
-
-        binding.chartCardView.visibility = View.VISIBLE
+        binding.totalchartLayout.visibility = View.VISIBLE
+        binding.totalChartProgress.visibility = View.GONE
+        binding.totalchartCardView.visibility = View.VISIBLE
     } else {
-        binding.chartCardView.visibility = View.GONE
+        binding.totalchartCardView.visibility = View.GONE
     }
 
 }
@@ -130,7 +128,7 @@ fun getcalChart1(
             context
         )
     } else {
-        binding.totalChartLayout.visibility = View.GONE
+        binding.totalchartCardView.visibility = View.GONE
     }
 }
 
@@ -954,7 +952,6 @@ private fun setLabel(binding: StatFragmentBinding, viewModel: HomeViewPagerViewM
             "%,.2f",
             viewModel.getRealDataValue()["AU"]!! * viewModel.getRealDataValue()[CURRENCY[currency]]!! * weight
         )
-    binding.goldRealLayout.visibility = View.VISIBLE
     binding.goldRealWeight.text =
         "1 " + WEIGHTUNIT[viewModel.getRealDataValue().getValue("weightUnit").toInt()] + ": "
 
@@ -964,7 +961,6 @@ private fun setLabel(binding: StatFragmentBinding, viewModel: HomeViewPagerViewM
             "%,.2f",
             viewModel.getRealDataValue()["AG"]!! * viewModel.getRealDataValue()[CURRENCY[currency]]!! * weight
         )
-    binding.silverRealLayout.visibility = View.VISIBLE
     binding.silverRealWeight.text =
         "1 " + WEIGHTUNIT[viewModel.getRealDataValue().getValue("weightUnit").toInt()] + ": "
 }

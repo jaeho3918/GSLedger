@@ -120,8 +120,6 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
         if (mAuth.currentUser != null) {
-            mAuth.signOut()
-            mAuth.signInAnonymously()
 
             //currentUser exist id
             if (sf.getString(NEW_LABEL, "") == "") {
@@ -152,6 +150,9 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
                                 sf.edit().putInt(NUMBER, result[1]).apply()
                                 label = ""
                                 test.clear()
+
+                                mAuth.signOut()
+                                mAuth.signInAnonymously()
 
                                 rgl = rgl_b.toCharArray()
                                 rgl_b.clear()

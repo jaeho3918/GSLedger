@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.view.marginBottom
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
@@ -72,50 +73,68 @@ class StatFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
 
         binding.chartLayout.goldZoom?.setOnClickListener {
+
+            val firstConstraintSet = ConstraintSet()
+            val secondConstraintSet = ConstraintSet()
+            val constraintLayout = binding.chartLayout as ConstraintLayout
+            firstConstraintSet.load(context!!, R.layout.chart_layout)
+            secondConstraintSet.load(context!!, R.layout.chart_gold)
+
             if (!FLAG_GOLDCHART) {
-                val secondConstraintSet = ConstraintSet()
-                val constraintLayout = binding.chartLayout as ConstraintLayout
-                secondConstraintSet.load(context!!, R.layout.chart_gold)
+                binding.chartLayout.goldZoom.background =
+                    resources.getDrawable(R.drawable.ic_remove_black_24dp, null)
+
+                getShortLineGoldChartZoom(context!!, viewModel, binding, viewModel.getchartData())
+
                 TransitionManager.beginDelayedTransition(constraintLayout)
                 secondConstraintSet.applyTo(constraintLayout)
                 FLAG_GOLDCHART = true
+
             } else {
-                val secondConstraintSet = ConstraintSet()
-                val constraintLayout = R.layout.chart_gold as ConstraintLayout
-                secondConstraintSet.load(context!!, R.layout.chart_layout)
+                binding.chartLayout.goldZoom.background =
+                    resources.getDrawable(R.drawable.ic_add_black_24dp, null)
+
+                getShortLineGoldChart(context!!, viewModel, binding, viewModel.getchartData())
+
                 TransitionManager.beginDelayedTransition(constraintLayout)
-                secondConstraintSet.applyTo(constraintLayout)
+                firstConstraintSet.applyTo(constraintLayout)
                 FLAG_GOLDCHART = false
             }
         }
 
         binding.chartLayout.silverZoom?.setOnClickListener {
-            if (!FLAG_GOLDCHART) {
-                val secondConstraintSet = ConstraintSet()
-                val constraintLayout = binding.chartLayout as ConstraintLayout
-                secondConstraintSet.load(context!!, R.layout.chart_silver)
+            val firstConstraintSet = ConstraintSet()
+            val secondConstraintSet = ConstraintSet()
+            val constraintLayout = binding.chartLayout as ConstraintLayout
+            firstConstraintSet.load(context!!, R.layout.chart_layout)
+            secondConstraintSet.load(context!!, R.layout.chart_silver)
+
+            if (!FLAG_SILVERCHART) {
+                binding.chartLayout.silverZoom.background =
+                    resources.getDrawable(R.drawable.ic_remove_black_24dp, null)
+
+                getShortLineSilverChartZoom(context!!, viewModel, binding, viewModel.getchartData())
+
                 TransitionManager.beginDelayedTransition(constraintLayout)
                 secondConstraintSet.applyTo(constraintLayout)
-                FLAG_GOLDCHART = true
+                FLAG_SILVERCHART = true
             } else {
-                val secondConstraintSet = ConstraintSet()
-                val constraintLayout = R.layout.chart_silver as ConstraintLayout
-                secondConstraintSet.load(context!!, R.layout.chart_layout)
+                binding.chartLayout.silverZoom.background =
+                    resources.getDrawable(R.drawable.ic_add_black_24dp, null)
+
+                getShortLineSilverChart(context!!, viewModel, binding, viewModel.getchartData())
+
                 TransitionManager.beginDelayedTransition(constraintLayout)
-                secondConstraintSet.applyTo(constraintLayout)
-                FLAG_GOLDCHART = false
+                firstConstraintSet.applyTo(constraintLayout)
+                FLAG_SILVERCHART = false
             }
         }
 
-//        val today = sf.getString(TODAY_NAME, "")
-//        binding.todayLabel.text = today
 
-//        binding.moveToChart.setOnClickListener {
-//            if (it.findNavController().currentDestination?.id == R.id.homeViewPagerFragment) {
-//                findNavController()
-//                    .navigate(R.id.action_homeViewPagerFragment_to_chartFragment)
-//            }
-//        }
+
+
+
+
 
         viewModel.getRealData().observe(viewLifecycleOwner, Observer { _ ->
             if (!viewModel.getProducts().value.isNullOrEmpty()) {
@@ -133,8 +152,11 @@ class StatFragment : Fragment() {
             }
             getsetLabel(binding, viewModel)
 
-            getShortLineGoldChart(context!!, viewModel, binding, viewModel.getchartData())
-            getShortLineSilverChart(context!!, viewModel, binding, viewModel.getchartData())
+            if (!(!FLAG_GOLDCHART && !FLAG_SILVERCHART)) {
+                getShortLineGoldChart(context!!, viewModel, binding, viewModel.getchartData())
+                getShortLineSilverChart(context!!, viewModel, binding, viewModel.getchartData())
+            }
+
             Handler().postDelayed({
                 getcalChart1(
                     binding,

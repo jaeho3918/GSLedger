@@ -653,8 +653,6 @@ private class CustomMarkerView(
     }
 }
 
-
-
 private fun setShortLineGoldChart(
     context: Context,
     viewModel: HomeViewPagerViewModel,
@@ -957,8 +955,8 @@ private fun setShortLineGoldChartZoom(
 
     val PREF_NAME = "01504f779d6c77df04"
     val CURR_NAME = "1w3d4f7w9d2qG2eT36"
-    var currency: Float
-    var currencySymbol: String
+    val currency: Float
+    val currencySymbol: String
     val weight: Float = when (viewModel.getRealDataValue()["weightUnit"]!!) {
         0.0 -> 1.0f //toz
         1.0 -> 0.03215f //g
@@ -1004,7 +1002,6 @@ private fun setShortLineGoldChartZoom(
     }
 
     val date = data.getValue("date") as ArrayList<String>
-
     val dataSet = LineDataSet(result, "")
         .apply {
             setDrawFilled(true)
@@ -1291,7 +1288,6 @@ private fun detailChart(
 
     val product = viewModel.getProduct().value
     if (product != null) {
-
 
         val list1 = data.get("value") as ArrayList<Float>
         val dates = data.get("date") as ArrayList<String>

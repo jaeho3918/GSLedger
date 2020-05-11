@@ -450,13 +450,13 @@
                             </LinearLayout>
 
                             <RelativeLayout
-                                android:id="@+id/goldChartLayout"
+                                android:id="@+id/totalDetailChartLayout"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_marginTop="11dp">
 
                                 <ProgressBar
-                                    android:id="@+id/goldChartProgress"
+                                    android:id="@+id/totalDetailChartProgress"
                                     android:layout_width="match_parent"
                                     android:layout_alignTop="@+id/charLabel"
                                     android:layout_marginTop="24dp"
@@ -471,7 +471,7 @@
                                     android:textSize="@dimen/text_medium" />
 
                                 <com.github.mikephil.charting.charts.LineChart
-                                    android:id="@+id/goldChart"
+                                    android:id="@+id/totalDetailChart"
                                     android:layout_width="match_parent"
                                     android:layout_height="180dp"
                                     android:visibility="gone"

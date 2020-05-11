@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    android:id="@+id/chartLayout"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:background="@color/white"
+        android:id="@+id/goldShortChartLayout"
+        android:layout_height="180dp"
+        android:layout_width="0dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/goldShortChart"
+            android:layout_height="180dp"
+            android:layout_width="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ProgressBar
+            android:id="@+id/goldShortChartProgress"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="@string/gold"
+            android:textColor="@color/font_gold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:id="@+id/goldRealWeight"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textColor="@color/font_gold"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/goldShortChart"
+            app:layout_constraintEnd_toStartOf="@+id/goldRealCurrency"
+            app:layout_constraintHorizontal_bias="0.49"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/guideline11" />
+
+        <TextView
+            android:id="@+id/goldRealCurrency"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textColor="@color/font_gold"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/goldRealPrice"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toEndOf="@+id/goldRealWeight"
+            app:layout_constraintTop_toTopOf="@+id/goldRealWeight" />
+
+
+        <TextView
+            android:id="@+id/goldRealPrice"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textColor="@color/font_gold"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toEndOf="@+id/goldRealCurrency"
+            app:layout_constraintTop_toTopOf="@+id/goldRealCurrency" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline11"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="66dp" />
+
+        <LinearLayout
+            android:background="@drawable/ic_add_black_24dp"
+            android:id="@+id/goldZoom"
+            android:layout_height="29dp"
+            android:layout_marginBottom="21dp"
+            android:layout_marginEnd="21dp"
+            android:layout_width="29dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <!--                                    <TextView-->
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/silverShortChartLayout"
+        android:layout_height="180dp"
+        android:layout_width="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/guideline5"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/silverShortChart"
+            android:layout_height="180dp"
+            android:layout_width="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ProgressBar
+            android:id="@+id/silverShortChartProgress"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:text="@string/silver"
+            android:textColor="@color/font_silver"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:id="@+id/silverRealWeight"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textColor="@color/font_silver"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/silverShortChart"
+            app:layout_constraintEnd_toStartOf="@+id/silverRealCurrency"
+            app:layout_constraintHorizontal_bias="0.49"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/guideline8" />
+
+        <TextView
+            android:id="@+id/silverRealCurrency"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textColor="@color/font_silver"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/silverRealPrice"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toEndOf="@+id/silverRealWeight"
+            app:layout_constraintTop_toTopOf="@+id/silverRealWeight" />
+
+        <TextView
+            android:id="@+id/silverRealPrice"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:textColor="@color/font_silver"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toEndOf="@+id/silverRealCurrency"
+            app:layout_constraintTop_toTopOf="@+id/silverRealCurrency" />
+
+        <LinearLayout
+            android:background="@drawable/ic_add_black_24dp"
+            android:id="@+id/silverZoom"
+            android:layout_height="29dp"
+            android:layout_marginBottom="21dp"
+            android:layout_marginEnd="21dp"
+            android:layout_width="29dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline8"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="66dp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline5"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
+
+    <!--                    <Button-->
+    <!--                        android:id="@+id/moveToChart"-->
+    <!--                        android:layout_width="210dp"-->
+    <!--                        android:layout_height="43dp"-->
+    <!--                        android:layout_marginTop="8dp"-->
+    <!--                        android:layout_marginBottom="8dp"-->
+    <!--                        android:background="@drawable/subscribe_btn"-->
+    <!--                        android:text="@string/historicalChart"-->
+    <!--                        android:textColor="@color/white"-->
+    <!--                        app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--                        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--                        app:layout_constraintStart_toStartOf="parent"-->
+    <!--                        app:layout_constraintTop_toBottomOf="@id/goldShortChartLayout" />-->
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -60,6 +60,15 @@
                             android:gravity="center"
                             android:orientation="vertical">
 
+                            <Button
+                                android:layout_width="180dp"
+                                android:layout_height="38dp"
+                                android:textColor="@color/white"
+                                android:text="Subscribe"
+                                android:visibility="gone"
+                                android:background="@drawable/subscribe_btn"
+                                />
+
                             <ProgressBar
                                 android:id="@+id/ratioLongChartProgress"
                                 android:layout_width="match_parent"
@@ -91,12 +100,35 @@
 
                         </LinearLayout>
 
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="right">
+
+                            <Button
+                                android:id="@+id/ratio_6m_btn"
+                                android:layout_marginHorizontal="3dp"
+                                android:textColor="@color/chart_goldC"
+                                android:background="@drawable/chart_select_btn"
+                                android:layout_width="80dp"
+                                android:layout_height="31dp"
+                                android:text="6 M" />
+
+                            <Button
+                                android:id="@+id/ratio_29y_btn"
+                                android:textColor="@color/chart_goldC"
+                                android:background="@drawable/chart_select_btn"
+                                android:layout_width="80dp"
+                                android:layout_height="31dp"
+                                android:text="29 Y" />
+
+                        </LinearLayout>
+
                     </LinearLayout>
 
 
                 </androidx.cardview.widget.CardView>
-
-
 
 
                 <androidx.cardview.widget.CardView
@@ -127,6 +159,15 @@
                             android:layout_height="250dp"
                             android:gravity="center"
                             android:orientation="vertical">
+
+                            <Button
+                                android:layout_width="180dp"
+                                android:layout_height="38dp"
+                                android:textColor="@color/white"
+                                android:text="Subscribe"
+                                android:visibility="gone"
+                                android:background="@drawable/subscribe_btn"
+                                />
 
                             <ProgressBar
                                 android:id="@+id/goldLongChartProgress"
@@ -159,6 +200,30 @@
 
                         </LinearLayout>
 
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="right">
+
+                            <Button
+                                android:id="@+id/gold_6m_btn"
+                                android:layout_marginHorizontal="3dp"
+                                android:textColor="@color/chart_goldC"
+                                android:background="@drawable/chart_select_btn"
+                                android:layout_width="80dp"
+                                android:layout_height="31dp"
+                                android:text="6 M" />
+
+                            <Button
+                                android:id="@+id/gold_29y_btn"
+                                android:textColor="@color/chart_goldC"
+                                android:background="@drawable/chart_select_btn"
+                                android:layout_width="80dp"
+                                android:layout_height="31dp"
+                                android:text="29 Y" />
+
+                        </LinearLayout>
                     </LinearLayout>
 
 
@@ -194,6 +259,15 @@
                             android:gravity="center"
                             android:orientation="vertical">
 
+                            <Button
+                                android:layout_width="180dp"
+                                android:layout_height="38dp"
+                                android:textColor="@color/white"
+                                android:text="Subscribe"
+                                android:visibility="gone"
+                                android:background="@drawable/subscribe_btn"
+                                />
+
                             <ProgressBar
                                 android:id="@+id/silverLongChartProgress"
                                 android:layout_width="match_parent"
@@ -223,6 +297,32 @@
                                     android:textSize="6dp" />
                             </RelativeLayout>
 
+
+                        </LinearLayout>
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:gravity="right">
+
+                            <Button
+                                android:id="@+id/silver_6m_btn"
+                                android:layout_marginHorizontal="3dp"
+                                android:textColor="@color/chart_goldC"
+                                android:background="@drawable/chart_select_btn"
+                                android:layout_width="80dp"
+                                android:layout_height="31dp"
+                                android:text="6 M" />
+
+                            <Button
+                                android:id="@+id/silver_29y_btn"
+                                android:textColor="@color/chart_goldC"
+                                android:background="@drawable/chart_select_btn"
+                                android:layout_width="80dp"
+                                android:layout_height="31dp"
+                                android:text="29 Y" />
 
                         </LinearLayout>
                     </LinearLayout>

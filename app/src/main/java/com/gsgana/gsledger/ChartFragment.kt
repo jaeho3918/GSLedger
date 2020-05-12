@@ -32,8 +32,7 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.functions.FirebaseFunctions
 import com.gsgana.gsledger.databinding.ChartFragmentBinding
-import com.gsgana.gsledger.utilities.CURRENCYSYMBOL
-import com.gsgana.gsledger.utilities.InjectorUtils
+import com.gsgana.gsledger.utilities.*
 import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModel
 import kotlinx.android.synthetic.main.marker_view.view.*
 import kotlin.collections.ArrayList
@@ -121,6 +120,53 @@ class ChartFragment : Fragment() {
             list3.clear()
         }
 
+        var gold = 0
+        var silver = 0
+        var ratio = 0
+
+
+        binding.gold6mBtn.setOnClickListener {
+            if (gold != 6) {
+                getGoldChartSelect6m(context!!, viewModel, binding, viewModel.getchartData())
+                gold = 6
+            }
+        }
+
+        binding.silver6mBtn.setOnClickListener {
+            if (silver != 6) {
+                getSilverChartSelect6m(context!!, viewModel, binding, viewModel.getchartData())
+                silver = 6
+            }
+        }
+
+        binding.ratio6mBtn.setOnClickListener {
+            if (ratio != 6) {
+                getRatioChartSelect6m(context!!, viewModel, binding, viewModel.getchartData())
+                ratio = 6
+            }
+        }
+
+        binding.gold29yBtn.setOnClickListener {
+            if (gold != 29) {
+//                getGoldChartSelect29y(context!!, viewModel, binding, viewModel.getchartData())
+                gold = 29
+            }
+        }
+
+        binding.silver29yBtn.setOnClickListener {
+            if (silver != 29) {
+//                getSilverChartSelect29y(context!!, viewModel, binding, viewModel.getchartData())
+                silver = 29
+            }
+        }
+
+        binding.ratio29yBtn.setOnClickListener {
+            if (ratio != 29) {
+//                getRatioChartSelect29y(context!!, viewModel, binding, viewModel.getchartData())
+                ratio = 29
+            }
+        }
+
         return binding.root
     }
 
@@ -179,8 +225,8 @@ class ChartFragment : Fragment() {
             axisRight.isEnabled = false
             legend.isEnabled = false
             fitScreen()
-
         }
+
         val valueFormatter = IndexAxisValueFormatter(date)
 //        val valueFormatter = ChartAxisValueFormatter().apply {
 //            setValue(date)
@@ -221,7 +267,7 @@ class ChartFragment : Fragment() {
             }
 
         val mv =
-            CustomMarkerRatioView(context,  R.layout.marker_view, viewModel).apply {
+            CustomMarkerRatioView(context, R.layout.marker_view, viewModel).apply {
                 chartView = chart
             }
 
@@ -459,7 +505,6 @@ class ChartFragment : Fragment() {
     }
 
 
-
     private class CustomMarkerView(
         context: Context,
         private val currencySymbol: String,
@@ -513,7 +558,7 @@ class ChartFragment : Fragment() {
         return functions
             .getHttpsCallable("L3Vi6HftOI0HK6VH6rHsB6At")
             .call(data)
-            .continueWith {task ->
+            .continueWith { task ->
                 // This continuation runs on either success or failure, but if the task
                 // has failed then result will throw an Exception which will be
                 // propagated down.
@@ -541,7 +586,7 @@ class ChartFragment : Fragment() {
 
             override fun onAdFailedToLoad(p0: Int) {
                 super.onAdFailedToLoad(p0)
-                Toast.makeText(context!!, p0.toString(),Toast.LENGTH_SHORT).show()
+                Toast.makeText(context!!, p0.toString(), Toast.LENGTH_SHORT).show()
             }
 
             override fun onAdClosed() {

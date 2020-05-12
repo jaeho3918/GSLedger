@@ -18,6 +18,7 @@ import com.github.mikephil.charting.highlight.Highlight
 import com.github.mikephil.charting.utils.MPPointF
 import com.gsgana.gsledger.R
 import com.gsgana.gsledger.data.Product
+import com.gsgana.gsledger.databinding.ChartFragmentBinding
 import com.gsgana.gsledger.databinding.DetailFragmentBinding
 import com.gsgana.gsledger.databinding.StatFragmentBinding
 import com.gsgana.gsledger.viewmodels.DetailViewModel
@@ -1227,10 +1228,432 @@ fun getShortLineSilverChartZoom(
 
 
 
+private fun setRatioChartSelect6m(
+    context: Context,
+    viewModel: HomeViewPagerViewModel,
+    binding: ChartFragmentBinding,
+    data: Map<String, List<*>>
+) {
+
+    val chart_font = context.resources.getColor(R.color.chart_font, null)
+    val chart_goldC = context.resources.getColor(R.color.chart_goldC, null)
+    val chart_goldB = context.resources.getColor(R.color.chart_goldB, null)
+    val backGround = context.resources.getColor(R.color.white, null)
+
+    val PREF_NAME = "01504f779d6c77df04"
+    val CURR_NAME = "1w3d4f7w9d2qG2eT36"
+    val currency: Float
+    val currencySymbol: String
+    val weight: Float = when (viewModel.getRealDataValue()["weightUnit"]!!) {
+        0.0 -> 1.0f //toz
+        1.0 -> 0.03215f //g
+        2.0 -> 32.150747f  //kg
+        3.0 -> 0.120565f//don
+        else -> 1.0f
+    }
+
+    if (viewModel.getRealDataValue().get("currency")?.toInt() ?: 0 == 0) {
+        val currencyOption =
+            context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).getInt(CURR_NAME, 0)
+
+        currency =
+            (viewModel.getRealData().value?.get(CURRENCY[currencyOption]) ?: 1.0).toFloat()
+
+        currencySymbol = CURRENCYSYMBOL[currencyOption]
+
+    } else if (viewModel.getRealDataValue().get("currency")?.toInt() == null) {
+        val currencyOption =
+            context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).getInt(CURR_NAME, 0)
+
+        currency =
+            (viewModel.getRealData().value?.get(CURRENCY[currencyOption]) ?: 1.0).toFloat()
+
+        currencySymbol = CURRENCYSYMBOL[currencyOption]
+
+    } else {
+        currency = (viewModel.getRealData().value?.get(
+            CURRENCY[(viewModel.getRealDataValue().get("currency")?.toInt() ?: 0)]
+        ) ?: 1.0).toFloat()
+        currencySymbol =
+            CURRENCYSYMBOL[(viewModel.getRealDataValue().get("currency")?.toInt() ?: 0)]
+    }
+
+    val result = arrayListOf<Entry>()
+    data.getValue("value_AU").forEachIndexed { index, fl ->
+        result.add(
+            Entry(
+                index.toFloat(),
+                (fl.toString().toFloat()) * currency * weight
+            )
+        )
+    }
+
+    val date = data.getValue("date") as ArrayList<String>
+    val dataSet = LineDataSet(result, "")
+        .apply {
+            setDrawFilled(false)
+            setDrawValues(false)
+            fillColor = chart_goldC
+            lineWidth = 2f
+            color = chart_goldC
+            setCircleColor(chart_goldB)
+            mode = LineDataSet.Mode.CUBIC_BEZIER
+            isHighlightEnabled = true
+            setDrawCircles(false)
+        }
+
+    val data_set = LineData(dataSet)
+
+    val chart = binding.ratioLongChart.apply {
+        isEnabled = true
+        setData(data_set)
+//            setViewPortOffsets(50f, 30f, 50f, 50f)
+        setBackgroundColor(backGround)
+        isDoubleTapToZoomEnabled = false
+        setDrawMarkers(true)
+        description.isEnabled = false
+        setTouchEnabled(true)
+        isDragEnabled = true
+        setScaleEnabled(false)
+        setDrawGridBackground(false)
+        maxHighlightDistance = 300f
+        setPinchZoom(false)
+        setDrawMarkers(true)
+        isHighlightPerTapEnabled = true
+        axisRight.isEnabled = false
+        legend.isEnabled = false
+        fitScreen()
+
+    }
+    val valueFormatter = IndexAxisValueFormatter(date)
+
+    chart.xAxis
+        .apply {
+            setValueFormatter(valueFormatter)
+            isEnabled = true
+            gridColor = chart_goldB
+            textColor = chart_font
+            position = XAxis.XAxisPosition.BOTTOM
+            setLabelCount(5, false)
+            setDrawGridLines(false)
+            textSize = 5F
+        }
+
+    chart.axisLeft
+        .apply {
+            textColor = chart_font
+            gridColor = chart_goldB
+            setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART)
+            isEnabled = false
+            setDrawGridLines(false)
+            setLabelCount(3, true)              //none
+            axisMaximum = dataSet.yMax * 25 / 24
+            axisMinimum = dataSet.yMin * 23 / 24
+            axisLineColor = backGround
+        }
+
+    val mv =
+        CustomMarkerView(context, currencySymbol, R.layout.marker_view, date)
+            .apply { chartView = chart }
+
+    chart.marker = mv
+    chart.invalidate()
+    binding.ratioLongChartLayout.visibility = View.VISIBLE
+    binding.ratioLongChartProgress.visibility = View.GONE
+}
+
+fun getRatioChartSelect6m(
+    context: Context,
+    viewModel: HomeViewPagerViewModel,
+    binding: ChartFragmentBinding,
+    data: Map<String, List<*>>
+) {
+    setRatioChartSelect6m(context, viewModel, binding, data)
+}
+
+private fun setGoldChartSelect6m(
+    context: Context,
+    viewModel: HomeViewPagerViewModel,
+    binding: ChartFragmentBinding,
+    data: Map<String, List<*>>
+) {
+
+    val chart_font = context.resources.getColor(R.color.chart_font, null)
+    val chart_goldC = context.resources.getColor(R.color.chart_goldC, null)
+    val chart_goldB = context.resources.getColor(R.color.chart_goldB, null)
+    val backGround = context.resources.getColor(R.color.white, null)
+
+    val PREF_NAME = "01504f779d6c77df04"
+    val CURR_NAME = "1w3d4f7w9d2qG2eT36"
+    val currency: Float
+    val currencySymbol: String
+    val weight: Float = when (viewModel.getRealDataValue()["weightUnit"]!!) {
+        0.0 -> 1.0f //toz
+        1.0 -> 0.03215f //g
+        2.0 -> 32.150747f  //kg
+        3.0 -> 0.120565f//don
+        else -> 1.0f
+    }
+
+    if (viewModel.getRealDataValue().get("currency")?.toInt() ?: 0 == 0) {
+        val currencyOption =
+            context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).getInt(CURR_NAME, 0)
+
+        currency =
+            (viewModel.getRealData().value?.get(CURRENCY[currencyOption]) ?: 1.0).toFloat()
+
+        currencySymbol = CURRENCYSYMBOL[currencyOption]
+
+    } else if (viewModel.getRealDataValue().get("currency")?.toInt() == null) {
+        val currencyOption =
+            context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).getInt(CURR_NAME, 0)
+
+        currency =
+            (viewModel.getRealData().value?.get(CURRENCY[currencyOption]) ?: 1.0).toFloat()
+
+        currencySymbol = CURRENCYSYMBOL[currencyOption]
+
+    } else {
+        currency = (viewModel.getRealData().value?.get(
+            CURRENCY[(viewModel.getRealDataValue().get("currency")?.toInt() ?: 0)]
+        ) ?: 1.0).toFloat()
+        currencySymbol =
+            CURRENCYSYMBOL[(viewModel.getRealDataValue().get("currency")?.toInt() ?: 0)]
+    }
+
+    val result = arrayListOf<Entry>()
+    data.getValue("value_AU").forEachIndexed { index, fl ->
+        result.add(
+            Entry(
+                index.toFloat(),
+                (fl.toString().toFloat()) * currency * weight
+            )
+        )
+    }
+
+    val date = data.getValue("date") as ArrayList<String>
+    val dataSet = LineDataSet(result, "")
+        .apply {
+            setDrawFilled(true)
+            setDrawValues(false)
+            fillColor = chart_goldC
+            color = chart_goldC
+            setCircleColor(chart_goldB)
+            mode = LineDataSet.Mode.CUBIC_BEZIER
+            isHighlightEnabled = true
+            setDrawCircles(false)
+        }
+
+    val data_set = LineData(dataSet)
+
+    val chart = binding.goldLongChart.apply {
+        isEnabled = true
+        setData(data_set)
+//        setViewPortOffsets(50f, 30f, 50f, 80f)
+        setBackgroundColor(backGround)
+        isDoubleTapToZoomEnabled = false
+        setDrawMarkers(true)
+        description.isEnabled = false
+        setTouchEnabled(true)
+        isDragEnabled = true
+        setScaleEnabled(false)
+        setDrawGridBackground(false)
+        maxHighlightDistance = 300f
+        setPinchZoom(false)
+        setDrawMarkers(true)
+        isHighlightPerTapEnabled = true
+        axisRight.isEnabled = false
+        legend.isEnabled = false
+        fitScreen()
+
+    }
+    val valueFormatter = IndexAxisValueFormatter(date)
+
+    chart.xAxis
+        .apply {
+            setValueFormatter(valueFormatter)
+            isEnabled = true
+            gridColor = chart_goldB
+            textColor = chart_font
+            position = XAxis.XAxisPosition.BOTTOM
+            setLabelCount(5, false)
+            setDrawGridLines(false)
+            textSize = 5F
+        }
+
+    chart.axisLeft
+        .apply {
+            textColor = chart_font
+            gridColor = chart_goldB
+            setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART)
+            isEnabled = false
+            setDrawGridLines(false)
+            setLabelCount(3, true)              //none
+            axisMaximum = dataSet.yMax * 25 / 24
+            axisMinimum = dataSet.yMin * 23 / 24
+            axisLineColor = backGround
+        }
+
+    val mv =
+        CustomMarkerView(context, currencySymbol, R.layout.marker_view, date)
+            .apply { chartView = chart }
+
+    chart.marker = mv
+    chart.invalidate()
+    binding.goldLongChartLayout.visibility = View.VISIBLE
+    binding.goldLongChartProgress.visibility = View.GONE
+}
+
+fun getGoldChartSelect6m(
+    context: Context,
+    viewModel: HomeViewPagerViewModel,
+    binding: ChartFragmentBinding,
+    data: Map<String, List<*>>
+) {
+    setGoldChartSelect6m(context, viewModel, binding, data)
+}
+
+private fun setSilverChartSelect6m(
+    context: Context,
+    viewModel: HomeViewPagerViewModel,
+    binding: ChartFragmentBinding,
+    data: Map<String, List<*>>
+) {
+    val chart_font = context.resources.getColor(R.color.chart_font, null)
+    val chart_silverC = context.resources.getColor(R.color.chart_silverC, null)
+    val chart_silverB = context.resources.getColor(R.color.chart_silverB, null)
+    val backGround = context.resources.getColor(R.color.white, null)
+
+    val PREF_NAME = "01504f779d6c77df04"
+    val CURR_NAME = "1w3d4f7w9d2qG2eT36"
+    var currency: Float
+    var currencySymbol: String
+    val weight: Float = when (viewModel.getRealDataValue()["weightUnit"]!!) {
+        0.0 -> 1.0f //toz
+        1.0 -> 0.03215f //g
+        2.0 -> 32.150747f  //kg
+        3.0 -> 0.120565f//don
+        else -> 1.0f
+    }
+
+    if (viewModel.getRealDataValue().get("currency")?.toInt() ?: 0 == 0) {
+        val currencyOption =
+            context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).getInt(CURR_NAME, 0)
+
+        currency =
+            (viewModel.getRealData().value?.get(CURRENCY[currencyOption]) ?: 1.0).toFloat()
+
+        currencySymbol = CURRENCYSYMBOL[currencyOption]
+
+    } else if (viewModel.getRealDataValue().get("currency")?.toInt() == null) {
+        val currencyOption =
+            context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).getInt(CURR_NAME, 0)
+
+        currency =
+            (viewModel.getRealData().value?.get(CURRENCY[currencyOption]) ?: 1.0).toFloat()
+
+        currencySymbol = CURRENCYSYMBOL[currencyOption]
+
+    } else {
+        currency = (viewModel.getRealData().value?.get(
+            CURRENCY[(viewModel.getRealDataValue().get("currency")?.toInt() ?: 0)]
+        ) ?: 1.0).toFloat()
+        currencySymbol =
+            CURRENCYSYMBOL[(viewModel.getRealDataValue().get("currency")?.toInt() ?: 0)]
+    }
 
 
+    val result = arrayListOf<Entry>()
+    data.getValue("value_AG").forEachIndexed { index, fl ->
+        result.add(
+            Entry(
+                index.toFloat(),
+                (fl.toString().toFloat()) * currency * weight
+            )
+        )
+    }
 
+    val date = data.getValue("date") as ArrayList<String>
 
+    val dataSet = LineDataSet(result, "")
+        .apply {
+            setDrawFilled(true)
+            setDrawValues(false)
+            fillColor = chart_silverC
+            color = chart_silverC
+            setCircleColor(chart_silverB)
+            mode = LineDataSet.Mode.CUBIC_BEZIER
+            isHighlightEnabled = true
+            setDrawCircles(false)
+        }
+
+    val data_set = LineData(dataSet)
+
+    val chart = binding.silverLongChart.apply {
+        isEnabled = true
+        setData(data_set)
+//        setViewPortOffsets(50f, 30f, 50f, 80f)
+        setBackgroundColor(backGround)
+        isDoubleTapToZoomEnabled = false
+        setDrawMarkers(true)
+        description.isEnabled = false
+        setTouchEnabled(true)
+        isDragEnabled = true
+        setScaleEnabled(false)
+        setDrawGridBackground(false)
+        maxHighlightDistance = 300f
+        setPinchZoom(false)
+        setDrawMarkers(true)
+        isHighlightPerTapEnabled = true
+        axisRight.isEnabled = false
+        legend.isEnabled = false
+        fitScreen()
+
+    }
+    val valueFormatter = IndexAxisValueFormatter(date)
+
+    chart.xAxis
+        .apply {
+            setValueFormatter(valueFormatter)
+            isEnabled = true
+            gridColor = chart_silverB
+            textColor = chart_font
+            position = XAxis.XAxisPosition.BOTTOM
+            setLabelCount(5, false)
+            setDrawGridLines(false)
+            textSize = 5F
+        }
+
+    chart.axisLeft
+        .apply {
+            textColor = chart_font
+            gridColor = chart_silverB
+            setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART)
+            isEnabled = false
+            setDrawGridLines(false)
+            setLabelCount(3, true)              //none
+            axisMaximum = dataSet.yMax * 25 / 24
+            axisMinimum = dataSet.yMin * 23 / 24
+            axisLineColor = backGround
+        }
+    val mv =
+        CustomMarkerView(context, currencySymbol, R.layout.marker_view, date)
+            .apply { chartView = chart }
+
+    chart.marker = mv
+    chart.invalidate()
+    binding.silverLongChartLayout.visibility = View.VISIBLE
+    binding.silverLongChartProgress.visibility = View.GONE
+}
+
+fun getSilverChartSelect6m(
+    context: Context,
+    viewModel: HomeViewPagerViewModel,
+    binding: ChartFragmentBinding,
+    data: Map<String, List<*>>
+) {
+    setSilverChartSelect6m(context, viewModel, binding, data)
+}
 
 
 

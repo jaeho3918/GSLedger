@@ -97,9 +97,9 @@ class ChartFragment : Fragment() {
         fm.popBackStack()
 
         val today = sf.getString(TODAY_NAME, "")
-        binding.todayLabel.text = today
-        binding.todayLabel1.text = today
-        binding.todayLabel2.text = today
+        binding.todayLabel.text = today?.substring(0..10)
+        binding.todayLabel1.text = today?.substring(0..10)
+        binding.todayLabel2.text = today?.substring(0..10)
 
         getChart(
             sf.getString(NEW_LABEL, "")!!,

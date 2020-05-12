@@ -35,6 +35,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/gold_Label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="3dp"
@@ -55,7 +56,7 @@
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/guideline11" />
+            app:layout_constraintTop_toTopOf="@+id/gold_Label" />
 
         <TextView
             android:id="@+id/goldRealCurrency"
@@ -81,14 +82,6 @@
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toEndOf="@+id/goldRealCurrency"
             app:layout_constraintTop_toTopOf="@+id/goldRealCurrency" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline11"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_begin="0dp" />
-            app:layout_constraintGuide_begin="66dp" />
 
         <LinearLayout
             android:id="@+id/goldZoom"
@@ -150,8 +143,7 @@
             app:layout_constraintEnd_toStartOf="@+id/silverRealCurrency"
             app:layout_constraintHorizontal_bias="0.49"
             app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/guideline8" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/silverRealCurrency"
@@ -188,12 +180,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline8"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_begin="66dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.Guideline

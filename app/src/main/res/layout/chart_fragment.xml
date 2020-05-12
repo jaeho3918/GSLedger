@@ -63,11 +63,10 @@
                             <Button
                                 android:layout_width="180dp"
                                 android:layout_height="38dp"
-                                android:textColor="@color/white"
-                                android:text="Subscribe"
-                                android:visibility="gone"
                                 android:background="@drawable/subscribe_btn"
-                                />
+                                android:text="Subscribe"
+                                android:textColor="@color/white"
+                                android:visibility="gone" />
 
                             <ProgressBar
                                 android:id="@+id/ratioLongChartProgress"
@@ -80,10 +79,11 @@
                                 android:layout_height="wrap_content"
                                 android:visibility="gone">
 
-                                <com.github.mikephil.charting.charts.LineChart
+                                <include
                                     android:id="@+id/ratioLongChart"
+                                    layout="@layout/ratiolongchart_layout"
                                     android:layout_width="match_parent"
-                                    android:layout_height="250dp" />
+                                    android:layout_height="match_parent"/>
 
                                 <TextView
                                     android:id="@+id/todayLabel2"
@@ -180,10 +180,12 @@
                                 android:layout_height="wrap_content"
                                 android:visibility="gone">
 
-                                <com.github.mikephil.charting.charts.LineChart
+
+                                <include
                                     android:id="@+id/goldLongChart"
+                                    layout="@layout/goldlongchart_layout"
                                     android:layout_width="match_parent"
-                                    android:layout_height="250dp" />
+                                    android:layout_height="match_parent"/>
 
                                 <TextView
                                     android:id="@+id/todayLabel"
@@ -279,10 +281,12 @@
                                 android:layout_height="match_parent"
                                 android:visibility="gone">
 
-                                <com.github.mikephil.charting.charts.LineChart
+
+                                <include
                                     android:id="@+id/silverLongChart"
+                                    layout="@layout/silverlongchart_layout"
                                     android:layout_width="match_parent"
-                                    android:layout_height="250dp" />
+                                    android:layout_height="match_parent"/>
 
                                 <TextView
                                     android:id="@+id/todayLabel1"

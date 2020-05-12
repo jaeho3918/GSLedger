@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
@@ -65,10 +66,6 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
     private lateinit var binding: ActivityIntroBinding
     private lateinit var mFirebaseAnalytics: FirebaseAnalytics
 
-    private lateinit var pattern1: Pattern
-    private lateinit var pattern2: Pattern
-    private lateinit var pattern3: Pattern
-    private lateinit var pattern4: Pattern
     private lateinit var appUpdateManager: AppUpdateManager
 
     private val ADFREE_NAME = "CQi7aLBQH7dR7qyrCG"
@@ -81,13 +78,19 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        mAuth = FirebaseAuth.getInstance()
+        sf = this.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+//        mAuth.signInAnonymously()
+//        Log.d("signInAnonymously check", mAuth.signInAnonymously().result.toString())
+//        Log.d("signInAnonymously check", mAuth.signInAnonymously().isCanceled.toString())
+//        Log.d("signInAnonymously check", mAuth.signInAnonymously().isComplete.toString())
+
 
         // Obtain the FirebaseAnalytics instance.
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
         Fabric.with(this, Crashlytics())
 
         appUpdateManager = AppUpdateManagerFactory.create(this)
-
         // Returns an intent object that you use to check for an update.
         val appUpdateInfoTask = appUpdateManager.appUpdateInfo
 
@@ -104,23 +107,20 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
                     UPDATE_REQUEST_CODE
                 )
             } else {
-//                Toast.makeText(this, "gooooooooooooooooooood", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "gooooooooooooooooooood", Toast.LENGTH_LONG).show()
             }
         }
 
-
-        sf = this.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
 
 //        sf.edit().putString(NEW_LABEL, "").apply()
 //        sf.edit().putString(NEW_ENCRYPT, "").apply()
 
         setContentView(R.layout.activity_intro)
-        mAuth = FirebaseAuth.getInstance()
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_intro)
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
         if (mAuth.currentUser != null) {
-
             //currentUser exist id
             if (sf.getString(NEW_LABEL, "") == "") {
                 FirebaseFirestore
@@ -170,45 +170,49 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
                     sf.getString(NEW_LABEL, "")!!,
                     sf.getString(NEW_ENCRYPT, "")!!,
                     sf.getInt(NUMBER, 0)
-                )
-                    .addOnSuccessListener {
-                        val intent = Intent(this, MainActivity::class.java)
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                        intent.putExtra(KEY, it)
-                        startActivity(intent)
-                        this.finish()
-                    }
+                ).addOnSuccessListener {
+                    val intent = Intent(this, MainActivity::class.java)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                    intent.putExtra(KEY, it)
+                    startActivity(intent)
+                    this.finish()
+                }
             }
         } else {
-
             //firebase Auth currenct User not exist
-
-
             if (sf.getString(NEW_LABEL, "") == "") {
-                mAuth.signInAnonymously().addOnSuccessListener {
-                    var label = generateLabel()
-                    val tset = generateRgl18()
-                    val encrypt = generateRgl6()
-                    setNewKey(label, encrypt, tset).addOnSuccessListener { result ->
-                        if (result[0] == 1) {
-                            this.finish()
-                        } else if (result[0] == 18) {
-                            sf.edit().putString(NEW_LABEL, label).apply()
-                            sf.edit().putString(NEW_ENCRYPT, encrypt).apply()
-                            sf.edit().putInt(NUMBER, result[1]).apply()
-                            label = ""
-                            rgl_b = arrayListOf()
-                            for (s in tset) {
-                                this.rgl_b.add(s.toCharArray()[0])
+                mAuth.signInAnonymously()
+                    .addOnSuccessListener {
+                        var label = generateLabel()
+                        val tset = generateRgl18()
+                        val encrypt = generateRgl6()
+                        setNewKey(label, encrypt, tset).addOnSuccessListener { result ->
+                            if (result[0] == 1) {
+                                this.finish()
+                            } else if (result[0] == 18) {
+                                sf.edit().putString(NEW_LABEL, label).apply()
+                                sf.edit().putString(NEW_ENCRYPT, encrypt).apply()
+                                sf.edit().putInt(NUMBER, result[1]).apply()
+                                label = ""
+                                rgl_b = arrayListOf()
+                                for (s in tset) {
+                                    this.rgl_b.add(s.toCharArray()[0])
+                                }
+                                val intent = Intent(this, MainActivity::class.java)
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
+                                intent.putExtra(KEY, rgl_b.toCharArray())
+                                startActivity(intent)
+                                this.finish()
                             }
-                            val intent = Intent(this, MainActivity::class.java)
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                            intent.putExtra(KEY, rgl_b.toCharArray())
-                            startActivity(intent)
-                            this.finish()
                         }
                     }
-                }
+//                    .addOnCompleteListener {
+//                        Toast.makeText(this, it.toString(), Toast.LENGTH_LONG).show()
+//                    }
+//                    .addOnFailureListener {
+//                        Toast.makeText(this, it.toString(), Toast.LENGTH_LONG).show()
+//                    }
+
             } else {
                 getNewKey(
                     sf.getString(NEW_LABEL, "")!!,

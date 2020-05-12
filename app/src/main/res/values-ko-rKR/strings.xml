@@ -44,8 +44,9 @@
     <string name="chart">차트</string>
     <string name="slot">리스트</string>
     <string name="totalChartSpotPrice">총자산 (현물가격기반)</string>
-    <string name="goldChart">Gold Chart</string>
-    <string name="silverChart">Silver Chart</string>
+    <string name="goldChart">금 차트</string>
+    <string name="silverChart">은 차트</string>
+    <string name="ratioChart">금은비 차트</string>
     <string name="overview">개요</string>
     <string name="historicalChart">Historical Chart</string>
     <string name="list">리스트</string>

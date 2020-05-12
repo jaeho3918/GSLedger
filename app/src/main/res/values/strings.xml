@@ -23,11 +23,12 @@
     <string name="type">Type</string>
     <string name="metal">Metal</string>
     <string name="year">Year</string>
+    <string name="ratioChart">Gold/Silver Ratio</string>
     <string name="spotPrice">Spot Price</string>
     <string name="weightUnit">Weight Unit</string>
     <string name="delAccount">Delete Your List and Initialize Application</string>
     <string name="subscribe">Subscribe</string>
-    <string name="adfree">Ad Free</string>
+    <string name="adfree">Ad Free, Historical chart</string>
     <string name="unlimitedList">Unlimited List</string>
     <string name="adfreerestart">Please restart to remove Ads.</string>
     <string name="caution">Caution</string>

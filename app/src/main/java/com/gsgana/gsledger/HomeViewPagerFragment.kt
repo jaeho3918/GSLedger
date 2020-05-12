@@ -26,6 +26,7 @@ import com.google.firebase.database.*
 import com.google.firebase.functions.FirebaseFunctions
 import com.gsgana.gsledger.adapters.PagerAdapter
 import com.gsgana.gsledger.adapters.PagerAdapter.Companion.ADSANDOPTION_PAGE_INDEX
+import com.gsgana.gsledger.adapters.PagerAdapter.Companion.CHART_PAGE_INDEX
 import com.gsgana.gsledger.adapters.PagerAdapter.Companion.LEDGER_PAGE_INDEX
 import com.gsgana.gsledger.adapters.PagerAdapter.Companion.STAT_PAGE_INDEX
 import com.gsgana.gsledger.databinding.HomeViewPagerFragmentBinding
@@ -126,10 +127,8 @@ class HomeViewPagerFragment : Fragment() {
 
         binding = HomeViewPagerFragmentBinding.inflate(inflater, container, false)
 
-        if (!(activity!!.intent.getIntExtra(ADFREE_NAME, 6) == 18 || sf.getInt(
-                ADFREE_NAME,
-                6
-            ) == 18)
+        if (!(activity!!.intent.getIntExtra(ADFREE_NAME, 6) == 18 ||
+                    sf.getInt(ADFREE_NAME, 6) == 18)
         ) {
             binding.adView.visibility = View.VISIBLE
         }
@@ -299,7 +298,6 @@ class HomeViewPagerFragment : Fragment() {
 
         }
 
-
         if (sf.getInt(START_NAME, 6) == 6) {
             viewPager.doOnLayout {
                 sf.edit().putInt(START_NAME, 18).apply()
@@ -385,7 +383,7 @@ class HomeViewPagerFragment : Fragment() {
         return when (position) {
             STAT_PAGE_INDEX -> context?.resources?.getString(R.string.overview)
             LEDGER_PAGE_INDEX -> context?.resources?.getString(R.string.list)
-//            CHART_PAGE_INDEX -> context?.resources?.getString(R.string.chart)
+            CHART_PAGE_INDEX -> context?.resources?.getString(R.string.chart)
             ADSANDOPTION_PAGE_INDEX -> context?.resources?.getString(R.string.option)
             else -> null
         }

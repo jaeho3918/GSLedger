@@ -592,10 +592,11 @@ private fun setLineChart(  //TOTAL CHART
 
     chart.axisLeft
         .apply {
+
             textColor = chart_font
             gridColor = chart_goldB
             setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART)
-//            isEnabled = false
+            isEnabled = false
             setDrawGridLines(false)
             setLabelCount(3, true)              //none
             axisMaximum = dataSet.yMax * 25 / 24
@@ -615,7 +616,6 @@ private fun setLineChart(  //TOTAL CHART
     chart.marker = mv
     chart.invalidate()
 }
-
 
 private class CustomMarkerView(
     context: Context,

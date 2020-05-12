@@ -86,11 +86,11 @@ class ChartFragment : Fragment() {
 
         sf = activity!!.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
 
-        if (sf.getInt(ADFREE_NAME, 6) != 18) {
-            setAds()
-        } else {
-            binding.chartProgress.visibility = View.GONE
-        }
+//        if (sf.getInt(ADFREE_NAME, 6) != 18) {
+//            setAds()
+//        } else {
+//            binding.chartProgress.visibility = View.GONE
+//        }
 
         rgl = mutableListOf()
         mAuth = FirebaseAuth.getInstance()
@@ -100,6 +100,7 @@ class ChartFragment : Fragment() {
         val today = sf.getString(TODAY_NAME, "")
         binding.todayLabel.text = today
         binding.todayLabel1.text = today
+        binding.todayLabel2.text = today
 
         getChart(
             sf.getString(NEW_LABEL, "")!!,
@@ -108,23 +109,17 @@ class ChartFragment : Fragment() {
         ).addOnSuccessListener { data ->
             val list1 = data.get("value_AU") as ArrayList<Float>
             val list2 = data.get("value_AG") as ArrayList<Float>
+            val list3 = data.get("value_RATIO") as ArrayList<Float>
             val dates = data.get("date") as ArrayList<String>
 
-            if (context != null) setLineChart(context!!, binding, dates, list1)
-            if (context != null) setLineChart1(context!!, binding, dates, list2)
+            if (context != null) setGoldLongChart(context!!, binding, dates, list1)
+            if (context != null) setSilverLongChart(context!!, binding, dates, list2)
+            if (context != null) setRatioLongChart(context!!, binding, dates, list3)
             viewModel.setChartDate(dates)
             list1.clear()
             list2.clear()
+            list3.clear()
         }
-
-        binding.chartBackButton.setOnClickListener {
-            if (it.findNavController().currentDestination?.id == R.id.chartFragment) {
-                findNavController()
-                    .navigate(R.id.action_chartFragment_to_homeViewPagerFragment)
-            }
-        }
-
-
 
         return binding.root
     }
@@ -134,7 +129,7 @@ class ChartFragment : Fragment() {
         super.onDestroy()
     }
 
-    private fun setLineChart(
+    private fun setRatioLongChart(
         context: Context,
         binding: ChartFragmentBinding,
         date_input: ArrayList<String>,
@@ -143,7 +138,109 @@ class ChartFragment : Fragment() {
 
         val chart_goldC = context.resources.getColor(R.color.chart_goldC, null)
         val chart_goldB = context.resources.getColor(R.color.chart_goldB, null)
-        val backGround = context.resources.getColor(R.color.border_background, null)
+        val backGround = context.resources.getColor(R.color.white, null)
+
+        val entries = arrayListOf<Entry>()
+
+        value.forEachIndexed { index, fl -> entries.add(Entry(index.toFloat(), fl)) }
+
+        val dataSet = LineDataSet(entries, "")
+            .apply {
+                setDrawFilled(false)
+                setDrawValues(false)
+                fillColor = chart_goldC
+                lineWidth = 2f
+                color = chart_goldC
+                setCircleColor(chart_goldB)
+                mode = LineDataSet.Mode.CUBIC_BEZIER
+                isHighlightEnabled = true
+                setDrawCircles(false)
+            }
+        val date = date_input
+
+        val data = LineData(dataSet)
+
+        val chart = binding.ratioLongChart.apply {
+            isEnabled = true
+            setData(data)
+//            setViewPortOffsets(50f, 30f, 50f, 50f)
+            setBackgroundColor(backGround)
+            isDoubleTapToZoomEnabled = false
+            setDrawMarkers(true)
+            description.isEnabled = false
+            setTouchEnabled(true)
+            isDragEnabled = true
+            setScaleEnabled(false)
+            setDrawGridBackground(false)
+            maxHighlightDistance = 300f
+            setPinchZoom(false)
+            setDrawMarkers(true)
+            isHighlightPerTapEnabled = true
+            axisRight.isEnabled = false
+            legend.isEnabled = false
+            fitScreen()
+
+        }
+        val valueFormatter = IndexAxisValueFormatter(date)
+//        val valueFormatter = ChartAxisValueFormatter().apply {
+//            setValue(date)
+//        }
+//        val valueFormatter = object : IndexAxisValueFormatter(){
+//            val simpleDateFormat: SimpleDateFormat = SimpleDateFormat("yyyy/MM/dd")
+//            val cal = Calendar.getInstance()
+//
+//            override fun getFormattedValue(value: Float, axis: AxisBase?): String? {
+//                cal.timeInMillis = date[value.toInt()] * 1000L
+//                return simpleDateFormat.format(cal).toString()
+//            }
+//        }
+
+        chart.xAxis
+            .apply {
+                setValueFormatter(valueFormatter)
+                isEnabled = true
+                gridColor = resources.getColor(R.color.chart_goldB, null)
+                textColor = context.resources.getColor(R.color.chart_font, null)
+                position = XAxis.XAxisPosition.BOTTOM
+                setLabelCount(5, false)
+                setDrawGridLines(false)
+                textSize = 5F
+
+            }
+
+        chart.axisLeft
+            .apply {
+                textColor = resources.getColor(R.color.chart_font, null)
+                gridColor = resources.getColor(R.color.chart_goldB, null)
+                setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART)
+                setDrawGridLines(true)
+                setLabelCount(5, true)
+                axisMaximum = dataSet.yMax * 15 / 13
+                axisMinimum = 0f
+                axisLineColor = backGround
+            }
+
+        val mv =
+            CustomMarkerRatioView(context,  R.layout.marker_view, viewModel).apply {
+                chartView = chart
+            }
+
+        chart.marker = mv
+        chart.invalidate()
+        binding.ratioLongChartLayout.visibility = View.VISIBLE
+        binding.ratioLongChartProgress.visibility = View.GONE
+    }
+
+    private fun setGoldLongChart(
+        context: Context,
+        binding: ChartFragmentBinding,
+        date_input: ArrayList<String>,
+        value: List<Float>
+    ) {
+
+        val chart_goldC = context.resources.getColor(R.color.chart_goldC, null)
+        val chart_goldB = context.resources.getColor(R.color.chart_goldB, null)
+        val backGround = context.resources.getColor(R.color.white, null)
 
         val entries = arrayListOf<Entry>()
 
@@ -167,7 +264,7 @@ class ChartFragment : Fragment() {
         val chart = binding.goldLongChart.apply {
             isEnabled = true
             setData(data)
-            setViewPortOffsets(50f, 30f, 50f, 50f)
+//            setViewPortOffsets(50f, 30f, 50f, 50f)
             setBackgroundColor(backGround)
             isDoubleTapToZoomEnabled = false
             setDrawMarkers(true)
@@ -235,7 +332,7 @@ class ChartFragment : Fragment() {
         binding.goldLongChartProgress.visibility = View.GONE
     }
 
-    private fun setLineChart1(
+    private fun setSilverLongChart(
         context: Context,
         binding: ChartFragmentBinding,
         date: ArrayList<String>,
@@ -243,7 +340,7 @@ class ChartFragment : Fragment() {
     ) {
         val chart_silverC = context.resources.getColor(R.color.chart_silverC, null)
         val chart_silverB = context.resources.getColor(R.color.chart_silverB, null)
-        val backGround = context.resources.getColor(R.color.border_background, null)
+        val backGround = context.resources.getColor(R.color.white, null)
         val entries = arrayListOf<Entry>()
 
         value.forEachIndexed { index, fl -> entries.add(Entry(index.toFloat(), fl)) }
@@ -265,7 +362,7 @@ class ChartFragment : Fragment() {
         val chart = binding.silverLongChart.apply {
             isEnabled = true
             setData(data)
-            setViewPortOffsets(50f, 30f, 50f, 50f)
+//            setViewPortOffsets(50f, 30f, 50f, 50f)
             setBackgroundColor(backGround)
             isDoubleTapToZoomEnabled = false
             setDrawMarkers(true)
@@ -322,6 +419,46 @@ class ChartFragment : Fragment() {
         binding.silverLongChartLayout.visibility = View.VISIBLE
         binding.silverLongChartProgress.visibility = View.GONE
     }
+
+    private class CustomMarkerRatioView(
+        context: Context,
+        layoutResource: Int,
+        private val viewModel: HomeViewPagerViewModel
+    ) : MarkerView(
+        context,
+        layoutResource
+    ) {
+
+        override fun refreshContent(e: Entry?, highlight: Highlight?) {
+            if ((e?.x ?: 0f).toInt() <= viewModel.getChartDate().size - 1) {
+                tvDate.text = viewModel.getChartDate()[(e?.x ?: 0f).toInt()]
+                dateLayout.visibility = View.VISIBLE
+            } else
+                dateLayout.visibility = View.GONE
+
+            tvContent.text =
+                String.format("%,.2f", e?.y) // set the entry-value as the display text
+
+            super.refreshContent(e, highlight)
+        }
+
+        override fun draw(
+            canvas: Canvas?,
+            posX: Float,
+            posY: Float
+        ) {
+            super.draw(canvas, posX, posY)
+            getOffsetForDrawingAtPoint(posX, posY)
+        }
+
+        override fun getOffset(): MPPointF {
+            super.getOffset().x = -(width / 2).toFloat()
+            super.getOffset().y = -(height.toFloat() + 18f)
+            return super.getOffset()
+        }
+    }
+
+
 
     private class CustomMarkerView(
         context: Context,
@@ -386,25 +523,6 @@ class ChartFragment : Fragment() {
             }
     }
 
-    //    private class ChartAxisValueFormatter : ValueFormatter() {
-//
-//        private lateinit var mValues: ArrayList<String>
-//
-//        fun setValue(mValues: ArrayList<String>) {
-//            this.mValues = mValues
-//        }
-//
-//        override fun getFormattedValue(value: Float): String {
-//            if (mValues.size != 0) {
-//                return if (value <= (mValues.size - 1)) {
-//                    mValues[value.toInt()]
-//                } else {
-//                    mValues[mValues.size - 1]
-//                }
-//            }
-//            return ""
-//        }
-//    }
     private fun setAds() {
         MobileAds.initialize(context)
         mInterstitialAd = InterstitialAd(context)

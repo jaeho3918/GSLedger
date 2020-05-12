@@ -6,6 +6,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
 import android.transition.TransitionManager
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -72,6 +73,18 @@ class StatFragment : Fragment() {
         binding = StatFragmentBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = viewLifecycleOwner
 
+
+        val MAX_HEIGHT = TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            240f,
+            getResources().getDisplayMetrics()
+        ).toInt()
+        val MIN_HEIGHT = TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            130f,
+            getResources().getDisplayMetrics()
+        ).toInt()
+
         binding.chartLayout.goldZoom?.setOnClickListener {
 
             val firstConstraintSet = ConstraintSet()
@@ -82,7 +95,9 @@ class StatFragment : Fragment() {
 
             if (!FLAG_GOLDCHART) {
                 binding.chartLayout.goldZoom.background =
-                    resources.getDrawable(R.drawable.ic_remove_black_24dp, null)
+                    resources.getDrawable(R.drawable.ic_zoom_out_black_24dp, null)
+
+                binding.chartLayout.goldShortChart.layoutParams.height = MAX_HEIGHT
 
                 getShortLineGoldChartZoom(context!!, viewModel, binding, viewModel.getchartData())
 
@@ -92,7 +107,9 @@ class StatFragment : Fragment() {
 
             } else {
                 binding.chartLayout.goldZoom.background =
-                    resources.getDrawable(R.drawable.ic_add_black_24dp, null)
+                    resources.getDrawable(R.drawable.ic_zoom_in_black_24dp, null)
+
+                binding.chartLayout.goldShortChart.layoutParams.height = MIN_HEIGHT
 
                 getShortLineGoldChart(context!!, viewModel, binding, viewModel.getchartData())
 
@@ -111,8 +128,9 @@ class StatFragment : Fragment() {
 
             if (!FLAG_SILVERCHART) {
                 binding.chartLayout.silverZoom.background =
-                    resources.getDrawable(R.drawable.ic_remove_black_24dp, null)
+                    resources.getDrawable(R.drawable.ic_zoom_out_black_24dp, null)
 
+                binding.chartLayout.silverShortChart.layoutParams.height = MAX_HEIGHT
                 getShortLineSilverChartZoom(context!!, viewModel, binding, viewModel.getchartData())
 
                 TransitionManager.beginDelayedTransition(constraintLayout)
@@ -120,8 +138,9 @@ class StatFragment : Fragment() {
                 FLAG_SILVERCHART = true
             } else {
                 binding.chartLayout.silverZoom.background =
-                    resources.getDrawable(R.drawable.ic_add_black_24dp, null)
+                    resources.getDrawable(R.drawable.ic_zoom_in_black_24dp, null)
 
+                binding.chartLayout.silverShortChart.layoutParams.height = MIN_HEIGHT
                 getShortLineSilverChart(context!!, viewModel, binding, viewModel.getchartData())
 
                 TransitionManager.beginDelayedTransition(constraintLayout)
@@ -152,7 +171,7 @@ class StatFragment : Fragment() {
             }
             getsetLabel(binding, viewModel)
 
-            if (!(!FLAG_GOLDCHART && !FLAG_SILVERCHART)) {
+            if (!(!FLAG_GOLDCHART || !FLAG_SILVERCHART)) {
                 getShortLineGoldChart(context!!, viewModel, binding, viewModel.getchartData())
                 getShortLineSilverChart(context!!, viewModel, binding, viewModel.getchartData())
             }

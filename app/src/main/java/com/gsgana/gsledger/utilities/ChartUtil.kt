@@ -630,7 +630,14 @@ private class CustomMarkerView(
     private val date = date_input
 
     override fun refreshContent(e: Entry?, highlight: Highlight?) {
-        tvDate.text = date[(e?.x ?: 0f).toInt()]
+
+        if ((e?.x ?: 0f).toInt() <= date.size - 1) {
+            val date = date[(e?.x ?: 0f).toInt()]
+            tvDate.text = date
+            dateLayout.visibility = View.VISIBLE
+        } else
+            dateLayout.visibility = View.GONE
+
         tvContent.text =
             String.format("%,.2f", e?.y) // set the entry-value as the display text
         tvCurrency.text = currencySymbol
@@ -654,6 +661,47 @@ private class CustomMarkerView(
     }
 }
 
+
+private class RatioMarkerView(
+    context: Context,
+    layoutResource: Int,
+    date_input: ArrayList<String>
+) : MarkerView(
+    context,
+    layoutResource
+) {
+    private val date = date_input
+
+    override fun refreshContent(e: Entry?, highlight: Highlight?) {
+        if ((e?.x ?: 0f).toInt() <= date.size - 1) {
+            val date = date[(e?.x ?: 0f).toInt()]
+            tvDate.text =date
+            dateLayout.visibility = View.VISIBLE
+        } else
+            dateLayout.visibility = View.GONE
+        tvContent.text =
+            String.format("%,.2f", e?.y) // set the entry-value as the display text
+        super.refreshContent(e, highlight)
+    }
+
+    override fun draw(
+        canvas: Canvas?,
+        posX: Float,
+        posY: Float
+    ) {
+        super.draw(canvas, posX, posY)
+        getOffsetForDrawingAtPoint(posX, posY)
+    }
+
+    override fun getOffset(): MPPointF {
+        super.getOffset().x = -(width / 2).toFloat()
+        super.getOffset().y = -(height.toFloat() + 18f)
+        return super.getOffset()
+    }
+}
+
+
+
 private fun setShortLineGoldChart(
     context: Context,
     viewModel: HomeViewPagerViewModel,
@@ -661,7 +709,7 @@ private fun setShortLineGoldChart(
     data: Map<String, List<*>>
 ) {
 
-    val chart_font = context.resources.getColor(R.color.chart_font, null)
+//    val chart_font = context.resources.getColor(R.color.chart_font, null)
     val chart_goldC = context.resources.getColor(R.color.chart_goldC, null)
     val chart_goldB = context.resources.getColor(R.color.chart_goldB, null)
     val backGround = context.resources.getColor(R.color.white, null)
@@ -750,7 +798,7 @@ private fun setShortLineGoldChart(
         fitScreen()
 
     }
-    val valueFormatter = IndexAxisValueFormatter(date)
+//    val valueFormatter = IndexAxisValueFormatter(date)
 
     chart.xAxis
         .apply {
@@ -783,7 +831,7 @@ private fun setShortLineGoldChart(
 
     chart.marker = mv
     chart.invalidate()
-    binding.chartLayout.goldShortChartLayout.visibility = View.VISIBLE
+    binding.chartLayout.goldShortChart.visibility = View.VISIBLE
     binding.chartLayout.goldShortChartProgress.visibility = View.GONE
 }
 
@@ -802,7 +850,7 @@ private fun setShortLineSilverChart(
     binding: StatFragmentBinding,
     data: Map<String, List<*>>
 ) {
-    val chart_font = context.resources.getColor(R.color.chart_font, null)
+//    val chart_font = context.resources.getColor(R.color.chart_font, null)
     val chart_silverC = context.resources.getColor(R.color.chart_silverC, null)
     val chart_silverB = context.resources.getColor(R.color.chart_silverB, null)
     val backGround = context.resources.getColor(R.color.white, null)
@@ -895,7 +943,7 @@ private fun setShortLineSilverChart(
         fitScreen()
 
     }
-    val valueFormatter = IndexAxisValueFormatter(date)
+//    val valueFormatter = IndexAxisValueFormatter(date)
 
     chart.xAxis
         .apply {
@@ -928,7 +976,7 @@ private fun setShortLineSilverChart(
 
     chart.marker = mv
     chart.invalidate()
-    binding.chartLayout.silverShortChartLayout.visibility = View.VISIBLE
+    binding.chartLayout.silverShortChart.visibility = View.VISIBLE
     binding.chartLayout.silverShortChartProgress.visibility = View.GONE
 }
 
@@ -1071,7 +1119,7 @@ private fun setShortLineGoldChartZoom(
 
     chart.marker = mv
     chart.invalidate()
-    binding.chartLayout.goldShortChartLayout.visibility = View.VISIBLE
+    binding.chartLayout.goldShortChart.visibility = View.VISIBLE
     binding.chartLayout.goldShortChartProgress.visibility = View.GONE
 }
 
@@ -1213,7 +1261,7 @@ private fun setShortLineSilverChartZoom(
 
     chart.marker = mv
     chart.invalidate()
-    binding.chartLayout.silverShortChartLayout.visibility = View.VISIBLE
+    binding.chartLayout.silverShortChart.visibility = View.VISIBLE
     binding.chartLayout.silverShortChartProgress.visibility = View.GONE
 }
 
@@ -1240,50 +1288,14 @@ private fun setRatioChartSelect6m(
     val chart_goldB = context.resources.getColor(R.color.chart_goldB, null)
     val backGround = context.resources.getColor(R.color.white, null)
 
-    val PREF_NAME = "01504f779d6c77df04"
-    val CURR_NAME = "1w3d4f7w9d2qG2eT36"
-    val currency: Float
     val currencySymbol: String
-    val weight: Float = when (viewModel.getRealDataValue()["weightUnit"]!!) {
-        0.0 -> 1.0f //toz
-        1.0 -> 0.03215f //g
-        2.0 -> 32.150747f  //kg
-        3.0 -> 0.120565f//don
-        else -> 1.0f
-    }
-
-    if (viewModel.getRealDataValue().get("currency")?.toInt() ?: 0 == 0) {
-        val currencyOption =
-            context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).getInt(CURR_NAME, 0)
-
-        currency =
-            (viewModel.getRealData().value?.get(CURRENCY[currencyOption]) ?: 1.0).toFloat()
-
-        currencySymbol = CURRENCYSYMBOL[currencyOption]
-
-    } else if (viewModel.getRealDataValue().get("currency")?.toInt() == null) {
-        val currencyOption =
-            context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).getInt(CURR_NAME, 0)
-
-        currency =
-            (viewModel.getRealData().value?.get(CURRENCY[currencyOption]) ?: 1.0).toFloat()
-
-        currencySymbol = CURRENCYSYMBOL[currencyOption]
-
-    } else {
-        currency = (viewModel.getRealData().value?.get(
-            CURRENCY[(viewModel.getRealDataValue().get("currency")?.toInt() ?: 0)]
-        ) ?: 1.0).toFloat()
-        currencySymbol =
-            CURRENCYSYMBOL[(viewModel.getRealDataValue().get("currency")?.toInt() ?: 0)]
-    }
 
     val result = arrayListOf<Entry>()
-    data.getValue("value_AU").forEachIndexed { index, fl ->
+    data.getValue("value_RATIO").forEachIndexed { index, fl ->
         result.add(
             Entry(
                 index.toFloat(),
-                (fl.toString().toFloat()) * currency * weight
+                fl.toString().toFloat()
             )
         )
     }
@@ -1323,8 +1335,8 @@ private fun setRatioChartSelect6m(
         axisRight.isEnabled = false
         legend.isEnabled = false
         fitScreen()
-
     }
+
     val valueFormatter = IndexAxisValueFormatter(date)
 
     chart.xAxis
@@ -1344,7 +1356,7 @@ private fun setRatioChartSelect6m(
             textColor = chart_font
             gridColor = chart_goldB
             setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART)
-            isEnabled = false
+            isEnabled = true
             setDrawGridLines(false)
             setLabelCount(3, true)              //none
             axisMaximum = dataSet.yMax * 25 / 24
@@ -1353,7 +1365,7 @@ private fun setRatioChartSelect6m(
         }
 
     val mv =
-        CustomMarkerView(context, currencySymbol, R.layout.marker_view, date)
+        RatioMarkerView(context, R.layout.marker_view, date)
             .apply { chartView = chart }
 
     chart.marker = mv
@@ -1383,50 +1395,16 @@ private fun setGoldChartSelect6m(
     val chart_goldB = context.resources.getColor(R.color.chart_goldB, null)
     val backGround = context.resources.getColor(R.color.white, null)
 
-    val PREF_NAME = "01504f779d6c77df04"
-    val CURR_NAME = "1w3d4f7w9d2qG2eT36"
-    val currency: Float
+
     val currencySymbol: String
-    val weight: Float = when (viewModel.getRealDataValue()["weightUnit"]!!) {
-        0.0 -> 1.0f //toz
-        1.0 -> 0.03215f //g
-        2.0 -> 32.150747f  //kg
-        3.0 -> 0.120565f//don
-        else -> 1.0f
-    }
 
-    if (viewModel.getRealDataValue().get("currency")?.toInt() ?: 0 == 0) {
-        val currencyOption =
-            context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).getInt(CURR_NAME, 0)
-
-        currency =
-            (viewModel.getRealData().value?.get(CURRENCY[currencyOption]) ?: 1.0).toFloat()
-
-        currencySymbol = CURRENCYSYMBOL[currencyOption]
-
-    } else if (viewModel.getRealDataValue().get("currency")?.toInt() == null) {
-        val currencyOption =
-            context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).getInt(CURR_NAME, 0)
-
-        currency =
-            (viewModel.getRealData().value?.get(CURRENCY[currencyOption]) ?: 1.0).toFloat()
-
-        currencySymbol = CURRENCYSYMBOL[currencyOption]
-
-    } else {
-        currency = (viewModel.getRealData().value?.get(
-            CURRENCY[(viewModel.getRealDataValue().get("currency")?.toInt() ?: 0)]
-        ) ?: 1.0).toFloat()
-        currencySymbol =
-            CURRENCYSYMBOL[(viewModel.getRealDataValue().get("currency")?.toInt() ?: 0)]
-    }
 
     val result = arrayListOf<Entry>()
     data.getValue("value_AU").forEachIndexed { index, fl ->
         result.add(
             Entry(
                 index.toFloat(),
-                (fl.toString().toFloat()) * currency * weight
+                fl.toString().toFloat()
             )
         )
     }
@@ -1486,7 +1464,7 @@ private fun setGoldChartSelect6m(
             textColor = chart_font
             gridColor = chart_goldB
             setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART)
-            isEnabled = false
+            isEnabled = true
             setDrawGridLines(false)
             setLabelCount(3, true)              //none
             axisMaximum = dataSet.yMax * 25 / 24
@@ -1495,7 +1473,7 @@ private fun setGoldChartSelect6m(
         }
 
     val mv =
-        CustomMarkerView(context, currencySymbol, R.layout.marker_view, date)
+        LongMarkerView(context, "$", R.layout.marker_view, viewModel)
             .apply { chartView = chart }
 
     chart.marker = mv
@@ -1524,51 +1502,12 @@ private fun setSilverChartSelect6m(
     val chart_silverB = context.resources.getColor(R.color.chart_silverB, null)
     val backGround = context.resources.getColor(R.color.white, null)
 
-    val PREF_NAME = "01504f779d6c77df04"
-    val CURR_NAME = "1w3d4f7w9d2qG2eT36"
-    var currency: Float
-    var currencySymbol: String
-    val weight: Float = when (viewModel.getRealDataValue()["weightUnit"]!!) {
-        0.0 -> 1.0f //toz
-        1.0 -> 0.03215f //g
-        2.0 -> 32.150747f  //kg
-        3.0 -> 0.120565f//don
-        else -> 1.0f
-    }
-
-    if (viewModel.getRealDataValue().get("currency")?.toInt() ?: 0 == 0) {
-        val currencyOption =
-            context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).getInt(CURR_NAME, 0)
-
-        currency =
-            (viewModel.getRealData().value?.get(CURRENCY[currencyOption]) ?: 1.0).toFloat()
-
-        currencySymbol = CURRENCYSYMBOL[currencyOption]
-
-    } else if (viewModel.getRealDataValue().get("currency")?.toInt() == null) {
-        val currencyOption =
-            context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE).getInt(CURR_NAME, 0)
-
-        currency =
-            (viewModel.getRealData().value?.get(CURRENCY[currencyOption]) ?: 1.0).toFloat()
-
-        currencySymbol = CURRENCYSYMBOL[currencyOption]
-
-    } else {
-        currency = (viewModel.getRealData().value?.get(
-            CURRENCY[(viewModel.getRealDataValue().get("currency")?.toInt() ?: 0)]
-        ) ?: 1.0).toFloat()
-        currencySymbol =
-            CURRENCYSYMBOL[(viewModel.getRealDataValue().get("currency")?.toInt() ?: 0)]
-    }
-
-
     val result = arrayListOf<Entry>()
     data.getValue("value_AG").forEachIndexed { index, fl ->
         result.add(
             Entry(
                 index.toFloat(),
-                (fl.toString().toFloat()) * currency * weight
+                fl.toString().toFloat()
             )
         )
     }
@@ -1629,7 +1568,7 @@ private fun setSilverChartSelect6m(
             textColor = chart_font
             gridColor = chart_silverB
             setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART)
-            isEnabled = false
+            isEnabled = true
             setDrawGridLines(false)
             setLabelCount(3, true)              //none
             axisMaximum = dataSet.yMax * 25 / 24
@@ -1637,7 +1576,7 @@ private fun setSilverChartSelect6m(
             axisLineColor = backGround
         }
     val mv =
-        CustomMarkerView(context, currencySymbol, R.layout.marker_view, date)
+        LongMarkerView(context, "$", R.layout.marker_view, viewModel)
             .apply { chartView = chart }
 
     chart.marker = mv
@@ -1654,9 +1593,6 @@ fun getSilverChartSelect6m(
 ) {
     setSilverChartSelect6m(context, viewModel, binding, data)
 }
-
-
-
 
 private fun setLabel(binding: StatFragmentBinding, viewModel: HomeViewPagerViewModel) {
 
@@ -1851,6 +1787,47 @@ private fun setDetailChart(
     chart.marker = mv
     chart.invalidate()
 }
+
+private class LongMarkerView(
+    context: Context,
+    private val currencySymbol: String,
+    layoutResource: Int,
+    private val viewModel: HomeViewPagerViewModel
+) : MarkerView(
+    context,
+    layoutResource
+) {
+
+    override fun refreshContent(e: Entry?, highlight: Highlight?) {
+        if ((e?.x ?: 0f).toInt() <= viewModel.getChartDate().size - 1) {
+            tvDate.text = viewModel.getChartDate()[(e?.x ?: 0f).toInt()]
+            dateLayout.visibility = View.VISIBLE
+        } else
+            dateLayout.visibility = View.GONE
+
+        tvContent.text =
+            String.format("%,.2f", e?.y) // set the entry-value as the display text
+        tvCurrency.text = currencySymbol
+
+        super.refreshContent(e, highlight)
+    }
+
+    override fun draw(
+        canvas: Canvas?,
+        posX: Float,
+        posY: Float
+    ) {
+        super.draw(canvas, posX, posY)
+        getOffsetForDrawingAtPoint(posX, posY)
+    }
+
+    override fun getOffset(): MPPointF {
+        super.getOffset().x = -(width / 2).toFloat()
+        super.getOffset().y = -(height.toFloat() + 18f)
+        return super.getOffset()
+    }
+}
+
 
 private class CustomMarkerDetailView(
     context: Context,

@@ -90,17 +90,6 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_begin="66dp" />
 
-        <LinearLayout
-            android:background="@drawable/ic_zoom_in_black_24dp"
-            android:id="@+id/goldZoom"
-            android:layout_height="29dp"
-            android:layout_marginBottom="11dp"
-            android:layout_marginEnd="11dp"
-            android:layout_width="29dp"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
     <!--                                    <TextView-->
 
@@ -121,24 +110,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             android:visibility="invisible"/>
-
-        <ProgressBar
-            android:id="@+id/silverShortChartProgress"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:text="@string/silver"
-            android:layout_marginHorizontal="3dp"
-            android:textColor="@color/font_silver"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
 
         <TextView
@@ -177,17 +148,6 @@
             app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toEndOf="@+id/silverRealCurrency"
             app:layout_constraintTop_toTopOf="@+id/silverRealCurrency" />
-
-        <LinearLayout
-            android:background="@drawable/ic_zoom_in_black_24dp"
-            android:id="@+id/silverZoom"
-            android:layout_height="29dp"
-            android:layout_marginBottom="11dp"
-            android:layout_marginEnd="11dp"
-            android:layout_width="29dp"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline8"

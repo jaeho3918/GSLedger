@@ -19,7 +19,9 @@ import com.firebase.ui.auth.AuthUI.getApplicationContext
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.functions.FirebaseFunctions
 import com.google.firebase.messaging.FirebaseMessaging
 import com.gsgana.gsledger.databinding.AdsAndOptionFragmentBinding
 import com.gsgana.gsledger.utilities.*
@@ -36,6 +38,8 @@ class AdsAndOptionFragment : Fragment(), PurchasesUpdatedListener {
     private val USERS_DB_PATH = "qnI4vK2zSUq6GdeT6b"
 
     private lateinit var adapter: ArrayAdapter<String>
+
+    private val functions: FirebaseFunctions = FirebaseFunctions.getInstance()
 
     private lateinit var sf: SharedPreferences
     private val CURR_NAME = "1w3d4f7w9d2qG2eT36"
@@ -378,5 +382,26 @@ class AdsAndOptionFragment : Fragment(), PurchasesUpdatedListener {
                 }
             }
         }
+    }
+
+    private fun getChart(label: String, reg: String, num: Int): Task<Map<String, ArrayList<*>>> {
+        // Create the arguments to the callable function.
+
+        val data = hashMapOf(
+            "label" to label,
+            "reg" to reg,
+            "number" to num
+        )
+
+        return functions
+            .getHttpsCallable("SG0ZRjr99Z1OAdeROjF1e6nS")
+            .call(data)
+            .continueWith { task ->
+                // This continuation runs on either success or failure, but if the task
+                // has failed then result will throw an Exception which will be
+                // propagated down.
+                val result = task.result?.data as Map<String, ArrayList<*>>
+                result
+            }
     }
 }

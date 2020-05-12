@@ -7,6 +7,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.os.Handler
 import android.text.util.Linkify
 import android.view.LayoutInflater
 import android.view.View
@@ -55,6 +56,8 @@ class HomeViewPagerFragment : Fragment() {
 
     private var last_ag = 0.0
     private var last_au = 0.0
+
+    private val functions = FirebaseFunctions.getInstance()
 
     private val NEW_LABEL = "RECSHenWYqdadfXOog"
     private val NEW_ENCRYPT = "X67LWGmYAc3rlCbmPe"
@@ -124,6 +127,22 @@ class HomeViewPagerFragment : Fragment() {
                 viewModel.setchartData(data)
             }
         }
+
+        Handler().postDelayed({
+            getLongChart(
+                sf.getString(NEW_LABEL, "")!!,
+                sf.getString(NEW_ENCRYPT, "")!!,
+                sf.getInt(NUMBER, 0)
+            ).addOnSuccessListener { data ->
+                if (!data.isNullOrEmpty()) {
+                    viewModel.setLongchartData(data)
+                }
+            }
+        }, 666)
+
+
+
+
 
         binding = HomeViewPagerFragmentBinding.inflate(inflater, container, false)
 
@@ -391,9 +410,6 @@ class HomeViewPagerFragment : Fragment() {
 
     private fun getChart(label: String, reg: String, num: Int): Task<Map<String, ArrayList<*>>> {
         // Create the arguments to the callable function.
-        lateinit var functions: FirebaseFunctions// ...
-
-        functions = FirebaseFunctions.getInstance()
 
         val data = hashMapOf(
             "label" to label,
@@ -412,6 +428,34 @@ class HomeViewPagerFragment : Fragment() {
                 result
             }
     }
+
+    private fun getLongChart(
+        label: String,
+        reg: String,
+        num: Int
+    ): Task<Map<String, ArrayList<*>>> {
+
+        // Create the arguments to the callable function.
+
+        val data = hashMapOf(
+            "label" to label,
+            "reg" to reg,
+            "number" to num
+        )
+
+        return functions
+            .getHttpsCallable("L3Vi6HftOI0HK6VH6rHsB6At")
+            .call(data)
+            .continueWith { task ->
+                // This continuation runs on either success or failure, but if the task
+                // has failed then result will throw an Exception which will be
+                // propagated down.
+
+                val result = task.result?.data as Map<String, ArrayList<*>>
+                result
+            }
+    }
+
 }
 
 private fun getPrice(

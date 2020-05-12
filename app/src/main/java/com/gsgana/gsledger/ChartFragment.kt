@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.Canvas
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,8 +13,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
+import androidx.lifecycle.Observer
 import com.github.mikephil.charting.components.MarkerView
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
@@ -51,7 +51,7 @@ class ChartFragment : Fragment() {
     private val NEW_ENCRYPT = "X67LWGmYAc3rlCbmPe"
     private val NUMBER = "HYf75f2q2a36enW18b"
 
-    private val functions: FirebaseFunctions = FirebaseFunctions.getInstance()
+//    private val functions: FirebaseFunctions = FirebaseFunctions.getInstance()
 
     private val KEY = "Kd6c26TK65YSmkw6oU"
 
@@ -101,29 +101,16 @@ class ChartFragment : Fragment() {
         binding.todayLabel1.text = today?.substring(0..10)
         binding.todayLabel2.text = today?.substring(0..10)
 
-        getChart(
-            sf.getString(NEW_LABEL, "")!!,
-            sf.getString(NEW_ENCRYPT, "")!!,
-            sf.getInt(NUMBER, 0)
-        ).addOnSuccessListener { data ->
-            val list1 = data.get("value_AU") as ArrayList<Float>
-            val list2 = data.get("value_AG") as ArrayList<Float>
-            val list3 = data.get("value_RATIO") as ArrayList<Float>
-            val dates = data.get("date") as ArrayList<String>
 
-            if (context != null) setGoldLongChart(context!!, binding, dates, list1)
-            if (context != null) setSilverLongChart(context!!, binding, dates, list2)
-            if (context != null) setRatioLongChart(context!!, binding, dates, list3)
-            viewModel.setChartDate(dates)
-            list1.clear()
-            list2.clear()
-            list3.clear()
-        }
+        viewModel.getLongchart().observe(viewLifecycleOwner, Observer {
+            if (context != null) setGoldLongChart(context!!, binding, it)
+            if (context != null) setSilverLongChart(context!!, binding, it)
+            if (context != null) setRatioLongChart(context!!, binding, it)
+        })
 
         var gold = 0
         var silver = 0
         var ratio = 0
-
 
         binding.gold6mBtn.setOnClickListener {
             if (gold != 6) {
@@ -148,21 +135,25 @@ class ChartFragment : Fragment() {
 
         binding.gold29yBtn.setOnClickListener {
             if (gold != 29) {
-//                getGoldChartSelect29y(context!!, viewModel, binding, viewModel.getchartData())
+                if (context != null) setGoldLongChart(context!!, binding, viewModel.getchartData())
                 gold = 29
             }
         }
 
         binding.silver29yBtn.setOnClickListener {
             if (silver != 29) {
-//                getSilverChartSelect29y(context!!, viewModel, binding, viewModel.getchartData())
+                if (context != null) setSilverLongChart(
+                    context!!,
+                    binding,
+                    viewModel.getchartData()
+                )
                 silver = 29
             }
         }
 
         binding.ratio29yBtn.setOnClickListener {
             if (ratio != 29) {
-//                getRatioChartSelect29y(context!!, viewModel, binding, viewModel.getchartData())
+                if (context != null) setRatioLongChart(context!!, binding, viewModel.getchartData())
                 ratio = 29
             }
         }
@@ -178,8 +169,7 @@ class ChartFragment : Fragment() {
     private fun setRatioLongChart(
         context: Context,
         binding: ChartFragmentBinding,
-        date_input: ArrayList<String>,
-        value: List<Float>
+        data: Map<String, ArrayList<*>>
     ) {
 
         val chart_goldC = context.resources.getColor(R.color.chart_goldC, null)
@@ -188,7 +178,15 @@ class ChartFragment : Fragment() {
 
         val entries = arrayListOf<Entry>()
 
-        value.forEachIndexed { index, fl -> entries.add(Entry(index.toFloat(), fl)) }
+        data.getValue("value_RATIO").forEachIndexed { index, fl ->
+            entries.add(
+                Entry(
+                    index.toFloat(),
+                    fl.toString().toFloat()
+                )
+            )
+        }
+
 
         val dataSet = LineDataSet(entries, "")
             .apply {
@@ -201,10 +199,14 @@ class ChartFragment : Fragment() {
                 mode = LineDataSet.Mode.CUBIC_BEZIER
                 isHighlightEnabled = true
                 setDrawCircles(false)
+                notifyDataSetChanged()
             }
-        val date = date_input
+
+        val date = data.getValue("date").toList() as List<String>
 
         val data = LineData(dataSet)
+
+        data.notifyDataChanged()
 
         val chart = binding.ratioLongChart.apply {
             isEnabled = true
@@ -225,6 +227,7 @@ class ChartFragment : Fragment() {
             axisRight.isEnabled = false
             legend.isEnabled = false
             fitScreen()
+            notifyDataSetChanged()
         }
 
         val valueFormatter = IndexAxisValueFormatter(date)
@@ -253,21 +256,22 @@ class ChartFragment : Fragment() {
                 textSize = 5F
 
             }
-
+//////////////////////////////////////////
         chart.axisLeft
             .apply {
                 textColor = resources.getColor(R.color.chart_font, null)
                 gridColor = resources.getColor(R.color.chart_goldB, null)
                 setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART)
-                setDrawGridLines(true)
-                setLabelCount(5, true)
+                setDrawGridLines(false)
+
+                setLabelCount(5, false)
                 axisMaximum = dataSet.yMax * 15 / 13
                 axisMinimum = 0f
                 axisLineColor = backGround
             }
 
         val mv =
-            CustomMarkerRatioView(context, R.layout.marker_view, viewModel).apply {
+            CustomMarkerRatioView(context, R.layout.marker_view, date).apply {
                 chartView = chart
             }
 
@@ -280,8 +284,7 @@ class ChartFragment : Fragment() {
     private fun setGoldLongChart(
         context: Context,
         binding: ChartFragmentBinding,
-        date_input: ArrayList<String>,
-        value: List<Float>
+        data: Map<String, ArrayList<*>>
     ) {
 
         val chart_goldC = context.resources.getColor(R.color.chart_goldC, null)
@@ -290,7 +293,14 @@ class ChartFragment : Fragment() {
 
         val entries = arrayListOf<Entry>()
 
-        value.forEachIndexed { index, fl -> entries.add(Entry(index.toFloat(), fl)) }
+        data.getValue("value_AU").forEachIndexed { index, fl ->
+            entries.add(
+                Entry(
+                    index.toFloat(),
+                    fl.toString().toFloat()
+                )
+            )
+        }
 
         val dataSet = LineDataSet(entries, "")
             .apply {
@@ -302,10 +312,14 @@ class ChartFragment : Fragment() {
                 mode = LineDataSet.Mode.CUBIC_BEZIER
                 isHighlightEnabled = true
                 setDrawCircles(false)
+                notifyDataSetChanged()
             }
-        val date = date_input
+
+        val date = data.getValue("date").toList() as List<String>
 
         val data = LineData(dataSet)
+        data.notifyDataChanged()
+
 
         val chart = binding.goldLongChart.apply {
             isEnabled = true
@@ -326,21 +340,9 @@ class ChartFragment : Fragment() {
             axisRight.isEnabled = false
             legend.isEnabled = false
             fitScreen()
-
+            notifyDataSetChanged()
         }
         val valueFormatter = IndexAxisValueFormatter(date)
-//        val valueFormatter = ChartAxisValueFormatter().apply {
-//            setValue(date)
-//        }
-//        val valueFormatter = object : IndexAxisValueFormatter(){
-//            val simpleDateFormat: SimpleDateFormat = SimpleDateFormat("yyyy/MM/dd")
-//            val cal = Calendar.getInstance()
-//
-//            override fun getFormattedValue(value: Float, axis: AxisBase?): String? {
-//                cal.timeInMillis = date[value.toInt()] * 1000L
-//                return simpleDateFormat.format(cal).toString()
-//            }
-//        }
 
         chart.xAxis
             .apply {
@@ -360,15 +362,16 @@ class ChartFragment : Fragment() {
                 textColor = resources.getColor(R.color.chart_font, null)
                 gridColor = resources.getColor(R.color.chart_goldB, null)
                 setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART)
-                setDrawGridLines(true)
-                setLabelCount(5, true)
+                setDrawGridLines(false)
+
+                setLabelCount(5, false)
                 axisMaximum = dataSet.yMax * 15 / 13
                 axisMinimum = 0f
                 axisLineColor = backGround
             }
 
         val mv =
-            CustomMarkerView(context, "$", R.layout.marker_view, viewModel).apply {
+            LongMarkerView(context, "$", R.layout.marker_view, date).apply {
                 chartView = chart
             }
 
@@ -381,15 +384,21 @@ class ChartFragment : Fragment() {
     private fun setSilverLongChart(
         context: Context,
         binding: ChartFragmentBinding,
-        date: ArrayList<String>,
-        value: List<Float>
+        data: Map<String, ArrayList<*>>
     ) {
         val chart_silverC = context.resources.getColor(R.color.chart_silverC, null)
         val chart_silverB = context.resources.getColor(R.color.chart_silverB, null)
         val backGround = context.resources.getColor(R.color.white, null)
         val entries = arrayListOf<Entry>()
 
-        value.forEachIndexed { index, fl -> entries.add(Entry(index.toFloat(), fl)) }
+        data.getValue("value_AG").forEachIndexed { index, fl ->
+            entries.add(
+                Entry(
+                    index.toFloat(),
+                    fl.toString().toFloat()
+                )
+            )
+        }
 
         val dataSet = LineDataSet(entries, "")
             .apply {
@@ -401,9 +410,16 @@ class ChartFragment : Fragment() {
                 mode = LineDataSet.Mode.CUBIC_BEZIER
                 isHighlightEnabled = true
                 setDrawCircles(false)
+                notifyDataSetChanged()
             }
 
+
+        val date = data.getValue("date").toList() as List<String>
+
         val data = LineData(dataSet)
+
+        data.notifyDataChanged()
+        data.notifyDataChanged()
 
         val chart = binding.silverLongChart.apply {
             isEnabled = true
@@ -424,6 +440,7 @@ class ChartFragment : Fragment() {
             axisRight.isEnabled = false
             legend.isEnabled = false
             fitScreen()
+            notifyDataSetChanged()
         }
 
 
@@ -438,7 +455,7 @@ class ChartFragment : Fragment() {
                 textColor = context.resources.getColor(R.color.chart_font, null)
                 position = XAxis.XAxisPosition.BOTTOM
                 setLabelCount(5, false)
-                setDrawGridLines(true)
+                setDrawGridLines(false)
                 textSize = 5F
 
             }
@@ -448,15 +465,15 @@ class ChartFragment : Fragment() {
                 textColor = resources.getColor(R.color.chart_font, null)
                 gridColor = resources.getColor(R.color.chart_silverB, null)
                 setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART)
-                setDrawGridLines(true)
-                setLabelCount(5, true)
-                axisMaximum = dataSet.yMax * 15 / 13
-                axisMinimum = 0f
+                setDrawGridLines(false)
+                setLabelCount(5, false)
+                axisMaximum = dataSet.yMax * 25 / 24
+                axisMinimum = dataSet.yMin * 23 / 24
                 axisLineColor = backGround
             }
 
         val mv =
-            CustomMarkerView(context, "$", R.layout.marker_view, viewModel).apply {
+            LongMarkerView(context, "$", R.layout.marker_view, date).apply {
                 chartView = chart
             }
 
@@ -469,15 +486,15 @@ class ChartFragment : Fragment() {
     private class CustomMarkerRatioView(
         context: Context,
         layoutResource: Int,
-        private val viewModel: HomeViewPagerViewModel
+        private val date: List<String>
     ) : MarkerView(
         context,
         layoutResource
     ) {
 
         override fun refreshContent(e: Entry?, highlight: Highlight?) {
-            if ((e?.x ?: 0f).toInt() <= viewModel.getChartDate().size - 1) {
-                tvDate.text = viewModel.getChartDate()[(e?.x ?: 0f).toInt()]
+            if ((e?.x ?: 0f).toInt() <= date.size - 1) {
+                tvDate.text = date[(e?.x ?: 0f).toInt()]
                 dateLayout.visibility = View.VISIBLE
             } else
                 dateLayout.visibility = View.GONE
@@ -505,19 +522,19 @@ class ChartFragment : Fragment() {
     }
 
 
-    private class CustomMarkerView(
+    private class LongMarkerView(
         context: Context,
         private val currencySymbol: String,
         layoutResource: Int,
-        private val viewModel: HomeViewPagerViewModel
+        private val date: List<String>
     ) : MarkerView(
         context,
         layoutResource
     ) {
 
         override fun refreshContent(e: Entry?, highlight: Highlight?) {
-            if ((e?.x ?: 0f).toInt() <= viewModel.getChartDate().size - 1) {
-                tvDate.text = viewModel.getChartDate()[(e?.x ?: 0f).toInt()]
+            if ((e?.x ?: 0f).toInt() <= date.size - 1) {
+                tvDate.text = date[(e?.x ?: 0f).toInt()]
                 dateLayout.visibility = View.VISIBLE
             } else
                 dateLayout.visibility = View.GONE
@@ -545,28 +562,6 @@ class ChartFragment : Fragment() {
         }
     }
 
-    private fun getChart(label: String, reg: String, num: Int): Task<Map<*, ArrayList<*>>> {
-
-        // Create the arguments to the callable function.
-
-        val data = hashMapOf(
-            "label" to label,
-            "reg" to reg,
-            "number" to num
-        )
-
-        return functions
-            .getHttpsCallable("L3Vi6HftOI0HK6VH6rHsB6At")
-            .call(data)
-            .continueWith { task ->
-                // This continuation runs on either success or failure, but if the task
-                // has failed then result will throw an Exception which will be
-                // propagated down.
-
-                val result = task.result?.data as Map<*, ArrayList<*>>
-                result
-            }
-    }
 
     private fun setAds() {
         MobileAds.initialize(context)

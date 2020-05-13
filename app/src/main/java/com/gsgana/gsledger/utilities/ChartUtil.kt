@@ -1402,10 +1402,6 @@ private fun setGoldChartSelect6m(
     val chart_goldB = context.resources.getColor(R.color.chart_goldB, null)
     val backGround = context.resources.getColor(R.color.white, null)
 
-
-    val currencySymbol: String
-
-
     val result = arrayListOf<Entry>()
     data.getValue("value_AU").forEachIndexed { index, fl ->
         result.add(

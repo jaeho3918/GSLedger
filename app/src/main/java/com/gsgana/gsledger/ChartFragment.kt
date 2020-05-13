@@ -34,7 +34,11 @@ import com.google.firebase.functions.FirebaseFunctions
 import com.gsgana.gsledger.databinding.ChartFragmentBinding
 import com.gsgana.gsledger.utilities.*
 import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModel
+import kotlinx.android.synthetic.main.gold_29y_chart_layout.view.*
+import kotlinx.android.synthetic.main.goldlongchart_layout.view.*
 import kotlinx.android.synthetic.main.marker_view.view.*
+import kotlinx.android.synthetic.main.ratio_29y_chart_layout.view.*
+import kotlinx.android.synthetic.main.silver_29y_chart_layout.view.*
 import kotlin.collections.ArrayList
 
 
@@ -103,58 +107,58 @@ class ChartFragment : Fragment() {
 
 
         viewModel.getLongchart().observe(viewLifecycleOwner, Observer {
-            if (context != null) setGoldLongChart(context!!, binding, it)
-            if (context != null) setSilverLongChart(context!!, binding, it)
-            if (context != null) setRatioLongChart(context!!, binding, it)
+            if (context != null) getRatioChartSelect6m(context!!, viewModel, binding, it)
+            if (context != null) getGoldChartSelect6m(context!!, viewModel, binding, it)
+            if (context != null) getSilverChartSelect6m(context!!, viewModel, binding, it)
         })
 
-        var gold = 0
-        var silver = 0
-        var ratio = 0
+        var goldChart_select = 0
+        var silverChart_select = 0
+        var ratioChart_select = 0
 
         binding.gold6mBtn.setOnClickListener {
-            if (gold != 6) {
+            if (goldChart_select != 6) {
                 getGoldChartSelect6m(context!!, viewModel, binding, viewModel.getchartData())
-                gold = 6
+                goldChart_select = 6
             }
         }
 
         binding.silver6mBtn.setOnClickListener {
-            if (silver != 6) {
+            if (silverChart_select != 6) {
                 getSilverChartSelect6m(context!!, viewModel, binding, viewModel.getchartData())
-                silver = 6
+                silverChart_select = 6
             }
         }
 
         binding.ratio6mBtn.setOnClickListener {
-            if (ratio != 6) {
+            if (ratioChart_select != 6) {
                 getRatioChartSelect6m(context!!, viewModel, binding, viewModel.getchartData())
-                ratio = 6
+                ratioChart_select = 6
             }
         }
 
         binding.gold29yBtn.setOnClickListener {
-            if (gold != 29) {
-                if (context != null) setGoldLongChart(context!!, binding, viewModel.getchartData())
-                gold = 29
+            if (goldChart_select != 29) {
+                if (context != null)setGold_29y_Chart(context!!, binding, viewModel.getchartData())
+                goldChart_select = 29
             }
         }
 
         binding.silver29yBtn.setOnClickListener {
-            if (silver != 29) {
-                if (context != null) setSilverLongChart(
+            if (silverChart_select != 29) {
+                if (context != null) setSilver_29y_Chart(
                     context!!,
                     binding,
                     viewModel.getchartData()
                 )
-                silver = 29
+                silverChart_select = 29
             }
         }
 
         binding.ratio29yBtn.setOnClickListener {
-            if (ratio != 29) {
-                if (context != null) setRatioLongChart(context!!, binding, viewModel.getchartData())
-                ratio = 29
+            if (ratioChart_select != 29) {
+                if (context != null) setRatio_29y_Chart(context!!, binding, viewModel.getchartData())
+                ratioChart_select = 29
             }
         }
 
@@ -166,7 +170,7 @@ class ChartFragment : Fragment() {
         super.onDestroy()
     }
 
-    private fun setRatioLongChart(
+    private fun setRatio_29y_Chart(
         context: Context,
         binding: ChartFragmentBinding,
         data: Map<String, ArrayList<*>>
@@ -208,7 +212,7 @@ class ChartFragment : Fragment() {
 
         data.notifyDataChanged()
 
-        val chart = binding.ratioLongChart.apply {
+        val chart = binding.ratio29yChartLayout.ratio_29y_Chart.apply {
             isEnabled = true
             setData(data)
 //            setViewPortOffsets(50f, 30f, 50f, 50f)
@@ -277,11 +281,12 @@ class ChartFragment : Fragment() {
 
         chart.marker = mv
         chart.invalidate()
+        binding.ratio29yChartLayout.ratio_29y_Chart.visibility = View.VISIBLE
         binding.ratioLongChartLayout.visibility = View.VISIBLE
         binding.ratioLongChartProgress.visibility = View.GONE
     }
 
-    private fun setGoldLongChart(
+    private fun setGold_29y_Chart(
         context: Context,
         binding: ChartFragmentBinding,
         data: Map<String, ArrayList<*>>
@@ -321,7 +326,7 @@ class ChartFragment : Fragment() {
         data.notifyDataChanged()
 
 
-        val chart = binding.goldLongChart.apply {
+        val chart = binding.gold29yChartLayout.gold_29y_Chart.apply {
             isEnabled = true
             setData(data)
 //            setViewPortOffsets(50f, 30f, 50f, 50f)
@@ -377,11 +382,12 @@ class ChartFragment : Fragment() {
 
         chart.marker = mv
         chart.invalidate()
+        binding.gold29yChartLayout.gold_29y_Chart.visibility = View.VISIBLE
         binding.goldLongChartLayout.visibility = View.VISIBLE
         binding.goldLongChartProgress.visibility = View.GONE
     }
 
-    private fun setSilverLongChart(
+    private fun setSilver_29y_Chart(
         context: Context,
         binding: ChartFragmentBinding,
         data: Map<String, ArrayList<*>>
@@ -419,9 +425,8 @@ class ChartFragment : Fragment() {
         val data = LineData(dataSet)
 
         data.notifyDataChanged()
-        data.notifyDataChanged()
 
-        val chart = binding.silverLongChart.apply {
+        val chart = binding.silver29yChartLayout.silver_29y_Chart.apply {
             isEnabled = true
             setData(data)
 //            setViewPortOffsets(50f, 30f, 50f, 50f)
@@ -479,6 +484,7 @@ class ChartFragment : Fragment() {
 
         chart.marker = mv
         chart.invalidate()
+        binding.silver29yChartLayout.silver_29y_Chart.visibility = View.VISIBLE
         binding.silverLongChartLayout.visibility = View.VISIBLE
         binding.silverLongChartProgress.visibility = View.GONE
     }

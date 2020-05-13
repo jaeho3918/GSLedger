@@ -24,7 +24,13 @@ import com.gsgana.gsledger.databinding.StatFragmentBinding
 import com.gsgana.gsledger.viewmodels.DetailViewModel
 import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModel
 import kotlinx.android.synthetic.main.chart_layout.view.*
+import kotlinx.android.synthetic.main.chart_layout.view.silverRealCurrency
+import kotlinx.android.synthetic.main.chart_layout.view.silverRealPrice
+import kotlinx.android.synthetic.main.chart_layout.view.silverRealWeight
+import kotlinx.android.synthetic.main.goldlongchart_layout.view.*
 import kotlinx.android.synthetic.main.marker_view.view.*
+import kotlinx.android.synthetic.main.ratiolongchart_layout.view.*
+import kotlinx.android.synthetic.main.silverlongchart_layout.view.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
@@ -1316,7 +1322,7 @@ private fun setRatioChartSelect6m(
 
     val data_set = LineData(dataSet)
 
-    val chart = binding.ratioLongChart.apply {
+    val chart = binding.ratioLongChartLayout.ratio_6m_Chart.apply {
         isEnabled = true
         setData(data_set)
 //            setViewPortOffsets(50f, 30f, 50f, 50f)
@@ -1370,6 +1376,7 @@ private fun setRatioChartSelect6m(
 
     chart.marker = mv
     chart.invalidate()
+    binding.ratioLongChartLayout.ratio_6m_Chart.visibility = View.VISIBLE
     binding.ratioLongChartLayout.visibility = View.VISIBLE
     binding.ratioLongChartProgress.visibility = View.GONE
 }
@@ -1424,7 +1431,7 @@ private fun setGoldChartSelect6m(
 
     val data_set = LineData(dataSet)
 
-    val chart = binding.goldLongChart.apply {
+    val chart = binding.goldLongChartLayout.gold_6m_Chart.apply {
         isEnabled = true
         setData(data_set)
 //        setViewPortOffsets(50f, 30f, 50f, 80f)
@@ -1478,6 +1485,7 @@ private fun setGoldChartSelect6m(
 
     chart.marker = mv
     chart.invalidate()
+    binding.goldLongChartLayout.gold_6m_Chart.visibility = View.VISIBLE
     binding.goldLongChartLayout.visibility = View.VISIBLE
     binding.goldLongChartProgress.visibility = View.GONE
 }
@@ -1528,7 +1536,7 @@ private fun setSilverChartSelect6m(
 
     val data_set = LineData(dataSet)
 
-    val chart = binding.silverLongChart.apply {
+    val chart = binding.silverLongChartLayout.silver_6m_Chart.apply {
         isEnabled = true
         setData(data_set)
 //        setViewPortOffsets(50f, 30f, 50f, 80f)
@@ -1581,6 +1589,7 @@ private fun setSilverChartSelect6m(
 
     chart.marker = mv
     chart.invalidate()
+    binding.silverLongChartLayout.silver_6m_Chart.visibility = View.VISIBLE
     binding.silverLongChartLayout.visibility = View.VISIBLE
     binding.silverLongChartProgress.visibility = View.GONE
 }

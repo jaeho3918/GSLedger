@@ -7,36 +7,6 @@
     android:layout_height="match_parent"
     android:layout_width="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:background="@color/white"
-        android:id="@+id/silver_6m_Layout"
-        android:layout_height="250dp"
-        android:layout_width="0dp"
-        app:layout_constraintEnd_toStartOf="@+id/guideline5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <com.github.mikephil.charting.charts.LineChart
-            android:id="@+id/silver_6m_Chart"
-            android:layout_height="250dp"
-            android:layout_width="match_parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:visibility="invisible"/>
-
-        <ProgressBar
-            android:id="@+id/silver_6m_Progress"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
     <!--                                    <TextView-->
 
     <androidx.constraintlayout.widget.ConstraintLayout

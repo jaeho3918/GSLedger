@@ -80,7 +80,7 @@
                                 android:visibility="gone">
 
                                 <include
-                                    android:id="@+id/ratioLongChart"
+                                    android:id="@+id/ratio_29y_ChartLayout"
                                     layout="@layout/ratiolongchart_layout"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"/>
@@ -89,7 +89,7 @@
                                     android:id="@+id/todayLabel2"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_alignBottom="@+id/ratioLongChart"
+                                    android:layout_alignBottom="@+id/ratio_29y_ChartLayout"
                                     android:layout_alignParentEnd="true"
                                     android:layout_marginEnd="3dp"
                                     android:layout_marginBottom="5.3dp"
@@ -182,8 +182,8 @@
 
 
                                 <include
-                                    android:id="@+id/goldLongChart"
-                                    layout="@layout/goldlongchart_layout"
+                                    android:id="@+id/gold_29y_ChartLayout"
+                                    layout="@layout/gold_29y_chart_layout"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"/>
 
@@ -191,7 +191,7 @@
                                     android:id="@+id/todayLabel"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_alignBottom="@+id/goldLongChart"
+                                    android:layout_alignBottom="@+id/gold_29y_ChartLayout"
                                     android:layout_alignParentEnd="true"
                                     android:layout_marginEnd="3dp"
                                     android:layout_marginBottom="5.3dp"
@@ -283,8 +283,8 @@
 
 
                                 <include
-                                    android:id="@+id/silverLongChart"
-                                    layout="@layout/silverlongchart_layout"
+                                    android:id="@+id/silver_29y_ChartLayout"
+                                    layout="@layout/silver_29y_chart_layout"
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"/>
 
@@ -292,7 +292,7 @@
                                     android:id="@+id/todayLabel1"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_alignBottom="@+id/silverLongChart"
+                                    android:layout_alignBottom="@+id/silver_29y_ChartLayout"
                                     android:layout_alignParentEnd="true"
                                     android:layout_marginEnd="3dp"
                                     android:layout_marginBottom="5.3dp"

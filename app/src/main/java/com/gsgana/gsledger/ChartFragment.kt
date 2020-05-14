@@ -25,24 +25,15 @@ import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.InterstitialAd
 import com.google.android.gms.ads.MobileAds
-import com.google.android.gms.tasks.Task
-import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.functions.FirebaseFunctions
 import com.gsgana.gsledger.databinding.ChartFragmentBinding
 import com.gsgana.gsledger.utilities.*
 import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModel
-import kotlinx.android.synthetic.main.chart_fragment.view.*
 import kotlinx.android.synthetic.main.gold_29y_chart_layout.*
 import kotlinx.android.synthetic.main.gold_29y_chart_layout.view.*
-import kotlinx.android.synthetic.main.gold_29y_chart_layout.view.gold_29y_ChartLayout
 import kotlinx.android.synthetic.main.marker_view.view.*
-import kotlinx.android.synthetic.main.ratio_29y_chart_layout.*
-import kotlinx.android.synthetic.main.ratio_29y_chart_layout.view.*
-import kotlinx.android.synthetic.main.ratio_29y_chart_layout.view.ratio_29y_ChartLayout
 import kotlinx.android.synthetic.main.silver_29y_chart_layout.*
 import kotlinx.android.synthetic.main.silver_29y_chart_layout.view.*
-import kotlinx.android.synthetic.main.silver_29y_chart_layout.view.silver_29y_ChartLayout
 import kotlin.collections.ArrayList
 
 
@@ -143,7 +134,11 @@ class ChartFragment : Fragment() {
 
         binding.gold29yBtn.setOnClickListener {
             if (goldChart_select != 29) {
-                if (context != null)setGold_29y_Chart(context!!, binding, viewModel.getchartData())
+                if (context != null) setGold_29y_Chart(
+                    context!!,
+                    binding,
+                    viewModel.getLongchartData()
+                )
                 goldChart_select = 29
             }
         }
@@ -153,7 +148,7 @@ class ChartFragment : Fragment() {
                 if (context != null) setSilver_29y_Chart(
                     context!!,
                     binding,
-                    viewModel.getchartData()
+                    viewModel.getLongchartData()
                 )
                 silverChart_select = 29
             }
@@ -161,7 +156,11 @@ class ChartFragment : Fragment() {
 
         binding.ratio29yBtn.setOnClickListener {
             if (ratioChart_select != 29) {
-                if (context != null) setRatio_29y_Chart(context!!, binding, viewModel.getchartData())
+                if (context != null) setRatio_29y_Chart(
+                    context!!,
+                    binding,
+                    viewModel.getLongchartData()
+                )
                 ratioChart_select = 29
             }
         }
@@ -195,7 +194,6 @@ class ChartFragment : Fragment() {
             )
         }
 
-
         val dataSet = LineDataSet(entries, "")
             .apply {
                 setDrawFilled(false)
@@ -216,7 +214,7 @@ class ChartFragment : Fragment() {
 
         data.notifyDataChanged()
 
-        val chart = ratio_29y_ChartLayout.ratio_29y_Chart.apply {
+        val chart = binding.ratio29yChart.apply {
             isEnabled = true
             setData(data)
 //            setViewPortOffsets(50f, 30f, 50f, 50f)
@@ -285,7 +283,9 @@ class ChartFragment : Fragment() {
 
         chart.marker = mv
         chart.invalidate()
-        ratio_29y_ChartLayout.ratio_29y_Chart.visibility = View.VISIBLE
+
+        binding.guideline5.setGuidelinePercent(0f)
+        binding.ratio29yChart.visibility = View.VISIBLE
         binding.ratioLongChartVisibleLayout.visibility = View.VISIBLE
         binding.ratioLongChartProgress.visibility = View.GONE
     }

@@ -1376,6 +1376,8 @@ private fun setRatioChartSelect6m(
 
     chart.marker = mv
     chart.invalidate()
+
+    binding.guideline5.setGuidelinePercent(1f)
     binding.ratioLongChartLayout.ratio_6m_Chart.visibility = View.VISIBLE
     binding.ratioLongChartVisibleLayout.visibility = View.VISIBLE
     binding.ratioLongChartProgress.visibility = View.GONE

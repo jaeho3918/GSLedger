@@ -1377,7 +1377,7 @@ private fun setRatioChartSelect6m(
     chart.marker = mv
     chart.invalidate()
     binding.ratioLongChartLayout.ratio_6m_Chart.visibility = View.VISIBLE
-    binding.ratioLongChartLayout.visibility = View.VISIBLE
+    binding.ratioLongChartVisibleLayout.visibility = View.VISIBLE
     binding.ratioLongChartProgress.visibility = View.GONE
 }
 
@@ -1482,7 +1482,7 @@ private fun setGoldChartSelect6m(
     chart.marker = mv
     chart.invalidate()
     binding.goldLongChartLayout.gold_6m_Chart.visibility = View.VISIBLE
-    binding.goldLongChartLayout.visibility = View.VISIBLE
+    binding.goldLongChartVisibleLayout.visibility = View.VISIBLE
     binding.goldLongChartProgress.visibility = View.GONE
 }
 
@@ -1586,7 +1586,7 @@ private fun setSilverChartSelect6m(
     chart.marker = mv
     chart.invalidate()
     binding.silverLongChartLayout.silver_6m_Chart.visibility = View.VISIBLE
-    binding.silverLongChartLayout.visibility = View.VISIBLE
+    binding.silverLongChartVisibleLayout.visibility = View.VISIBLE
     binding.silverLongChartProgress.visibility = View.GONE
 }
 

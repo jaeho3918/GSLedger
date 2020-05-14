@@ -4,11 +4,9 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.Canvas
 import android.os.Bundle
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -34,11 +32,17 @@ import com.google.firebase.functions.FirebaseFunctions
 import com.gsgana.gsledger.databinding.ChartFragmentBinding
 import com.gsgana.gsledger.utilities.*
 import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModel
+import kotlinx.android.synthetic.main.chart_fragment.view.*
+import kotlinx.android.synthetic.main.gold_29y_chart_layout.*
 import kotlinx.android.synthetic.main.gold_29y_chart_layout.view.*
-import kotlinx.android.synthetic.main.goldlongchart_layout.view.*
+import kotlinx.android.synthetic.main.gold_29y_chart_layout.view.gold_29y_ChartLayout
 import kotlinx.android.synthetic.main.marker_view.view.*
+import kotlinx.android.synthetic.main.ratio_29y_chart_layout.*
 import kotlinx.android.synthetic.main.ratio_29y_chart_layout.view.*
+import kotlinx.android.synthetic.main.ratio_29y_chart_layout.view.ratio_29y_ChartLayout
+import kotlinx.android.synthetic.main.silver_29y_chart_layout.*
 import kotlinx.android.synthetic.main.silver_29y_chart_layout.view.*
+import kotlinx.android.synthetic.main.silver_29y_chart_layout.view.silver_29y_ChartLayout
 import kotlin.collections.ArrayList
 
 
@@ -212,7 +216,7 @@ class ChartFragment : Fragment() {
 
         data.notifyDataChanged()
 
-        val chart = binding.ratio29yChartLayout.ratio_29y_Chart.apply {
+        val chart = ratio_29y_ChartLayout.ratio_29y_Chart.apply {
             isEnabled = true
             setData(data)
 //            setViewPortOffsets(50f, 30f, 50f, 50f)
@@ -281,8 +285,8 @@ class ChartFragment : Fragment() {
 
         chart.marker = mv
         chart.invalidate()
-        binding.ratio29yChartLayout.ratio_29y_Chart.visibility = View.VISIBLE
-        binding.ratioLongChartLayout.visibility = View.VISIBLE
+        ratio_29y_ChartLayout.ratio_29y_Chart.visibility = View.VISIBLE
+        binding.ratioLongChartVisibleLayout.visibility = View.VISIBLE
         binding.ratioLongChartProgress.visibility = View.GONE
     }
 
@@ -326,7 +330,7 @@ class ChartFragment : Fragment() {
         data.notifyDataChanged()
 
 
-        val chart = binding.gold29yChartLayout.gold_29y_Chart.apply {
+        val chart = gold_29y_ChartLayout.gold_29y_Chart.apply {
             isEnabled = true
             setData(data)
 //            setViewPortOffsets(50f, 30f, 50f, 50f)
@@ -382,8 +386,8 @@ class ChartFragment : Fragment() {
 
         chart.marker = mv
         chart.invalidate()
-        binding.gold29yChartLayout.gold_29y_Chart.visibility = View.VISIBLE
-        binding.goldLongChartLayout.visibility = View.VISIBLE
+        gold_29y_ChartLayout.gold_29y_Chart.visibility = View.VISIBLE
+        binding.goldLongChartVisibleLayout.visibility = View.VISIBLE
         binding.goldLongChartProgress.visibility = View.GONE
     }
 
@@ -426,7 +430,7 @@ class ChartFragment : Fragment() {
 
         data.notifyDataChanged()
 
-        val chart = binding.silver29yChartLayout.silver_29y_Chart.apply {
+        val chart = silver_29y_ChartLayout.silver_29y_Chart.apply {
             isEnabled = true
             setData(data)
 //            setViewPortOffsets(50f, 30f, 50f, 50f)
@@ -484,8 +488,8 @@ class ChartFragment : Fragment() {
 
         chart.marker = mv
         chart.invalidate()
-        binding.silver29yChartLayout.silver_29y_Chart.visibility = View.VISIBLE
-        binding.silverLongChartLayout.visibility = View.VISIBLE
+        silver_29y_ChartLayout.silver_29y_Chart.visibility = View.VISIBLE
+        binding.silverLongChartVisibleLayout.visibility = View.VISIBLE
         binding.silverLongChartProgress.visibility = View.GONE
     }
 

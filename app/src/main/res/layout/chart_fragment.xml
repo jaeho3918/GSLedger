@@ -1,391 +1,331 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:card_view="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/tools">
 
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:descendantFocusability="blocksDescendants"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
         android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/chartProgress"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
-            android:visibility="gone">
-<!---->
-            <ProgressBar
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+            android:orientation="vertical"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:descendantFocusability="blocksDescendants">
 
-        </LinearLayout>
 
-        <androidx.core.widget.NestedScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <LinearLayout
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="11dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="11dp"
+                card_view:cardBackgroundColor="@color/border_background">
 
-
-                <androidx.cardview.widget.CardView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="8dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginTop="11dp"
-                    android:layout_marginEnd="5dp"
-                    android:layout_marginBottom="11dp"
-                    card_view:cardBackgroundColor="@color/border_background">
+                    android:background="@drawable/rounded_border"
+                    android:orientation="vertical"
+                    android:descendantFocusability="blocksDescendants"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/ratioChart"
+                        android:textSize="@dimen/text_medium" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/rounded_border"
+                        android:layout_height="250dp"
+                        android:gravity="center"
                         android:orientation="vertical"
-                        android:padding="5dp">
+                        android:descendantFocusability="blocksDescendants">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/ratioChart"
-                            android:textSize="@dimen/text_medium" />
+                        <Button
+                            android:layout_width="180dp"
+                            android:layout_height="38dp"
+                            android:background="@drawable/subscribe_btn"
+                            android:text="Subscribe"
+                            android:textColor="@color/white"
+                            android:visibility="gone" />
 
-                        <LinearLayout
+                        <ProgressBar
+                            android:id="@+id/ratioLongChartProgress"
                             android:layout_width="match_parent"
-                            android:layout_height="250dp"
-                            android:gravity="center"
-                            android:orientation="vertical">
+                            android:layout_height="wrap_content"
+                            android:visibility="gone" />
 
-                            <Button
-                                android:layout_width="180dp"
-                                android:layout_height="38dp"
-                                android:background="@drawable/subscribe_btn"
-                                android:text="Subscribe"
-                                android:textColor="@color/white"
-                                android:visibility="gone" />
+                        <RelativeLayout
+                            android:id="@+id/ratioLongChartVisibleLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:descendantFocusability="blocksDescendants">
 
-                            <ProgressBar
-                                android:id="@+id/ratioLongChartProgress"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content" />
+                            <include
+                                android:id="@+id/ratio_Layout"
+                                layout="@layout/ratio_6m_chart_layout"
 
-                            <RelativeLayout
-                                android:id="@+id/ratioLongChartVisibleLayout"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:visibility="gone">
+                                android:descendantFocusability="blocksDescendants" />
 
-                                <androidx.constraintlayout.widget.ConstraintLayout
-                                    android:id="@+id/ratioLongChartLayout"
-                                    android:background="@color/white"
-                                    android:layout_height="match_parent"
-                                    android:layout_width="match_parent">
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignBottom="@+id/ratioLongChartLayout"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginEnd="3dp"
+                                android:layout_marginBottom="5.3dp"
+                                android:textColor="@color/chart_font"
+                                android:textSize="6dp" />
 
-                                    <androidx.constraintlayout.widget.ConstraintLayout
-                                        android:background="@color/white"
-                                        android:layout_height="250dp"
-                                        android:layout_width="0dp"
-                                        app:layout_constraintEnd_toStartOf="@+id/guideline5"
-                                        app:layout_constraintStart_toStartOf="parent"
-                                        app:layout_constraintTop_toTopOf="parent">
+                        </RelativeLayout>
 
-                                        <com.github.mikephil.charting.charts.LineChart
-                                            android:id="@+id/ratio_6m_Chart"
-                                            android:layout_height="250dp"
-                                            android:layout_width="match_parent"
-                                            app:layout_constraintBottom_toBottomOf="parent"
-                                            app:layout_constraintEnd_toEndOf="parent"
-                                            app:layout_constraintStart_toStartOf="parent"
-                                            app:layout_constraintTop_toTopOf="parent"
-                                            android:visibility="invisible"/>
-
-                                    </androidx.constraintlayout.widget.ConstraintLayout>
-                                    <!--                                    <TextView-->
-
-                                    <androidx.constraintlayout.widget.ConstraintLayout
-                                        android:layout_height="250dp"
-                                        android:layout_width="0dp"
-                                        app:layout_constraintEnd_toEndOf="parent"
-                                        app:layout_constraintStart_toEndOf="@+id/guideline5"
-                                        app:layout_constraintTop_toTopOf="parent">
-
-                                        <com.github.mikephil.charting.charts.LineChart
-                                            android:id="@+id/ratio_29y_Chart"
-                                            android:layout_height="250dp"
-                                            android:layout_width="match_parent"
-                                            app:layout_constraintBottom_toBottomOf="parent"
-                                            app:layout_constraintEnd_toEndOf="parent"
-                                            app:layout_constraintStart_toStartOf="parent"
-                                            app:layout_constraintTop_toTopOf="parent"
-                                            android:visibility="invisible"/>
-
-                                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                                    <androidx.constraintlayout.widget.Guideline
-                                        android:id="@+id/guideline5"
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:orientation="vertical"
-                                        app:layout_constraintGuide_percent="1.0" />
-
-                                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                                <TextView
-                                    android:id="@+id/todayLabel2"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignBottom="@+id/ratioLongChartLayout"
-                                    android:layout_alignParentEnd="true"
-                                    android:layout_marginEnd="3dp"
-                                    android:layout_marginBottom="5.3dp"
-                                    android:text="2020/04/18"
-                                    android:textColor="@color/chart_font"
-                                    android:textSize="6dp" />
-
-                            </RelativeLayout>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:gravity="right">
-
-                            <Button
-                                android:id="@+id/ratio_6m_btn"
-                                android:layout_marginHorizontal="3dp"
-                                android:textColor="@color/chart_goldC"
-                                android:background="@drawable/chart_select_btn"
-                                android:layout_width="80dp"
-                                android:layout_height="31dp"
-                                android:text="6 M" />
-
-                            <Button
-                                android:id="@+id/ratio_29y_btn"
-                                android:textColor="@color/chart_goldC"
-                                android:background="@drawable/chart_select_btn"
-                                android:layout_width="80dp"
-                                android:layout_height="31dp"
-                                android:text="29 Y" />
-
-                        </LinearLayout>
                     </LinearLayout>
-
-
-
-                </androidx.cardview.widget.CardView>
-
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="8dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginTop="11dp"
-                    android:layout_marginEnd="5dp"
-                    android:layout_marginBottom="11dp"
-                    card_view:cardBackgroundColor="@color/border_background">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/rounded_border"
+                        android:gravity="right"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/ratio_6m_btn"
+                            android:layout_width="80dp"
+                            android:layout_height="31dp"
+                            android:layout_marginHorizontal="3dp"
+                            android:background="@drawable/chart_select_btn"
+                            android:text="6 M"
+                            android:textColor="@color/chart_goldC" />
+
+                        <Button
+                            android:id="@+id/ratio_29y_btn"
+                            android:layout_width="80dp"
+                            android:layout_height="31dp"
+                            android:background="@drawable/chart_select_btn"
+                            android:text="29 Y"
+                            android:textColor="@color/chart_goldC" />
+                    </LinearLayout>
+                </LinearLayout>
+
+
+            </androidx.cardview.widget.CardView>
+
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="11dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="11dp"
+                card_view:cardBackgroundColor="@color/border_background">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rounded_border"
+                    android:orientation="vertical"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/goldChart"
+                        android:textSize="@dimen/text_medium" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="250dp"
+                        android:gravity="center"
                         android:orientation="vertical"
-                        android:padding="5dp">
+                        android:descendantFocusability="blocksDescendants">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/goldChart"
-                            android:textSize="@dimen/text_medium" />
+                        <Button
+                            android:layout_width="180dp"
+                            android:layout_height="38dp"
+                            android:background="@drawable/subscribe_btn"
+                            android:text="Subscribe"
+                            android:textColor="@color/white"
+                            android:visibility="gone" />
 
-                        <LinearLayout
+                        <ProgressBar
+                            android:id="@+id/goldLongChartProgress"
                             android:layout_width="match_parent"
-                            android:layout_height="250dp"
-                            android:gravity="center"
-                            android:orientation="vertical">
+                            android:layout_height="wrap_content"
+                            android:visibility="gone" />
 
-                            <Button
-                                android:layout_width="180dp"
-                                android:layout_height="38dp"
-                                android:textColor="@color/white"
-                                android:text="Subscribe"
-                                android:visibility="gone"
-                                android:background="@drawable/subscribe_btn"
-                                />
+                        <RelativeLayout
+                            android:id="@+id/goldLongChartVisibleLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:descendantFocusability="blocksDescendants">
 
-                            <ProgressBar
-                                android:id="@+id/goldLongChartProgress"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content" />
 
-                            <RelativeLayout
-                                android:id="@+id/goldLongChartVisibleLayout"
+                            <include
+                                android:id="@+id/gold_Layout"
+                                layout="@layout/gold_6m_chart_layout"
+
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:visibility="gone">
+                                android:descendantFocusability="blocksDescendants" />
 
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignBottom="@+id/goldLongChartLayout"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginEnd="3dp"
+                                android:layout_marginBottom="5.3dp"
+                                android:textColor="@color/chart_font"
+                                android:textSize="6dp" />
 
-                                <include
-                                    android:id="@+id/goldLongChartLayout"
-                                    layout="@layout/goldlongchart_layout"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"/>
+                        </RelativeLayout>
 
-                                <TextView
-                                    android:id="@+id/todayLabel"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignBottom="@+id/goldLongChartLayout"
-                                    android:layout_alignParentEnd="true"
-                                    android:layout_marginEnd="3dp"
-                                    android:layout_marginBottom="5.3dp"
-                                    android:text="2020/04/18"
-                                    android:textColor="@color/chart_font"
-                                    android:textSize="6dp" />
-
-                            </RelativeLayout>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:gravity="right">
-
-                            <Button
-                                android:id="@+id/gold_6m_btn"
-                                android:layout_marginHorizontal="3dp"
-                                android:textColor="@color/chart_goldC"
-                                android:background="@drawable/chart_select_btn"
-                                android:layout_width="80dp"
-                                android:layout_height="31dp"
-                                android:text="6 M" />
-
-                            <Button
-                                android:id="@+id/gold_29y_btn"
-                                android:textColor="@color/chart_goldC"
-                                android:background="@drawable/chart_select_btn"
-                                android:layout_width="80dp"
-                                android:layout_height="31dp"
-                                android:text="29 Y" />
-
-                        </LinearLayout>
                     </LinearLayout>
-
-
-                </androidx.cardview.widget.CardView>
-
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginHorizontal="8dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginTop="11dp"
-                    android:layout_marginEnd="5dp"
-                    android:layout_marginBottom="11dp"
-                    card_view:cardBackgroundColor="@color/border_background">
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/rounded_border"
-                        android:orientation="vertical"
-                        android:padding="5dp">
+                        android:gravity="right"
+                        android:orientation="horizontal">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/silverChart"
-                            android:textSize="@dimen/text_medium" />
+                        <Button
+                            android:id="@+id/gold_6m_btn"
+                            android:layout_width="80dp"
+                            android:layout_height="31dp"
+                            android:layout_marginHorizontal="3dp"
+                            android:background="@drawable/chart_select_btn"
+                            android:text="6 M"
+                            android:textColor="@color/chart_goldC" />
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="250dp"
-                            android:gravity="center"
-                            android:orientation="vertical">
+                        <Button
+                            android:id="@+id/gold_29y_btn"
+                            android:layout_width="80dp"
+                            android:layout_height="31dp"
+                            android:background="@drawable/chart_select_btn"
+                            android:text="29 Y"
+                            android:textColor="@color/chart_goldC" />
 
-                            <Button
-                                android:layout_width="180dp"
-                                android:layout_height="38dp"
-                                android:textColor="@color/white"
-                                android:text="Subscribe"
-                                android:visibility="gone"
-                                android:background="@drawable/subscribe_btn"
-                                />
-
-                            <ProgressBar
-                                android:id="@+id/silverLongChartProgress"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content" />
-
-                            <RelativeLayout
-                                android:id="@+id/silverLongChartVisibleLayout"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:visibility="gone">
-
-
-                                <include
-                                    android:id="@+id/silverLongChartLayout"
-                                    layout="@layout/silver_29y_chart_layout"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="match_parent"/>
-
-                                <TextView
-                                    android:id="@+id/todayLabel1"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_alignBottom="@+id/silverLongChartLayout"
-                                    android:layout_alignParentEnd="true"
-                                    android:layout_marginEnd="3dp"
-                                    android:layout_marginBottom="5.3dp"
-                                    android:text="2020/04/18"
-                                    android:textColor="@color/chart_font"
-                                    android:textSize="6dp" />
-                            </RelativeLayout>
-
-
-                        </LinearLayout>
-
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:gravity="right">
-
-                            <Button
-                                android:id="@+id/silver_6m_btn"
-                                android:layout_marginHorizontal="3dp"
-                                android:textColor="@color/chart_goldC"
-                                android:background="@drawable/chart_select_btn"
-                                android:layout_width="80dp"
-                                android:layout_height="31dp"
-                                android:text="6 M" />
-
-                            <Button
-                                android:id="@+id/silver_29y_btn"
-                                android:textColor="@color/chart_goldC"
-                                android:background="@drawable/chart_select_btn"
-                                android:layout_width="80dp"
-                                android:layout_height="31dp"
-                                android:text="29 Y" />
-
-                        </LinearLayout>
                     </LinearLayout>
-                </androidx.cardview.widget.CardView>
-            </LinearLayout>
-        </androidx.core.widget.NestedScrollView>
+                </LinearLayout>
 
-    </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="11dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="11dp"
+                card_view:cardBackgroundColor="@color/border_background">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rounded_border"
+                    android:orientation="vertical"
+                    android:descendantFocusability="blocksDescendants"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/silverChart"
+                        android:textSize="@dimen/text_medium" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="250dp"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:descendantFocusability="blocksDescendants">
+
+                        <Button
+                            android:layout_width="180dp"
+                            android:layout_height="38dp"
+                            android:background="@drawable/subscribe_btn"
+                            android:text="Subscribe"
+                            android:textColor="@color/white"
+                            android:visibility="gone" />
+
+                        <ProgressBar
+                            android:id="@+id/silverLongChartProgress"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone" />
+
+                        <RelativeLayout
+                            android:id="@+id/silverLongChartVisibleLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:descendantFocusability="blocksDescendants">
+
+                            <include
+                                android:id="@+id/silver_Layout"
+                                layout="@layout/silver_6m_chart_layout"
+
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:descendantFocusability="blocksDescendants" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignBottom="@+id/silverLongChartLayout"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginEnd="3dp"
+                                android:layout_marginBottom="5.3dp"
+                                android:textColor="@color/chart_font"
+                                android:textSize="6dp" />
+
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/silver_6m_btn"
+                            android:layout_width="80dp"
+                            android:layout_height="31dp"
+                            android:layout_marginHorizontal="3dp"
+                            android:background="@drawable/chart_select_btn"
+                            android:text="6 M"
+                            android:textColor="@color/chart_goldC" />
+
+                        <Button
+                            android:id="@+id/silver_29y_btn"
+                            android:layout_width="80dp"
+                            android:layout_height="31dp"
+                            android:background="@drawable/chart_select_btn"
+                            android:text="29 Y"
+                            android:textColor="@color/chart_goldC" />
+
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
 </layout>
 

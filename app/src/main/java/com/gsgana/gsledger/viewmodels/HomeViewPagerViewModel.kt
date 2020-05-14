@@ -30,11 +30,9 @@ class HomeViewPagerViewModel internal constructor(
     fun setLongchartData(input: Map<String, ArrayList<*>>) {
         LongchartData.value = input
     }
-
     fun getLongchart(): LiveData<Map<String, ArrayList<*>>> {
         return LongchartData
     }
-
     fun getLongchartData(): Map<String, ArrayList<*>> {
         return chartData.value ?: mapOf(
             "date" to arrayListOf(""),
@@ -44,20 +42,13 @@ class HomeViewPagerViewModel internal constructor(
         )
     }
 
-
-
-
-
-
     private val chartData = MutableLiveData<Map<String, ArrayList<*>>>()
     fun setchartData(input: Map<String, ArrayList<*>>) {
         chartData.value = input
     }
-
     fun getchart(): LiveData<Map<String, ArrayList<*>>> {
         return chartData
     }
-
     fun getchartData(): Map<String, ArrayList<*>> {
         return chartData.value ?: mapOf(
             "date" to arrayListOf(""),

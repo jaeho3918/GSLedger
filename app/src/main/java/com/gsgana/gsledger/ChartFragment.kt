@@ -4,10 +4,13 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.Canvas
 import android.os.Bundle
+import android.transition.TransitionManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
@@ -29,10 +32,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.gsgana.gsledger.databinding.ChartFragmentBinding
 import com.gsgana.gsledger.utilities.*
 import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModel
-import kotlinx.android.synthetic.main.gold_29y_chart_layout.*
 import kotlinx.android.synthetic.main.gold_29y_chart_layout.view.*
 import kotlinx.android.synthetic.main.marker_view.view.*
-import kotlinx.android.synthetic.main.silver_29y_chart_layout.*
+import kotlinx.android.synthetic.main.ratio_29y_chart_layout.view.*
 import kotlinx.android.synthetic.main.silver_29y_chart_layout.view.*
 import kotlin.collections.ArrayList
 
@@ -96,74 +98,108 @@ class ChartFragment : Fragment() {
         fm.popBackStack()
 
         val today = sf.getString(TODAY_NAME, "")
-        binding.todayLabel.text = today?.substring(0..10)
-        binding.todayLabel1.text = today?.substring(0..10)
-        binding.todayLabel2.text = today?.substring(0..10)
+//        binding.todayLabel.text = today?.substring(0..10)
+//        binding.todayLabel1.text = today?.substring(0..10)
+//        binding.todayLabel2.text = today?.substring(0..10)
 
-
-        viewModel.getLongchart().observe(viewLifecycleOwner, Observer {
-            if (context != null) getRatioChartSelect6m(context!!, viewModel, binding, it)
-            if (context != null) getGoldChartSelect6m(context!!, viewModel, binding, it)
-            if (context != null) getSilverChartSelect6m(context!!, viewModel, binding, it)
+        viewModel.getchart().observe(viewLifecycleOwner, Observer {
+            if (context != null) getRatioChartSelect_6m(context!!, viewModel, binding, it)
+            if (context != null) getGoldChartSelect_6m(context!!, viewModel, binding, it)
+            if (context != null) getSilverChartSelect_6m(context!!, viewModel, binding, it)
         })
 
-        var goldChart_select = 0
-        var silverChart_select = 0
-        var ratioChart_select = 0
+        viewModel.getLongchart().observe(viewLifecycleOwner, Observer {
+            if (context != null) setRatioChartSelect_29y(context!!, binding, it)
+            if (context != null) setGoldChartSelect_29y(context!!, binding, it)
+            if (context != null) setSilverChartSelect_29y(context!!, binding, it)
+        })
+
+        var goldChart_select = 6
+        var silverChart_select = 6
+        var ratioChart_select = 6
+
+        binding.ratio6mBtn.setOnClickListener {
+            if (ratioChart_select != 6) {
+                val firstConstraintSet = ConstraintSet()
+                val secondConstraintSet = ConstraintSet()
+                val constraintLayout = binding.ratioLayout as ConstraintLayout
+                firstConstraintSet.load(context!!, R.layout.ratio_29y_chart_layout)
+                secondConstraintSet.load(context!!, R.layout.ratio_6m_chart_layout)
+                TransitionManager.beginDelayedTransition(constraintLayout)
+                secondConstraintSet.applyTo(constraintLayout)
+
+                ratioChart_select = 6
+            }
+        }
 
         binding.gold6mBtn.setOnClickListener {
             if (goldChart_select != 6) {
-                getGoldChartSelect6m(context!!, viewModel, binding, viewModel.getchartData())
+                val firstConstraintSet = ConstraintSet()
+                val secondConstraintSet = ConstraintSet()
+                val constraintLayout = binding.goldLayout as ConstraintLayout
+                firstConstraintSet.load(context!!, R.layout.gold_29y_chart_layout)
+                secondConstraintSet.load(context!!, R.layout.gold_6m_chart_layout)
+                TransitionManager.beginDelayedTransition(constraintLayout)
+                secondConstraintSet.applyTo(constraintLayout)
                 goldChart_select = 6
             }
         }
 
         binding.silver6mBtn.setOnClickListener {
             if (silverChart_select != 6) {
-                getSilverChartSelect6m(context!!, viewModel, binding, viewModel.getchartData())
+                val firstConstraintSet = ConstraintSet()
+                val secondConstraintSet = ConstraintSet()
+                val constraintLayout = binding.silverLayout as ConstraintLayout
+                firstConstraintSet.load(context!!, R.layout.silver_29y_chart_layout)
+                secondConstraintSet.load(context!!, R.layout.silver_6m_chart_layout)
+                TransitionManager.beginDelayedTransition(constraintLayout)
+                secondConstraintSet.applyTo(constraintLayout)
                 silverChart_select = 6
             }
         }
 
-        binding.ratio6mBtn.setOnClickListener {
-            if (ratioChart_select != 6) {
-                getRatioChartSelect6m(context!!, viewModel, binding, viewModel.getchartData())
-                ratioChart_select = 6
+        binding.ratio29yBtn.setOnClickListener {
+            if (ratioChart_select != 29) {
+                val firstConstraintSet = ConstraintSet()
+                val secondConstraintSet = ConstraintSet()
+                val constraintLayout = binding.ratioLayout as ConstraintLayout
+                firstConstraintSet.load(context!!, R.layout.ratio_6m_chart_layout)
+                secondConstraintSet.load(context!!, R.layout.ratio_29y_chart_layout)
+                TransitionManager.beginDelayedTransition(constraintLayout)
+                secondConstraintSet.applyTo(constraintLayout)
+                ratioChart_select = 29
             }
         }
 
         binding.gold29yBtn.setOnClickListener {
             if (goldChart_select != 29) {
-                if (context != null) setGold_29y_Chart(
-                    context!!,
-                    binding,
-                    viewModel.getLongchartData()
-                )
+                val firstConstraintSet = ConstraintSet()
+                val secondConstraintSet = ConstraintSet()
+                val constraintLayout = binding.goldLayout as ConstraintLayout
+                firstConstraintSet.load(context!!, R.layout.gold_6m_chart_layout)
+                secondConstraintSet.load(context!!, R.layout.gold_29y_chart_layout)
+                TransitionManager.beginDelayedTransition(constraintLayout)
+                secondConstraintSet.applyTo(constraintLayout)
+
                 goldChart_select = 29
             }
         }
 
         binding.silver29yBtn.setOnClickListener {
             if (silverChart_select != 29) {
-                if (context != null) setSilver_29y_Chart(
-                    context!!,
-                    binding,
-                    viewModel.getLongchartData()
-                )
+                val firstConstraintSet = ConstraintSet()
+                val secondConstraintSet = ConstraintSet()
+                val constraintLayout = binding.silverLayout as ConstraintLayout
+                firstConstraintSet.load(context!!, R.layout.silver_6m_chart_layout)
+                secondConstraintSet.load(context!!, R.layout.silver_29y_chart_layout)
+                TransitionManager.beginDelayedTransition(constraintLayout)
+                secondConstraintSet.applyTo(constraintLayout)
+
                 silverChart_select = 29
             }
         }
 
-        binding.ratio29yBtn.setOnClickListener {
-            if (ratioChart_select != 29) {
-                if (context != null) setRatio_29y_Chart(
-                    context!!,
-                    binding,
-                    viewModel.getLongchartData()
-                )
-                ratioChart_select = 29
-            }
-        }
+
 
         return binding.root
     }
@@ -173,7 +209,7 @@ class ChartFragment : Fragment() {
         super.onDestroy()
     }
 
-    private fun setRatio_29y_Chart(
+    private fun setRatioChartSelect_29y(
         context: Context,
         binding: ChartFragmentBinding,
         data: Map<String, ArrayList<*>>
@@ -205,16 +241,13 @@ class ChartFragment : Fragment() {
                 mode = LineDataSet.Mode.CUBIC_BEZIER
                 isHighlightEnabled = true
                 setDrawCircles(false)
-                notifyDataSetChanged()
             }
 
         val date = data.getValue("date").toList() as List<String>
 
         val data = LineData(dataSet)
 
-        data.notifyDataChanged()
-
-        val chart = binding.ratio29yChart.apply {
+        val chart = binding.ratioLayout.ratio_29y_Chart.apply {
             isEnabled = true
             setData(data)
 //            setViewPortOffsets(50f, 30f, 50f, 50f)
@@ -233,7 +266,6 @@ class ChartFragment : Fragment() {
             axisRight.isEnabled = false
             legend.isEnabled = false
             fitScreen()
-            notifyDataSetChanged()
         }
 
         val valueFormatter = IndexAxisValueFormatter(date)
@@ -257,7 +289,8 @@ class ChartFragment : Fragment() {
                 gridColor = resources.getColor(R.color.chart_goldB, null)
                 textColor = context.resources.getColor(R.color.chart_font, null)
                 position = XAxis.XAxisPosition.BOTTOM
-                setLabelCount(5, false)
+
+                setLabelCount(6, false)
                 setDrawGridLines(false)
                 textSize = 5F
 
@@ -269,10 +302,9 @@ class ChartFragment : Fragment() {
                 gridColor = resources.getColor(R.color.chart_goldB, null)
                 setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART)
                 setDrawGridLines(false)
-
-                setLabelCount(5, false)
-                axisMaximum = dataSet.yMax * 15 / 13
-                axisMinimum = 0f
+                setLabelCount(5, true)
+                axisMaximum = dataSet.yMax * 25 / 24
+                axisMinimum = dataSet.yMin * 23 / 24
                 axisLineColor = backGround
             }
 
@@ -284,13 +316,12 @@ class ChartFragment : Fragment() {
         chart.marker = mv
         chart.invalidate()
 
-        binding.guideline5.setGuidelinePercent(0f)
-        binding.ratio29yChart.visibility = View.VISIBLE
+        binding.ratioLayout.ratio_29y_Chart.visibility = View.VISIBLE
         binding.ratioLongChartVisibleLayout.visibility = View.VISIBLE
         binding.ratioLongChartProgress.visibility = View.GONE
     }
 
-    private fun setGold_29y_Chart(
+    private fun setGoldChartSelect_29y(
         context: Context,
         binding: ChartFragmentBinding,
         data: Map<String, ArrayList<*>>
@@ -321,16 +352,13 @@ class ChartFragment : Fragment() {
                 mode = LineDataSet.Mode.CUBIC_BEZIER
                 isHighlightEnabled = true
                 setDrawCircles(false)
-                notifyDataSetChanged()
             }
 
         val date = data.getValue("date").toList() as List<String>
 
         val data = LineData(dataSet)
-        data.notifyDataChanged()
 
-
-        val chart = gold_29y_ChartLayout.gold_29y_Chart.apply {
+        val chart = binding.goldLayout.gold_29y_Chart.apply {
             isEnabled = true
             setData(data)
 //            setViewPortOffsets(50f, 30f, 50f, 50f)
@@ -349,7 +377,6 @@ class ChartFragment : Fragment() {
             axisRight.isEnabled = false
             legend.isEnabled = false
             fitScreen()
-            notifyDataSetChanged()
         }
         val valueFormatter = IndexAxisValueFormatter(date)
 
@@ -360,7 +387,8 @@ class ChartFragment : Fragment() {
                 gridColor = resources.getColor(R.color.chart_goldB, null)
                 textColor = context.resources.getColor(R.color.chart_font, null)
                 position = XAxis.XAxisPosition.BOTTOM
-                setLabelCount(5, false)
+
+                setLabelCount(6, false)
                 setDrawGridLines(false)
                 textSize = 5F
 
@@ -373,9 +401,9 @@ class ChartFragment : Fragment() {
                 setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART)
                 setDrawGridLines(false)
 
-                setLabelCount(5, false)
-                axisMaximum = dataSet.yMax * 15 / 13
-                axisMinimum = 0f
+                setLabelCount(5, true)
+                axisMaximum = dataSet.yMax * 25 / 24
+                axisMinimum = dataSet.yMin * 23 / 24
                 axisLineColor = backGround
             }
 
@@ -386,12 +414,12 @@ class ChartFragment : Fragment() {
 
         chart.marker = mv
         chart.invalidate()
-        gold_29y_ChartLayout.gold_29y_Chart.visibility = View.VISIBLE
+        binding.goldLayout.gold_29y_Chart.visibility = View.VISIBLE
         binding.goldLongChartVisibleLayout.visibility = View.VISIBLE
         binding.goldLongChartProgress.visibility = View.GONE
     }
 
-    private fun setSilver_29y_Chart(
+    private fun setSilverChartSelect_29y(
         context: Context,
         binding: ChartFragmentBinding,
         data: Map<String, ArrayList<*>>
@@ -420,7 +448,6 @@ class ChartFragment : Fragment() {
                 mode = LineDataSet.Mode.CUBIC_BEZIER
                 isHighlightEnabled = true
                 setDrawCircles(false)
-                notifyDataSetChanged()
             }
 
 
@@ -428,9 +455,7 @@ class ChartFragment : Fragment() {
 
         val data = LineData(dataSet)
 
-        data.notifyDataChanged()
-
-        val chart = silver_29y_ChartLayout.silver_29y_Chart.apply {
+        val chart = binding.silverLayout.silver_29y_Chart.apply {
             isEnabled = true
             setData(data)
 //            setViewPortOffsets(50f, 30f, 50f, 50f)
@@ -449,7 +474,6 @@ class ChartFragment : Fragment() {
             axisRight.isEnabled = false
             legend.isEnabled = false
             fitScreen()
-            notifyDataSetChanged()
         }
 
 
@@ -463,7 +487,8 @@ class ChartFragment : Fragment() {
                 gridColor = resources.getColor(R.color.chart_silverB, null)
                 textColor = context.resources.getColor(R.color.chart_font, null)
                 position = XAxis.XAxisPosition.BOTTOM
-                setLabelCount(5, false)
+
+                setLabelCount(6, false)
                 setDrawGridLines(false)
                 textSize = 5F
 
@@ -475,7 +500,7 @@ class ChartFragment : Fragment() {
                 gridColor = resources.getColor(R.color.chart_silverB, null)
                 setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART)
                 setDrawGridLines(false)
-                setLabelCount(5, false)
+                setLabelCount(5, true)
                 axisMaximum = dataSet.yMax * 25 / 24
                 axisMinimum = dataSet.yMin * 23 / 24
                 axisLineColor = backGround
@@ -488,7 +513,7 @@ class ChartFragment : Fragment() {
 
         chart.marker = mv
         chart.invalidate()
-        silver_29y_ChartLayout.silver_29y_Chart.visibility = View.VISIBLE
+        binding.silverLayout.silver_29y_Chart.visibility = View.VISIBLE
         binding.silverLongChartVisibleLayout.visibility = View.VISIBLE
         binding.silverLongChartProgress.visibility = View.GONE
     }
@@ -596,7 +621,7 @@ class ChartFragment : Fragment() {
 
             override fun onAdClosed() {
                 super.onAdClosed()
-                binding.chartProgress.visibility = View.GONE
+//                binding.chartProgress.visibility = View.GONE
             }
         }
     }

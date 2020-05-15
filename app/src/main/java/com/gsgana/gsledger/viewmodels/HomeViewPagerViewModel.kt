@@ -14,6 +14,7 @@ class HomeViewPagerViewModel internal constructor(
     fun setDateTime(string: Long) {
         dateTime = string
     }
+
     fun getDateTime(): Long {
         return dateTime
     }
@@ -22,17 +23,39 @@ class HomeViewPagerViewModel internal constructor(
     fun setChartDate(inputList: ArrayList<String>) {
         chartDate = inputList
     }
-    fun getChartDate() :ArrayList<String> {
+
+    fun getChartDate(): ArrayList<String> {
         return chartDate
     }
+
+    private val SSShortchartData = MutableLiveData<Map<String, ArrayList<*>>>()
+    fun setSSShortchartData(input: Map<String, ArrayList<*>>) {
+        SSShortchartData.value = input
+    }
+
+    fun getSSShortchart(): LiveData<Map<String, ArrayList<*>>> {
+        return SSShortchartData
+    }
+
+    fun getSSShortchartData(): Map<String, ArrayList<*>> {
+        return chartData.value ?: mapOf(
+            "date" to arrayListOf(""),
+            "value_AG" to arrayListOf(0f),
+            "value_AU" to arrayListOf(0f),
+            "value_RATIO" to arrayListOf(0f)
+        )
+    }
+
 
     private val LongchartData = MutableLiveData<Map<String, ArrayList<*>>>()
     fun setLongchartData(input: Map<String, ArrayList<*>>) {
         LongchartData.value = input
     }
+
     fun getLongchart(): LiveData<Map<String, ArrayList<*>>> {
         return LongchartData
     }
+
     fun getLongchartData(): Map<String, ArrayList<*>> {
         return chartData.value ?: mapOf(
             "date" to arrayListOf(""),
@@ -42,13 +65,34 @@ class HomeViewPagerViewModel internal constructor(
         )
     }
 
+    private val stackChartData = MutableLiveData<Map<String, ArrayList<*>>>()
+    fun setstackChartData(input: Map<String, ArrayList<*>>) {
+        stackChartData.value = input
+    }
+
+    fun getstackChart(): LiveData<Map<String, ArrayList<*>>> {
+        return stackChartData
+    }
+
+    fun getstackChartData(): Map<String, ArrayList<*>> {
+        return stackChartData.value ?: mapOf(
+            "date" to arrayListOf(""),
+            "value_AG" to arrayListOf(0f),
+            "value_AU" to arrayListOf(0f),
+            "value_RATIO" to arrayListOf(0f)
+        )
+    }
+
+
     private val chartData = MutableLiveData<Map<String, ArrayList<*>>>()
     fun setchartData(input: Map<String, ArrayList<*>>) {
         chartData.value = input
     }
+
     fun getchart(): LiveData<Map<String, ArrayList<*>>> {
         return chartData
     }
+
     fun getchartData(): Map<String, ArrayList<*>> {
         return chartData.value ?: mapOf(
             "date" to arrayListOf(""),

@@ -122,9 +122,10 @@ class Write2Fragment : Fragment() {
                     binding.brandImage.setImageResource(imgId)
                 }
 
-
             }
         }
+        binding.brandSpn.setSelection(1)
+
 
         if (viewModel.getbrandField1()?:0 > 0) {
             binding.brandSpn.setSelection(viewModel.getbrandField1()?:0)

@@ -8,8 +8,8 @@ val WEIGHT_NAME = "f79604050dfc500715"
 
 val GCTABLE = arrayOf(
     "Default",
-    "American Buffalo",
     "American Eagle",
+    "American Buffalo",
     "Canadian Maple Leaf",
     "Canadian Moose",
     "Great Britain Britannia",

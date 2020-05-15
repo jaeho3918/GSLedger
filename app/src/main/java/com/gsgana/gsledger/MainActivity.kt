@@ -5,11 +5,14 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import com.crashlytics.android.Crashlytics
+import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.InterstitialAd
+import com.google.android.gms.ads.MobileAds
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.messaging.FirebaseMessaging
 import com.gsgana.gsledger.databinding.ActivityMainBinding
@@ -23,9 +26,10 @@ class MainActivity :
     private val PREF_NAME = "01504f779d6c77df04"
     private lateinit var sf: SharedPreferences
 
-    private val AD_ID = "ca-app-pub-3940256099942544/8691691433"
+    private val AD_ID = "ca-app-pub-3940256099942544/1033173712"
+
     // 실제   "ca-app-pub-8453032642509497/3082833180"
-    //테스트 "ca-app-pub-3940256099942544/8691691433"
+//  // 테스트 "ca-app-pub-3940256099942544/1033173712"
 
     private var doneOnce = true
     private lateinit var mInterstitialAd: InterstitialAd
@@ -63,17 +67,49 @@ class MainActivity :
             FirebaseMessaging.getInstance().isAutoInitEnabled = true
         }
 
-        val test = intent.getCharArrayExtra(KEY)
-
         super.onCreate(savedInstanceState)
 
         DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
 
-        Handler().postDelayed(
-            {
+        if (!(intent.getIntExtra(ADFREE_NAME, 6) == 18 || sf.getInt(ADFREE_NAME, 6) == 18)) {
+            setAds()
+        } else {
+            Handler().postDelayed(
+                {
+                    loading.visibility = View.GONE
+                    homeViewPagerFragmentpage.visibility = View.VISIBLE
+                }, 1800
+            )
+
+        }
+    }
+
+    private fun setAds() {
+        MobileAds.initialize(this)
+        mInterstitialAd = InterstitialAd(this)
+        mInterstitialAd.adUnitId = AD_ID
+        mBuilder = AdRequest.Builder()
+        mInterstitialAd.loadAd(mBuilder.build())
+        mInterstitialAd.adListener = object : AdListener() {
+            override fun onAdLoaded() {
+                if (mInterstitialAd.isLoaded) {
+                    if (doneOnce) {
+                        mInterstitialAd.show()
+                        doneOnce = false
+                    }
+                }
+            }
+            override fun onAdClosed() {
+                super.onAdClosed()
                 loading.visibility = View.GONE
                 homeViewPagerFragmentpage.visibility = View.VISIBLE
-            }, 1800
-        )
+            }
+
+            override fun onAdFailedToLoad(p0: Int) {
+                super.onAdFailedToLoad(p0)
+                Toast.makeText(applicationContext, p0.toString(), Toast.LENGTH_LONG).show()
+            }
+        }
     }
+
 }

@@ -11,10 +11,15 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.view.doOnLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import com.android.billingclient.api.BillingClient
+import com.android.billingclient.api.BillingResult
+import com.android.billingclient.api.Purchase
+import com.android.billingclient.api.PurchasesUpdatedListener
 import com.github.mikephil.charting.components.MarkerView
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
@@ -29,19 +34,20 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.InterstitialAd
 import com.google.android.gms.ads.MobileAds
 import com.google.firebase.auth.FirebaseAuth
+import com.gsgana.gsledger.adapters.PagerAdapter
 import com.gsgana.gsledger.databinding.ChartFragmentBinding
 import com.gsgana.gsledger.utilities.*
 import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModel
-import kotlinx.android.synthetic.main.gold_29y_chart_layout.view.*
+import kotlinx.android.synthetic.main.gold_3m_chart_layout.view.*
+import kotlinx.android.synthetic.main.home_view_pager_fragment.*
 import kotlinx.android.synthetic.main.marker_view.view.*
-import kotlinx.android.synthetic.main.ratio_29y_chart_layout.view.*
-import kotlinx.android.synthetic.main.ratio_29y_chart_layout.view.ratio_29y_Chart
-import kotlinx.android.synthetic.main.silver_29y_chart_layout.view.*
+import kotlinx.android.synthetic.main.ratio_3m_chart_layout.view.*
+import kotlinx.android.synthetic.main.silver_3m_chart_layout.view.*
 import kotlin.collections.ArrayList
 
 
 @Suppress("UNCHECKED_CAST")
-class ChartFragment : Fragment() {
+class ChartFragment : Fragment(), PurchasesUpdatedListener {
     private lateinit var binding: ChartFragmentBinding
 
     private lateinit var mAuth: FirebaseAuth
@@ -66,9 +72,9 @@ class ChartFragment : Fragment() {
     private lateinit var mBuilder: AdRequest.Builder
 
     private var doneOnce = true
-    private val AD_ID = "ca-app-pub-3940256099942544/8691691433"
+    private val AD_ID = "ca-app-pub-3940256099942544/1033173712"
     // 실제   "ca-app-pub-8453032642509497/3082833180"
-//  // 테스트 "ca-app-pub-3940256099942544/8691691433"
+//  // 테스트 "ca-app-pub-3940256099942544/1033173712"
 
     private val viewModel: HomeViewPagerViewModel by viewModels {
         InjectorUtils.provideHomeViewPagerViewModelFactory(
@@ -98,15 +104,16 @@ class ChartFragment : Fragment() {
         fm = childFragmentManager
         fm.popBackStack()
 
-        val today = sf.getString(TODAY_NAME, "")
-//        binding.todayLabel.text = today?.substring(0..10)
-//        binding.todayLabel1.text = today?.substring(0..10)
-//        binding.todayLabel2.text = today?.substring(0..10)
+        viewModel.getSSShortchart().observe(viewLifecycleOwner, Observer {
+            if (context != null) getRatioChartSelect_3m(context!!, viewModel, binding, it)
+            if (context != null) getGoldChartSelect_3m(context!!, viewModel, binding, it)
+            if (context != null) getSilverChartSelect_3m(context!!, viewModel, binding, it)
+        })
 
         viewModel.getchart().observe(viewLifecycleOwner, Observer {
-            if (context != null) getRatioChartSelect_6m(context!!, viewModel, binding, it)
-            if (context != null) getGoldChartSelect_6m(context!!, viewModel, binding, it)
-            if (context != null) getSilverChartSelect_6m(context!!, viewModel, binding, it)
+            if (context != null) getRatioChartSelect_18m(context!!, viewModel, binding, it)
+            if (context != null) getGoldChartSelect_18m(context!!, viewModel, binding, it)
+            if (context != null) getSilverChartSelect_18m(context!!, viewModel, binding, it)
         })
 
         viewModel.getLongchart().observe(viewLifecycleOwner, Observer {
@@ -115,100 +122,219 @@ class ChartFragment : Fragment() {
             if (context != null) setSilverChartSelect_29y(context!!, binding, it)
         })
 
-        var goldChart_select = 6
-        var silverChart_select = 6
-        var ratioChart_select = 6
+        val viewPager = parentFragment?.viewPager
 
-        binding.ratio6mBtn.setOnClickListener {
-            if (ratioChart_select != 6) {
-                binding.ratioLayout.ratio_6m_Chart.visibility = View.VISIBLE
+        val test = 1
+
+        binding.goldSubscribe.setOnClickListener {
+            viewPager?.doOnLayout {
+                viewPager.currentItem = PagerAdapter.ADSANDOPTION_PAGE_INDEX
+                viewPager.setCurrentItem(PagerAdapter.ADSANDOPTION_PAGE_INDEX, true)
+            }
+        }
+
+        binding.silverSubscribe.setOnClickListener {
+            viewPager?.doOnLayout {
+                viewPager.currentItem = PagerAdapter.ADSANDOPTION_PAGE_INDEX
+                viewPager.setCurrentItem(PagerAdapter.ADSANDOPTION_PAGE_INDEX, true)
+            }
+        }
+
+        binding.ratioSubscribe.setOnClickListener {
+            viewPager?.doOnLayout {
+                viewPager.currentItem = PagerAdapter.ADSANDOPTION_PAGE_INDEX
+                viewPager.setCurrentItem(PagerAdapter.ADSANDOPTION_PAGE_INDEX, true)
+            }
+        }
+
+
+        var goldChart_select = 3
+        var silverChart_select = 3
+        var ratioChart_select = 3
+
+        binding.ratio3mBtn.setOnClickListener {
+            binding.ratioLayout.ratio_3m_Chart.visibility = View.VISIBLE
+            binding.ratioSubscribe.visibility = View.GONE
+            if (ratioChart_select != 3) {
+                binding.ratioLayout.ratio_18m_Chart.visibility = View.INVISIBLE
                 binding.ratioLayout.ratio_29y_Chart.visibility = View.INVISIBLE
                 val firstConstraintSet = ConstraintSet()
                 val secondConstraintSet = ConstraintSet()
                 val constraintLayout = binding.ratioLayout as ConstraintLayout
-                firstConstraintSet.load(context!!, R.layout.ratio_29y_chart_layout)
-                secondConstraintSet.load(context!!, R.layout.ratio_6m_chart_layout)
+                firstConstraintSet.load(context!!, R.layout.ratio_18m_chart_layout)
+                secondConstraintSet.load(context!!, R.layout.ratio_3m_chart_layout)
                 TransitionManager.beginDelayedTransition(constraintLayout)
                 secondConstraintSet.applyTo(constraintLayout)
-
-                ratioChart_select = 6
+                ratioChart_select = 3
             }
         }
 
-        binding.gold6mBtn.setOnClickListener {
-            if (goldChart_select != 6) {
-                binding.goldLayout.gold_6m_Chart.visibility = View.VISIBLE
+        binding.gold3mBtn.setOnClickListener {
+            binding.goldSubscribe.visibility = View.GONE
+            binding.goldLayout.gold_3m_Chart.visibility = View.VISIBLE
+            if (goldChart_select != 3) {
+                binding.goldLayout.gold_18m_Chart.visibility = View.INVISIBLE
                 binding.goldLayout.gold_29y_Chart.visibility = View.INVISIBLE
                 val firstConstraintSet = ConstraintSet()
                 val secondConstraintSet = ConstraintSet()
                 val constraintLayout = binding.goldLayout as ConstraintLayout
-                firstConstraintSet.load(context!!, R.layout.gold_29y_chart_layout)
-                secondConstraintSet.load(context!!, R.layout.gold_6m_chart_layout)
+                firstConstraintSet.load(context!!, R.layout.gold_18m_chart_layout)
+                secondConstraintSet.load(context!!, R.layout.gold_3m_chart_layout)
                 TransitionManager.beginDelayedTransition(constraintLayout)
                 secondConstraintSet.applyTo(constraintLayout)
-                goldChart_select = 6
+                goldChart_select = 3
             }
         }
 
-        binding.silver6mBtn.setOnClickListener {
-            if (silverChart_select != 6) {
-                binding.silverLayout.silver_6m_Chart.visibility = View.VISIBLE
+        binding.silver3mBtn.setOnClickListener {
+            binding.silverSubscribe.visibility = View.GONE
+            binding.silverLayout.silver_3m_Chart.visibility = View.VISIBLE
+            if (silverChart_select != 3) {
+                binding.silverLayout.silver_18m_Chart.visibility = View.INVISIBLE
                 binding.silverLayout.silver_29y_Chart.visibility = View.INVISIBLE
                 val firstConstraintSet = ConstraintSet()
                 val secondConstraintSet = ConstraintSet()
                 val constraintLayout = binding.silverLayout as ConstraintLayout
-                firstConstraintSet.load(context!!, R.layout.silver_29y_chart_layout)
-                secondConstraintSet.load(context!!, R.layout.silver_6m_chart_layout)
+                firstConstraintSet.load(context!!, R.layout.silver_18m_chart_layout)
+                secondConstraintSet.load(context!!, R.layout.silver_3m_chart_layout)
                 TransitionManager.beginDelayedTransition(constraintLayout)
                 secondConstraintSet.applyTo(constraintLayout)
-                silverChart_select = 6
+                silverChart_select = 3
+            }
+        }
+
+
+
+        binding.ratio18mBtn.setOnClickListener {
+            if (ratioChart_select != 6) {
+                if (sf.getInt(ADFREE_NAME, 6) == 18) {
+                    binding.ratioSubscribe.visibility = View.GONE
+                    binding.ratioLayout.ratio_3m_Chart.visibility = View.INVISIBLE
+                    binding.ratioLayout.ratio_18m_Chart.visibility = View.VISIBLE
+                    binding.ratioLayout.ratio_29y_Chart.visibility = View.INVISIBLE
+                    val firstConstraintSet = ConstraintSet()
+                    val secondConstraintSet = ConstraintSet()
+                    val constraintLayout = binding.ratioLayout as ConstraintLayout
+                    firstConstraintSet.load(context!!, R.layout.ratio_3m_chart_layout)
+                    secondConstraintSet.load(context!!, R.layout.ratio_18m_chart_layout)
+                    TransitionManager.beginDelayedTransition(constraintLayout)
+                    secondConstraintSet.applyTo(constraintLayout)
+                    ratioChart_select = 6
+                } else {
+                    binding.ratioLayout.ratio_3m_Chart.visibility = View.INVISIBLE
+                    binding.ratioSubscribe.visibility = View.VISIBLE
+                }
+            }
+        }
+
+        binding.gold18mBtn.setOnClickListener {
+            if (goldChart_select != 6) {
+                if (sf.getInt(ADFREE_NAME, 6) == 18) {
+                    binding.goldSubscribe.visibility = View.GONE
+                    binding.goldLayout.gold_3m_Chart.visibility = View.INVISIBLE
+                    binding.goldLayout.gold_18m_Chart.visibility = View.VISIBLE
+                    binding.goldLayout.gold_29y_Chart.visibility = View.INVISIBLE
+                    val firstConstraintSet = ConstraintSet()
+                    val secondConstraintSet = ConstraintSet()
+                    val constraintLayout = binding.goldLayout as ConstraintLayout
+                    firstConstraintSet.load(context!!, R.layout.gold_3m_chart_layout)
+                    secondConstraintSet.load(context!!, R.layout.gold_18m_chart_layout)
+                    TransitionManager.beginDelayedTransition(constraintLayout)
+                    secondConstraintSet.applyTo(constraintLayout)
+                    goldChart_select = 6
+                } else {
+                    binding.goldLayout.gold_3m_Chart.visibility = View.INVISIBLE
+                    binding.goldSubscribe.visibility = View.VISIBLE
+                }
+            }
+        }
+
+        binding.silver18mBtn.setOnClickListener {
+            if (silverChart_select != 6) {
+                if (sf.getInt(ADFREE_NAME, 6) == 18) {
+                    binding.silverSubscribe.visibility = View.GONE
+                    binding.silverLayout.silver_3m_Chart.visibility = View.INVISIBLE
+                    binding.silverLayout.silver_18m_Chart.visibility = View.VISIBLE
+                    binding.silverLayout.silver_29y_Chart.visibility = View.INVISIBLE
+                    val firstConstraintSet = ConstraintSet()
+                    val secondConstraintSet = ConstraintSet()
+                    val constraintLayout = binding.silverLayout as ConstraintLayout
+                    firstConstraintSet.load(context!!, R.layout.silver_3m_chart_layout)
+                    secondConstraintSet.load(context!!, R.layout.silver_18m_chart_layout)
+                    TransitionManager.beginDelayedTransition(constraintLayout)
+                    secondConstraintSet.applyTo(constraintLayout)
+                    silverChart_select = 6
+                } else {
+                    binding.silverLayout.silver_3m_Chart.visibility = View.INVISIBLE
+                    binding.silverSubscribe.visibility = View.VISIBLE
+                }
             }
         }
 
         binding.ratio29yBtn.setOnClickListener {
             if (ratioChart_select != 29) {
-                binding.ratioLayout.ratio_29y_Chart.visibility = View.VISIBLE
-                binding.ratioLayout.ratio_6m_Chart.visibility = View.INVISIBLE
-                val firstConstraintSet = ConstraintSet()
-                val secondConstraintSet = ConstraintSet()
-                val constraintLayout = binding.ratioLayout as ConstraintLayout
-                firstConstraintSet.load(context!!, R.layout.ratio_6m_chart_layout)
-                secondConstraintSet.load(context!!, R.layout.ratio_29y_chart_layout)
-                TransitionManager.beginDelayedTransition(constraintLayout)
-                secondConstraintSet.applyTo(constraintLayout)
-                ratioChart_select = 29
+                if (sf.getInt(ADFREE_NAME, 6) == 18) {
+                    binding.ratioSubscribe.visibility = View.GONE
+                    binding.ratioLayout.ratio_3m_Chart.visibility = View.INVISIBLE
+                    binding.ratioLayout.ratio_18m_Chart.visibility = View.INVISIBLE
+                    binding.ratioLayout.ratio_29y_Chart.visibility = View.VISIBLE
+                    val firstConstraintSet = ConstraintSet()
+                    val secondConstraintSet = ConstraintSet()
+                    val constraintLayout = binding.ratioLayout as ConstraintLayout
+                    firstConstraintSet.load(context!!, R.layout.ratio_18m_chart_layout)
+                    secondConstraintSet.load(context!!, R.layout.ratio_29y_chart_layout)
+                    TransitionManager.beginDelayedTransition(constraintLayout)
+                    secondConstraintSet.applyTo(constraintLayout)
+                    ratioChart_select = 29
+                } else {
+                    binding.ratioLayout.ratio_3m_Chart.visibility = View.INVISIBLE
+                    binding.ratioSubscribe.visibility = View.VISIBLE
+                }
             }
         }
 
         binding.gold29yBtn.setOnClickListener {
             if (goldChart_select != 29) {
-                binding.goldLayout.gold_29y_Chart.visibility = View.VISIBLE
-                binding.goldLayout.gold_6m_Chart.visibility = View.INVISIBLE
-                val firstConstraintSet = ConstraintSet()
-                val secondConstraintSet = ConstraintSet()
-                val constraintLayout = binding.goldLayout as ConstraintLayout
-                firstConstraintSet.load(context!!, R.layout.gold_6m_chart_layout)
-                secondConstraintSet.load(context!!, R.layout.gold_29y_chart_layout)
-                TransitionManager.beginDelayedTransition(constraintLayout)
-                secondConstraintSet.applyTo(constraintLayout)
-
-                goldChart_select = 29
+                if (sf.getInt(ADFREE_NAME, 6) == 18) {
+                    binding.goldSubscribe.visibility = View.GONE
+                    binding.goldLayout.gold_3m_Chart.visibility = View.INVISIBLE
+                    binding.goldLayout.gold_18m_Chart.visibility = View.INVISIBLE
+                    binding.goldLayout.gold_29y_Chart.visibility = View.VISIBLE
+                    val firstConstraintSet = ConstraintSet()
+                    val secondConstraintSet = ConstraintSet()
+                    val constraintLayout = binding.goldLayout as ConstraintLayout
+                    firstConstraintSet.load(context!!, R.layout.gold_18m_chart_layout)
+                    secondConstraintSet.load(context!!, R.layout.gold_29y_chart_layout)
+                    TransitionManager.beginDelayedTransition(constraintLayout)
+                    secondConstraintSet.applyTo(constraintLayout)
+                    goldChart_select = 29
+                } else {
+                    binding.goldLayout.gold_3m_Chart.visibility = View.INVISIBLE
+                    binding.goldSubscribe.visibility = View.VISIBLE
+                }
             }
         }
 
         binding.silver29yBtn.setOnClickListener {
             if (silverChart_select != 29) {
-                binding.silverLayout.silver_29y_Chart.visibility = View.VISIBLE
-                binding.silverLayout.silver_6m_Chart.visibility = View.INVISIBLE
-                binding.chartScroll.isEnabled = false
-                val firstConstraintSet = ConstraintSet()
-                val secondConstraintSet = ConstraintSet()
-                val constraintLayout = binding.silverLayout as ConstraintLayout
-                firstConstraintSet.load(context!!, R.layout.silver_6m_chart_layout)
-                secondConstraintSet.load(context!!, R.layout.silver_29y_chart_layout)
-                TransitionManager.beginDelayedTransition(constraintLayout)
-                secondConstraintSet.applyTo(constraintLayout)
-                silverChart_select = 29
+                if (sf.getInt(ADFREE_NAME, 6) == 18) {
+                    binding.silverSubscribe.visibility = View.GONE
+                    binding.silverLayout.silver_3m_Chart.visibility = View.INVISIBLE
+                    binding.silverLayout.silver_18m_Chart.visibility = View.INVISIBLE
+                    binding.silverLayout.silver_29y_Chart.visibility = View.VISIBLE
+                    binding.chartScroll.isEnabled = false
+                    val firstConstraintSet = ConstraintSet()
+                    val secondConstraintSet = ConstraintSet()
+                    val constraintLayout = binding.silverLayout as ConstraintLayout
+                    firstConstraintSet.load(context!!, R.layout.silver_18m_chart_layout)
+                    secondConstraintSet.load(context!!, R.layout.silver_29y_chart_layout)
+                    TransitionManager.beginDelayedTransition(constraintLayout)
+                    secondConstraintSet.applyTo(constraintLayout)
+                    silverChart_select = 29
+                } else {
+                    binding.silverLayout.silver_3m_Chart.visibility = View.INVISIBLE
+                    binding.silverSubscribe.visibility = View.VISIBLE
+                }
             }
         }
 
@@ -569,7 +695,6 @@ class ChartFragment : Fragment() {
         }
     }
 
-
     private class LongMarkerView(
         context: Context,
         private val currencySymbol: String,
@@ -610,32 +735,27 @@ class ChartFragment : Fragment() {
         }
     }
 
-
-    private fun setAds() {
-        MobileAds.initialize(context)
-        mInterstitialAd = InterstitialAd(context)
-        mInterstitialAd.adUnitId = AD_ID
-        mBuilder = AdRequest.Builder()
-        mInterstitialAd.loadAd(mBuilder.build())
-        mInterstitialAd.adListener = object : AdListener() {
-            override fun onAdLoaded() {
-                if (mInterstitialAd.isLoaded) {
-                    if (doneOnce) {
-                        mInterstitialAd.show()
-                        doneOnce = false
+    override fun onPurchasesUpdated(
+        billingresult: BillingResult?,
+        purchases: MutableList<Purchase>?
+    ) {
+        if (billingresult?.responseCode == BillingClient.BillingResponseCode.OK) {
+            purchases?.let {
+                for (purchase in purchases) {
+                    if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
+                        sf.edit().putInt(ADFREE_NAME, 18).apply()
+                        Toast.makeText(
+                            context,
+                            resources.getString(R.string.adfreerestart),
+                            Toast.LENGTH_LONG
+                        ).show()
+//                    Toast.makeText(context!!,"Baaaaaaaaaaaaad", Toast.LENGTH_LONG) .show()
+                    } else {
+                        sf.edit().putInt(ADFREE_NAME, 6).apply()
                     }
                 }
             }
-
-            override fun onAdFailedToLoad(p0: Int) {
-                super.onAdFailedToLoad(p0)
-                Toast.makeText(context!!, p0.toString(), Toast.LENGTH_SHORT).show()
-            }
-
-            override fun onAdClosed() {
-                super.onAdClosed()
-//                binding.chartProgress.visibility = View.GONE
-            }
         }
     }
+
 }

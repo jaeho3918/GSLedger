@@ -24,10 +24,10 @@ import com.gsgana.gsledger.databinding.StatFragmentBinding
 import com.gsgana.gsledger.viewmodels.DetailViewModel
 import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModel
 import kotlinx.android.synthetic.main.chart_layout.view.*
-import kotlinx.android.synthetic.main.gold_6m_chart_layout.view.*
+import kotlinx.android.synthetic.main.gold_18m_chart_layout.view.*
 import kotlinx.android.synthetic.main.marker_view.view.*
-import kotlinx.android.synthetic.main.ratio_6m_chart_layout.view.*
-import kotlinx.android.synthetic.main.silver_6m_chart_layout.view.*
+import kotlinx.android.synthetic.main.ratio_18m_chart_layout.view.*
+import kotlinx.android.synthetic.main.silver_18m_chart_layout.view.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
 
@@ -71,7 +71,7 @@ private fun calChart1(
         binding.totalchartLayout.visibility = View.GONE
         val holder_AG = mutableListOf<Float>()
         val holder_AU = mutableListOf<Float>()
-        for (i in 0..69) {
+        for (i in 0..80) {
             holder_AG.add(0f)
             holder_AU.add(0f)
         }
@@ -638,6 +638,7 @@ private class CustomMarkerView(
             val date = date[(e?.x ?: 0f).toInt()]
             tvDate.text = date
             dateLayout.visibility = View.VISIBLE
+            dateLabel.text = "Time : "
         } else
             dateLayout.visibility = View.GONE
 
@@ -822,8 +823,8 @@ private fun setShortLineGoldChart(
             isEnabled = false
             setDrawGridLines(false)
 //            setLabelCount(3, true)              //none
-            axisMaximum = dataSet.yMax * 25 / 24
-            axisMinimum = dataSet.yMin * 23 / 24
+            axisMaximum = dataSet.yMax + dataSet.yMin * 1 / 180
+            axisMinimum = dataSet.yMin - dataSet.yMin * 1 / 180
 //            axisLineColor = backGround
         }
 
@@ -967,8 +968,8 @@ private fun setShortLineSilverChart(
             isEnabled = false
             setDrawGridLines(false)
 //            setLabelCount(3, true)              //none
-            axisMaximum = dataSet.yMax * 25 / 24
-            axisMinimum = dataSet.yMin * 23 / 24
+            axisMaximum = dataSet.yMax + dataSet.yMin * 1 / 180
+            axisMinimum = dataSet.yMin - dataSet.yMin * 1 / 180
             axisLineColor = backGround
         }
 
@@ -1110,8 +1111,8 @@ private fun setShortLineGoldChartZoom(
             isEnabled = false
             setDrawGridLines(false)
             setLabelCount(3, true)              //none
-            axisMaximum = dataSet.yMax * 25 / 24
-            axisMinimum = dataSet.yMin * 23 / 24
+            axisMaximum = dataSet.yMax + dataSet.yMin * 1 / 180
+            axisMinimum = dataSet.yMin - dataSet.yMin * 1 / 180
             axisLineColor = backGround
         }
 
@@ -1253,8 +1254,8 @@ private fun setShortLineSilverChartZoom(
             isEnabled = false
             setDrawGridLines(false)
             setLabelCount(3, true)              //none
-            axisMaximum = dataSet.yMax * 25 / 24
-            axisMinimum = dataSet.yMin * 23 / 24
+            axisMaximum = dataSet.yMax + dataSet.yMin * 1 / 180
+            axisMinimum = dataSet.yMin - dataSet.yMin * 1 / 180
             axisLineColor = backGround
         }
     val mv =
@@ -1277,7 +1278,7 @@ fun getShortLineSilverChartZoom(
 }
 
 
-private fun setRatioChartSelect_6m(
+private fun setRatioChartSelect_18m(
     context: Context,
     viewModel: HomeViewPagerViewModel,
     binding: ChartFragmentBinding,
@@ -1317,7 +1318,7 @@ private fun setRatioChartSelect_6m(
 
     val data_set = LineData(dataSet)
 
-    val chart = binding.ratioLayout.ratio_6m_Chart.apply {
+    val chart = binding.ratioLayout.ratio_18m_Chart.apply {
         isEnabled = true
         setData(data_set)
 //            setViewPortOffsets(50f, 30f, 50f, 50f)
@@ -1373,21 +1374,21 @@ private fun setRatioChartSelect_6m(
     chart.marker = mv
     chart.invalidate()
 
-    binding.ratioLayout.ratio_6m_Chart.visibility = View.VISIBLE
+    binding.ratioLayout.ratio_18m_Chart.visibility = View.VISIBLE
     binding.ratioLongChartVisibleLayout.visibility = View.VISIBLE
     binding.ratioLongChartProgress.visibility = View.GONE
 }
 
-fun getRatioChartSelect_6m(
+fun getRatioChartSelect_18m(
     context: Context,
     viewModel: HomeViewPagerViewModel,
     binding: ChartFragmentBinding,
     data: Map<String, List<*>>
 ) {
-    setRatioChartSelect_6m(context, viewModel, binding, data)
+    setRatioChartSelect_18m(context, viewModel, binding, data)
 }
 
-private fun setGoldChartSelect_6m(
+private fun setGoldChartSelect_18m(
     context: Context,
     viewModel: HomeViewPagerViewModel,
     binding: ChartFragmentBinding,
@@ -1424,7 +1425,7 @@ private fun setGoldChartSelect_6m(
 
     val data_set = LineData(dataSet)
 
-    val chart = binding.goldLayout.gold_6m_Chart.apply {
+    val chart = binding.goldLayout.gold_18m_Chart.apply {
         isEnabled = true
         setData(data_set)
 //        setViewPortOffsets(50f, 30f, 50f, 80f)
@@ -1479,21 +1480,21 @@ private fun setGoldChartSelect_6m(
 
     chart.marker = mv
     chart.invalidate()
-    binding.goldLayout.gold_6m_Chart.visibility = View.VISIBLE
+    binding.goldLayout.gold_18m_Chart.visibility = View.VISIBLE
     binding.goldLongChartVisibleLayout.visibility = View.VISIBLE
     binding.goldLongChartProgress.visibility = View.GONE
 }
 
-fun getGoldChartSelect_6m(
+fun getGoldChartSelect_18m(
     context: Context,
     viewModel: HomeViewPagerViewModel,
     binding: ChartFragmentBinding,
     data: Map<String, List<*>>
 ) {
-    setGoldChartSelect_6m(context, viewModel, binding, data)
+    setGoldChartSelect_18m(context, viewModel, binding, data)
 }
 
-private fun setSilverChartSelect_6m(
+private fun setSilverChartSelect_18m(
     context: Context,
     viewModel: HomeViewPagerViewModel,
     binding: ChartFragmentBinding,
@@ -1530,7 +1531,7 @@ private fun setSilverChartSelect_6m(
 
     val data_set = LineData(dataSet)
 
-    val chart = binding.silverLayout.silver_6m_Chart.apply {
+    val chart = binding.silverLayout.silver_18m_Chart.apply {
         isEnabled = true
         setData(data_set)
 //        setViewPortOffsets(50f, 30f, 50f, 80f)
@@ -1584,18 +1585,18 @@ private fun setSilverChartSelect_6m(
 
     chart.marker = mv
     chart.invalidate()
-    binding.silverLayout.silver_6m_Chart.visibility = View.VISIBLE
+    binding.silverLayout.silver_18m_Chart.visibility = View.VISIBLE
     binding.silverLongChartVisibleLayout.visibility = View.VISIBLE
     binding.silverLongChartProgress.visibility = View.GONE
 }
 
-fun getSilverChartSelect_6m(
+fun getSilverChartSelect_18m(
     context: Context,
     viewModel: HomeViewPagerViewModel,
     binding: ChartFragmentBinding,
     data: Map<String, List<*>>
 ) {
-    setSilverChartSelect_6m(context, viewModel, binding, data)
+    setSilverChartSelect_18m(context, viewModel, binding, data)
 }
 
 private fun setLabel(binding: StatFragmentBinding, viewModel: HomeViewPagerViewModel) {
@@ -1806,6 +1807,7 @@ private class LongMarkerView(
         if ((e?.x ?: 0f).toInt() <= date.size - 1) {
             tvDate.text = date[(e?.x ?: 0f).toInt()]
             dateLayout.visibility = View.VISIBLE
+            dateLabel.text = "Date: "
         } else
             dateLayout.visibility = View.GONE
 
@@ -1849,6 +1851,7 @@ private class CustomMarkerDetailView(
             tvDate.text =
                 date.substring(0..3) + "/" + date.substring(4..5) + "/" + date.substring(6..7)
             dateLayout.visibility = View.VISIBLE
+            dateLabel.text = "Date: "
         } else
             dateLayout.visibility = View.GONE
 

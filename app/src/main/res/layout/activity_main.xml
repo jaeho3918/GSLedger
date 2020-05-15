@@ -39,8 +39,8 @@
                     android:id="@+id/introProgressBar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:visibility="invisible"
-                    android:layout_margin="@dimen/intro_marginTop" />
+                    android:layout_margin="@dimen/intro_marginTop"
+                    android:visibility="visible" />
 
             </LinearLayout>
         </LinearLayout>

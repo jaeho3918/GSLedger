@@ -69,13 +69,13 @@
                             android:id="@+id/goldLongChartVisibleLayout"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:gravity="center"
                             android:descendantFocusability="blocksDescendants">
 
 
                             <include
                                 android:id="@+id/gold_Layout"
-                                layout="@layout/gold_6m_chart_layout"
-
+                                layout="@layout/gold_3m_chart_layout"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:descendantFocusability="blocksDescendants" />
@@ -83,12 +83,25 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_alignBottom="@+id/goldLongChartLayout"
+                                android:layout_alignBottom="@+id/goldLongChartLayout3"
                                 android:layout_alignParentEnd="true"
                                 android:layout_marginEnd="3dp"
                                 android:layout_marginBottom="5.3dp"
                                 android:textColor="@color/chart_font"
                                 android:textSize="6dp" />
+
+                            <Button
+                                android:id="@+id/gold_subscribe"
+                                android:visibility="gone"
+                                android:layout_width="0dp"
+                                android:layout_height="35dp"
+                                android:layout_alignParentEnd="true"
+                                android:layout_alignParentStart="true"
+                                android:layout_marginTop="66dp"
+                                android:layout_marginHorizontal="111dp"
+                                android:background="@drawable/subscribe_btn"
+                                android:text="@string/subscribe"
+                                android:textColor="@color/white" />
 
                         </RelativeLayout>
 
@@ -97,22 +110,31 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="right"
+                        android:gravity="center"
                         android:orientation="horizontal">
 
                         <Button
-                            android:id="@+id/gold_6m_btn"
+                            android:id="@+id/gold_3m_btn"
                             android:layout_width="80dp"
-                            android:layout_height="31dp"
+                            android:layout_height="24dp"
                             android:layout_marginHorizontal="3dp"
                             android:background="@drawable/chart_select_btn"
-                            android:text="6 M"
+                            android:text="3 M"
+                            android:textColor="@color/chart_goldC" />
+
+                        <Button
+                            android:id="@+id/gold_18m_btn"
+                            android:layout_width="80dp"
+                            android:layout_height="24dp"
+                            android:layout_marginHorizontal="3dp"
+                            android:background="@drawable/chart_select_btn"
+                            android:text="18 M"
                             android:textColor="@color/chart_goldC" />
 
                         <Button
                             android:id="@+id/gold_29y_btn"
                             android:layout_width="80dp"
-                            android:layout_height="31dp"
+                            android:layout_height="24dp"
                             android:background="@drawable/chart_select_btn"
                             android:text="29 Y"
                             android:textColor="@color/chart_goldC" />
@@ -176,7 +198,7 @@
 
                             <include
                                 android:id="@+id/silver_Layout"
-                                layout="@layout/silver_6m_chart_layout"
+                                layout="@layout/silver_3m_chart_layout"
 
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
@@ -185,12 +207,25 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_alignBottom="@+id/silverLongChartLayout"
+                                android:layout_alignBottom="@+id/silverLongChartLayout3"
                                 android:layout_alignParentEnd="true"
                                 android:layout_marginEnd="3dp"
                                 android:layout_marginBottom="5.3dp"
                                 android:textColor="@color/chart_font"
                                 android:textSize="6dp" />
+
+                            <Button
+                                android:id="@+id/silver_subscribe"
+                                android:visibility="gone"
+                                android:layout_width="0dp"
+                                android:layout_height="35dp"
+                                android:layout_alignParentEnd="true"
+                                android:layout_alignParentStart="true"
+                                android:layout_marginTop="66dp"
+                                android:layout_marginHorizontal="111dp"
+                                android:background="@drawable/subscribe_btn"
+                                android:text="@string/subscribe"
+                                android:textColor="@color/white" />
 
                         </RelativeLayout>
 
@@ -199,22 +234,31 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="right"
+                        android:gravity="center"
                         android:orientation="horizontal">
 
                         <Button
-                            android:id="@+id/silver_6m_btn"
+                            android:id="@+id/silver_3m_btn"
                             android:layout_width="80dp"
-                            android:layout_height="31dp"
+                            android:layout_height="24dp"
                             android:layout_marginHorizontal="3dp"
                             android:background="@drawable/chart_select_btn"
-                            android:text="6 M"
+                            android:text="3 M"
+                            android:textColor="@color/chart_goldC" />
+
+                        <Button
+                            android:id="@+id/silver_18m_btn"
+                            android:layout_width="80dp"
+                            android:layout_height="24dp"
+                            android:layout_marginHorizontal="3dp"
+                            android:background="@drawable/chart_select_btn"
+                            android:text="18 M"
                             android:textColor="@color/chart_goldC" />
 
                         <Button
                             android:id="@+id/silver_29y_btn"
                             android:layout_width="80dp"
-                            android:layout_height="31dp"
+                            android:layout_height="24dp"
                             android:background="@drawable/chart_select_btn"
                             android:text="29 Y"
                             android:textColor="@color/chart_goldC" />
@@ -274,10 +318,10 @@
                             android:layout_height="wrap_content"
                             android:descendantFocusability="blocksDescendants">
 
+
                             <include
                                 android:id="@+id/ratio_Layout"
-                                layout="@layout/ratio_6m_chart_layout"
-
+                                layout="@layout/ratio_3m_chart_layout"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:descendantFocusability="blocksDescendants" />
@@ -285,12 +329,25 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_alignBottom="@+id/ratioLongChartLayout"
+                                android:layout_alignBottom="@+id/ratioLongChartLayout3"
                                 android:layout_alignParentEnd="true"
                                 android:layout_marginEnd="3dp"
                                 android:layout_marginBottom="5.3dp"
                                 android:textColor="@color/chart_font"
                                 android:textSize="6dp" />
+
+                            <Button
+                                android:id="@+id/ratio_subscribe"
+                                android:visibility="gone"
+                                android:layout_width="0dp"
+                                android:layout_height="35dp"
+                                android:layout_alignParentEnd="true"
+                                android:layout_alignParentStart="true"
+                                android:layout_marginTop="66dp"
+                                android:layout_marginHorizontal="111dp"
+                                android:background="@drawable/subscribe_btn"
+                                android:text="@string/subscribe"
+                                android:textColor="@color/white" />
 
                         </RelativeLayout>
 
@@ -299,22 +356,31 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:gravity="right"
+                        android:gravity="center"
                         android:orientation="horizontal">
 
                         <Button
-                            android:id="@+id/ratio_6m_btn"
+                            android:id="@+id/ratio_3m_btn"
                             android:layout_width="80dp"
-                            android:layout_height="31dp"
+                            android:layout_height="24dp"
                             android:layout_marginHorizontal="3dp"
                             android:background="@drawable/chart_select_btn"
-                            android:text="6 M"
+                            android:text="3 M"
+                            android:textColor="@color/chart_goldC" />
+
+                        <Button
+                            android:id="@+id/ratio_18m_btn"
+                            android:layout_width="80dp"
+                            android:layout_height="24dp"
+                            android:layout_marginHorizontal="3dp"
+                            android:background="@drawable/chart_select_btn"
+                            android:text="18 M"
                             android:textColor="@color/chart_goldC" />
 
                         <Button
                             android:id="@+id/ratio_29y_btn"
                             android:layout_width="80dp"
-                            android:layout_height="31dp"
+                            android:layout_height="24dp"
                             android:background="@drawable/chart_select_btn"
                             android:text="29 Y"
                             android:textColor="@color/chart_goldC" />

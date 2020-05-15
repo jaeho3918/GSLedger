@@ -99,7 +99,7 @@ class StatFragment : Fragment() {
 
                 binding.chartLayout.goldShortChart.layoutParams.height = MAX_HEIGHT
 
-                getShortLineGoldChartZoom(context!!, viewModel, binding, viewModel.getchartData())
+                getShortLineGoldChartZoom(context!!, viewModel, binding, viewModel.getstackChartData())
 
                 TransitionManager.beginDelayedTransition(constraintLayout)
                 secondConstraintSet.applyTo(constraintLayout)
@@ -111,7 +111,7 @@ class StatFragment : Fragment() {
 
                 binding.chartLayout.goldShortChart.layoutParams.height = MIN_HEIGHT
 
-                getShortLineGoldChart(context!!, viewModel, binding, viewModel.getchartData())
+                getShortLineGoldChart(context!!, viewModel, binding, viewModel.getstackChartData())
 
                 TransitionManager.beginDelayedTransition(constraintLayout)
                 firstConstraintSet.applyTo(constraintLayout)
@@ -131,7 +131,7 @@ class StatFragment : Fragment() {
                     resources.getDrawable(R.drawable.ic_zoom_out_black_24dp, null)
 
                 binding.chartLayout.silverShortChart.layoutParams.height = MAX_HEIGHT
-                getShortLineSilverChartZoom(context!!, viewModel, binding, viewModel.getchartData())
+                getShortLineSilverChartZoom(context!!, viewModel, binding, viewModel.getstackChartData())
 
                 TransitionManager.beginDelayedTransition(constraintLayout)
                 secondConstraintSet.applyTo(constraintLayout)
@@ -141,19 +141,13 @@ class StatFragment : Fragment() {
                     resources.getDrawable(R.drawable.ic_zoom_in_black_24dp, null)
 
                 binding.chartLayout.silverShortChart.layoutParams.height = MIN_HEIGHT
-                getShortLineSilverChart(context!!, viewModel, binding, viewModel.getchartData())
+                getShortLineSilverChart(context!!, viewModel, binding, viewModel.getstackChartData())
 
                 TransitionManager.beginDelayedTransition(constraintLayout)
                 firstConstraintSet.applyTo(constraintLayout)
                 FLAG_SILVERCHART = false
             }
         }
-
-
-
-
-
-
 
         viewModel.getRealData().observe(viewLifecycleOwner, Observer { _ ->
             if (!viewModel.getProducts().value.isNullOrEmpty()) {
@@ -172,8 +166,8 @@ class StatFragment : Fragment() {
             getsetLabel(binding, viewModel)
 
             if (!(!FLAG_GOLDCHART || !FLAG_SILVERCHART)) {
-                getShortLineGoldChart(context!!, viewModel, binding, viewModel.getchartData())
-                getShortLineSilverChart(context!!, viewModel, binding, viewModel.getchartData())
+                getShortLineGoldChart(context!!, viewModel, binding, viewModel.getstackChartData())
+                getShortLineSilverChart(context!!, viewModel, binding, viewModel.getstackChartData())
             }
 
             Handler().postDelayed({
@@ -248,7 +242,7 @@ class StatFragment : Fragment() {
             }, 600
         )
 
-        viewModel.getchart().observe(viewLifecycleOwner, Observer {
+        viewModel.getstackChart().observe(viewLifecycleOwner, Observer {
             getShortLineGoldChart(context!!, viewModel, binding, it)
             getShortLineSilverChart(context!!, viewModel, binding, it)
             Handler().postDelayed({

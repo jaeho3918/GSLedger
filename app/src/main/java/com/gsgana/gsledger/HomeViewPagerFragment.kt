@@ -37,6 +37,8 @@ import com.gsgana.gsledger.utilities.InjectorUtils
 import com.gsgana.gsledger.utilities.WEIGHTUNIT
 import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModel
 import com.gsgana.gsledger.viewmodels.WriteViewModel
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Matcher
@@ -46,6 +48,8 @@ import java.util.regex.Pattern
 class HomeViewPagerFragment : Fragment() {
     private lateinit var binding: HomeViewPagerFragmentBinding
     private val REAL_DB_PATH = "sYTVBn6F18VT6Ykw6L" //v6WqgKE6RLT6JkFuBv   실제 sYTVBn6F18VT6Ykw6L
+
+    private val REAL_STACK_DB_PATH = "AeBuYTRW4x0B2QQQIt"
 
     private val PREF_NAME = "01504f779d6c77df04"
     private val CURR_NAME = "1w3d4f7w9d2qG2eT36"
@@ -65,14 +69,12 @@ class HomeViewPagerFragment : Fragment() {
 
     private val DURATION: Long = 180
 
-    private lateinit var option: SharedPreferences
-
     private var currencyOption: Int? = null
     private var weightOption: Int? = null
 
     private var weight: Double? = null
 
-    private lateinit var databaseRef: DatabaseReference
+    private lateinit var databaseRef: FirebaseDatabase
     private lateinit var mAdView: AdView
 
     private lateinit var calendar: Calendar
@@ -98,25 +100,60 @@ class HomeViewPagerFragment : Fragment() {
 
         calendar = Calendar.getInstance()
 
-        databaseRef = FirebaseDatabase.getInstance().getReference(REAL_DB_PATH)
+        databaseRef = FirebaseDatabase.getInstance()
 
-        databaseRef.addValueEventListener(object : ValueEventListener {
-            override fun onCancelled(p0: DatabaseError) {}
-            override fun onDataChange(p0: DataSnapshot) {
-                val data = p0.value as HashMap<String, Double>
-                viewModel.setDateTime(data.get("DATE") as Long)
-                data.remove("DATE")
+        databaseRef
+            .getReference(REAL_DB_PATH)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(p0: DatabaseError) {}
+                override fun onDataChange(p0: DataSnapshot) {
+                    val data = p0.value as HashMap<String, Double>
+                    viewModel.setDateTime(data.get("DATE") as Long)
+                    data.remove("DATE")
 
-                currencyOption = sf.getInt(CURR_NAME, 0)
-                weightOption = sf.getInt(WEIGHT_NAME, 0)
+                    currencyOption = sf.getInt(CURR_NAME, 0)
+                    weightOption = sf.getInt(WEIGHT_NAME, 0)
 
-                data["currency"] = currencyOption!!.toDouble()
-                data["weightUnit"] = weightOption!!.toDouble()
+                    data["currency"] = currencyOption!!.toDouble()
+                    data["weightUnit"] = weightOption!!.toDouble()
 
-                data["USD"] = 1.0
-                viewModel.setRealData(data) //1587652649.61714
-            }
-        })
+                    data["USD"] = 1.0
+                    viewModel.setRealData(data) //1587652649.61714
+                }
+            })
+
+        databaseRef
+            .getReference(REAL_STACK_DB_PATH)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(p0: DatabaseError) {}
+                override fun onDataChange(p0: DataSnapshot) {
+                    val data = p0.value as Map<String, Map<String, Double>>
+                    val data_sorted = data.toSortedMap()
+                    // 받은 데이터를 value_au, value_ag, date 로 정렬하기
+                    val array_AU = arrayListOf<Float>()
+                    val array_AG = arrayListOf<Float>()
+                    val array_DATE = arrayListOf<String>()
+
+                    val cal = Calendar.getInstance()
+                    val tz = cal.timeZone
+                    val sdf = SimpleDateFormat("yyyy/MM/dd HH:mm")
+                    sdf.timeZone = tz
+
+                    data_sorted.forEach { mapData ->
+                        array_AU.add(mapData.value.getValue("AU").toFloat())
+                        array_AG.add(mapData.value.getValue("AG").toFloat())
+                        array_DATE.add(sdf.format(mapData.value.getValue("DATE") * 1000).substring(10..15))
+                    }
+
+                    viewModel.setstackChartData(
+                        mapOf(
+                            "value_AU" to array_AU,
+                            "value_AG" to array_AG,
+                            "date" to array_DATE
+                        )
+                    )
+                }
+            })
 
         getChart(
             sf.getString(NEW_LABEL, "")!!,
@@ -127,6 +164,18 @@ class HomeViewPagerFragment : Fragment() {
                 viewModel.setchartData(data)
             }
         }
+
+        Handler().postDelayed({
+            getSSShortChart(
+                sf.getString(NEW_LABEL, "")!!,
+                sf.getString(NEW_ENCRYPT, "")!!,
+                sf.getInt(NUMBER, 0)
+            ).addOnSuccessListener { data ->
+                if (!data.isNullOrEmpty()) {
+                    viewModel.setSSShortchartData(data)
+                }
+            }
+        }, 333)
 
         Handler().postDelayed({
             getLongChart(
@@ -455,6 +504,34 @@ class HomeViewPagerFragment : Fragment() {
                 result
             }
     }
+
+    private fun getSSShortChart(
+        label: String,
+        reg: String,
+        num: Int
+    ): Task<Map<String, ArrayList<*>>> {
+
+        // Create the arguments to the callable function.
+
+        val data = hashMapOf(
+            "label" to label,
+            "reg" to reg,
+            "number" to num
+        )
+
+        return functions
+            .getHttpsCallable("SSSZRy57RJG1eb9JUuff45Q6")
+            .call(data)
+            .continueWith { task ->
+                // This continuation runs on either success or failure, but if the task
+                // has failed then result will throw an Exception which will be
+                // propagated down.
+
+                val result = task.result?.data as Map<String, ArrayList<*>>
+                result
+            }
+    }
+
 
 }
 

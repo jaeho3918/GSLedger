@@ -303,7 +303,6 @@ class DetailFragment : Fragment() {
                 }
 
                 override fun del() {
-
                     val builder: AlertDialog.Builder = AlertDialog.Builder(context)
                     builder.setTitle(resources.getString(R.string.caution))
                     builder.setMessage(resources.getString(R.string.delProduct))

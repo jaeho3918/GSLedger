@@ -107,7 +107,7 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
                     UPDATE_REQUEST_CODE
                 )
             } else {
-                Toast.makeText(this, "gooooooooooooooooooood", Toast.LENGTH_LONG).show()
+//                Toast.makeText(this, "gooooooooooooooooooood", Toast.LENGTH_LONG).show()
             }
         }
 

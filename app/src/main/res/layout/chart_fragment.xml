@@ -4,6 +4,7 @@
     xmlns:card_view="http://schemas.android.com/tools">
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/chart_scroll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:descendantFocusability="blocksDescendants"
@@ -25,111 +26,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="8dp"
                 android:layout_marginLeft="5dp"
-                android:layout_marginTop="11dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginEnd="5dp"
-                android:layout_marginBottom="11dp"
-                card_view:cardBackgroundColor="@color/border_background">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/rounded_border"
-                    android:orientation="vertical"
-                    android:descendantFocusability="blocksDescendants"
-                    android:padding="5dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/ratioChart"
-                        android:textSize="@dimen/text_medium" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="250dp"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:descendantFocusability="blocksDescendants">
-
-                        <Button
-                            android:layout_width="180dp"
-                            android:layout_height="38dp"
-                            android:background="@drawable/subscribe_btn"
-                            android:text="Subscribe"
-                            android:textColor="@color/white"
-                            android:visibility="gone" />
-
-                        <ProgressBar
-                            android:id="@+id/ratioLongChartProgress"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:visibility="gone" />
-
-                        <RelativeLayout
-                            android:id="@+id/ratioLongChartVisibleLayout"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:descendantFocusability="blocksDescendants">
-
-                            <include
-                                android:id="@+id/ratio_Layout"
-                                layout="@layout/ratio_6m_chart_layout"
-
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:descendantFocusability="blocksDescendants" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignBottom="@+id/ratioLongChartLayout"
-                                android:layout_alignParentEnd="true"
-                                android:layout_marginEnd="3dp"
-                                android:layout_marginBottom="5.3dp"
-                                android:textColor="@color/chart_font"
-                                android:textSize="6dp" />
-
-                        </RelativeLayout>
-
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="right"
-                        android:orientation="horizontal">
-
-                        <Button
-                            android:id="@+id/ratio_6m_btn"
-                            android:layout_width="80dp"
-                            android:layout_height="31dp"
-                            android:layout_marginHorizontal="3dp"
-                            android:background="@drawable/chart_select_btn"
-                            android:text="6 M"
-                            android:textColor="@color/chart_goldC" />
-
-                        <Button
-                            android:id="@+id/ratio_29y_btn"
-                            android:layout_width="80dp"
-                            android:layout_height="31dp"
-                            android:background="@drawable/chart_select_btn"
-                            android:text="29 Y"
-                            android:textColor="@color/chart_goldC" />
-                    </LinearLayout>
-                </LinearLayout>
-
-
-            </androidx.cardview.widget.CardView>
-
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="8dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="11dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginBottom="11dp"
+                android:layout_marginBottom="5dp"
                 card_view:cardBackgroundColor="@color/border_background">
 
                 <LinearLayout
@@ -147,7 +46,7 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="250dp"
+                        android:layout_height="180dp"
                         android:gravity="center"
                         android:orientation="vertical"
                         android:descendantFocusability="blocksDescendants">
@@ -224,15 +123,14 @@
 
             </androidx.cardview.widget.CardView>
 
-
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="8dp"
                 android:layout_marginLeft="5dp"
-                android:layout_marginTop="11dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginEnd="5dp"
-                android:layout_marginBottom="11dp"
+                android:layout_marginBottom="5dp"
                 card_view:cardBackgroundColor="@color/border_background">
 
                 <LinearLayout
@@ -251,7 +149,7 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="250dp"
+                        android:layout_height="180dp"
                         android:gravity="center"
                         android:orientation="vertical"
                         android:descendantFocusability="blocksDescendants">
@@ -324,6 +222,108 @@
                     </LinearLayout>
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="5dp"
+                card_view:cardBackgroundColor="@color/border_background">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rounded_border"
+                    android:orientation="vertical"
+                    android:descendantFocusability="blocksDescendants"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/ratioChart"
+                        android:textSize="@dimen/text_medium" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="180dp"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:descendantFocusability="blocksDescendants">
+
+                        <Button
+                            android:layout_width="180dp"
+                            android:layout_height="38dp"
+                            android:background="@drawable/subscribe_btn"
+                            android:text="Subscribe"
+                            android:textColor="@color/white"
+                            android:visibility="gone" />
+
+                        <ProgressBar
+                            android:id="@+id/ratioLongChartProgress"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone" />
+
+                        <RelativeLayout
+                            android:id="@+id/ratioLongChartVisibleLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:descendantFocusability="blocksDescendants">
+
+                            <include
+                                android:id="@+id/ratio_Layout"
+                                layout="@layout/ratio_6m_chart_layout"
+
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:descendantFocusability="blocksDescendants" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignBottom="@+id/ratioLongChartLayout"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginEnd="3dp"
+                                android:layout_marginBottom="5.3dp"
+                                android:textColor="@color/chart_font"
+                                android:textSize="6dp" />
+
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/ratio_6m_btn"
+                            android:layout_width="80dp"
+                            android:layout_height="31dp"
+                            android:layout_marginHorizontal="3dp"
+                            android:background="@drawable/chart_select_btn"
+                            android:text="6 M"
+                            android:textColor="@color/chart_goldC" />
+
+                        <Button
+                            android:id="@+id/ratio_29y_btn"
+                            android:layout_width="80dp"
+                            android:layout_height="31dp"
+                            android:background="@drawable/chart_select_btn"
+                            android:text="29 Y"
+                            android:textColor="@color/chart_goldC" />
+                    </LinearLayout>
+                </LinearLayout>
+
+
+            </androidx.cardview.widget.CardView>
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

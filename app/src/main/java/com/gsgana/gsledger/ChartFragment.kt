@@ -35,6 +35,7 @@ import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModel
 import kotlinx.android.synthetic.main.gold_29y_chart_layout.view.*
 import kotlinx.android.synthetic.main.marker_view.view.*
 import kotlinx.android.synthetic.main.ratio_29y_chart_layout.view.*
+import kotlinx.android.synthetic.main.ratio_29y_chart_layout.view.ratio_29y_Chart
 import kotlinx.android.synthetic.main.silver_29y_chart_layout.view.*
 import kotlin.collections.ArrayList
 
@@ -120,6 +121,8 @@ class ChartFragment : Fragment() {
 
         binding.ratio6mBtn.setOnClickListener {
             if (ratioChart_select != 6) {
+                binding.ratioLayout.ratio_6m_Chart.visibility = View.VISIBLE
+                binding.ratioLayout.ratio_29y_Chart.visibility = View.INVISIBLE
                 val firstConstraintSet = ConstraintSet()
                 val secondConstraintSet = ConstraintSet()
                 val constraintLayout = binding.ratioLayout as ConstraintLayout
@@ -134,6 +137,8 @@ class ChartFragment : Fragment() {
 
         binding.gold6mBtn.setOnClickListener {
             if (goldChart_select != 6) {
+                binding.goldLayout.gold_6m_Chart.visibility = View.VISIBLE
+                binding.goldLayout.gold_29y_Chart.visibility = View.INVISIBLE
                 val firstConstraintSet = ConstraintSet()
                 val secondConstraintSet = ConstraintSet()
                 val constraintLayout = binding.goldLayout as ConstraintLayout
@@ -147,6 +152,8 @@ class ChartFragment : Fragment() {
 
         binding.silver6mBtn.setOnClickListener {
             if (silverChart_select != 6) {
+                binding.silverLayout.silver_6m_Chart.visibility = View.VISIBLE
+                binding.silverLayout.silver_29y_Chart.visibility = View.INVISIBLE
                 val firstConstraintSet = ConstraintSet()
                 val secondConstraintSet = ConstraintSet()
                 val constraintLayout = binding.silverLayout as ConstraintLayout
@@ -160,6 +167,8 @@ class ChartFragment : Fragment() {
 
         binding.ratio29yBtn.setOnClickListener {
             if (ratioChart_select != 29) {
+                binding.ratioLayout.ratio_29y_Chart.visibility = View.VISIBLE
+                binding.ratioLayout.ratio_6m_Chart.visibility = View.INVISIBLE
                 val firstConstraintSet = ConstraintSet()
                 val secondConstraintSet = ConstraintSet()
                 val constraintLayout = binding.ratioLayout as ConstraintLayout
@@ -173,6 +182,8 @@ class ChartFragment : Fragment() {
 
         binding.gold29yBtn.setOnClickListener {
             if (goldChart_select != 29) {
+                binding.goldLayout.gold_29y_Chart.visibility = View.VISIBLE
+                binding.goldLayout.gold_6m_Chart.visibility = View.INVISIBLE
                 val firstConstraintSet = ConstraintSet()
                 val secondConstraintSet = ConstraintSet()
                 val constraintLayout = binding.goldLayout as ConstraintLayout
@@ -187,6 +198,9 @@ class ChartFragment : Fragment() {
 
         binding.silver29yBtn.setOnClickListener {
             if (silverChart_select != 29) {
+                binding.silverLayout.silver_29y_Chart.visibility = View.VISIBLE
+                binding.silverLayout.silver_6m_Chart.visibility = View.INVISIBLE
+                binding.chartScroll.isEnabled = false
                 val firstConstraintSet = ConstraintSet()
                 val secondConstraintSet = ConstraintSet()
                 val constraintLayout = binding.silverLayout as ConstraintLayout
@@ -194,7 +208,6 @@ class ChartFragment : Fragment() {
                 secondConstraintSet.load(context!!, R.layout.silver_29y_chart_layout)
                 TransitionManager.beginDelayedTransition(constraintLayout)
                 secondConstraintSet.applyTo(constraintLayout)
-
                 silverChart_select = 29
             }
         }

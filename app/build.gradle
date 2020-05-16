@@ -23,7 +23,7 @@ android {
         targetSdkVersion 29
         versionCode 92
         versionName "1.1.0.21"
-        multiDexEnabled false
+        multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         javaCompileOptions {

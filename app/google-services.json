@@ -8,7 +8,7 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:314143799930:android:8edd1b28035aa8817a59c3",
+        "mobilesdk_app_id": "1:314143799930:android:1aae354a086bd69a7a59c3",
         "android_client_info": {
           "package_name": "com.gsgana.gsledger"
         }
@@ -20,22 +20,6 @@
           "android_info": {
             "package_name": "com.gsgana.gsledger",
             "certificate_hash": "e7108041edc0925370aa6debb59154f5e3720297"
-          }
-        },
-        {
-          "client_id": "314143799930-2ebvptcchad0vujvp7s9thtd831dqis7.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.gsgana.gsledger",
-            "certificate_hash": "f6844d354f566fd50badf37a68977bc05561b1e2"
-          }
-        },
-        {
-          "client_id": "314143799930-sd82c1780ss379coekbnalsqkvp2lo1h.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.gsgana.gsledger",
-            "certificate_hash": "fb204f65d335eaf7da46a581d8ac1209d726ff2a"
           }
         },
         {
@@ -57,8 +41,7 @@
             }
           ]
         }
-      },
-      "admob_app_id": "ca-app-pub-8453032642509497~4168684141"
+      }
     }
   ],
   "configuration_version": "1"

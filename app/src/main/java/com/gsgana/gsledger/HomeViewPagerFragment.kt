@@ -142,7 +142,7 @@ class HomeViewPagerFragment : Fragment() {
                     data_sorted.forEach { mapData ->
                         array_AU.add(mapData.value.getValue("AU").toFloat())
                         array_AG.add(mapData.value.getValue("AG").toFloat())
-                        array_DATE.add(sdf.format(mapData.value.getValue("DATE") * 1000).substring(10..15))
+                        array_DATE.add(sdf.format(mapData.value.getValue("DATE") * 1000).substring(6..15))
                     }
 
                     viewModel.setstackChartData(

@@ -237,10 +237,7 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
         if (requestCode === RC_SIGN_IN) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
-                val account = task.getResult(ApiException::class.java)
-                firebaseAuthWithGoogle(account!!, sf)
             } catch (e: ApiException) {
-                Toast.makeText(this, e.toString(), Toast.LENGTH_LONG)
             }
             //Update Result
         } else if (requestCode == UPDATE_REQUEST_CODE) {
@@ -254,110 +251,7 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
         }
     }
 
-    private fun firebaseAuthWithGoogle(
-        account: GoogleSignInAccount,
-        sf: SharedPreferences
-    ) {
 
-        val credential = GoogleAuthProvider.getCredential(account.idToken, null)
-
-        mAuth.signInWithCredential(credential)
-            .addOnCompleteListener(this) {
-                if (it.isSuccessful) {
-                    if (sf.getString(ENCRYPT_NAME, null).isNullOrEmpty()) {
-                        sf.edit()
-                            .apply {
-                                putString(ENCRYPT_NAME, "F6uWK6uAiLIBC5Q4suDci6Bv")
-                                putString(ENCRYPT_NAME1, "hmqDA6f1tlYS18RV6qRHI6EV")
-                                putString(ENCRYPT_NAME6, 32.generateRgl())
-                                commit()
-                            }
-                    }
-
-                    val docRef = FirebaseFirestore
-                        .getInstance()
-                        .collection(USERS_DB_PATH)
-                        .document(mAuth.currentUser?.uid!!)
-                        .apply {
-                            get().addOnSuccessListener { data ->
-                                if (data.exists()) {
-                                    update(
-                                        mapOf(
-                                            sf.getString(
-                                                ENCRYPT_NAME6,
-                                                "null"
-                                            ) to generateRgl6()
-                                        )
-                                    ).addOnFailureListener {
-                                        Toast.makeText(
-                                            applicationContext,
-                                            it.toString(),
-                                            Toast.LENGTH_LONG
-                                        ).show()
-                                    }
-                                } else {
-                                    set(
-                                        hashMapOf(
-                                            sf.getString(
-                                                ENCRYPT_NAME6,
-                                                "null"
-                                            ) to generateRgl6()
-                                        )
-                                    ).addOnFailureListener {
-                                        Toast.makeText(
-                                            applicationContext,
-                                            it.toString(),
-                                            Toast.LENGTH_LONG
-                                        ).show()
-                                    }
-                                }
-                            }
-                        }
-
-                    FirebaseFirestore
-                        .getInstance()
-                        .collection("bD7xKRsnpekf54DkwWg2")
-                        .document(mAuth.currentUser?.uid!!)
-                        .apply {
-                            get().addOnSuccessListener {
-                                if (!it.exists()) {
-                                    this.set(
-                                        mapOf("requetNum" to 0)
-                                    )
-                                }
-                            }
-
-                        }
-
-                    Handler().postDelayed({
-                        docRef
-                            .get()
-                            .addOnSuccessListener { data ->
-                                //if
-                                rgl_b = arrayListOf()
-                                val test = data.data?.get(
-                                    sf.getString(ENCRYPT_NAME6, "null")
-                                ) as ArrayList<String>
-
-                                for (s in test) {
-                                    this.rgl_b.add(s.toCharArray()[0])
-                                }
-                                test.clear()
-                                rgl = rgl_b.toCharArray()
-                                rgl_b.clear()
-                                val intent = Intent(this, MainActivity::class.java)
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
-                                intent.putExtra(KEY, rgl)
-                                startActivity(intent)
-                                rgl = charArrayOf()
-                                finish()
-                            }
-                    }, 5000)
-
-
-                }
-            }
-    }
 
     private fun Int.generateRgl(): String {
         val ALLOWED_CHARACTERS = "013567890123456789ABCDEFGHIJKLMNOPQRSTUWXYZ"

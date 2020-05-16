@@ -638,7 +638,7 @@ private class CustomMarkerView(
             val date = date[(e?.x ?: 0f).toInt()]
             tvDate.text = date
             dateLayout.visibility = View.VISIBLE
-            dateLabel.text = "Time : "
+            dateLabel.text = "Date: "
         } else
             dateLayout.visibility = View.GONE
 

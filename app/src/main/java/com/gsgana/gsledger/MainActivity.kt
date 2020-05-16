@@ -26,7 +26,7 @@ class MainActivity :
     private val PREF_NAME = "01504f779d6c77df04"
     private lateinit var sf: SharedPreferences
 //
-    private val AD_ID = "ca-app-pub-8453032642509497/3082833180"
+//    private val AD_ID = "ca-app-pub-8453032642509497/3082833180"
     // 실제   "ca-app-pub-8453032642509497/3082833180"
     // 테스트 "ca-app-pub-3940256099942544/1033173712"
 
@@ -70,47 +70,47 @@ class MainActivity :
 
         DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
 
-        if (!(intent.getIntExtra(ADFREE_NAME, 6) == 18 || sf.getInt(ADFREE_NAME, 6) == 18)) {
-            setAds()
-        } else {
-            Handler().postDelayed(
-                {
-                    loading.visibility = View.GONE
-                    homeViewPagerFragmentpage.visibility = View.VISIBLE
-                }, 1800
-            )
+//        if (!(intent.getIntExtra(ADFREE_NAME, 6) == 18 || sf.getInt(ADFREE_NAME, 6) == 18)) {
+//            setAds()
+//        } else {
+//            Handler().postDelayed(
+//                {
+//                    loading.visibility = View.GONE
+//                    homeViewPagerFragmentpage.visibility = View.VISIBLE
+//                }, 1800
+//            )
+//
+//        }
 
-        }
-
-//        Handler().postDelayed(
-//            {
-//                loading.visibility = View.GONE
-//                homeViewPagerFragmentpage.visibility = View.VISIBLE
-//            }, 1800
-//        )
-    }
-
-    private fun setAds() {
-        MobileAds.initialize(this)
-        mInterstitialAd = InterstitialAd(this)
-        mInterstitialAd.adUnitId = AD_ID
-        mBuilder = AdRequest.Builder()
-        mInterstitialAd.loadAd(mBuilder.build())
-        mInterstitialAd.adListener = object : AdListener() {
-            override fun onAdLoaded() {
-                if (mInterstitialAd.isLoaded) {
-                    if (doneOnce) {
-                        mInterstitialAd.show()
-                        doneOnce = false
-                    }
-                }
-            }
-            override fun onAdClosed() {
-                super.onAdClosed()
+        Handler().postDelayed(
+            {
                 loading.visibility = View.GONE
                 homeViewPagerFragmentpage.visibility = View.VISIBLE
-            }
-        }
+            }, 1800
+        )
     }
+
+//    private fun setAds() {
+//        MobileAds.initialize(this)
+//        mInterstitialAd = InterstitialAd(this)
+//        mInterstitialAd.adUnitId = AD_ID
+//        mBuilder = AdRequest.Builder()
+//        mInterstitialAd.loadAd(mBuilder.build())
+//        mInterstitialAd.adListener = object : AdListener() {
+//            override fun onAdLoaded() {
+//                if (mInterstitialAd.isLoaded) {
+//                    if (doneOnce) {
+//                        mInterstitialAd.show()
+//                        doneOnce = false
+//                    }
+//                }
+//            }
+//            override fun onAdClosed() {
+//                super.onAdClosed()
+//                loading.visibility = View.GONE
+//                homeViewPagerFragmentpage.visibility = View.VISIBLE
+//            }
+//        }
+//    }
 
 }

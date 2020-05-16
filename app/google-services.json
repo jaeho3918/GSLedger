@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "314143799930-2ebvptcchad0vujvp7s9thtd831dqis7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gsgana.gsledger",
+            "certificate_hash": "f6844d354f566fd50badf37a68977bc05561b1e2"
+          }
+        },
+        {
           "client_id": "314143799930-gpv1lolvq69qv7ee0i31j487vpdtrjvp.apps.googleusercontent.com",
           "client_type": 3
         }

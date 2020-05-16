@@ -301,7 +301,7 @@ class HomeViewPagerFragment : Fragment() {
             setPriceColor(context!!, divAuValue, "pl", binding.realGoldPL)
             setPriceColor(context!!, divAgValue, "pl", binding.realSilverPL)
 
-            if (!(divAuValue != last_au || last_au != 0.0)) {
+            if (divAuValue != last_au) {
                 if (divAuValue > last_au) {
                     val objectAnimator = ObjectAnimator.ofObject(
                         binding.realGoldPrice,
@@ -331,7 +331,7 @@ class HomeViewPagerFragment : Fragment() {
                 }
             }
 
-            if (!(divAgValue != last_ag || last_ag != 0.0)) {
+            if (divAgValue != last_ag) {
                 if (divAgValue > last_ag) {
                     val objectAnimator = ObjectAnimator.ofObject(
                         binding.realSilverPrice,

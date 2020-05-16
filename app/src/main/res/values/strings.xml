@@ -78,6 +78,7 @@
     <string name="no">No</string>
     <string name="oneperaccount">This Gmail is already signed up.&#10;Please sign up with another Gmail.</string>
     <string name="agree">Agree</string>
+    <string name="optionTerms">Check the Terms and Conditions and Privacy Policy</string>
     <string name="checkBox">Please read and agree to the Terms and Conditions and Privacy Policy and check the box</string>
     <string name="subscription_benefits">Subscription benefits :</string>
     <string name="com.crashlytics.useFirebaseAppId">true</string>

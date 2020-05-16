@@ -74,6 +74,7 @@
     <string name="no">아니오</string>
     <string name="oneperaccount">해당 Gmail은 이미 가입되어 있습니다.&#10;다른 Gmail로 가입해주시기 바랍니다.</string>
     <string name="agree">동의</string>
+    <string name="optionTerms">개인정보보호정책과 이용약관 확인</string>
     <string name="checkBox">개인정보보호정책과 이용약관에 동의하고 박스에 체크해주시기 바랍니다.</string>
     <string name="rangePriceNotice">정확한 계산을 위한 가격범위입니다.&#10;(실제 가격이 아닙니다.)</string>
     <string name="privacyPolicyText">본인은 개인정보보호정책과 이용약관을&#10;읽었으며 이에 동의합니다.</string>

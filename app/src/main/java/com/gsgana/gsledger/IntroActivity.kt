@@ -377,6 +377,7 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
                 for (purchase in purchases) {
                     if (purchase.purchaseState == Purchase.PurchaseState.PURCHASED) {
                         sf.edit().putInt(ADFREE_NAME, 18).apply()
+//                    Toast.makeText(context!!,"Baaaaaaaaaaaaad", Toast.LENGTH_LONG) .show()
                     } else {
                         sf.edit().putInt(ADFREE_NAME, 6).apply()
                     }
@@ -459,4 +460,6 @@ class IntroActivity : AppCompatActivity(), PurchasesUpdatedListener {
                 rgl.toCharArray()
             }
     }
+
+
 }

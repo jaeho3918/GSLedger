@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
+import android.text.util.Linkify
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
@@ -28,6 +29,8 @@ import com.gsgana.gsledger.utilities.*
 import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModel
 import kotlinx.android.synthetic.main.ads_and_option_fragment.*
 import java.util.*
+import java.util.regex.Matcher
+import java.util.regex.Pattern
 
 
 class AdsAndOptionFragment : Fragment(), PurchasesUpdatedListener {
@@ -142,6 +145,43 @@ class AdsAndOptionFragment : Fragment(), PurchasesUpdatedListener {
             }
             builder.show()
         }
+
+
+        val mTransform = Linkify.TransformFilter { _: Matcher, _: String -> "" }
+
+        val pattern1 = Pattern.compile("Privacy Policy")
+        val pattern2 = Pattern.compile("개인정보보호정책")
+        val pattern3 = Pattern.compile("Terms and Conditions")
+        val pattern4 = Pattern.compile("이용약관")
+
+        Linkify.addLinks(
+            binding.agreeText,
+            pattern1,
+            "https://gsledger-29cad.firebaseapp.com/privacypolicy.html",
+            null,
+            mTransform
+        )
+        Linkify.addLinks(
+            binding.agreeText,
+            pattern2,
+            "https://gsledger-29cad.firebaseapp.com/privacypolicy_kr.html",
+            null,
+            mTransform
+        )
+        Linkify.addLinks(
+            binding.agreeText,
+            pattern3,
+            "https://gsledger-29cad.firebaseapp.com/termsandconditions.html",
+            null,
+            mTransform
+        )
+        Linkify.addLinks(
+            binding.agreeText,
+            pattern4,
+            "https://gsledger-29cad.firebaseapp.com/termsandconditions_kr.html",
+            null,
+            mTransform
+        )
 
         return binding.root
     }

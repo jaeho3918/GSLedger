@@ -257,12 +257,17 @@
             android:layout_height="wrap_content"
             android:visibility="gone"
             app:adSize="SMART_BANNER"
-            app:adUnitId="ca-app-pub-8453032642509497/2664030780"
+            app:adUnitId="ca-app-pub-3940256099942544/6300978111"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             tools:layout_conversion_absoluteHeight="0dp"
             tools:layout_conversion_absoluteWidth="0dp" />
+
+        <!--  실제    "ca-app-pub-8453032642509497/2664030780" -->
+        <!--  테스트  "ca-app-pub-3940256099942544/6300978111" -->
+
+
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline4"
@@ -273,8 +278,6 @@
             app:layout_constraintGuide_percent="0.5"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <!--  실제    "ca-app-pub-8453032642509497/2664030780" -->
-        <!--  테스트  "ca-app-pub-3940256099942544/6300978111" -->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

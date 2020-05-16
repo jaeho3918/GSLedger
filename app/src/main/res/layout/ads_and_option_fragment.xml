@@ -10,365 +10,401 @@
             type="com.gsgana.gsledger.AdsAndOptionFragment.Callback" />
     </data>
 
-    <LinearLayout
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/deleteData_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/tab1_cardview_1"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="8dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="11dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginBottom="11dp">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/rounded_border"
-                    android:orientation="horizontal"
-                    android:paddingTop="13dp">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="99dp"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="5dp"
-                            android:paddingHorizontal="8dp"
-                            android:text="@string/spotPrice"
-                            android:textColor="@color/font_silver"
-                            android:textSize="@dimen/text_medium"
-                            app:layout_constraintBottom_toTopOf="@+id/currencyLabel"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/currencyLabel"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="5dp"
-                            android:paddingHorizontal="8dp"
-                            android:text="@string/currency"
-                            android:textColor="@color/font_silver"
-                            android:textSize="@dimen/text_medium"
-                            app:layout_constraintBottom_toTopOf="@+id/currencyOption"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="1.0"
-                            card_view:layout_editor_absoluteX="0dp" />
-
-                        <Spinner
-                            android:id="@+id/currencyOption"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:textSize="@dimen/text_medium"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.0"
-                            app:layout_constraintStart_toStartOf="parent" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="99dp"
-                        android:layout_weight="1">
-
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="5dp"
-                            android:paddingHorizontal="8dp"
-                            android:textColor="@color/font_silver"
-                            android:textSize="@dimen/text_medium"
-                            android:visibility="invisible"
-                            app:layout_constraintBottom_toTopOf="@+id/weightLabel"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-
-                        <TextView
-                            android:id="@+id/weightLabel"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="5dp"
-                            android:paddingHorizontal="8dp"
-                            android:text="@string/weightUnit"
-                            android:textColor="@color/font_silver"
-                            android:textSize="@dimen/text_medium"
-                            app:layout_constraintBottom_toTopOf="@+id/weightUnitOption"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="1.0"
-                            card_view:layout_editor_absoluteX="0dp" />
-
-                        <Spinner
-                            android:id="@+id/weightUnitOption"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:textSize="@dimen/text_medium"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.0"
-                            app:layout_constraintStart_toStartOf="parent" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                </LinearLayout>
-
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/tab1_cardview_3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="8dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="11dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginBottom="11dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/rounded_border"
-                    android:orientation="horizontal"
-                    android:paddingTop="13dp">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="99dp"
-                        android:layout_weight="1">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="5dp"
-                            android:paddingHorizontal="8dp"
-                            android:text="@string/alert"
-                            android:textColor="@color/font_silver"
-                            android:textSize="@dimen/text_medium"
-                            app:layout_constraintBottom_toTopOf="@+id/currencyLabel1"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/currencyLabel1"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="5dp"
-                            android:paddingHorizontal="8dp"
-                            android:text="@string/alertswitch"
-                            android:textColor="@color/font_silver"
-                            android:textSize="@dimen/text_medium"
-                            app:layout_constraintBottom_toTopOf="@+id/alertSwitchOption"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="1.0"
-                            card_view:layout_editor_absoluteX="0dp" />
-
-                        <Spinner
-                            android:id="@+id/alertSwitchOption"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:textSize="@dimen/text_medium"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.0"
-                            app:layout_constraintStart_toStartOf="parent" />
-
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="99dp"
-                        android:layout_weight="1">
-
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="5dp"
-                            android:paddingHorizontal="8dp"
-                            android:textColor="@color/font_silver"
-                            android:textSize="@dimen/text_medium"
-                            android:visibility="invisible"
-                            app:layout_constraintBottom_toTopOf="@+id/weightLabel1"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-
-                        <TextView
-                            android:id="@+id/weightLabel1"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="5dp"
-                            android:paddingHorizontal="8dp"
-                            android:text="@string/alertrange"
-                            android:textColor="@color/font_silver"
-                            android:textSize="@dimen/text_medium"
-                            app:layout_constraintBottom_toTopOf="@+id/alertRangeOption"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="1.0"
-                            card_view:layout_editor_absoluteX="0dp" />
-
-                        <Spinner
-                            android:id="@+id/alertRangeOption"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:textSize="@dimen/text_medium"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="0.0"
-                            app:layout_constraintStart_toStartOf="parent" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-
-                </LinearLayout>
-
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/tab1_cardview_2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/rounded_border"
-            android:layout_marginHorizontal="8dp"
-            android:layout_marginLeft="5dp"
-            android:layout_marginTop="11dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginBottom="11dp">
-
-            <LinearLayout
-                android:padding="1dp"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/tab1_cardview_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/rounded_border"
-                android:orientation="vertical">
-
-                <TextView
-                    android:paddingTop="8dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:paddingHorizontal="8dp"
-                    android:text="@string/subscribe"
-                    android:textColor="@color/font_silver"
-                    android:textSize="@dimen/text_medium"
-                    app:layout_constraintBottom_toTopOf="@+id/currencyLabel"
-                    app:layout_constraintTop_toTopOf="parent" />
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="11dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="11dp">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/rounded_border"
+                        android:orientation="horizontal"
+                        android:paddingTop="13dp">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="99dp"
+                            android:layout_weight="1">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="5dp"
+                                android:paddingHorizontal="8dp"
+                                android:text="@string/spotPrice"
+                                android:textColor="@color/font_silver"
+                                android:textSize="@dimen/text_medium"
+                                app:layout_constraintBottom_toTopOf="@+id/currencyLabel"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/currencyLabel"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="5dp"
+                                android:paddingHorizontal="8dp"
+                                android:text="@string/currency"
+                                android:textColor="@color/font_silver"
+                                android:textSize="@dimen/text_medium"
+                                app:layout_constraintBottom_toTopOf="@+id/currencyOption"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintVertical_bias="1.0"
+                                card_view:layout_editor_absoluteX="0dp" />
+
+                            <Spinner
+                                android:id="@+id/currencyOption"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:textSize="@dimen/text_medium"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.0"
+                                app:layout_constraintStart_toStartOf="parent" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="99dp"
+                            android:layout_weight="1">
+
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="5dp"
+                                android:paddingHorizontal="8dp"
+                                android:textColor="@color/font_silver"
+                                android:textSize="@dimen/text_medium"
+                                android:visibility="invisible"
+                                app:layout_constraintBottom_toTopOf="@+id/weightLabel"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+
+                            <TextView
+                                android:id="@+id/weightLabel"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="5dp"
+                                android:paddingHorizontal="8dp"
+                                android:text="@string/weightUnit"
+                                android:textColor="@color/font_silver"
+                                android:textSize="@dimen/text_medium"
+                                app:layout_constraintBottom_toTopOf="@+id/weightUnitOption"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintVertical_bias="1.0"
+                                card_view:layout_editor_absoluteX="0dp" />
+
+                            <Spinner
+                                android:id="@+id/weightUnitOption"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:textSize="@dimen/text_medium"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.0"
+                                app:layout_constraintStart_toStartOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/tab1_cardview_3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="11dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="11dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/rounded_border"
+                        android:orientation="horizontal"
+                        android:paddingTop="13dp">
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="99dp"
+                            android:layout_weight="1">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="5dp"
+                                android:paddingHorizontal="8dp"
+                                android:text="@string/alert"
+                                android:textColor="@color/font_silver"
+                                android:textSize="@dimen/text_medium"
+                                app:layout_constraintBottom_toTopOf="@+id/currencyLabel1"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/currencyLabel1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="5dp"
+                                android:paddingHorizontal="8dp"
+                                android:text="@string/alertswitch"
+                                android:textColor="@color/font_silver"
+                                android:textSize="@dimen/text_medium"
+                                app:layout_constraintBottom_toTopOf="@+id/alertSwitchOption"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintVertical_bias="1.0"
+                                card_view:layout_editor_absoluteX="0dp" />
+
+                            <Spinner
+                                android:id="@+id/alertSwitchOption"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:textSize="@dimen/text_medium"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.0"
+                                app:layout_constraintStart_toStartOf="parent" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="99dp"
+                            android:layout_weight="1">
+
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="5dp"
+                                android:paddingHorizontal="8dp"
+                                android:textColor="@color/font_silver"
+                                android:textSize="@dimen/text_medium"
+                                android:visibility="invisible"
+                                app:layout_constraintBottom_toTopOf="@+id/weightLabel1"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+
+                            <TextView
+                                android:id="@+id/weightLabel1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="5dp"
+                                android:paddingHorizontal="8dp"
+                                android:text="@string/alertrange"
+                                android:textColor="@color/font_silver"
+                                android:textSize="@dimen/text_medium"
+                                app:layout_constraintBottom_toTopOf="@+id/alertRangeOption"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintVertical_bias="1.0"
+                                card_view:layout_editor_absoluteX="0dp" />
+
+                            <Spinner
+                                android:id="@+id/alertRangeOption"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:textSize="@dimen/text_medium"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_bias="0.0"
+                                app:layout_constraintStart_toStartOf="parent" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/tab1_cardview_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="11dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="11dp"
+                android:background="@drawable/rounded_border">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/rounded_border"
+                    android:orientation="vertical"
+                    android:padding="1dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="5dp"
                         android:paddingHorizontal="8dp"
-                        android:text="@string/subscription_benefits"
+                        android:paddingTop="8dp"
+                        android:text="@string/subscribe"
                         android:textColor="@color/font_silver"
                         android:textSize="@dimen/text_medium"
                         app:layout_constraintBottom_toTopOf="@+id/currencyLabel"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:paddingHorizontal="3dp"
-                    android:text="@string/adfree"
-                    android:textColor="@color/font_silver"
-                    android:textSize="@dimen/text_medium"
-                    app:layout_constraintBottom_toTopOf="@+id/currencyLabel"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:paddingHorizontal="8dp"
-                    android:text="@string/unlimitedList"
-                    android:textColor="@color/font_silver"
-                    android:textSize="@dimen/text_medium"
-                    app:layout_constraintBottom_toTopOf="@+id/currencyLabel"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:visibility="gone"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:paddingHorizontal="8dp"
+                            android:text="@string/subscription_benefits"
+                            android:textColor="@color/font_silver"
+                            android:textSize="@dimen/text_medium"
+                            app:layout_constraintBottom_toTopOf="@+id/currencyLabel"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-                </LinearLayout>
-                <Button
-                    android:id="@+id/subscribe_btn"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginHorizontal="8dp"
-                    android:background="@drawable/subscribe_btn"
-                    android:text="@string/subscribe"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_large"
-                    android:theme="@style/NextButton" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:paddingHorizontal="3dp"
+                            android:text="@string/adfree"
+                            android:textColor="@color/font_silver"
+                            android:textSize="@dimen/text_medium"
+                            app:layout_constraintBottom_toTopOf="@+id/currencyLabel"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="5dp"
+                            android:paddingHorizontal="8dp"
+                            android:text="@string/unlimitedList"
+                            android:textColor="@color/font_silver"
+                            android:textSize="@dimen/text_medium"
+                            android:visibility="gone"
+                            app:layout_constraintBottom_toTopOf="@+id/currencyLabel"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="bottom">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:gravity="center">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/red">
+                    </LinearLayout>
 
                     <Button
-                        android:id="@+id/del_btn"
+                        android:id="@+id/subscribe_btn"
                         android:layout_width="match_parent"
                         android:layout_height="50dp"
-                        android:background="@drawable/delete_btn"
-                        android:text="@string/delAccount"
+                        android:layout_marginHorizontal="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:background="@drawable/subscribe_btn"
+                        android:text="@string/subscribe"
                         android:textColor="@color/white"
                         android:textSize="@dimen/text_large"
                         android:theme="@style/NextButton" />
+
                 </LinearLayout>
-
-                <ProgressBar
-                    android:id="@+id/del_progressBar"
-                    style="?android:attr/progressBarStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:visibility="gone" />
-
-            </RelativeLayout>
-
+            </androidx.cardview.widget.CardView>
         </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <LinearLayout
+        android:id="@+id/deleteData_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="bottom"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nestedScrollView2">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <TextView
+                android:id="@+id/agreeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/optionTerms"
+                android:textSize="15dp"
+                android:textColor="@color/font_silver"
+                android:textStyle="bold"
+                android:layout_marginBottom="18dp"
+                app:layout_constraintBottom_toTopOf="@+id/del_layout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <LinearLayout
+                android:id="@+id/del_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/agreeText"
+                android:background="@color/red"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
 
 
+                <Button
+                    android:id="@+id/del_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/delete_btn"
+                    android:text="@string/delAccount"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_large"
+                    android:theme="@style/NextButton" />
+            </LinearLayout>
+
+            <ProgressBar
+                android:id="@+id/del_progressBar"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
-
+</androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

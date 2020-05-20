@@ -124,7 +124,7 @@ class ProductAdapter(private val context: Context, private val realData: Map<Str
                     plStlye
                 )
 
-
+                var weightText: String = ""
                 when (item.weight) {
                     1.0f -> {
                         weight = item.weight.toInt()
@@ -147,6 +147,18 @@ class ProductAdapter(private val context: Context, private val realData: Map<Str
                     500.0f -> {
                         weight = item.weight.toInt()
                     }
+                    0.05f -> {
+                        weightText = "1/20"
+                    }
+                    0.1f -> {
+                        weightText = "1/10"
+                    }
+                    0.25f -> {
+                        weightText = "1/4"
+                    }
+                    0.5f -> {
+                        weightText = "1/2"
+                    }
                 }
 
                 when {
@@ -161,9 +173,9 @@ class ProductAdapter(private val context: Context, private val realData: Map<Str
                     }
                 }
 
-                if (weight == 0) {
+                if (weight < 1) {
                     binding.productItemType.text =
-                        item.weight.toString() + WEIGHTUNIT[product!!.weightUnit] + " " + metalType
+                        product!!.year.toString() + " " + weightText + WEIGHTUNIT[product!!.weightUnit] + " " + METAL[product!!.metal] + " " + brandName + " " + TYPE[product!!.type]
                 } else {
                     binding.productItemType.text =
                         product!!.year.toString() + " " + weight.toString() + WEIGHTUNIT[product!!.weightUnit] + " " + METAL[product!!.metal] + " " + brandName + " " + TYPE[product!!.type]

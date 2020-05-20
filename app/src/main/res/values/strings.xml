@@ -32,7 +32,7 @@
     <string name="unlimitedList">Unlimited List</string>
     <string name="adfreerestart">Please restart to remove Ads.</string>
     <string name="caution">Caution</string>
-    <string name="delAgreeCheck"> Do you agree to delete your list and accounts?(Data cannot be recovered and you can not use the data of device that is sign up with the same gmail.)</string>
+    <string name="delAgreeCheck"> Do you agree to delete your list and accounts?(Data cannot be recovered.)</string>
     <string name="details">Details</string>
     <string name="currentPrice">Current Price</string>
     <string name="totalPrice">Total Price</string>
@@ -58,7 +58,7 @@
     <string name="historicalChart">Historical Chart</string>
     <string name="list">List</string>
     <string name="option">Option</string>
-    <string name="estimate">estimate</string>
+    <string name="estimate">*estimate</string>
     <string name="totalChartSpotPrice">Total Asset based on Spot price</string>
 
     <string name="backButton">Please press again to exit app</string>

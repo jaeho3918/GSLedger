@@ -172,6 +172,9 @@ class DetailFragment : Fragment() {
             product_item_brand.text =
                 "${product.year} $buf_weight${WEIGHTUNIT[product.weightUnit]} ${METAL[product.metal]}${TYPE[product.type]} $buf_brand"
 
+            binding.productItemEstimate.text = resources.getString(R.string.estimate)
+            binding.productItemEstimate.visibility = View.VISIBLE
+
             brand = (brand ?: "default").toLowerCase().replace(" ", "").replace("'", "")
                 .replace(".", "").replace("-", "")
 

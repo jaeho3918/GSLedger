@@ -166,6 +166,17 @@
                             android:textAppearance="?attr/textAppearanceListItem"
                             android:textSize="14dp" />
 
+                        <TextView
+                            android:id="@+id/estimate"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="11dp"
+                            android:text="@string/estimate"
+                            android:gravity="bottom"
+                            android:textAppearance="?attr/textAppearanceListItem"
+                            android:textColor="@color/font_silver"
+                            android:textSize="11dp" />
+
                     </LinearLayout>
 
                     <LinearLayout

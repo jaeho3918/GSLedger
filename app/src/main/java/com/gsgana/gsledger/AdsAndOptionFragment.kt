@@ -308,7 +308,7 @@ class AdsAndOptionFragment : Fragment(), PurchasesUpdatedListener {
                 ContextCompat.getColor(context!!, R.color.mu1_data_up)
             )
 
-            objectAnimator.repeatCount = 18
+            objectAnimator.repeatCount = 5
             objectAnimator.repeatMode = ValueAnimator.REVERSE
             objectAnimator.duration = DURATION
             objectAnimator.start()
@@ -342,22 +342,6 @@ class AdsAndOptionFragment : Fragment(), PurchasesUpdatedListener {
                     position: Int,
                     id: Long
                 ) {
-
-                    if (start) {
-                        start = false
-                    } else {
-                        objectAnimator = ObjectAnimator.ofObject(
-                            binding.alertSwitchOption,
-                            "backgroundColor",
-                            ArgbEvaluator(),
-                            ContextCompat.getColor(context!!, R.color.mu1_data_up),
-                            ContextCompat.getColor(context!!, R.color.white)
-                        )
-                        objectAnimator.repeatCount = 1
-                        objectAnimator.repeatMode = ValueAnimator.REVERSE
-                        objectAnimator.duration = DURATION
-                        objectAnimator.start()
-                    }
 
                     sf.edit()?.putInt(ALERTSWITCH_NAME, position)?.apply()
 

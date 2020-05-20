@@ -346,7 +346,17 @@ class AdsAndOptionFragment : Fragment(), PurchasesUpdatedListener {
                     if (start) {
                         start = false
                     } else {
-                        objectAnimator.end()
+                        objectAnimator = ObjectAnimator.ofObject(
+                            binding.alertSwitchOption,
+                            "backgroundColor",
+                            ArgbEvaluator(),
+                            ContextCompat.getColor(context!!, R.color.mu1_data_up),
+                            ContextCompat.getColor(context!!, R.color.white)
+                        )
+                        objectAnimator.repeatCount = 1
+                        objectAnimator.repeatMode = ValueAnimator.REVERSE
+                        objectAnimator.duration = DURATION
+                        objectAnimator.start()
                     }
 
                     sf.edit()?.putInt(ALERTSWITCH_NAME, position)?.apply()

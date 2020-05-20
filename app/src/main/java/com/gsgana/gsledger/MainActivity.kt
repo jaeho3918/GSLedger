@@ -120,7 +120,7 @@ class MainActivity :
         if(System.currentTimeMillis() - mBackWait >=2000 ) {
             super.onBackPressed()
             mBackWait = System.currentTimeMillis()
-            Toast.makeText(this,resources.getString(R.string.backButton), Toast.LENGTH_LONG).show()
+//            Toast.makeText(this,resources.getString(R.string.backButton), Toast.LENGTH_LONG).show()
         } else {
             finish() //액티비티 종료
         }

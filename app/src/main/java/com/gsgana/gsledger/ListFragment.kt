@@ -24,7 +24,6 @@ import com.gsgana.gsledger.utilities.InjectorUtils
 import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModel
 import kotlinx.android.synthetic.main.list_fragment.*
 
-
 class ListFragment : Fragment(), PurchasesUpdatedListener {
 
     private lateinit var product: Product

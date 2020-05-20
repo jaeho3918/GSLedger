@@ -38,6 +38,8 @@
     <string name="priceRange">가격 범위</string>
     <string name="contents">내용</string>
     <string name="lastUpdate">최종 갱신</string>
+    <string name="estimate">추정치</string>
+    <string name="backButton">뒤로가기 버튼을 한번 더 누르면 종료됩니다.</string>
     <string name="disclaimer">면책조항</string>
     <string name="total">합계</string>
     <string name="Profit">이익</string>

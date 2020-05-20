@@ -22,6 +22,7 @@ import com.gsgana.gsledger.data.Product
 import com.gsgana.gsledger.databinding.ListFragmentBinding
 import com.gsgana.gsledger.utilities.InjectorUtils
 import com.gsgana.gsledger.viewmodels.HomeViewPagerViewModel
+import kotlinx.android.synthetic.main.list_fragment.*
 
 
 class ListFragment : Fragment(), PurchasesUpdatedListener {
@@ -50,7 +51,7 @@ class ListFragment : Fragment(), PurchasesUpdatedListener {
         savedInstanceState: Bundle?
     ): View? {
         binding = ListFragmentBinding.inflate(inflater, container, false)
-        sf = activity!!.getSharedPreferences(PREF_NAME,Context.MODE_PRIVATE)
+        sf = activity!!.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
 
         realData = viewModel.getRealData().value ?: mapOf()
 
@@ -65,7 +66,21 @@ class ListFragment : Fragment(), PurchasesUpdatedListener {
             }
         }
 
+        binding.addList.setOnClickListener {
+            if (it.findNavController().currentDestination?.id == R.id.homeViewPagerFragment) {
+                findNavController()
+                    .navigate(R.id.action_homeViewPagerFragment_to_write1Fragment)
+            }
+        }
+
         viewModel.getProducts().observe(viewLifecycleOwner) { result ->
+            if (result.size == 0) {
+                binding.addList.visibility= View.VISIBLE
+                binding.productList.visibility = View.GONE
+            }else{
+                binding.addList.visibility= View.GONE
+                binding.productList.visibility = View.VISIBLE
+            }
             binding.getNum.text = result.size.toString()
             adapter.submitList(result)
         }

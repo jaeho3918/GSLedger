@@ -58,7 +58,10 @@
     <string name="historicalChart">Historical Chart</string>
     <string name="list">List</string>
     <string name="option">Option</string>
+    <string name="estimate">estimate</string>
     <string name="totalChartSpotPrice">Total Asset based on Spot price</string>
+
+    <string name="backButton">Please press again to exit app</string>
     <string name="slot">List</string>
     <string name="goldChart">Gold Chart</string>
     <string name="silverChart">Silver Chart</string>

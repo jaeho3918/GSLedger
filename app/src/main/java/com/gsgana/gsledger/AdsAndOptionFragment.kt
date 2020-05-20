@@ -1,5 +1,8 @@
 package com.gsgana.gsledger
 
+import android.animation.ArgbEvaluator
+import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.app.AlertDialog
 import android.content.Context
 import android.content.SharedPreferences
@@ -13,6 +16,7 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.android.billingclient.api.*
@@ -57,6 +61,10 @@ class AdsAndOptionFragment : Fragment(), PurchasesUpdatedListener {
     private val ALERTRANGE_NAME = "g6b6UQL9Prae7b5h2A"
 
     private val START_OPTION = "P6Uga62r9b5Ae7bQLh"
+
+    private val DURATION: Long = 999
+
+    private lateinit var objectAnimator: ObjectAnimator
 
     private val KEY = "Kd6c26TK65YSmkw6oU"
     private val viewModel: HomeViewPagerViewModel by viewModels {
@@ -128,16 +136,16 @@ class AdsAndOptionFragment : Fragment(), PurchasesUpdatedListener {
                 del_btn.isEnabled = false
                 del_progressBar.visibility = View.VISIBLE
                 viewModel.deleteProducts()
-                mAuth = FirebaseAuth.getInstance()
-                mAuth.currentUser!!.delete()
-                gso =
-                    GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()
-                googleSigninClient = GoogleSignIn.getClient(activity!!, gso)
-                googleSigninClient.signOut()
-                sf = activity!!.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
-                sf.edit()
-                    .clear()
-                    .apply()
+//                mAuth = FirebaseAuth.getInstance()
+//                mAuth.currentUser!!.delete()
+//                gso =
+//                    GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()
+//                googleSigninClient = GoogleSignIn.getClient(activity!!, gso)
+//                googleSigninClient.signOut()
+//                sf = activity!!.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+//                sf.edit()
+//                    .clear()
+//                    .apply()
 
                 Handler().postDelayed({
                     activity!!.finish()
@@ -291,6 +299,21 @@ class AdsAndOptionFragment : Fragment(), PurchasesUpdatedListener {
             }
             sf.edit().putInt(START_OPTION, 18).apply()
 
+
+            objectAnimator = ObjectAnimator.ofObject(
+                binding.alertSwitchOption,
+                "backgroundColor",
+                ArgbEvaluator(),
+                ContextCompat.getColor(context!!, R.color.white),
+                ContextCompat.getColor(context!!, R.color.mu1_data_up)
+            )
+
+            objectAnimator.repeatCount = 18
+            objectAnimator.repeatMode = ValueAnimator.REVERSE
+            objectAnimator.duration = DURATION
+            objectAnimator.start()
+
+
         } else {
             binding.currencyOption.setSelection(
                 (viewModel?.getRealData()?.value?.get("currency") ?: 0.0).toInt()
@@ -306,6 +329,8 @@ class AdsAndOptionFragment : Fragment(), PurchasesUpdatedListener {
                 context!!, R.layout.support_simple_spinner_dropdown_item, ALERTSWITCH
             )
 
+        var start = true
+
         binding.alertSwitchOption.adapter = adapter
         binding.alertSwitchOption.dropDownVerticalOffset = dipToPixels(53f).toInt()
         binding.alertSwitchOption.onItemSelectedListener =
@@ -317,6 +342,13 @@ class AdsAndOptionFragment : Fragment(), PurchasesUpdatedListener {
                     position: Int,
                     id: Long
                 ) {
+
+                    if (start) {
+                        start = false
+                    } else {
+                        objectAnimator.end()
+                    }
+
                     sf.edit()?.putInt(ALERTSWITCH_NAME, position)?.apply()
 
                     if (position == 1) {

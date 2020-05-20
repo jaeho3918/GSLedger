@@ -93,7 +93,7 @@ class ChartFragment : Fragment(), PurchasesUpdatedListener {
 
         sf = activity!!.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
 
-//        if (sf.getInt(ADFREE_NAME, 6) != 18) {
+//        if (18 != 18) {
 //            setAds()
 //        } else {
 //            binding.chartProgress.visibility = View.GONE
@@ -207,7 +207,7 @@ class ChartFragment : Fragment(), PurchasesUpdatedListener {
 
         binding.ratio18mBtn.setOnClickListener {
             if (ratioChart_select != 6) {
-                if (sf.getInt(ADFREE_NAME, 6) == 18) {
+                if (18 == 18) {
                     binding.ratioSubscribe.visibility = View.GONE
                     binding.ratioLayout.ratio_3m_Chart.visibility = View.INVISIBLE
                     binding.ratioLayout.ratio_18m_Chart.visibility = View.VISIBLE
@@ -229,7 +229,7 @@ class ChartFragment : Fragment(), PurchasesUpdatedListener {
 
         binding.gold18mBtn.setOnClickListener {
             if (goldChart_select != 6) {
-                if (sf.getInt(ADFREE_NAME, 6) == 18) {
+                if (18 == 18) {
                     binding.goldSubscribe.visibility = View.GONE
                     binding.goldLayout.gold_3m_Chart.visibility = View.INVISIBLE
                     binding.goldLayout.gold_18m_Chart.visibility = View.VISIBLE
@@ -251,7 +251,7 @@ class ChartFragment : Fragment(), PurchasesUpdatedListener {
 
         binding.silver18mBtn.setOnClickListener {
             if (silverChart_select != 6) {
-                if (sf.getInt(ADFREE_NAME, 6) == 18) {
+                if (18 == 18) {
                     binding.silverSubscribe.visibility = View.GONE
                     binding.silverLayout.silver_3m_Chart.visibility = View.INVISIBLE
                     binding.silverLayout.silver_18m_Chart.visibility = View.VISIBLE
@@ -273,7 +273,7 @@ class ChartFragment : Fragment(), PurchasesUpdatedListener {
 
         binding.ratio29yBtn.setOnClickListener {
             if (ratioChart_select != 29) {
-                if (sf.getInt(ADFREE_NAME, 6) == 18) {
+                if (18 == 18) {
                     binding.ratioSubscribe.visibility = View.GONE
                     binding.ratioLayout.ratio_3m_Chart.visibility = View.INVISIBLE
                     binding.ratioLayout.ratio_18m_Chart.visibility = View.INVISIBLE
@@ -295,7 +295,7 @@ class ChartFragment : Fragment(), PurchasesUpdatedListener {
 
         binding.gold29yBtn.setOnClickListener {
             if (goldChart_select != 29) {
-                if (sf.getInt(ADFREE_NAME, 6) == 18) {
+                if (18 == 18) {
                     binding.goldSubscribe.visibility = View.GONE
                     binding.goldLayout.gold_3m_Chart.visibility = View.INVISIBLE
                     binding.goldLayout.gold_18m_Chart.visibility = View.INVISIBLE
@@ -317,7 +317,7 @@ class ChartFragment : Fragment(), PurchasesUpdatedListener {
 
         binding.silver29yBtn.setOnClickListener {
             if (silverChart_select != 29) {
-                if (sf.getInt(ADFREE_NAME, 6) == 18) {
+                if (18 == 18) {
                     binding.silverSubscribe.visibility = View.GONE
                     binding.silverLayout.silver_3m_Chart.visibility = View.INVISIBLE
                     binding.silverLayout.silver_18m_Chart.visibility = View.INVISIBLE

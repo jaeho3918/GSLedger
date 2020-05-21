@@ -74,24 +74,24 @@ class MainActivity :
 
         DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
 
-        if (!(intent.getIntExtra(ADFREE_NAME, 6) == 18 || sf.getInt(ADFREE_NAME, 6) == 18)) {
-            setAds()
-        } else {
-            Handler().postDelayed(
-                {
-                    loading.visibility = View.GONE
-                    homeViewPagerFragmentpage.visibility = View.VISIBLE
-                }, 1800
-            )
+//        if (!(intent.getIntExtra(ADFREE_NAME, 6) == 18 || sf.getInt(ADFREE_NAME, 6) == 18)) {
+//            setAds()
+//        } else {
+//            Handler().postDelayed(
+//                {
+//                    loading.visibility = View.GONE
+//                    homeViewPagerFragmentpage.visibility = View.VISIBLE
+//                }, 1800
+//            )
+//
+//        }
 
-        }
-
-//        Handler().postDelayed(
-//            {
-//                loading.visibility = View.GONE
-//                homeViewPagerFragmentpage.visibility = View.VISIBLE
-//            }, 1800
-//        )
+        Handler().postDelayed(
+            {
+                loading.visibility = View.GONE
+                homeViewPagerFragmentpage.visibility = View.VISIBLE
+            }, 1800
+        )
     }
 
     private fun setAds() {

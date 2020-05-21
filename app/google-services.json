@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "314143799930-thts0p62bca4ttdgn3mnviuuu6r6gbk1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gsgana.gsledger",
+            "certificate_hash": "85f9e6741404da95e53cfe046807f7f72ec1e976"
+          }
+        },
+        {
           "client_id": "314143799930-onfg5bmbb1l29rodloc3qmqt0g07td1r.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
@@ -49,7 +57,8 @@
             }
           ]
         }
-      }
+      },
+      "admob_app_id": "ca-app-pub-8453032642509497~4168684141"
     }
   ],
   "configuration_version": "1"
